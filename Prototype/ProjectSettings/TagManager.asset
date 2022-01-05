@@ -7,6 +7,7 @@ TagManager:
   - UNIT
   - ENEMY
   - PLAYER
+  - BOSS
   layers:
   - Default
   - TransparentFX

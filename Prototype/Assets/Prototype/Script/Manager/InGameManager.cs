@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class InGameManager : MonoBehaviour
 {
+    private static InGameManager instance;
     [SerializeField] private float enemySpawnDelay;
-    [SerializeField] private Transform startPoint; 
+    [SerializeField] private Transform startPoint;
+    [SerializeField] private Transform endPoint;
     [SerializeField] private BoxCollider2D area;
     [SerializeField] private Player player;
 
@@ -27,14 +29,19 @@ public class InGameManager : MonoBehaviour
     [SerializeField] private Image playerHp;
     [SerializeField] private Image playerMp;
 
+    private List<Priest> priests = new List<Priest>();
+    private List<Priest> enemyPriests = new List<Priest>();
+
     private int unitListIndex = 0;
     private int enemyListIndex = 0;
     public List<GameObject> UnitList { get => unitList; }
     public List<GameObject> EnemyList { get => enemyList; }
-    
+    public Transform EndPoint { get => endPoint; set => endPoint = value; }
+    public static InGameManager Instance { get => instance; }
 
     private void Awake()
     {
+        instance = this;
         area = startPoint.GetComponent<BoxCollider2D>();
         player = FindObjectOfType<Player>();
         resauceGraph = GameObject.Find("Resauce").transform.GetChild(0).GetComponent<Image>();
@@ -46,18 +53,23 @@ public class InGameManager : MonoBehaviour
     }
     private void Start()
     {
-        StartCoroutine(Co_InstantiateEnemy());
+        //StartCoroutine(Co_InstantiateEnemy());
         StartCoroutine(Co_UpdateResauceUI());
         StartCoroutine(Co_Timer());
         //코루틴 StartCoroutine(Co_UpdateList());
     }
-    public void InstantiateUnit(int i)//추후 변경 -> Unit unit)
+    public void InstantiateUnit(int i)// 유닛 배열 i번째의 유닛 생성 //추후 오브젝트 풀링으로 전환
     {
         if (player.CurrentResauce < unitArray[i].GetComponent<Unit>().Cost) return;
-        var unit =  Instantiate(unitArray[i], unitParent,true);
-        player.CurrentResauce -= unit.GetComponent<Unit>().Cost;
-        SpawnRandomPoint(unit,-9.5f);
-        AddList(unit, true);
+        var unit = UnitPool.GetUnit(i);
+        unit.transform.SetParent(unitParent);
+        player.CurrentResauce -= unit.Cost;
+        SpawnRandomPoint(unit.gameObject,startPoint.position.x);
+        AddList(unit.gameObject, true);
+        if(i == 4)
+        {
+            priests.Add(unit.GetComponent<Priest>());
+        }
       //  GetPosY(unit, true);
     }
     private void SpawnRandomPoint(GameObject obj, float posX)
@@ -69,23 +81,35 @@ public class InGameManager : MonoBehaviour
         obj.transform.position = randomRange;
         SetSortingLayerOrder(obj, randRange);
     }
-    public void InstatiateEnemy()
+    public void InstatiateEnemy(int ArrayCount = 0) //추후 오브젝트 풀링으로 전환
     {
         int rand = Random.Range(0, enemyArray.Length);
-        var enemy = Instantiate(enemyArray[rand], enemyParent, true);
-        SpawnRandomPoint(enemy, 9.5f);
-        AddList(enemy, false);
+        var enemy = EnemyPool.GetEnemy(ArrayCount);
+        enemy.transform.SetParent(enemyParent);
+        SpawnRandomPoint(enemy.gameObject, endPoint.position.x);
+        AddList(enemy.gameObject, false);
+        if(ArrayCount == 4)
+        {
+            enemyPriests.Add(enemy.GetComponent<Priest>());
+        }
        // GetPosY(enemy, false);
     }
-   IEnumerator Co_InstantiateEnemy()
-    {
-        while (true)
-        {
-            InstatiateEnemy();
-            yield return new WaitForSeconds(enemySpawnDelay);
-        }
-        
-    }
+
+    /* IEnumerator Co_InstantiateEnemy()
+     {
+          int i = 0;
+          while (true)
+          {
+              InstatiateEnemy(0);
+              //break;
+              yield return new WaitForSeconds(enemySpawnDelay);
+              if(i++ >= 2)
+              {
+                  InstatiateEnemy(1);
+                  break;
+              }
+          }     
+     }*/
 
     private void AddList(GameObject obj, bool isUnit)
     {       
@@ -130,17 +154,38 @@ public class InGameManager : MonoBehaviour
             yield return null;
         }
     }
-    public void DecreasePlayerUI(bool isHp)
+    public void UpdatePlayerHpMpUI(bool isHp)
     {
         if (isHp)
         {
-            playerHp.fillAmount = player.CurrentHp * (1/player.MaxHp); // 추후 수정해야함. 플레이어 체력이 고정값이 아니기 때문.
+            playerHp.fillAmount = player.CurrentHp * (1/player.MaxHp); // 추후 수정해야함. 플레이어 체력이 고정값이 아니기 때문.-> 수정 완료(21.12.21)
         }
         else
         {
-            playerMp.fillAmount = player.CurrentMp * (1/player.MaxMp); //얘도 마찬가지.
+            playerMp.fillAmount = player.CurrentMp * (1/player.MaxMp); //얘도 마찬가지. -> 수정 완료(21.12.21)
         }
     }
-    
+    public void RemoveHealingList(Unit unit)
+    {
+        foreach (var priest in priests)
+        {
+            priest.UpdateList(unit);
+        }
+    }
+    public void RemoveEnemyHealingList(Enemy enemy)
+    {
+        foreach (var priest in enemyPriests)
+        {
+            priest.UpdateEnemyList(enemy);
+        }
+    }
+    public void UpdatePriestList(Priest priest)
+    {
+        priests.Remove(priest);
+    }
+    public void UpdateEnemyPriestList(Priest priest)
+    {
+        enemyPriests.Remove(priest);
+    }
     
 }

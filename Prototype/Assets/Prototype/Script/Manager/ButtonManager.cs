@@ -22,10 +22,10 @@ public class ButtonManager : MonoBehaviour
     }
     public void BtnEvt_Left()
     {
-        player.isLeft = !player.isLeft;
+        player.IsLeft = !player.IsLeft;
     }
     public void BtnEvt_Right()
     {
-        player.isRight = !player.isRight;
+        player.IsRight = !player.IsRight;
     }
 }

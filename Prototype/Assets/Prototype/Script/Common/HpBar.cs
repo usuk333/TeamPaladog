@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class HpBar : MonoBehaviour
 {
+
     private Camera uiCamera;
     private Canvas canvas;
     private RectTransform rectParent;
-    private RectTransform rectHp;
+    private RectTransform rectHp;    
 
     private Vector3 offset = Vector3.up;
     [SerializeField] private Transform objTr;
@@ -33,7 +35,7 @@ public class HpBar : MonoBehaviour
         RectTransformUtility.ScreenPointToLocalPointInRectangle(rectParent, screenPos, uiCamera, out localPos);
         rectHp.localPosition = localPos;
     }
-    public void DecreaseUnitOrEnemyHpUI(bool isUnit)
+    public void UpdateUnitOrEnemyHpBar(bool isUnit)
     {
         if (isUnit)
         {
