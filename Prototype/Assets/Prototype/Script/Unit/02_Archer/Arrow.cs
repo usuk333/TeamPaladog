@@ -41,19 +41,23 @@ public class Arrow : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(parent == EParent.Unit)
+        AttackArrow(collision.gameObject);
+    }
+    private void AttackArrow(GameObject collision)
+    {
+        if (parent == EParent.Unit)
         {
             if (collision.tag == "ENEMY")
             {
                 collision.GetComponent<Enemy>().DecreaseHp(damage);
                 ProjectilePool.ReturnArrow(this);
-               // Destroy(this.gameObject); //오브젝트 풀링으로 전환
+                // Destroy(this.gameObject); //오브젝트 풀링으로 전환
             }
             else if (collision.tag == "BOSS")
             {
                 collision.GetComponent<Boss>().DecreaseHp(damage);
                 ProjectilePool.ReturnArrow(this);
-               // Destroy(this.gameObject); //오브젝트 풀링으로 전환
+                // Destroy(this.gameObject); //오브젝트 풀링으로 전환
             }
         }
         else
@@ -62,13 +66,13 @@ public class Arrow : MonoBehaviour
             {
                 collision.GetComponent<Unit>().DecreaseHp(damage);
                 ProjectilePool.ReturnArrow(this);
-               // Destroy(this.gameObject); //오브젝트 풀링으로 전환
+                // Destroy(this.gameObject); //오브젝트 풀링으로 전환
             }
             else if (collision.tag == "PLAYER")
             {
                 collision.GetComponent<Player>().DecreaseHp(damage);
                 ProjectilePool.ReturnArrow(this);
-               // Destroy(this.gameObject); //오브젝트 풀링으로 전환
+                // Destroy(this.gameObject); //오브젝트 풀링으로 전환
             }
         }
     }

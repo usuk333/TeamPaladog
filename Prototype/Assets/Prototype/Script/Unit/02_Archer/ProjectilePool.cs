@@ -7,10 +7,8 @@ public class ProjectilePool : MonoBehaviour
     [SerializeField] private GameObject[] projectiles;
     private static ProjectilePool instance;
 
-   [SerializeField] private List<GameObject> poolingProjectiles = new List<GameObject>();
     [SerializeField] private Queue<FireBall> poolingFireBalls = new Queue<FireBall>();
     [SerializeField] private Queue<Arrow> poolingArrows = new Queue<Arrow>();
-    private Queue<FireBall> poolingEnemyFireBalls = new Queue<FireBall>();
     public static ProjectilePool Instance { get => instance; }
 
     // Start is called before the first frame update

@@ -77,7 +77,7 @@ public class Unit : MonoBehaviour
                 InGameManager.Instance.UpdatePriestList(GetComponent<Priest>());
             }
             InGameManager.Instance.RemoveHealingList(this);
-            initializeUnit();
+            //initializeUnit();
             UnitPool.ReturnUnit(this);
         }
         if (unitKinds == EUnitKinds.Assasin && transform.position.x > 8.5f)

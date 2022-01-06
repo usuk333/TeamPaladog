@@ -263,4 +263,5 @@ public class Enemy : MonoBehaviour
         enemyState = EUnitState.NonCombat;
         GetComponent<Assasin>().Hide();
     }
+
 }
