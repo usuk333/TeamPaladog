@@ -9,6 +9,7 @@ public enum EUnitState
     NonCombat,
     Back,
     Wait,
+    KnockBack,
     Die
 }
 public class Unit : MonoBehaviour
@@ -263,6 +264,7 @@ public class Unit : MonoBehaviour
     private void initializeUnit()
     {
         currentHp = maxHp;
+        GetComponentInChildren<HpBar>().ResetHpBar();
         switch (unitKinds)
         {
             case EUnitKinds.Warrior:

@@ -39,11 +39,18 @@ public class HpBar : MonoBehaviour
     {
         if (isUnit)
         {
-            hpBar.fillAmount = transform.parent.parent.GetComponent<Unit>().CurrentHp * (1/ transform.parent.parent.GetComponent<Unit>().MaxHp);
+            hpBar.fillAmount = transform.parent.parent.GetComponent<Unit>().CurrentHp / transform.parent.parent.GetComponent<Unit>().MaxHp;
         }
         else
         {
-            hpBar.fillAmount = transform.parent.parent.GetComponent<Enemy>().CurrentHp * (1/transform.parent.parent.GetComponent<Enemy>().MaxHp);
+            hpBar.fillAmount = transform.parent.parent.GetComponent<Enemy>().CurrentHp / transform.parent.parent.GetComponent<Enemy>().MaxHp;
+        }
+    }
+    public void ResetHpBar()
+    {
+        if (hpBar != null)
+        {
+            hpBar.fillAmount = 1f;
         }
     }
 }

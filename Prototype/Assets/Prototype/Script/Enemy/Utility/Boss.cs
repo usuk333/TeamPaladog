@@ -11,8 +11,14 @@ public class Boss : MonoBehaviour
         SlaveTrader,
         IntermediateAsmodian
     }
-    private EUnitState bossState = EUnitState.NonCombat;
+    private enum EBossPattern
+    {
+        Normal,
+        Special
+    }
+    [SerializeField] private EUnitState bossState = EUnitState.NonCombat;
     [SerializeField] private EBossKinds eBossKinds;
+    [SerializeField] private EBossPattern eBossPattern;
     // 인게임 매니저에다 hp증가, 감소 함수를 만들고 파라메터로 누구 hp를 감소시킬거냐
     [SerializeField] private float attackSpeed;
     [SerializeField] private float currentAttackSpeed;
@@ -27,6 +33,7 @@ public class Boss : MonoBehaviour
     [SerializeField] private Unit currentUnit;
     [SerializeField] private Player player;
 
+    [SerializeField] private float patternHp = 0.8f;
 
     public EUnitState BossState { get => bossState; set => bossState = value; }
     public float CurrentHp { get => currentHp; set => currentHp = value; }
@@ -54,6 +61,10 @@ public class Boss : MonoBehaviour
         {
             transform.position += Vector3.left * currentMoveSpeed * Time.deltaTime;
         }
+        if(bossState == EUnitState.KnockBack)
+        {
+            transform.position += Vector3.right * 2 * Time.deltaTime;
+        }
     }
     // Update is called once per frame
     void Update()
@@ -67,7 +78,7 @@ public class Boss : MonoBehaviour
     {
         while (true)
         {
-            if (bossState != EUnitState.Battle && bossState != EUnitState.Wait)
+            if (bossState != EUnitState.Battle && bossState != EUnitState.Wait && bossState != EUnitState.KnockBack)
             {
                 if (currentUnit != null || player != null)
                 {
@@ -172,6 +183,11 @@ public class Boss : MonoBehaviour
     {
         currentHp -= damage + increaseDamage;
         GetComponentInChildren<BossHpBar>().UpdateBossHpUI();
+        if(currentHp < maxHp * patternHp)
+        {
+            StartCoroutine(PushOut());
+            patternHp -= 0.2f;
+        }
     }
     public void IncreaseHp(float value)
     {
@@ -190,5 +206,15 @@ public class Boss : MonoBehaviour
     private void ResetIncreaseDamage()
     {
         increaseDamage = 0;
+    }
+
+    private IEnumerator PushOut()
+    {
+        Debug.Log("코루틴 호출");
+        bossState = EUnitState.KnockBack;
+        yield return new WaitForSeconds(2f);
+        bossState = EUnitState.Wait;
+        yield return new WaitForSeconds(1f);
+        bossState = EUnitState.Battle;
     }
 }

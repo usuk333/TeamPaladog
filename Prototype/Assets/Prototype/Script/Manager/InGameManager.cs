@@ -29,6 +29,9 @@ public class InGameManager : MonoBehaviour
     [SerializeField] private Image playerHp;
     [SerializeField] private Image playerMp;
 
+    [SerializeField] private GameObject[] bossObjects;
+    [SerializeField] private Transform bossSpawnPoint;
+
     private List<Priest> priests = new List<Priest>();
     private List<Priest> enemyPriests = new List<Priest>();
 
@@ -81,7 +84,7 @@ public class InGameManager : MonoBehaviour
         obj.transform.position = randomRange;
         SetSortingLayerOrder(obj, randRange);
     }
-    public void InstatiateEnemy(int ArrayCount = 0) //추후 오브젝트 풀링으로 전환
+    public void InstantiateEnemy(int ArrayCount = 0) //추후 오브젝트 풀링으로 전환
     {
         int rand = Random.Range(0, enemyArray.Length);
         var enemy = EnemyPool.GetEnemy(ArrayCount);
@@ -93,6 +96,12 @@ public class InGameManager : MonoBehaviour
             enemyPriests.Add(enemy.GetComponent<Priest>());
         }
        // GetPosY(enemy, false);
+    }
+    public void InstantiateBoss(int index = 0)
+    {
+        var enemy = Instantiate(bossObjects[index], bossSpawnPoint.position, Quaternion.identity);
+        enemy.transform.SetParent(enemyParent);
+        AddList(enemy.gameObject, false);
     }
 
     /* IEnumerator Co_InstantiateEnemy()
@@ -158,11 +167,11 @@ public class InGameManager : MonoBehaviour
     {
         if (isHp)
         {
-            playerHp.fillAmount = player.CurrentHp * (1/player.MaxHp); // 추후 수정해야함. 플레이어 체력이 고정값이 아니기 때문.-> 수정 완료(21.12.21)
+            playerHp.fillAmount = player.CurrentHp / player.MaxHp; // 추후 수정해야함. 플레이어 체력이 고정값이 아니기 때문.-> 수정 완료(21.12.21)
         }
         else
         {
-            playerMp.fillAmount = player.CurrentMp * (1/player.MaxMp); //얘도 마찬가지. -> 수정 완료(21.12.21)
+            playerMp.fillAmount = player.CurrentMp / player.MaxMp; //얘도 마찬가지. -> 수정 완료(21.12.21)
         }
     }
     public void RemoveHealingList(Unit unit)

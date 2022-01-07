@@ -50,6 +50,7 @@ public class Enemy : MonoBehaviour
     private void initializeEnemy()
     {
         currentHp = maxHp;
+        GetComponentInChildren<HpBar>().ResetHpBar();
         switch (enemyKinds)
         {
             case EEnemyKinds.Warrior:

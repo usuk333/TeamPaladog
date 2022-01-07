@@ -15,6 +15,6 @@ public class BossHpBar : MonoBehaviour
 
     public void UpdateBossHpUI()
     {
-        hpBar.fillAmount = transform.parent.parent.GetComponent<Boss>().CurrentHp * (1 / transform.parent.parent.GetComponent<Boss>().MaxHp);
+        hpBar.fillAmount = transform.parent.parent.GetComponent<Boss>().CurrentHp / transform.parent.parent.GetComponent<Boss>().MaxHp;
     }
 }
