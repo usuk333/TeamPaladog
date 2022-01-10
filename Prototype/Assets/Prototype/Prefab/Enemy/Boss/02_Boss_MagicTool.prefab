@@ -358,7 +358,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f581a4a1813add64fb06432937502684, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bossState: 1
   eBossKinds: 1
+  eBossPattern: 1
   attackSpeed: 4
   currentAttackSpeed: 0
   maxHp: 100
@@ -367,8 +369,10 @@ MonoBehaviour:
   moveSpeed: 1
   currentMoveSpeed: 0
   increaseDamage: 0
+  knockBackSpeed: 0
   currentUnit: {fileID: 0}
   player: {fileID: 0}
+  patternHp: 0.8
 --- !u!114 &1559143483892896871
 MonoBehaviour:
   m_ObjectHideFlags: 0

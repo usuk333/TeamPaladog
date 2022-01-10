@@ -41,6 +41,7 @@ public class InGameManager : MonoBehaviour
     public List<GameObject> EnemyList { get => enemyList; }
     public Transform EndPoint { get => endPoint; set => endPoint = value; }
     public static InGameManager Instance { get => instance; }
+    public Transform BossSpawnPoint { get => bossSpawnPoint; }
 
     private void Awake()
     {

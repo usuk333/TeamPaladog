@@ -8,14 +8,19 @@ public class MaigcTool : MonoBehaviour
     [SerializeField] private List<GameObject> collisions = new List<GameObject>();
     [SerializeField] private GameObject[] lightnings;
     [SerializeField] private float lightningPower;
-    private int attackCount = 0;
+    private int patternCount = 3;
+    private int currentPatternCount = 0;
 
 
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
-    public int AttackCount { get => attackCount; set => attackCount = value; }
 
     public void ActiveLightning()
+    {      
+        StartCoroutine(Co_ActiveLightning());
+    }
+    private IEnumerator Co_ActiveLightning()
     {
+        yield return new WaitForSeconds(1f);
         GetComponent<Boss>().BossState = EUnitState.Wait;
         int posXMin = 2;
         int posXMax = 3;
@@ -29,9 +34,10 @@ public class MaigcTool : MonoBehaviour
             posXMin += 2;
             posXMax += 3;
         }
-        Invoke("Invoke_AttackLightning", 3.1f);       
+        yield return new WaitForSeconds(3.1f);
+        AttackLightning();
     }
-    public void Invoke_AttackLightning()
+    private void AttackLightning()
     {
         for (int i = 0; i < collisions.Count; i++)
         {
@@ -48,7 +54,15 @@ public class MaigcTool : MonoBehaviour
             }
         }
         ResetLightning();
-        GetComponent<Boss>().BossState = EUnitState.Battle;
+        if(++currentPatternCount >= patternCount)
+        {
+            currentPatternCount = 0;
+            GetComponent<Boss>().BossState = EUnitState.Battle;
+        }
+        else
+        {
+            ActiveLightning();
+        }
     }
     private void ResetLightning()
     {

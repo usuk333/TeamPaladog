@@ -29,6 +29,7 @@ public class Boss : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private float currentMoveSpeed;
     [SerializeField] private float increaseDamage;
+    [SerializeField] private float knockBackSpeed;
 
     [SerializeField] private Unit currentUnit;
     [SerializeField] private Player player;
@@ -61,9 +62,9 @@ public class Boss : MonoBehaviour
         {
             transform.position += Vector3.left * currentMoveSpeed * Time.deltaTime;
         }
-        if(bossState == EUnitState.KnockBack)
-        {
-            transform.position += Vector3.right * 2 * Time.deltaTime;
+        if(bossState == EUnitState.KnockBack && eBossPattern != EBossPattern.Special)
+        {            
+            transform.position += Vector3.right * knockBackSpeed * Time.deltaTime;
         }
     }
     // Update is called once per frame
@@ -146,18 +147,8 @@ public class Boss : MonoBehaviour
         }
     }
     private void AttackMagicTool(bool isPlayer)
-    {
-        if(GetComponent<MaigcTool>().AttackCount > 1)
-        {
-            GetComponent<MaigcTool>().AttackCount = 0;
-            GetComponent<MaigcTool>().ActiveLightning();
-        }
-        else
-        {
-            AttackBasic(isPlayer);
-            GetComponent<MaigcTool>().AttackCount++;
-        }
-       
+    {       
+        
     }
     void AttackBasic(bool isPlayer)
     {
@@ -185,8 +176,8 @@ public class Boss : MonoBehaviour
         GetComponentInChildren<BossHpBar>().UpdateBossHpUI();
         if(currentHp < maxHp * patternHp)
         {
-            StartCoroutine(PushOut());
-            patternHp -= 0.2f;
+            StartCoroutine(Co_PushOut());
+            patternHp -= 0.2f; //해당 부분도 보스별로 다르게 설정하기 위해 변수로 빼야할듯
         }
     }
     public void IncreaseHp(float value)
@@ -208,13 +199,34 @@ public class Boss : MonoBehaviour
         increaseDamage = 0;
     }
 
-    private IEnumerator PushOut()
+    private IEnumerator Co_PushOut()
     {
         Debug.Log("코루틴 호출");
-        bossState = EUnitState.KnockBack;
-        yield return new WaitForSeconds(2f);
-        bossState = EUnitState.Wait;
-        yield return new WaitForSeconds(1f);
-        bossState = EUnitState.Battle;
+        if(eBossPattern == EBossPattern.Normal)
+        {
+            bossState = EUnitState.KnockBack;
+            yield return new WaitForSeconds(2f);
+            bossState = EUnitState.Wait;
+            yield return new WaitForSeconds(1f);
+            bossState = EUnitState.Battle;
+        }
+        else
+        {
+            bossState = EUnitState.KnockBack;
+            transform.position = InGameManager.Instance.BossSpawnPoint.position;
+            switch (eBossKinds)
+            {
+                case EBossKinds.MagicTool:
+                    DoPatternMagicTool();
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
+        }
+    }
+    private void DoPatternMagicTool()
+    {
+        GetComponent<MaigcTool>().ActiveLightning();
     }
 }
