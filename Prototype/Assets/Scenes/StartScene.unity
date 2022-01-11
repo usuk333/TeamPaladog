@@ -284,7 +284,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 163718329}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 186116603}
+        m_TargetAssemblyTypeName: GameCenterManager, Assembly-CSharp
+        m_MethodName: GoBattle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &163718329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,7 +417,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 182402807}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 186116603}
+        m_TargetAssemblyTypeName: GameCenterManager, Assembly-CSharp
+        m_MethodName: GoogleLogout
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &182402807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -487,6 +511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acc1564ca83196a40a41a28b0c1d1aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  FireBaseId: 
 --- !u!1 &347633918
 GameObject:
   m_ObjectHideFlags: 0
@@ -816,7 +841,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1809814537}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 186116603}
+        m_TargetAssemblyTypeName: GameCenterManager, Assembly-CSharp
+        m_MethodName: GoogleLogin
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1809814537
 MonoBehaviour:
   m_ObjectHideFlags: 0
