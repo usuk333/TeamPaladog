@@ -2,21 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GoblinKing : MonoBehaviour
+public class GoblinKing : MonoBehaviour //보스캐릭터 고블린왕 특수공격 스크립트
 {
     private int attackCount = 0;
     [SerializeField] private List<GameObject> collisions = new List<GameObject>();
-    [SerializeField] private BoxCollider2D shockWaveDist;
-   
 
     public int AttackCount { get => attackCount; set => attackCount = value; }
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
-    public BoxCollider2D ShockWaveDist { get => shockWaveDist; set => shockWaveDist = value; }
-
-    private void Awake()
-    {
-        shockWaveDist = transform.Find("ShockWaveDist").GetComponent<BoxCollider2D>();
-    }
     public void AttackShockWave(float damage)
     {
         for (int i = 0; i < collisions.Count; i++)

@@ -2,46 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ProjectilePool : MonoBehaviour
+public class ProjectilePool : MonoBehaviour //화살, 마법구체를 풀링으로 관리하는 스크립트
 {
-    [SerializeField] private GameObject[] projectiles;
     private static ProjectilePool instance;
-
+    [SerializeField] private GameObject[] projectiles;
     [SerializeField] private Queue<FireBall> poolingFireBalls = new Queue<FireBall>();
     [SerializeField] private Queue<Arrow> poolingArrows = new Queue<Arrow>();
-    public static ProjectilePool Instance { get => instance; }
-
-    // Start is called before the first frame update
-    private void Awake()
-    {
-        instance = this;
-        InitializePool(1);
-    }
-    private void InitializePool(int initCount)
-    {
-        for (int i = 0; i < initCount; i++)
-        {
-            poolingFireBalls.Enqueue(CreateNewFireBall());
-            poolingArrows.Enqueue(CreateNewArrow());
-        }
-    }
-    private Arrow CreateNewArrow()
-    {
-        Arrow obj = Instantiate(projectiles[0]).GetComponent<Arrow>();
-        obj.gameObject.SetActive(false);
-        obj.transform.SetParent(transform);
-        return obj;
-    }
-    private FireBall CreateNewFireBall()
-    {
-        FireBall obj = Instantiate(projectiles[1]).GetComponent<FireBall>();
-        obj.gameObject.SetActive(false);
-        obj.transform.SetParent(transform);
-        return obj;
-    }
     public static Arrow GetArrow()
     {
-        if(instance.poolingArrows.Count > 0)
+        if (instance.poolingArrows.Count > 0)
         {
             var obj = instance.poolingArrows.Dequeue();
             return obj;
@@ -79,5 +48,32 @@ public class ProjectilePool : MonoBehaviour
         fireBall.gameObject.SetActive(false);
         fireBall.transform.SetParent(instance.transform);
         instance.poolingFireBalls.Enqueue(fireBall);
+    }
+    private void InitializePool(int initCount)
+    {
+        for (int i = 0; i < initCount; i++)
+        {
+            poolingFireBalls.Enqueue(CreateNewFireBall());
+            poolingArrows.Enqueue(CreateNewArrow());
+        }
+    }
+    private Arrow CreateNewArrow()
+    {
+        Arrow obj = Instantiate(projectiles[0]).GetComponent<Arrow>();
+        obj.gameObject.SetActive(false);
+        obj.transform.SetParent(transform);
+        return obj;
+    }
+    private FireBall CreateNewFireBall()
+    {
+        FireBall obj = Instantiate(projectiles[1]).GetComponent<FireBall>();
+        obj.gameObject.SetActive(false);
+        obj.transform.SetParent(transform);
+        return obj;
+    }
+    private void Awake()
+    {
+        instance = this;
+        InitializePool(1);
     }
 }

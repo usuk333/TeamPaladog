@@ -3,24 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class InGameScrollView : MonoBehaviour, IDragHandler
+public class InGameScrollView : MonoBehaviour, IDragHandler //인게임 뷰 횡스크롤 기능 스크립트
 {
-    [SerializeField] private Transform camera;
-
-    [SerializeField] private float speed;
     private float startPosX;
     private float endPosX;
-
-    // Start is called before the first frame update
-    void Awake()
+    private Transform camera;
+    [SerializeField] private float speed;
+    private void Awake()
     {
-        camera = GameObject.Find("Main Camera").transform;
         startPosX = 0f;
+        camera = GameObject.Find("Main Camera").transform;
         endPosX = GameObject.Find("EndPoint").transform.position.x;
     }
-
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
         if(camera.position.x < startPosX)
         {

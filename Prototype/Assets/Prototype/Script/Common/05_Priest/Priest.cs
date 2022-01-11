@@ -2,20 +2,56 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Priest : MonoBehaviour
+public class Priest : MonoBehaviour //사제 유닛의 기능 스크립트
 {
-    [SerializeField] private EParent eParent;
-    [SerializeField] private List<Unit> units = new List<Unit>();
-    [SerializeField] private List<Enemy> enemies = new List<Enemy>();
-
     private Unit unit;
     private Enemy enemy;
     private Player player;
     private Boss boss;
-
-    public List<Unit> Units { get => units; set => units = value; }
-    public List<Enemy> Enemies { get => enemies; set => enemies = value; }
-
+    [SerializeField] private EParent eParent;
+    [SerializeField] private List<Unit> units = new List<Unit>();
+    [SerializeField] private List<Enemy> enemies = new List<Enemy>();
+    public void UpdateList(Unit unit)
+    {
+        units.Remove(unit);
+    }
+    public void UpdateEnemyList(Enemy enemy)
+    {
+        enemies.Remove(enemy);
+    }
+    public void ClearList()
+    {
+        units.Clear();
+    }
+    public void ClearEnemyList()
+    {
+        enemies.Clear();
+    }
+    public void Heal()
+    {
+        if (eParent == EParent.Unit)
+        {
+            foreach (var item in units)
+            {
+                item.IncreaseHp(unit.AttackPower);
+            }
+            if (player != null)
+            {
+                player.IncreaseHp(unit.AttackPower);
+            }
+        }
+        else
+        {
+            foreach (var item in enemies)
+            {
+                item.IncreaseHp(enemy.AttackPower);
+            }
+            if (boss != null)
+            {
+                boss.IncreaseHp(enemy.AttackPower);
+            }
+        }
+    }
     private void Awake()
     {
         if(eParent == EParent.Unit)
@@ -98,46 +134,5 @@ public class Priest : MonoBehaviour
                 boss = null;
             }
         }        
-    }
-    public void UpdateList(Unit unit)
-    {
-        units.Remove(unit);
-    }
-    public void UpdateEnemyList(Enemy enemy)
-    {
-        enemies.Remove(enemy);
-    }
-    public void ClearList()
-    {
-        units.Clear();
-    }
-    public void ClearEnemyList()
-    {
-        enemies.Clear();
-    }
-    public void Heal()
-    {
-        if(eParent == EParent.Unit)
-        {
-            foreach (var item in units)
-            {
-                item.IncreaseHp(unit.AttackPower);
-            }
-            if(player != null)
-            {
-                player.IncreaseHp(unit.AttackPower);
-            }
-        }
-        else
-        {
-            foreach (var item in enemies)
-            {
-                item.IncreaseHp(enemy.AttackPower);
-            }
-            if(boss != null)
-            {
-                boss.IncreaseHp(enemy.AttackPower);
-            }   
-        }
     }
 }

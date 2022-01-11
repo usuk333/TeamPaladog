@@ -2,36 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyPool : MonoBehaviour
+public class EnemyPool : MonoBehaviour //적 유닛을 풀링으로 관리하는 스크립트
 {
     private static EnemyPool instance;
-    public static EnemyPool Instance { get => instance; }
-
     [SerializeField] private GameObject[] poolingEnemies;
-
     [SerializeField] private List<Enemy> poolingEnemyList = new List<Enemy>();
-    private void Awake()
-    {
-        instance = this;
-        InitializePool(1);
-    }
-    private void InitializePool(int initCount)
-    {
-        for (int i = 0; i < poolingEnemies.Length; i++)
-        {
-            for (int j = 0; j < initCount; j++)
-            {
-                poolingEnemyList.Add(CreateNewEnemy(i));
-            }
-        }
-    }
-    private Enemy CreateNewEnemy(int index)
-    {
-        Enemy enemy = Instantiate(poolingEnemies[index]).GetComponent<Enemy>();
-        enemy.gameObject.SetActive(false);
-        enemy.transform.SetParent(transform);
-        return enemy;
-    }
     public static Enemy GetEnemy(int index)
     {
         if (instance.poolingEnemyList.Find(x => x.Index == index))
@@ -56,5 +31,27 @@ public class EnemyPool : MonoBehaviour
         enemy.gameObject.SetActive(false);
         enemy.transform.SetParent(instance.transform);
         instance.poolingEnemyList.Add(enemy);
+    }
+    private void InitializePool(int initCount)
+    {
+        for (int i = 0; i < poolingEnemies.Length; i++)
+        {
+            for (int j = 0; j < initCount; j++)
+            {
+                poolingEnemyList.Add(CreateNewEnemy(i));
+            }
+        }
+    }
+    private Enemy CreateNewEnemy(int index)
+    {
+        Enemy enemy = Instantiate(poolingEnemies[index]).GetComponent<Enemy>();
+        enemy.gameObject.SetActive(false);
+        enemy.transform.SetParent(transform);
+        return enemy;
+    }
+    private void Awake()
+    {
+        instance = this;
+        InitializePool(1);
     }
 }

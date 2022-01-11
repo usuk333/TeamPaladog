@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boss : MonoBehaviour
+public class Boss : MonoBehaviour //모든 보스 캐릭터들의 능력치 설정, 공격 로직을 호출할 스크립트
 {
     private enum EBossKinds
     {
@@ -20,59 +20,136 @@ public class Boss : MonoBehaviour
     [SerializeField] private EBossKinds eBossKinds;
     [SerializeField] private EBossPattern eBossPattern;
     // 인게임 매니저에다 hp증가, 감소 함수를 만들고 파라메터로 누구 hp를 감소시킬거냐
-    [SerializeField] private float attackSpeed;
-    [SerializeField] private float currentAttackSpeed;
-
     [SerializeField] private float maxHp;
     [SerializeField] private float currentHp;
     [SerializeField] private float attackPower;
+    [SerializeField] private float attackSpeed;
+    [SerializeField] private float currentAttackSpeed;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float currentMoveSpeed;
-    [SerializeField] private float increaseDamage;
+    private float increaseDamage;
     [SerializeField] private float knockBackSpeed;
 
     [SerializeField] private Unit currentUnit;
     [SerializeField] private Player player;
-
     [SerializeField] private float patternHp = 0.8f;
+    private BossHpBar bossHpBar;
 
     public EUnitState BossState { get => bossState; set => bossState = value; }
     public float CurrentHp { get => currentHp; set => currentHp = value; }
     public Unit CurrentUnit { get => currentUnit; set => currentUnit = value; }
     public float MaxHp { get => maxHp; set => maxHp = value; }
     public Player Player { get => player; set => player = value; }
-    public float CurrentAttackSpeed { get => currentAttackSpeed; set => currentAttackSpeed = value; }
-    public float CurrentMoveSpeed { get => currentMoveSpeed; set => currentMoveSpeed = value; }
-    public float AttackSpeed { get => attackSpeed; }
-    public float MoveSpeed { get => moveSpeed; }
 
-    // Start is called before the first frame update
-    void Start()
+    public void DecreaseHp(float damage)
     {
-        StartCoroutine(Co_Battle());
-        StartCoroutine(Co_StateBattle());
-        currentHp = maxHp;
-        currentMoveSpeed = moveSpeed;
-        currentAttackSpeed = attackSpeed;
-    }
-
-    private void FixedUpdate()
-    {
-        if (bossState == EUnitState.NonCombat)
+        currentHp -= damage + increaseDamage;
+        bossHpBar.UpdateBossHpUI();
+        if (currentHp < maxHp * patternHp)
         {
-            transform.position += Vector3.left * currentMoveSpeed * Time.deltaTime;
-        }
-        if(bossState == EUnitState.KnockBack && eBossPattern != EBossPattern.Special)
-        {            
-            transform.position += Vector3.right * knockBackSpeed * Time.deltaTime;
+            StartCoroutine(Co_PushOut());
+            patternHp -= 0.2f; //해당 부분도 보스별로 다르게 설정하기 위해 변수로 빼야할듯
         }
     }
-    // Update is called once per frame
-    void Update()
+    public void IncreaseHp(float value)
     {
-        if (currentHp <= 0)
+        currentHp += value;
+        if (currentHp > maxHp)
         {
-            Destroy(this.gameObject);
+            currentHp = maxHp;
+        }
+        bossHpBar.UpdateBossHpUI();
+    }
+    public void IncreaseDamage(float damage, float value)
+    {
+        increaseDamage = damage;
+        Invoke("Invoke_ResetIncreaseDamage", value);
+    }
+    public void Stun()
+    {
+        bossState = EUnitState.Wait;
+        Invoke("Invoke_WakeUp", 1f);
+    }
+    private void Attack(bool isPlayer)
+    {
+        switch (eBossKinds)
+        {
+            case EBossKinds.GoblinKing:
+                AttackGoblinKing(isPlayer);
+                break;
+            case EBossKinds.MagicTool:
+                AttackBasic(isPlayer);
+                break;
+            case EBossKinds.SlaveTrader:
+                break;
+            case EBossKinds.IntermediateAsmodian:
+                break;
+            default:
+                Debug.Assert(false);
+                break;
+        }
+    }
+    private void AttackBasic(bool isPlayer)
+    {
+        if (!isPlayer)
+        {
+            currentUnit.DecreaseHp(attackPower);
+        }
+        else
+        {
+            player.DecreaseHp(attackPower);
+        }
+    }
+    private void AttackGoblinKing(bool isPlayer)
+    {
+        var goblinKing = GetComponent<GoblinKing>();
+        if(goblinKing.AttackCount > 3)
+        {
+            goblinKing.AttackCount = 0;
+            goblinKing.AttackShockWave(attackPower);
+        }
+        else
+        {
+            AttackBasic(isPlayer);
+            goblinKing.AttackCount++;
+        }
+    }
+    private void Invoke_WakeUp()
+    {
+        bossState = EUnitState.NonCombat;
+    }
+    private void Invoke_ResetIncreaseDamage()
+    {
+        increaseDamage = 0;
+    }
+    private void DoPatternMagicTool()
+    {
+        GetComponent<MagicTool>().ActiveLightning();
+    }
+    private IEnumerator Co_PushOut()
+    {
+        Debug.Log("코루틴 호출");
+        if(eBossPattern == EBossPattern.Normal)
+        {
+            bossState = EUnitState.KnockBack;
+            yield return new WaitForSeconds(2f);
+            bossState = EUnitState.Wait;
+            yield return new WaitForSeconds(1f);
+            bossState = EUnitState.Battle;
+        }
+        else
+        {
+            bossState = EUnitState.KnockBack;
+            transform.position = InGameManager.Instance.BossSpawnPoint.position;
+            switch (eBossKinds)
+            {
+                case EBossKinds.MagicTool:
+                    DoPatternMagicTool();
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
         }
     }
     private IEnumerator Co_StateBattle()
@@ -115,118 +192,35 @@ public class Boss : MonoBehaviour
             yield return null;
         }
     }
-    private void Attack(bool isPlayer)
+    private void Awake()
     {
-        switch (eBossKinds)
+        currentHp = maxHp;
+        currentMoveSpeed = moveSpeed;
+        currentAttackSpeed = attackSpeed;
+        bossHpBar = GetComponentInChildren<BossHpBar>();
+    }
+    private void Start()
+    {
+        StartCoroutine(Co_Battle());
+        StartCoroutine(Co_StateBattle());
+    }
+    private void FixedUpdate()
+    {
+        if (bossState == EUnitState.NonCombat)
         {
-            case EBossKinds.GoblinKing:
-                AttackGoblinKing(isPlayer);
-                break;
-            case EBossKinds.MagicTool:
-                AttackMagicTool(isPlayer);
-                break;
-            case EBossKinds.SlaveTrader:
-                break;
-            case EBossKinds.IntermediateAsmodian:
-                break;
-            default:
-                break;
+            transform.position += Vector3.left * currentMoveSpeed * Time.deltaTime;
+        }
+        if (bossState == EUnitState.KnockBack && eBossPattern != EBossPattern.Special)
+        {
+            transform.position += Vector3.right * knockBackSpeed * Time.deltaTime;
         }
     }
-    private void AttackGoblinKing(bool isPlayer)
+    // Update is called once per frame
+    void Update()
     {
-        if(GetComponent<GoblinKing>().AttackCount > 3)
+        if (currentHp <= 0)
         {
-            GetComponent<GoblinKing>().AttackCount = 0;
-            GetComponent<GoblinKing>().AttackShockWave(attackPower);
+            Destroy(this.gameObject);
         }
-        else
-        {
-            AttackBasic(isPlayer);
-            GetComponent<GoblinKing>().AttackCount++;
-        }
-    }
-    private void AttackMagicTool(bool isPlayer)
-    {       
-        
-    }
-    void AttackBasic(bool isPlayer)
-    {
-        if (!isPlayer)
-        {
-            currentUnit.DecreaseHp(attackPower);
-        }
-        else
-        {
-            player.DecreaseHp(attackPower);
-        }
-    }
-    public void Stun()
-    {
-        bossState = EUnitState.Wait;
-        Invoke("WakeUpForInvoke", 1f);
-    }
-    private void WakeUpForInvoke()
-    {
-        bossState = EUnitState.NonCombat;
-    }
-    public void DecreaseHp(float damage)
-    {
-        currentHp -= damage + increaseDamage;
-        GetComponentInChildren<BossHpBar>().UpdateBossHpUI();
-        if(currentHp < maxHp * patternHp)
-        {
-            StartCoroutine(Co_PushOut());
-            patternHp -= 0.2f; //해당 부분도 보스별로 다르게 설정하기 위해 변수로 빼야할듯
-        }
-    }
-    public void IncreaseHp(float value)
-    {
-        currentHp += value;
-        if (currentHp > maxHp)
-        {
-            currentHp = maxHp;
-        }
-        GetComponentInChildren<BossHpBar>().UpdateBossHpUI();
-    }
-    public void IncreaseDamage(float damage, float value)
-    {
-        increaseDamage = damage;
-        Invoke("ResetIncreaseDamage", value);
-    }
-    private void ResetIncreaseDamage()
-    {
-        increaseDamage = 0;
-    }
-
-    private IEnumerator Co_PushOut()
-    {
-        Debug.Log("코루틴 호출");
-        if(eBossPattern == EBossPattern.Normal)
-        {
-            bossState = EUnitState.KnockBack;
-            yield return new WaitForSeconds(2f);
-            bossState = EUnitState.Wait;
-            yield return new WaitForSeconds(1f);
-            bossState = EUnitState.Battle;
-        }
-        else
-        {
-            bossState = EUnitState.KnockBack;
-            transform.position = InGameManager.Instance.BossSpawnPoint.position;
-            switch (eBossKinds)
-            {
-                case EBossKinds.MagicTool:
-                    DoPatternMagicTool();
-                    break;
-                default:
-                    Debug.Assert(false);
-                    break;
-            }
-        }
-    }
-    private void DoPatternMagicTool()
-    {
-        GetComponent<MaigcTool>().ActiveLightning();
     }
 }

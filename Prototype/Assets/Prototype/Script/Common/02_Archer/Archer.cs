@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Archer : MonoBehaviour
+public class Archer : MonoBehaviour //궁수 유닛의 공격 기능 스크립트
 {
     [SerializeField] private GameObject arrow;
     [SerializeField] private EParent parent;

@@ -12,7 +12,7 @@ public enum EUnitState
     KnockBack,
     Die
 }
-public class Unit : MonoBehaviour
+public class Unit : MonoBehaviour //모든 아군 유닛들의 능력치와 공격 로직을 호출하는 스크립트
 {
     public enum EUnitKinds
     {
@@ -26,6 +26,8 @@ public class Unit : MonoBehaviour
         Druid,
         Special
     }
+    [SerializeField] private EUnitState unitState = EUnitState.NonCombat;
+    [SerializeField] private EUnitKinds unitKinds = EUnitKinds.Warrior;
     [SerializeField] private int index;
     [SerializeField] private float maxHp;
     [SerializeField] private float currentHp;
@@ -33,117 +35,71 @@ public class Unit : MonoBehaviour
     [SerializeField] private float attackSpeed;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float cost;
-
-    [SerializeField] private EUnitState unitState = EUnitState.NonCombat;
-    [SerializeField] private EUnitKinds unitKinds = EUnitKinds.Warrior;
-  
     [SerializeField] private Enemy currentEnemy;
     [SerializeField] private Boss boss;
 
-    public EUnitState UnitState { get => unitState; set => unitState = value; }
+    public EUnitState UnitState { get => unitState; }
     public Enemy CurrentEnemy { get => currentEnemy; set => currentEnemy = value; }
-    public float CurrentHp { get => currentHp; set => currentHp = value; }
-    public float MaxHp { get => maxHp; set => maxHp = value; }
-    public float Cost { get => cost; set => cost = value; }
-    public EUnitKinds UnitKinds { get => unitKinds; set => unitKinds = value; }
+    public float CurrentHp { get => currentHp; }
+    public float MaxHp { get => maxHp; }
+    public float Cost { get => cost; }
+    public EUnitKinds UnitKinds { get => unitKinds; }
     public Boss Boss { get => boss; set => boss = value; }
     public float AttackPower { get => attackPower; set => attackPower = value; }
     public float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
     public int Index { get => index; }
-
-    private void OnEnable()
+    public void DecreaseHp(float damage)
     {
-        StartCoroutine(Co_Battle());
-        StartCoroutine(Co_StateBattle());
-        initializeUnit();
+        currentHp -= damage;
+        GetComponentInChildren<HpBar>().UpdateUnitOrEnemyHpBar();
     }
-    private void FixedUpdate()
+    public void IncreaseHp(float value)
     {
-        if (unitState == EUnitState.NonCombat)
+        currentHp += value;
+        if (currentHp > maxHp)
         {
-            transform.position += Vector3.right * moveSpeed * Time.deltaTime;
+            currentHp = maxHp;
         }
-        else if(unitState == EUnitState.Back)
-        {
-            transform.position += Vector3.left * moveSpeed * Time.deltaTime;
-        }
+        GetComponentInChildren<HpBar>().UpdateUnitOrEnemyHpBar();
     }
-    // Update is called once per frame
-    void Update()
-    {     
-        if (currentHp <= 0)
-        {
-            if (unitKinds == EUnitKinds.Priest)
-            {
-                InGameManager.Instance.UpdatePriestList(GetComponent<Priest>());
-            }
-            InGameManager.Instance.RemoveHealingList(this);
-            //initializeUnit();
-            UnitPool.ReturnUnit(this);
-        }
-        if (unitKinds == EUnitKinds.Assasin && transform.position.x > 8.5f)
-        {
-            transform.position = new Vector3(8.49f, transform.position.y, transform.position.z);
-            unitState = EUnitState.Wait;
-            Invoke("MoveAssasinBack", 1f);
-        }
-        else if(unitKinds == EUnitKinds.Assasin && transform.position.x < -8.5f)
-        {
-            transform.position = new Vector3(-8.4f, transform.position.y, transform.position.z);
-            unitState = EUnitState.Wait;
-            Invoke("MoveAssasinForward", 1f);
-        }
-    }
-    private IEnumerator Co_StateBattle()
+    public void Stun()
     {
-        while (true)
-        {
-            if(unitState != EUnitState.Battle && unitState != EUnitState.Wait)
-            {
-                if (currentEnemy != null || boss != null)
-                {
-                    unitState = EUnitState.Battle;
-                }
-            }
-            if(unitState == EUnitState.Battle)
-            {
-                if (currentEnemy == null && boss == null)
-                {
-                    if (unitKinds == EUnitKinds.Assasin)
-                    {
-                        unitState = EUnitState.Back;
-                    }
-                    else
-                    {
-                        unitState = EUnitState.NonCombat;
-                    }
-                }
-            }
-            yield return null;
-        }
+        unitState = EUnitState.Wait;
+        Invoke("Invoke_WakeUp", 2f);
     }
- 
-    private IEnumerator Co_Battle()
+    private void initializeUnit()
     {
-        while (true)
+        currentHp = maxHp;
+        GetComponentInChildren<HpBar>().ResetHpBar();
+        switch (unitKinds)
         {
-            if (unitState == EUnitState.Battle)
-            {
-                if (currentEnemy && !boss)
-                {
-                    Attack(false);
-                }
-                else if (boss && !currentEnemy)
-                {
-                    Attack(true);              
-                }
-                yield return new WaitForSeconds(attackSpeed);
-            }
-            yield return null;
+            case EUnitKinds.Warrior:
+                break;
+            case EUnitKinds.Archer:
+                break;
+            case EUnitKinds.Wizard:
+                break;
+            case EUnitKinds.Shielder:
+                GetComponent<Shielder>().AttackCount = 0;
+                break;
+            case EUnitKinds.Priest:
+                GetComponent<Priest>().ClearList();
+                break;
+            case EUnitKinds.Assasin:
+                break;
+            case EUnitKinds.Summoner:
+                GetComponent<Summoner>().ResetSummoner();
+                break;
+            case EUnitKinds.Druid:
+                GetComponent<Druid>().ResetTransmog();
+                break;
+            case EUnitKinds.Special:
+                break;
+            default:
+                break;
         }
-        
     }
-    void Attack(bool isBoss)
+    private void Attack(bool isBoss)
     {
         switch (unitKinds)
         {
@@ -192,105 +148,144 @@ public class Unit : MonoBehaviour
     {
         GetComponent<Archer>().AttackArcher();
     }
-    private void AttackWizard()
-    {
-        GetComponent<Wizard>().AttackWizard();
-    }
-    private void MoveAssasinBack()
-    {
-        unitState = EUnitState.Back;
-        GetComponent<Assasin>().UnStealth();
-    }
-    private void MoveAssasinForward()
-    {
-        unitState = EUnitState.NonCombat;
-        GetComponent<Assasin>().Hide();
-    }
     private void AttackShielder(bool isBoss)
     {
         AttackBasic(isBoss);
-        GetComponent<Shielder>().AttackCount++;
-        if(GetComponent<Shielder>().AttackCount >= 3)
+        var shielder = GetComponent<Shielder>();
+        shielder.AttackCount++;
+        if (shielder.AttackCount >= 3)
         {
-            GetComponent<Shielder>().AttackCount = 0;
+            shielder.AttackCount = 0;
             if (!isBoss)
             {
                 currentEnemy.Stun();
             }
         }
     }
+    private void AttackWizard()
+    {
+        GetComponent<Wizard>().AttackWizard();
+    }
     private void Heal()
     {
         GetComponent<Priest>().Heal();
+    }
+    private void Invoke_MoveAssasinBack()
+    {
+        unitState = EUnitState.Back;
+        GetComponent<Assasin>().UnStealth();
+    }
+    private void Invoke_MoveAssasinForward()
+    {
+        unitState = EUnitState.NonCombat;
+        GetComponent<Assasin>().Hide();
     }
     private void Summon()
     {
         GetComponent<Summoner>().Summon();    
     }
-    public void DecreaseHp(float damage)
-    {
-        currentHp -= damage;
-        GetComponentInChildren<HpBar>().UpdateUnitOrEnemyHpBar(true);
-    }
-    public void IncreaseHp(float value)
-    {
-        currentHp += value;
-        if(currentHp > maxHp)
-        {
-            currentHp = maxHp;
-        }
-        GetComponentInChildren<HpBar>().UpdateUnitOrEnemyHpBar(true);
-    }
     private void AttackDruid(bool isBoss)
     {
-        if (GetComponent<Druid>().DruidState == Druid.EDruidState.Wolf)
+        var druid = GetComponent<Druid>();
+        if (druid.DruidState == Druid.EDruidState.Wolf)
         {
-            GetComponent<Druid>().AttackWolf();
+            druid.AttackWolf();
         }
         else
         {
             AttackBasic(isBoss);
         }
     }
-    public void Stun()
-    {
-        unitState = EUnitState.Wait;
-        Invoke("Invoke_WakeUp", 2f);
-    }
     private void Invoke_WakeUp()
     {
         unitState = EUnitState.Battle;
     }
-    private void initializeUnit()
+    private IEnumerator Co_StateBattle()
     {
-        currentHp = maxHp;
-        GetComponentInChildren<HpBar>().ResetHpBar();
-        switch (unitKinds)
+        while (true)
         {
-            case EUnitKinds.Warrior:
-                break;
-            case EUnitKinds.Archer:
-                break;
-            case EUnitKinds.Wizard:
-                break;
-            case EUnitKinds.Shielder:
-                GetComponent<Shielder>().AttackCount = 0;
-                break;
-            case EUnitKinds.Priest:
-                GetComponent<Priest>().ClearList();
-                break;
-            case EUnitKinds.Assasin:
-                break;
-            case EUnitKinds.Summoner:
-                GetComponent<Summoner>().ResetSummoner();
-                break;
-            case EUnitKinds.Druid:
-                GetComponent<Druid>().ResetTransmog();
-                break;
-            case EUnitKinds.Special:
-                break;
-            default:
-                break;
+            if (unitState != EUnitState.Battle && unitState != EUnitState.Wait)
+            {
+                if (currentEnemy != null || boss != null)
+                {
+                    unitState = EUnitState.Battle;
+                }
+            }
+            if (unitState == EUnitState.Battle)
+            {
+                if (currentEnemy == null && boss == null)
+                {
+                    if (unitKinds == EUnitKinds.Assasin)
+                    {
+                        unitState = EUnitState.Back;
+                    }
+                    else
+                    {
+                        unitState = EUnitState.NonCombat;
+                    }
+                }
+            }
+            yield return null;
+        }
+    }
+    private IEnumerator Co_Battle()
+    {
+        while (true)
+        {
+            if (unitState == EUnitState.Battle)
+            {
+                if (currentEnemy && !boss)
+                {
+                    Attack(false);
+                }
+                else if (boss && !currentEnemy)
+                {
+                    Attack(true);
+                }
+                yield return new WaitForSeconds(attackSpeed);
+            }
+            yield return null;
+        }
+    }
+    private void OnEnable()
+    {
+        StartCoroutine(Co_Battle());
+        StartCoroutine(Co_StateBattle());
+        initializeUnit();
+    }
+    private void FixedUpdate()
+    {
+        if (unitState == EUnitState.NonCombat)
+        {
+            transform.position += Vector3.right * moveSpeed * Time.deltaTime;
+        }
+        else if (unitState == EUnitState.Back)
+        {
+            transform.position += Vector3.left * moveSpeed * Time.deltaTime;
+        }
+    }
+    private void Update()
+    {
+        if (currentHp <= 0)
+        {
+            if (unitKinds == EUnitKinds.Priest)
+            {
+                InGameManager.Instance.UpdatePriestList(GetComponent<Priest>());
+            }
+            InGameManager.Instance.RemoveHealingList(this);
+            UnitPool.ReturnUnit(this);
+        }
+        if (unitKinds == EUnitKinds.Assasin && transform.position.x > 8.5f)
+        {
+            transform.position = new Vector3(8.49f, transform.position.y, transform.position.z);
+            unitState = EUnitState.Wait;
+            Invoke("Invoke_MoveAssasinBack", 1f);
+        }
+        else if (unitKinds == EUnitKinds.Assasin && transform.position.x < -8.5f)
+        {
+            transform.position = new Vector3(-8.4f, transform.position.y, transform.position.z);
+            unitState = EUnitState.Wait;
+            Invoke("Invoke_MoveAssasinForward", 1f);
         }
     }
 }

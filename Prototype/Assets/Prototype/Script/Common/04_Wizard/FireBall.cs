@@ -8,21 +8,66 @@ public enum EParent
     Enemy
 }
 
-public class FireBall : MonoBehaviour
+public class FireBall : MonoBehaviour //마법사의 마법 구체의 기능 스크립트
 {
-    
+    private float damage;
+    private SpriteRenderer sprite;
+    private bool isBoom = false;
     [SerializeField] private List<GameObject> collisions = new List<GameObject>();
     [SerializeField] private float speed;
     [SerializeField] private BoxCollider2D explosionRange;
     [SerializeField] private EParent parent;
-    private float damage;
-
-    private SpriteRenderer sprite;
-
-    private bool isBoom = false;
-
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
     public EParent Parent { get => parent; set => parent = value; }
+    private void BoomFireBall()
+    {
+        if (parent == EParent.Unit)
+        {
+            for (int i = 0; i < collisions.Count; i++)
+            {
+                if (i > 2)
+                {
+                    break;
+                }
+                if (collisions[i] != null)
+                {
+                    if (collisions[i].GetComponent<Enemy>())
+                    {
+                        collisions[i].GetComponent<Enemy>().DecreaseHp(i == 0 ? damage : damage * 0.5f);
+                    }
+                    else if (collisions[i].GetComponent<Boss>())
+                    {
+                        collisions[i].GetComponent<Boss>().DecreaseHp(i == 0 ? damage : damage * 0.5f);
+                    }
+                }
+            }
+            ProjectilePool.ReturnFireBall(this);
+            isBoom = false;
+        }
+        else
+        {
+            for (int i = 0; i < collisions.Count; i++)
+            {
+                if (i > 2)
+                {
+                    break;
+                }
+                if (collisions[i] != null)
+                {
+                    if (collisions[i].GetComponent<Unit>())
+                    {
+                        collisions[i].GetComponent<Unit>().DecreaseHp(i == 0 ? damage : damage * 0.5f);
+                    }
+                    else if (collisions[i].GetComponent<Player>())
+                    {
+                        collisions[i].GetComponent<Player>().DecreaseHp(i == 0 ? damage : damage * 0.5f);
+                    }
+                }
+            }
+            isBoom = false;
+            ProjectilePool.ReturnFireBall(this);
+        }
+    }
 
     private void Awake()
     {
@@ -83,56 +128,5 @@ public class FireBall : MonoBehaviour
                 }
             }
         }      
-    }
-    private void BoomFireBall()
-    {
-        if(parent == EParent.Unit)
-        {
-            for (int i = 0; i < collisions.Count; i++)
-            {
-                if (i > 2)
-                {
-                    break;
-                }
-                if (collisions[i] != null)
-                {
-                    if (collisions[i].GetComponent<Enemy>())
-                    {
-                        collisions[i].GetComponent<Enemy>().DecreaseHp(i == 0 ? damage : damage * 0.5f);
-                    }
-                    else if (collisions[i].GetComponent<Boss>())
-                    {
-                        collisions[i].GetComponent<Boss>().DecreaseHp(i == 0 ? damage : damage * 0.5f);
-                    }
-                }
-            }
-            ProjectilePool.ReturnFireBall(this);
-            isBoom = false;
-            //Destroy(this.gameObject); //추후 오브젝트 풀링으로 전환
-        }
-        else
-        {
-            for (int i = 0; i < collisions.Count; i++)
-            {
-                if (i > 2)
-                {
-                    break;
-                }
-                if (collisions[i] != null)
-                {
-                    if (collisions[i].GetComponent<Unit>())
-                    {
-                        collisions[i].GetComponent<Unit>().DecreaseHp(i == 0 ? damage : damage * 0.5f);
-                    }
-                    else if (collisions[i].GetComponent<Player>())
-                    {
-                        collisions[i].GetComponent<Player>().DecreaseHp(i == 0 ? damage : damage * 0.5f);
-                    }//리스트 우선
-                }
-            }
-            isBoom = false;
-            ProjectilePool.ReturnFireBall(this);
-           // Destroy(this.gameObject); //추후 오브젝트 풀링으로 전환
-        }
     }
 }

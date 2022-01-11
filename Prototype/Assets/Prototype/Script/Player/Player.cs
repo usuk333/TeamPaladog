@@ -2,35 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
 {
     private float maxResauce = 25f;
+    private Vector3 moveDirection = Vector3.zero;
+    private bool isStun = false;
+    private bool isLeft = false;
+    private bool isRight = false;
     [SerializeField] private float currentResauce = 0f;
     [SerializeField] private float resauceChargingTime;
-
-    private Vector3 moveDirection = Vector3.zero;
-
     [SerializeField] private float maxHp;
     [SerializeField] private float maxMp;
     [SerializeField] private float currentHp;
     [SerializeField] private float currentMp;
-
-
+    [SerializeField] private float moveSpeed;
     [SerializeField] private PlayerSkill[] playerSkills;
-
-    private bool isLeft = false;
-    private bool isRight = false;
-
     [SerializeField] private Transform startPoint;
-
     [SerializeField] private Enemy currentEnemy;
     [SerializeField] private Boss boss;
-
-    private bool isStun = false;
-
     public Enemy CurrentEnemy { get => currentEnemy; set => currentEnemy = value; }
-
-    [SerializeField] private float moveSpeed;
     public bool IsLeft { get => isLeft; set => isLeft = value; }
     public bool IsRight { get => isRight; set => isRight = value; }
     public float CurrentHp { get => currentHp; set => currentHp = value; }
@@ -40,41 +30,24 @@ public class Player : MonoBehaviour
     public float MaxHp { get => maxHp; set => maxHp = value; }
     public float MaxMp { get => maxMp; set => maxMp = value; }
     public Boss Boss { get => boss; set => boss = value; }
-
-    // Start is called before the first frame update
-    void Start()
+    public void DecreaseHp(float damage)
     {
-        transform.position = startPoint.position;
-        StartCoroutine(Co_UpdateResauceInternal());
-        currentHp = maxHp;
-        currentMp = maxMp;
+        currentHp -= damage;
+        InGameManager.Instance.UpdatePlayerHpMpUI(true);
     }
-
-    // Update is called once per frame
-    void FixedUpdate()
+    public void IncreaseHp(float value)
     {
-        if (isStun)
+        currentHp += value;
+        if (currentHp > maxHp)
         {
-            return;
+            currentHp = maxHp;
         }
-        if (isLeft == true)
-        {
-            MoveLeft();
-        }
-        if (isRight == true && !currentEnemy && !boss)
-        {
-            MoveRight();
-        }
+        InGameManager.Instance.UpdatePlayerHpMpUI(true);
     }
-    public void MoveLeft()
+    public void Stun()
     {
-        moveDirection = Vector3.left;
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;       
-    }
-    public void MoveRight()
-    {
-        moveDirection = Vector3.right;
-        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+        isStun = true;
+        Invoke("Invoke_WakeUp", 2f);
     }
     public void UseSkill(int index)
     {
@@ -99,18 +72,20 @@ public class Player : MonoBehaviour
                 case ESkillKind.Invincibility:
                     break;
                 default:
+                    Debug.Assert(false);
                     break;
             }
         }
-       
     }
-    private IEnumerator Co_UpdateResauceInternal()
+    private void MoveLeft()
     {
-        while (true)
-        {
-            currentResauce += 0.3f * Time.deltaTime;
-            yield return null;
-        }
+        moveDirection = Vector3.left;
+        transform.position += moveDirection * moveSpeed * Time.deltaTime;
+    }
+    private void MoveRight()
+    {
+        moveDirection = Vector3.right;
+        transform.position += moveDirection * moveSpeed * Time.deltaTime;
     }
     private void Skill_Attack(int index)
     {
@@ -136,28 +111,41 @@ public class Player : MonoBehaviour
             Debug.Log("헛스윙");
         }
     }
-    public void DecreaseHp(float damage)
-    {
-        currentHp -= damage;
-        InGameManager.Instance.UpdatePlayerHpMpUI(true);
-    }
-    public void IncreaseHp(float value)
-    {
-        currentHp += value;
-        if(currentHp > maxHp)
-        {
-            currentHp = maxHp;
-        }
-        InGameManager.Instance.UpdatePlayerHpMpUI(true);
-    }
-    public void Stun()
-    {
-        isStun = true;
-        Invoke("Invoke_WakeUp", 2f);
-    }
     private void Invoke_WakeUp()
     {
         isStun = false;
     }
-    
+    private IEnumerator Co_UpdateResauceInternal()
+    {
+        while (true)
+        {
+            currentResauce += 0.3f * Time.deltaTime;
+            yield return null;
+        }
+    }
+    private void Awake()
+    {
+        transform.position = startPoint.position;
+        currentHp = maxHp;
+        currentMp = maxMp;
+    }
+    void Start()
+    {
+        StartCoroutine(Co_UpdateResauceInternal());
+    }
+    void FixedUpdate()
+    {
+        if (isStun)
+        {
+            return;
+        }
+        if (isLeft == true)
+        {
+            MoveLeft();
+        }
+        if (isRight == true && !currentEnemy && !boss)
+        {
+            MoveRight();
+        }
+    }
 }

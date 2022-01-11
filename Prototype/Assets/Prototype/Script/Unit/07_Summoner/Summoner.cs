@@ -2,33 +2,41 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Summoner : MonoBehaviour
+public class Summoner : MonoBehaviour //소환사 유닛의 기능 스크립트
 {
-    [SerializeField] private GameObject[] summons;
     private int summonCount = 0;
     private float attakSpeed;
-
+    private MpBar mpBar;
+    [SerializeField] private GameObject[] summons;
     public float AttakSpeed { get => attakSpeed; set => attakSpeed = value; }
 
-    private void Start()
+    private void Awake()
     {
         attakSpeed = GetComponent<Unit>().AttackSpeed;
+        mpBar = GetComponentInChildren<MpBar>();
     }
     public void Summon()
     {
         int i = ChooseRandom();
-        Instantiate(summons[i], transform.position, Quaternion.identity, transform);
+        Instantiate(summons[i], transform.position, Quaternion.identity, transform); //나중에 로컬 풀링으로 전환하자 
         summonCount++;
         if(summonCount > 1)
         {
-            Destroy(this.gameObject); //추후 오브젝트 풀링으로 전환
+            UnitPool.ReturnUnit(GetComponent<Unit>());
         }
-        GetComponentInChildren<MpBar>().DecreaseMpBar();
+        mpBar.DecreaseMpBar();
+    }
+    public void ResetSummoner()
+    {
+        summonCount = 0;
+        if(mpBar != null)
+        {
+            mpBar.DecreaseMpBar();
+        }
     }
     private int ChooseRandom()
     {
-        int total = 100;
-        float rand = Random.value * total;
+        float rand = Random.value * 100;
         Debug.Log(rand);
         int value = 0;
         if(rand <= 45)
@@ -43,12 +51,6 @@ public class Summoner : MonoBehaviour
         {
             value = 2;
         }
-
         return value;
-    }
-    public void ResetSummoner()
-    {
-        summonCount = 0;
-        GetComponentInChildren<MpBar>().DecreaseMpBar();
     }
 }

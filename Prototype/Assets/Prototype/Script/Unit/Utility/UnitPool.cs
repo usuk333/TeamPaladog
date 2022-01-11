@@ -5,36 +5,11 @@ using UnityEngine;
 public class UnitPool : MonoBehaviour
 {
     private static UnitPool instance;
-    public static UnitPool Instance { get => instance; }
-
     [SerializeField] private GameObject[] poolingUnits;
-
     [SerializeField] private List<Unit> poolingUnitList = new List<Unit>();
-    private void Awake()
-    {
-        instance = this;
-        InitializePool(1);
-    }
-    private void InitializePool(int initCount)
-    {
-        for (int i = 0; i < poolingUnits.Length; i++)
-        {
-            for (int j = 0; j < initCount; j++)
-            {
-                poolingUnitList.Add(CreateNewUnit(i));
-            }
-        }
-    }
-    private Unit CreateNewUnit(int index)
-    {
-        Unit unit = Instantiate(poolingUnits[index]).GetComponent<Unit>();
-        unit.gameObject.SetActive(false);
-        unit.transform.SetParent(transform);
-        return unit;
-    }
     public static Unit GetUnit(int index)
-    {    
-        if(instance.poolingUnitList.Find(x => x.Index == index))
+    {
+        if (instance.poolingUnitList.Find(x => x.Index == index))
         {
             Debug.Log("Ç®¿¡¼­ ²¨³»¿È");
             var unit = instance.poolingUnitList.Find(x => x.Index == index);
@@ -56,5 +31,27 @@ public class UnitPool : MonoBehaviour
         unit.gameObject.SetActive(false);
         unit.transform.SetParent(instance.transform);
         instance.poolingUnitList.Add(unit);
+    }
+    private void InitializePool(int initCount)
+    {
+        for (int i = 0; i < poolingUnits.Length; i++)
+        {
+            for (int j = 0; j < initCount; j++)
+            {
+                poolingUnitList.Add(CreateNewUnit(i));
+            }
+        }
+    }
+    private Unit CreateNewUnit(int index)
+    {
+        Unit unit = Instantiate(poolingUnits[index]).GetComponent<Unit>();
+        unit.gameObject.SetActive(false);
+        unit.transform.SetParent(transform);
+        return unit;
+    }
+    private void Awake()
+    {
+        instance = this;
+        InitializePool(1);
     }
 }

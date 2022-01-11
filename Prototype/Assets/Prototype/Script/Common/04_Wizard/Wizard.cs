@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Wizard : MonoBehaviour
+public class Wizard : MonoBehaviour //마법사 유닛의 기능 스크립트
 {
     [SerializeField] private GameObject fireBall;
     [SerializeField] private EParent parent;
-
     public void AttackWizard()
     {
         var obj = ProjectilePool.GetFireBall();
@@ -18,7 +17,6 @@ public class Wizard : MonoBehaviour
         {
             SetFireBall(obj, EParent.Enemy);
         }
-        //Instantiate(fireBall, transform.position, Quaternion.identity, transform); //추후 오브젝트 풀링으로 전환
     }
     private void SetFireBall(FireBall obj, EParent eParent)
     {
