@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_android_client_id,@string/default_web_client_id">
+  <string name="gcm_defaultSenderId" translatable="false">981230126114</string>
+  <string name="google_storage_bucket" translatable="false">acrobatgames-f9ba6.appspot.com</string>
+  <string name="project_id" translatable="false">acrobatgames-f9ba6</string>
+  <string name="google_api_key" translatable="false">AIzaSyDFq5C93Ad9-QTpdaWx5y6_zVf9gHqC5vk</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDFq5C93Ad9-QTpdaWx5y6_zVf9gHqC5vk</string>
+  <string name="google_app_id" translatable="false">1:981230126114:android:add73da4f2e1bc4120767b</string>
+  <string name="default_android_client_id" translatable="false">981230126114-0p1vkchuf37vuqeaa8kf1d0tafa5pkgq.apps.googleusercontent.com</string>
+  <string name="default_web_client_id" translatable="false">981230126114-batkdhn9ra3i9hld0uuefacr4qd6vr6k.apps.googleusercontent.com</string>
+</resources>
