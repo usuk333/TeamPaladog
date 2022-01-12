@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Firebase.Auth;
+using Firebase.Extensions;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using UnityEngine.SceneManagement;
@@ -17,13 +18,14 @@ public class GameCenterManager : MonoBehaviour
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
             .RequestServerAuthCode(false /* Don't force refresh */)
             .RequestIdToken()
+            .RequestEmail()
             .EnableSavedGames()
             .Build();
 
         PlayGamesPlatform.InitializeInstance(config);
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
-        auth = FirebaseAuth.DefaultInstance;
+        //auth = FirebaseAuth.DefaultInstance;
     }
 
     public void GoogleLogin()
@@ -53,6 +55,38 @@ public class GameCenterManager : MonoBehaviour
         }
     }
 
+    public void GuestLogin()
+    {
+        auth = FirebaseAuth.DefaultInstance;
+
+        auth.SignInAnonymouslyAsync().ContinueWith(task => {
+            if (task.IsCanceled)
+            {
+                Debug.LogError("SignInAnonymouslyAsync was canceled.");
+                return;
+            }
+            if (task.IsFaulted)
+            {
+                Debug.LogError("SignInAnonymouslyAsync encountered an error: " + task.Exception);
+                return;
+            }
+
+            Firebase.Auth.FirebaseUser newUser = task.Result;
+            Debug.LogFormat("User signed in successfully: {0} ({1})",
+                newUser.DisplayName, newUser.UserId);
+        });
+    }
+
+    public void GuestLogout()
+    {
+        if(auth == null)
+        {
+            Debug.Log("auth ¹ÌÂüÁ¶");
+        }
+        else
+            auth.SignOut();
+    }
+
     public void GoBattle()
     {
         SceneManager.LoadScene("SampleScene");
@@ -65,9 +99,9 @@ public class GameCenterManager : MonoBehaviour
         string idToken = ((PlayGamesLocalUser)Social.localUser).GetIdToken();
         string accessToken = null;
 
-
+        auth = FirebaseAuth.DefaultInstance;
         Credential credential = GoogleAuthProvider.GetCredential(idToken, accessToken);
-        auth.SignInWithCredentialAsync(credential).ContinueWith(task => {
+        auth.SignInWithCredentialAsync(credential).ContinueWith(task => { //ContinueWithOnMainThread
             if (task.IsCanceled)
             {
                 Debug.LogError("SignInWithCredentialAsync was canceled.");
