@@ -3744,6 +3744,10 @@ MonoBehaviour:
   bossObjects:
   - {fileID: 1142180495872592855, guid: 0c7fda2561dfce64db9efbdff269b0a8, type: 3}
   - {fileID: 1142180495872592855, guid: e08cb0d76a4c4c34bab09e4df98ab64a, type: 3}
+  - {fileID: 1142180495872592855, guid: ea8d1f7301233c74a927a972c5280c2a, type: 3}
+  - {fileID: 1142180495872592855, guid: 91ac3a0fa144deb4094aeb2a7040d390, type: 3}
+  - {fileID: 1142180495872592855, guid: 1b6013050a1212b4fb7b3ec84a9af682, type: 3}
+  - {fileID: 1142180495872592855, guid: 5350fe69200def44f9f3beaa4a7f7daf, type: 3}
   bossSpawnPoint: {fileID: 15165164}
 --- !u!114 &1188181718
 MonoBehaviour:
@@ -4385,7 +4389,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
+          m_IntArgument: 5
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

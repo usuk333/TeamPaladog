@@ -53,6 +53,10 @@ public class Unit : MonoBehaviour //모든 아군 유닛들의 능력치와 공격 로직을 호출
         currentHp -= damage;
         GetComponentInChildren<HpBar>().UpdateUnitOrEnemyHpBar();
     }
+    public void DecreaseHpDot(int dotCount, float damage, float second)
+    {
+        StartCoroutine(Co_DotDamage(dotCount, damage, second));
+    }
     public void IncreaseHp(float value)
     {
         currentHp += value;
@@ -247,6 +251,15 @@ public class Unit : MonoBehaviour //모든 아군 유닛들의 능력치와 공격 로직을 호출
             yield return null;
         }
     }
+    private IEnumerator Co_DotDamage(int dotCount, float damage, float second)
+    {
+        while(dotCount >= 0)
+        {
+            DecreaseHp(damage);
+            yield return new WaitForSeconds(second);
+            dotCount--;
+        }
+    }
     private void OnEnable()
     {
         StartCoroutine(Co_Battle());
@@ -273,6 +286,7 @@ public class Unit : MonoBehaviour //모든 아군 유닛들의 능력치와 공격 로직을 호출
                 InGameManager.Instance.UpdatePriestList(GetComponent<Priest>());
             }
             InGameManager.Instance.RemoveHealingList(this);
+            InGameManager.Instance.UnitList.Remove(this.gameObject);
             UnitPool.ReturnUnit(this);
         }
         if (unitKinds == EUnitKinds.Assasin && transform.position.x > 8.5f)

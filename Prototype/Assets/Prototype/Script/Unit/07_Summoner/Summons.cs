@@ -21,7 +21,7 @@ public class Summons : MonoBehaviour //소환사의 소환수 기능 스크립트
     [SerializeField] private List<GameObject> collisions = new List<GameObject>();
     [SerializeField] private BoxCollider2D effectRange;
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
-    private void IncreaseDamage()
+    private void Invoke_IncreaseDamage()
     {
         foreach (var enemy in collisions)
         {
@@ -42,30 +42,21 @@ public class Summons : MonoBehaviour //소환사의 소환수 기능 스크립트
             Destroy(this.gameObject); //추후 오브젝트 풀링으로 전환
         }
     }
-    private IEnumerator Co_AttackDot()
+    private void Invoke_AttackDot()
     {
-        yield return new WaitForSeconds(0.5f);
-        Debug.Log("폭발");
-        GetComponent<BoxCollider2D>().enabled = false;
-        sprite.enabled = false;
-        float count = 0;
-        while (count++ < duration)
+        foreach (var enemy in collisions)
         {
-            foreach (var enemy in collisions)
+            if (enemy != null)
             {
-                if (enemy != null)
+                if (enemy.GetComponent<Enemy>())
                 {
-                    if (enemy.GetComponent<Enemy>())
-                    {
-                        enemy.GetComponent<Enemy>().DecreaseHp(damage / 10);
-                    }
-                    else if (enemy.GetComponent<Boss>())
-                    {
-                        enemy.GetComponent<Boss>().DecreaseHp(damage / 10);
-                    }
+                    enemy.GetComponent<Enemy>().DecreaseHpDot(3,damage / 10,1f);
+                }
+                else if (enemy.GetComponent<Boss>())
+                {
+                    enemy.GetComponent<Boss>().DecreaseHpDot(3, damage / 10, 1f);
                 }
             }
-            yield return new WaitForSeconds(value);
         }
         Destroy(this.gameObject);
     }
@@ -96,14 +87,14 @@ public class Summons : MonoBehaviour //소환사의 소환수 기능 스크립트
                 switch (summonsKind)
                 {
                     case ESummonsKind.Dot:
-                        StartCoroutine(Co_AttackDot());
+                        Invoke("Invoke_AttackDot",0.5f);
                         break;
                     case ESummonsKind.Increase:
-                        Invoke("IncreaseDamage", 0.5f);
+                        Invoke("Invoke_IncreaseDamage", 0.5f);
                         break;
                     case ESummonsKind.Both:
-                        StartCoroutine(Co_AttackDot());
-                        Invoke("IncreaseDamage", 0.5f);
+                        Invoke("Invoke_AttackDot", 0.5f);
+                        Invoke("Invoke_IncreaseDamage", 0.5f);
                         break;
                     default:
                         break;

@@ -41,6 +41,10 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
         currentHp -= damage + increaseDamage;
         hpBar.UpdateUnitOrEnemyHpBar();
     }
+    public void DecreaseHpDot(int dotCount, float damage, float second)
+    {
+        StartCoroutine(Co_DotDamage(dotCount, damage, second));
+    }
     public void IncreaseHp(float value)
     {
         currentHp += value;
@@ -215,6 +219,15 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
                 yield return new WaitForSeconds(attackSpeed);
             }
             yield return null;
+        }
+    }
+    private IEnumerator Co_DotDamage(int dotCount, float damage, float second)
+    {
+        while (dotCount >= 0)
+        {
+            DecreaseHp(damage);
+            yield return new WaitForSeconds(second);
+            dotCount--;
         }
     }
     private void Awake()

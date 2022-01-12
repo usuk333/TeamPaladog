@@ -99,6 +99,7 @@ GameObject:
   - component: {fileID: 1142180495872592853}
   - component: {fileID: 1142180495872592854}
   - component: {fileID: 4758097235038666499}
+  - component: {fileID: 283942571977478448}
   - component: {fileID: 5452159755275475939}
   m_Layer: 0
   m_Name: 03_Boss_IntermediateAsmodian
@@ -165,7 +166,7 @@ SpriteRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_Color: {r: 0.34860566, g: 0, b: 0.6509434, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -192,7 +193,7 @@ MonoBehaviour:
   eBossPattern: 0
   maxHp: 1000
   currentHp: 0
-  attackPower: 0
+  attackPower: 3
   attackSpeed: 1
   currentAttackSpeed: 0
   moveSpeed: 1
@@ -201,6 +202,20 @@ MonoBehaviour:
   currentUnit: {fileID: 0}
   player: {fileID: 0}
   patternHp: 0.8
+--- !u!114 &283942571977478448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1142180495872592855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 113dac902b291ea45b3c7fcd358524df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackCount: 0
+  archers: []
 --- !u!61 &5452159755275475939
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -305,7 +320,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: BOSS
+  m_Text: "\uC911\uAE09 \uB9C8\uC871"
 --- !u!1 &1142180497596157139
 GameObject:
   m_ObjectHideFlags: 0

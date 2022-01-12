@@ -23,6 +23,7 @@ public class Summoner : MonoBehaviour //소환사 유닛의 기능 스크립트
         if(summonCount > 1)
         {
             UnitPool.ReturnUnit(GetComponent<Unit>());
+            InGameManager.Instance.UnitList.Remove(this.gameObject);
         }
         mpBar.DecreaseMpBar();
     }

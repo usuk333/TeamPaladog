@@ -35,6 +35,10 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
         currentHp -= damage;
         InGameManager.Instance.UpdatePlayerHpMpUI(true);
     }
+    public void DecreaseHpDot(int dotCount, float damage, float second)
+    {
+        StartCoroutine(Co_DotDamage(dotCount, damage, second));
+    }
     public void IncreaseHp(float value)
     {
         currentHp += value;
@@ -121,6 +125,15 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
         {
             currentResauce += 0.3f * Time.deltaTime;
             yield return null;
+        }
+    }
+    private IEnumerator Co_DotDamage(int dotCount, float damage, float second)
+    {
+        while (dotCount >= 0)
+        {
+            DecreaseHp(damage);
+            yield return new WaitForSeconds(second);
+            dotCount--;
         }
     }
     private void Awake()

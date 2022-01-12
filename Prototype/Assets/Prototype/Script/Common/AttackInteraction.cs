@@ -19,17 +19,6 @@ public class AttackInteraction : MonoBehaviour //등장하는 모든 캐릭터들의 공격 �
     [SerializeField] private ECharacterValue unitValue;
     private void UpdateUnitCurrentTarget(GameObject target)
     {
-        if (unit.UnitKinds == Unit.EUnitKinds.Druid)
-        {
-            if (target.tag == "ENEMY" || target.tag == "BOSS")
-            {
-                if (!unit.GetComponent<Druid>().Collisions.Contains(target.gameObject))
-                {
-                    unit.GetComponent<Druid>().Collisions.Add(target.gameObject);
-                    Debug.Log("추가");
-                }
-            }
-        }
         if (target.tag == "ENEMY" && target.GetComponent<Shielder>())
         {
             if (unit.CurrentEnemy != null && !unit.CurrentEnemy.GetComponent<Shielder>())
@@ -118,11 +107,17 @@ public class AttackInteraction : MonoBehaviour //등장하는 모든 캐릭터들의 공격 �
         }
         if (collision.tag == "UNIT")
         {
-            boss.CurrentUnit = collision.GetComponent<Unit>();
+            if(boss.CurrentUnit == null)
+            {
+                boss.CurrentUnit = collision.GetComponent<Unit>();
+            }
         }
         else if (collision.tag == "PLAYER")
         {
-            boss.Player = collision.GetComponent<Player>();
+            if (boss.Player == null)
+            {
+                boss.Player = collision.GetComponent<Player>();
+            }
         }
     }
     private void Awake()

@@ -9,7 +9,9 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
         GoblinKing,
         MagicTool,
         SlaveTrader,
-        IntermediateAsmodian
+        IntermediateAsmodian,
+        Avarice,
+        Rage
     }
     private enum EBossPattern
     {
@@ -51,6 +53,10 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
             patternHp -= 0.2f; //ÇØ´ç ºÎºÐµµ º¸½ºº°·Î ´Ù¸£°Ô ¼³Á¤ÇÏ±â À§ÇØ º¯¼ö·Î »©¾ßÇÒµí
         }
     }
+    public void DecreaseHpDot(int dotCount, float damage, float second)
+    {
+        StartCoroutine(Co_DotDamage(dotCount, damage, second));
+    }
     public void IncreaseHp(float value)
     {
         currentHp += value;
@@ -81,8 +87,16 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
                 AttackBasic(isPlayer);
                 break;
             case EBossKinds.SlaveTrader:
+                AttackSlaveTrader(isPlayer);
                 break;
             case EBossKinds.IntermediateAsmodian:
+                AttackInterMediateAsmodian(isPlayer);
+                break;
+            case EBossKinds.Avarice:
+                AttackBasic(isPlayer);
+                break;
+            case EBossKinds.Rage:
+                AttackBasic(isPlayer);
                 break;
             default:
                 Debug.Assert(false);
@@ -105,13 +119,42 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
         var goblinKing = GetComponent<GoblinKing>();
         if(goblinKing.AttackCount > 3)
         {
-            goblinKing.AttackCount = 0;
             goblinKing.AttackShockWave(attackPower);
+            goblinKing.AttackCount = 0;
         }
         else
         {
             AttackBasic(isPlayer);
             goblinKing.AttackCount++;
+        }
+    }
+    private void AttackInterMediateAsmodian(bool isPlayer)
+    {
+        var interMediateAsmodian = GetComponent<InterMediateAsmodian>();
+        if(interMediateAsmodian.AttackCount > 3)
+        {
+            interMediateAsmodian.AttackAllArcher();
+            AttackBasic(isPlayer);
+            interMediateAsmodian.AttackCount = 0;
+        }
+        else
+        {
+            AttackBasic(isPlayer);
+            interMediateAsmodian.AttackCount++;
+        }
+    }
+    private void AttackSlaveTrader(bool isPlayer)
+    {
+        var slaveTrader = GetComponent<SlaveTrader>();
+        if(slaveTrader.AttackCount > 3)
+        {
+            slaveTrader.Attack(attackPower);
+            slaveTrader.AttackCount = 0;
+        }
+        else
+        {
+            AttackBasic(isPlayer);
+            slaveTrader.AttackCount++;
         }
     }
     private void Invoke_WakeUp()
@@ -125,6 +168,14 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
     private void DoPatternMagicTool()
     {
         GetComponent<MagicTool>().ActiveLightning();
+    }
+    private void DoPatternAvarice()
+    {
+        GetComponent<Avarice>().ActivePoison();
+    }
+    private void DoPatternRage()
+    {
+        GetComponent<Rage>().AttackAllUnit();
     }
     private IEnumerator Co_PushOut()
     {
@@ -145,6 +196,12 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
             {
                 case EBossKinds.MagicTool:
                     DoPatternMagicTool();
+                    break;
+                case EBossKinds.Avarice:
+                    DoPatternAvarice();
+                    break;
+                case EBossKinds.Rage:
+                    DoPatternRage();
                     break;
                 default:
                     Debug.Assert(false);
@@ -190,6 +247,15 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
                 yield return new WaitForSeconds(currentAttackSpeed);
             }
             yield return null;
+        }
+    }
+    private IEnumerator Co_DotDamage(int dotCount, float damage, float second)
+    {
+        while (dotCount >= 0)
+        {
+            DecreaseHp(damage);
+            yield return new WaitForSeconds(second);
+            dotCount--;
         }
     }
     private void Awake()

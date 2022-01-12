@@ -111,11 +111,11 @@ public class InGameManager : MonoBehaviour //인게임 플레이어 데이터와 전체적인 �
     {       
         if (isUnit == true)
         {
-            unitList.Insert(unitListIndex++, obj);
+            unitList.Add(obj);
         }
         else
         {
-            enemyList.Insert(enemyListIndex++, obj);
+            enemyList.Add(obj);
         }
     }
     private void SetSortingLayerOrder(GameObject obj,float rand)
