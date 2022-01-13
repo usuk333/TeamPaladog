@@ -17,7 +17,6 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
     [SerializeField] private float currentMp;
     [SerializeField] private float moveSpeed;
     [SerializeField] private PlayerSkill[] playerSkills;
-    [SerializeField] private Transform startPoint;
     [SerializeField] private Enemy currentEnemy;
     [SerializeField] private Boss boss;
     public Enemy CurrentEnemy { get => currentEnemy; set => currentEnemy = value; }
@@ -83,11 +82,13 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
     }
     private void MoveLeft()
     {
+        transform.rotation = Quaternion.Euler(0, 180, 0);
         moveDirection = Vector3.left;
         transform.position += moveDirection * moveSpeed * Time.deltaTime;
     }
     private void MoveRight()
     {
+        transform.rotation = Quaternion.Euler(0, 0, 0);
         moveDirection = Vector3.right;
         transform.position += moveDirection * moveSpeed * Time.deltaTime;
     }
@@ -138,7 +139,6 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
     }
     private void Awake()
     {
-        transform.position = startPoint.position;
         currentHp = maxHp;
         currentMp = maxMp;
     }

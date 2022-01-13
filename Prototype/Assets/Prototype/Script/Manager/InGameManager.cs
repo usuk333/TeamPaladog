@@ -30,10 +30,13 @@ public class InGameManager : MonoBehaviour //인게임 플레이어 데이터와 전체적인 �
     [SerializeField] private Image playerMp;
     [SerializeField] private GameObject[] bossObjects;
     [SerializeField] private Transform bossSpawnPoint;
+    [SerializeField] private Transform playerSpawnPoint;
     public List<GameObject> UnitList { get => unitList; }
     public List<GameObject> EnemyList { get => enemyList; }
     public static InGameManager Instance { get => instance; }
     public Transform BossSpawnPoint { get => bossSpawnPoint; }
+    public Transform PlayerSpawnPoint { get => playerSpawnPoint; }
+
     public void InstantiateUnit(int i)// 유닛 배열 i번째의 유닛 생성 //추후 오브젝트 풀링으로 전환
     {
         if (player.CurrentResauce < unitArray[i].GetComponent<Unit>().Cost) return;
@@ -160,6 +163,7 @@ public class InGameManager : MonoBehaviour //인게임 플레이어 데이터와 전체적인 �
         timer = GameObject.Find("Timer").transform.GetChild(0).GetComponent<Text>();
         playerHp = GameObject.Find("PlayerHP").transform.GetChild(0).GetComponent<Image>();
         playerMp = GameObject.Find("PlayerMP").transform.GetChild(0).GetComponent<Image>();
+        player.transform.position = playerSpawnPoint.position;
     }
     private void Start()
     {

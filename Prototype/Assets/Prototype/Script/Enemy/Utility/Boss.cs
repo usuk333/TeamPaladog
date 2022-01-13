@@ -11,7 +11,12 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
         SlaveTrader,
         IntermediateAsmodian,
         Avarice,
-        Rage
+        Rage,
+        Lust,
+        Sloth,
+        Gluttony,
+        Jealousy,
+        Pride
     }
     private enum EBossPattern
     {
@@ -31,10 +36,10 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
     [SerializeField] private float currentMoveSpeed;
     private float increaseDamage;
     [SerializeField] private float knockBackSpeed;
-
     [SerializeField] private Unit currentUnit;
     [SerializeField] private Player player;
     [SerializeField] private float patternHp = 0.8f;
+    [SerializeField] private float gluttonyHealPattern = 0.6f;
     private BossHpBar bossHpBar;
 
     public EUnitState BossState { get => bossState; set => bossState = value; }
@@ -47,10 +52,21 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
     {
         currentHp -= damage + increaseDamage;
         bossHpBar.UpdateBossHpUI();
-        if (currentHp < maxHp * patternHp)
+        if(bossState != EUnitState.KnockBack)
         {
-            StartCoroutine(Co_PushOut());
-            patternHp -= 0.2f; //ÇØ´ç ºÎºÐµµ º¸½ºº°·Î ´Ù¸£°Ô ¼³Á¤ÇÏ±â À§ÇØ º¯¼ö·Î »©¾ßÇÒµí
+            if (currentHp < maxHp * patternHp)
+            {
+                StartCoroutine(Co_PushOut());
+                patternHp -= 0.2f; //ÇØ´ç ºÎºÐµµ º¸½ºº°·Î ´Ù¸£°Ô ¼³Á¤ÇÏ±â À§ÇØ º¯¼ö·Î »©¾ßÇÒµí
+            }
+        }
+        if(eBossKinds == EBossKinds.Gluttony)
+        {
+            if(currentHp < maxHp * gluttonyHealPattern)
+            {
+                AttackGluttony();
+                gluttonyHealPattern -= 0.2f;
+            }
         }
     }
     public void DecreaseHpDot(int dotCount, float damage, float second)
@@ -96,6 +112,14 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
                 AttackBasic(isPlayer);
                 break;
             case EBossKinds.Rage:
+                AttackBasic(isPlayer);
+                break;
+            case EBossKinds.Lust:
+                break;
+            case EBossKinds.Sloth:
+                AttackSloth(isPlayer);
+                break;
+            case EBossKinds.Gluttony:
                 AttackBasic(isPlayer);
                 break;
             default:
@@ -157,6 +181,30 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
             slaveTrader.AttackCount++;
         }
     }
+    private void AttackSloth(bool isPlayer)
+    {
+        var sloth = GetComponent<Sloth>();
+        if(sloth.AttackCount > 3)
+        {
+            float attack = attackPower;
+            attackPower = attackPower * 1.8f;
+            AttackBasic(isPlayer);
+            attackPower = attack;
+            sloth.AttackCount = 0;
+        }
+        else
+        {
+            AttackBasic(isPlayer);
+            sloth.AttackCount++;
+        }
+    }
+    private void AttackGluttony() //½ÄÅ½ ±º´ÜÀå¸¸ È£ÃâÇÒ ½Ã½ºÅÛÀû ÇÔ¼ö
+    {
+        int index = Random.Range(0, InGameManager.Instance.UnitList.Count);
+        float damage = InGameManager.Instance.UnitList[index].GetComponent<Unit>().CurrentHp;
+        InGameManager.Instance.UnitList[index].GetComponent<Unit>().DecreaseHp(damage);
+        IncreaseHp(damage);
+    }
     private void Invoke_WakeUp()
     {
         bossState = EUnitState.NonCombat;
@@ -176,6 +224,14 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
     private void DoPatternRage()
     {
         GetComponent<Rage>().AttackAllUnit();
+    }
+    private void DoPatternSloth()
+    {
+        GetComponent<Sloth>().ActiveThorn();
+    }
+    private void DoPatternGluttony()
+    {
+        GetComponent<Gluttony>().ActiveEater();
     }
     private IEnumerator Co_PushOut()
     {
@@ -202,6 +258,14 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
                     break;
                 case EBossKinds.Rage:
                     DoPatternRage();
+                    break;
+                case EBossKinds.Lust:
+                    break;
+                case EBossKinds.Sloth:
+                    DoPatternSloth();
+                    break;
+                case EBossKinds.Gluttony:
+                    DoPatternGluttony();
                     break;
                 default:
                     Debug.Assert(false);

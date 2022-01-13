@@ -61,7 +61,6 @@ public class MagicTool : MonoBehaviour //보스캐릭터 강력한 마법도구의 공격 기능 
     private IEnumerator Co_ActiveLightning()
     {
         yield return new WaitForSeconds(1f);
-        boss.BossState = EUnitState.Wait;
         for (int i = 0; i < lightnings.Length; i++)
         {
             lightnings[i].SetActive(true);

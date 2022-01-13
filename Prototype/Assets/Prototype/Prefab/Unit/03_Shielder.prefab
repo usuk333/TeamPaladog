@@ -290,6 +290,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f42902cb25ded242b4c34f612d8f15b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitState: 1
+  unitKinds: 3
   index: 2
   maxHp: 10
   currentHp: 0
@@ -297,8 +299,6 @@ MonoBehaviour:
   attackSpeed: 2
   moveSpeed: 1.2
   cost: 0
-  unitState: 1
-  unitKinds: 3
   currentEnemy: {fileID: 0}
   boss: {fileID: 0}
 --- !u!114 &-8963017068315351550
@@ -359,7 +359,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &3174316805534980750
 GameObject:
   m_ObjectHideFlags: 0
