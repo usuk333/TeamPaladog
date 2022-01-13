@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Firebase.Auth;
-using Firebase.Extensions;
+using Firebase;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using UnityEngine.SceneManagement;
+using Firebase.Database;
 
 
 public class GameCenterManager : MonoBehaviour
 {
     public string FireBaseId = string.Empty;
-    FirebaseAuth auth;
+    FirebaseAuth auth;      //파이어베이스 인증 관리 객체
 
+    DatabaseReference reference;        //데이터를 쓰기위한 reference
+
+    void Awake()
+    {
+        
+    }
     void Start()
     {
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
@@ -71,7 +78,9 @@ public class GameCenterManager : MonoBehaviour
                 return;
             }
 
-            Firebase.Auth.FirebaseUser newUser = task.Result;
+            FirebaseUser newUser = task.Result;
+            writeNewUser(newUser.UserId);
+
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
         });
@@ -90,6 +99,30 @@ public class GameCenterManager : MonoBehaviour
     public void GoBattle()
     {
         SceneManager.LoadScene("SampleScene");
+    }
+
+    public class User
+    {
+        public string user_name;        //디폴트네임
+        public bool Area1;       //진척도
+        public bool Area2;
+        public bool Area3;
+        public bool Area4;
+        public int A1Stage1_achievement;
+        public int A1Stage2_achievement;
+        public int A1Stage3_achievement;
+
+        public User()
+        {
+            this.user_name = "defalut";
+            this.Area1 = false;
+            this.Area2 = false;
+            this.Area3 = false;
+            this.Area4 = false;
+            this.A1Stage1_achievement = 0;
+            this.A1Stage1_achievement = 0;
+            this.A1Stage1_achievement = 0;
+        }
     }
 
     IEnumerator TryFirebaseLogin()
@@ -114,8 +147,23 @@ public class GameCenterManager : MonoBehaviour
             }
 
             FirebaseUser newUser = task.Result;
+            writeNewUser(newUser.UserId);
+            Debug.Log(newUser.UserId);
+
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
         });
+    }
+
+    void writeNewUser(string userid) // 가입한 회원 고유 번호에 대한 사용자 기본값 설정
+    {
+        FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
+        reference = FirebaseDatabase.DefaultInstance.RootReference; //데이터베이스 객체 초기화
+
+        Debug.Log("데이터베이스 객체 초기화");
+
+        User user = new User();
+        string json = JsonUtility.ToJson(user); // 생성한 사용자에 대한 정보 json 형식으로 저장
+        reference.Child(userid).SetRawJsonValueAsync(json); // 데이터베이스에 json 파일 업로드
     }
 }

@@ -60,6 +60,7 @@
     <Compile Include="Assets\GooglePlayGames\BasicApi\Events\Event.cs" />
     <Compile Include="Assets\Prototype\Script\Unit\07_Summoner\Summoner.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SavedGame\ISavedGameMetadata.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\03_InterMediateAsmodian\InterMediateAsmodian.cs" />
     <Compile Include="Assets\GPGSset\GameCenterManager.cs" />
     <Compile Include="Assets\Prototype\Script\Common\AttackInteraction.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\02_MagicTool\MagicTool.cs" />
@@ -69,12 +70,15 @@
     <Compile Include="Assets\Prototype\Script\Unit\07_Summoner\Summons.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SignInStatus.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Achievement.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\04_SlaveTrader\SlaveTrader.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander_Avarice\PoisonAttack.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidNearbyConnectionClient.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Video\IVideoClient.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesScore.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidSavedGameClient.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\PlayGamesClientConfiguration.cs" />
     <Compile Include="Assets\Prototype\Script\Common\BossHpBar.cs" />
+    <Compile Include="Assets\Prototype\Script\Unit\08_Druid\AttackWolf.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\Utility\Boss.cs" />
     <Compile Include="Assets\Prototype\Script\Common\03_Shielder\Shielder.cs" />
     <Compile Include="Assets\GooglePlayGames\OurUtils\Logger.cs" />
@@ -98,6 +102,7 @@
     <Compile Include="Assets\Prototype\Script\Common\06_Assasin\Assasin.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidClient.cs" />
     <Compile Include="Assets\Prototype\Script\Unit\08_Druid\Druid.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\04_SlaveTrader\SplashAttack.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModulePhysics2D.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesUserProfile.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\PlayerProfile.cs" />
@@ -118,6 +123,7 @@
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleAudio.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidJavaConverter.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidTaskUtils.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander_Rage\Rage.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\DummyNearbyConnectionClient.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\PlayGamesClientFactory.cs" />
     <Compile Include="Assets\GooglePlayGames\GameInfo.cs" />
@@ -150,6 +156,7 @@
     <Compile Include="Assets\GooglePlayGames\OurUtils\PlayGamesHelperObject.cs" />
     <Compile Include="Assets\Prototype\Script\Unit\Utility\MpBar.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\02_MagicTool\LightningAttack.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander_Avarice\Avarice.cs" />
     <Compile Include="Assets\Prototype\Script\Common\02_Archer\Arrow.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SignInHelper.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidTokenClient.cs" />
@@ -161,6 +168,7 @@
     <None Include="Assets\Spine\version.txt" />
     <None Include="Assets\Parse\Plugins\Unity.Compat.dll" />
     <None Include="Assets\Firebase\Plugins\Firebase.Analytics.dll" />
+    <None Include="Assets\Firebase\Plugins\x86_64\FirebaseCppDatabase.dll" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Analytics.dll" />
     <None Include="Assets\Firebase\Plugins\Firebase.App.dll" />
     <None Include="Assets\Parse\Plugins\Unity.Tasks.dll" />
@@ -170,9 +178,11 @@
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-app-unity\maven-metadata.xml" />
     <None Include="Assets\Firebase\Plugins\x86_64\FirebaseCppApp-8_7_0.dll" />
     <None Include="Assets\Firebase\Plugins\Firebase.Auth.dll" />
+    <None Include="Assets\Firebase\Plugins\Firebase.Database.dll" />
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-analytics-unity\maven-metadata.xml" />
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-auth-unity\maven-metadata.xml" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Auth.dll" />
+    <None Include="Assets\Firebase\Plugins\iOS\Firebase.Database.dll" />
     <None Include="Assets\DOTween\DOTween.XML" />
     <None Include="Assets\Parse\Plugins\dotNet45\Unity.Compat.dll" />
     <None Include="Assets\DOTween\readme.txt" />
@@ -180,6 +190,7 @@
     <None Include="Assets\Prototype\Sprite\spine\sloth\나태_SD_최종.atlas.txt" />
     <None Include="Assets\DOTween\DOTween.dll" />
     <None Include="Assets\Parse\Plugins\dotNet45\Unity.Tasks.dll" />
+    <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-database-unity\maven-metadata.xml" />
     <None Include="Assets\Firebase\Plugins\Google.MiniJson.dll" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.App.dll" />
   </ItemGroup>
@@ -411,6 +422,9 @@
     </Reference>
     <Reference Include="Firebase.App">
       <HintPath>Assets\Firebase\Plugins\Firebase.App.dll</HintPath>
+    </Reference>
+    <Reference Include="Firebase.Database">
+      <HintPath>Assets\Firebase\Plugins\Firebase.Database.dll</HintPath>
     </Reference>
     <Reference Include="Firebase.TaskExtension">
       <HintPath>Assets\Firebase\Plugins\Firebase.TaskExtension.dll</HintPath>
