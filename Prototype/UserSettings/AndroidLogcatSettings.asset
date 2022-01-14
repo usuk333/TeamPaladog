@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "R3CRB0T1SVV",
         "name": "com.paladog.acrobatgames",
-        "processId": 19354,
+        "processId": 16671,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -48,6 +48,18 @@
             "deviceId": "R3CRB0T1SVV",
             "name": "com.paladog.acrobatgames",
             "processId": 19354,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CRB0T1SVV",
+            "name": "com.paladog.acrobatgames",
+            "processId": 13321,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CRB0T1SVV",
+            "name": "com.paladog.acrobatgames",
+            "processId": 16671,
             "exited": false
         }
     ],

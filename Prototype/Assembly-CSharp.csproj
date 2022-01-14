@@ -66,12 +66,13 @@
     <Compile Include="Assets\Prototype\Script\Enemy\02_MagicTool\MagicTool.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesAchievement.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\INearbyConnectionClient.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander\05_Commander_Gluttony\Eater.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\CommonStatusCodes.cs" />
     <Compile Include="Assets\Prototype\Script\Unit\07_Summoner\Summons.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SignInStatus.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Achievement.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\04_SlaveTrader\SlaveTrader.cs" />
-    <Compile Include="Assets\Prototype\Script\Enemy\Commander_Avarice\PoisonAttack.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander\01_Commander_Avarice\PoisonAttack.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidNearbyConnectionClient.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Video\IVideoClient.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesScore.cs" />
@@ -103,12 +104,14 @@
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidClient.cs" />
     <Compile Include="Assets\Prototype\Script\Unit\08_Druid\Druid.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\04_SlaveTrader\SplashAttack.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander\06_Commander_Jealousy\Crush.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModulePhysics2D.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesUserProfile.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\PlayerProfile.cs" />
     <Compile Include="Assets\GooglePlayGames\OurUtils\PlatformUtils.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\Utility\EnemyPool.cs" />
     <Compile Include="Assets\Prototype\Script\Unit\Utility\Unit.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander\05_Commander_Gluttony\Gluttony.cs" />
     <Compile Include="Assets\GooglePlayGames\OurUtils\NearbyHelperObject.cs" />
     <Compile Include="Assets\Prototype\Script\Manager\InGameScrollView.cs" />
     <Compile Include="Assets\Prototype\Script\Common\04_Wizard\FireBall.cs" />
@@ -123,7 +126,7 @@
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleAudio.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidJavaConverter.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidTaskUtils.cs" />
-    <Compile Include="Assets\Prototype\Script\Enemy\Commander_Rage\Rage.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander\02_Commander_Rage\Rage.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\DummyNearbyConnectionClient.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\PlayGamesClientFactory.cs" />
     <Compile Include="Assets\GooglePlayGames\GameInfo.cs" />
@@ -137,6 +140,7 @@
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidSnapshotMetadata.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\ScorePageToken.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidVideoClient.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander\04_Commander_Sloth\Sloth.cs" />
     <Compile Include="Assets\GooglePlayGames\PluginVersion.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\LeaderboardScoreData.cs" />
     <Compile Include="Assets\Prototype\Script\Common\04_Wizard\ExplosionRange.cs" />
@@ -156,11 +160,13 @@
     <Compile Include="Assets\GooglePlayGames\OurUtils\PlayGamesHelperObject.cs" />
     <Compile Include="Assets\Prototype\Script\Unit\Utility\MpBar.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\02_MagicTool\LightningAttack.cs" />
-    <Compile Include="Assets\Prototype\Script\Enemy\Commander_Avarice\Avarice.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander\01_Commander_Avarice\Avarice.cs" />
     <Compile Include="Assets\Prototype\Script\Common\02_Archer\Arrow.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SignInHelper.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander\04_Commander_Sloth\ThornAttack.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidTokenClient.cs" />
     <Compile Include="Assets\Prototype\Script\Player\Player.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander\06_Commander_Jealousy\Jealousy.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\EndpointDetails.cs" />
     <Compile Include="Assets\Prototype\Script\Common\04_Wizard\Wizard.cs" />
   </ItemGroup>
