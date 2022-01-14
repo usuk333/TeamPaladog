@@ -66,10 +66,10 @@ public class Unit : MonoBehaviour //모든 아군 유닛들의 능력치와 공격 로직을 호출
         }
         GetComponentInChildren<HpBar>().UpdateUnitOrEnemyHpBar();
     }
-    public void Stun()
+    public void Stun(float second)
     {
         unitState = EUnitState.Wait;
-        Invoke("Invoke_WakeUp", 2f);
+        Invoke("Invoke_WakeUp", second);
     }
     private void initializeUnit()
     {
@@ -162,7 +162,7 @@ public class Unit : MonoBehaviour //모든 아군 유닛들의 능력치와 공격 로직을 호출
             shielder.AttackCount = 0;
             if (!isBoss)
             {
-                currentEnemy.Stun();
+                currentEnemy.Stun(2f);
             }
         }
     }

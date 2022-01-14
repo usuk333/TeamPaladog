@@ -12,7 +12,8 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
         Wizard,
         Shielder,
         Priest,
-        Assasin
+        Assasin,
+        BomberMan
     }
     [SerializeField] private int index;
     [SerializeField] private EUnitState enemyState = EUnitState.NonCombat;
@@ -36,6 +37,8 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
     public Player Player { get => player; set => player = value; }
     public float AttackPower { get => attackPower; set => attackPower = value; }
     public int Index { get => index; }
+    public float MoveSpeed { get => moveSpeed; }
+
     public void DecreaseHp(float damage)
     {
         currentHp -= damage + increaseDamage;
@@ -59,10 +62,10 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
         increaseDamage = damage;
         Invoke("Invoke_ResetIncreaseDamage", value);
     }
-    public void Stun()
+    public void Stun(float second)
     {
         enemyState = EUnitState.Wait;
-        Invoke("Invoke_WakeUp", 2f);
+        Invoke("Invoke_WakeUp", second);
     }
     private void initializeEnemy()
     {
@@ -70,19 +73,11 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
         GetComponentInChildren<HpBar>().ResetHpBar();
         switch (enemyKinds)
         {
-            case EEnemyKinds.Warrior:
-                break;
-            case EEnemyKinds.Archer:
-                break;
-            case EEnemyKinds.Wizard:
-                break;
             case EEnemyKinds.Shielder:
                 GetComponent<Shielder>().AttackCount = 0;
                 break;
             case EEnemyKinds.Priest:
                 GetComponent<Priest>().ClearEnemyList();
-                break;
-            case EEnemyKinds.Assasin:
                 break;
             default:
                 break;
@@ -109,6 +104,9 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
                 break;
             case EEnemyKinds.Assasin:
                 AttackBasic(isPlayer);
+                break;
+            case EEnemyKinds.BomberMan:
+                ExplodeBomb();
                 break;
             default:
                 Debug.Assert(false);
@@ -140,7 +138,7 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
             shielder.AttackCount = 0;
             if (!isPlayer)
             {
-                currentUnit.Stun();
+                currentUnit.Stun(2f);
             }
             else
             {
@@ -165,6 +163,10 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
     {
         enemyState = EUnitState.NonCombat;
         GetComponent<Assasin>().Hide();
+    }
+    private void ExplodeBomb()
+    {
+        GetComponent<BomberMan>().AttackBomb(attackPower);
     }
     private void Invoke_WakeUp()
     {
@@ -249,8 +251,15 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
                 InGameManager.Instance.UpdateEnemyPriestList(GetComponent<Priest>());
             }
             InGameManager.Instance.RemoveEnemyHealingList(this);
-            EnemyPool.ReturnEnemy(this);
-            return;
+            if(enemyKinds != EEnemyKinds.BomberMan)
+            {
+                EnemyPool.ReturnEnemy(this);
+                return;
+            }
+            else
+            {
+                FindObjectOfType<Lust>().ReturnBomberMan(GetComponent<BomberMan>());
+            }
         }
         if (enemyKinds == EEnemyKinds.Assasin && transform.position.x > 8.5f)
         {
@@ -267,13 +276,16 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
     }
     private void FixedUpdate()
     {
-        if (enemyState == EUnitState.NonCombat)
+        if(enemyKinds != EEnemyKinds.BomberMan)
         {
-            transform.position += Vector3.left * moveSpeed * Time.deltaTime;
-        }
-        else if (enemyState == EUnitState.Back)
-        {
-            transform.position += Vector3.right * moveSpeed * Time.deltaTime;
+            if (enemyState == EUnitState.NonCombat)
+            {
+                transform.position += Vector3.left * moveSpeed * Time.deltaTime;
+            }
+            else if (enemyState == EUnitState.Back)
+            {
+                transform.position += Vector3.right * moveSpeed * Time.deltaTime;
+            }
         }
     }
 }

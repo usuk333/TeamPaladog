@@ -225,6 +225,10 @@ public class Boss : MonoBehaviour //모든 보스 캐릭터들의 능력치 설정, 공격 로직�
     {
         GetComponent<Rage>().AttackAllUnit();
     }
+    private void DoPatternLust()
+    {
+        GetComponent<Lust>().ActiveTransition();
+    }
     private void DoPatternSloth()
     {
         GetComponent<Sloth>().ActiveThorn();
@@ -260,6 +264,7 @@ public class Boss : MonoBehaviour //모든 보스 캐릭터들의 능력치 설정, 공격 로직�
                     DoPatternRage();
                     break;
                 case EBossKinds.Lust:
+                    DoPatternLust();
                     break;
                 case EBossKinds.Sloth:
                     DoPatternSloth();

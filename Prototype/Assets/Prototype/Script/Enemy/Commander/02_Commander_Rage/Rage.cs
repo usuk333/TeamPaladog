@@ -19,6 +19,7 @@ public class Rage : MonoBehaviour
     private IEnumerator Co_AttackAllUnit()
     {
         UpdateUnits();
+        StopAllUnit();
         pattern.SetActive(true);
         range.DOScaleX(1f, 1.5f);
         yield return new WaitForSeconds(1.6f);
@@ -46,6 +47,13 @@ public class Rage : MonoBehaviour
             units[i].GetComponent<Unit>().DecreaseHp(damage);
         }
         player.DecreaseHp(damage);
+    }
+    private void StopAllUnit()
+    {
+        for (int i = 0; i < units.Count; i++)
+        {
+            units[i].GetComponent<Unit>().Stun(5f);
+        }
     }
     private void UpdateUnits()
     {
