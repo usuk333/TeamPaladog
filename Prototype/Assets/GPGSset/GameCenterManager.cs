@@ -186,6 +186,31 @@ public class GameCenterManager : MonoBehaviour
         Usersid = userid;
     }
 
+    void readingData()
+    {
+        //FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
+        //reference = FirebaseDatabase.DefaultInstance.RootReference; //데이터베이스 객체 초기화
+
+        reference.Child(Usersid).GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.LogError("Error Database");
+            }
+            else if (task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+                object value = snapshot.Value;
+
+                /*if(null != (value as |Dictionary))
+                {
+                    dic = 
+                }*/
+            }
+        }
+        );
+    }
+
     public void Area1Clear()
     {
         user.Area1 = true;      //1스테이지 클리어시
