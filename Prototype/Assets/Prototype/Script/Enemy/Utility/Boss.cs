@@ -16,7 +16,8 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
         Sloth,
         Gluttony,
         Jealousy,
-        Pride
+        Pride,
+        Devil
     }
     private enum EBossPattern
     {
@@ -115,12 +116,21 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
                 AttackBasic(isPlayer);
                 break;
             case EBossKinds.Lust:
+                AttackLust(isPlayer);
                 break;
             case EBossKinds.Sloth:
                 AttackSloth(isPlayer);
                 break;
             case EBossKinds.Gluttony:
                 AttackBasic(isPlayer);
+                break;
+            case EBossKinds.Jealousy:
+                AttackBasic(isPlayer);
+                break;
+            case EBossKinds.Pride:
+                AttackBasic(isPlayer);
+                break;
+            case EBossKinds.Devil:
                 break;
             default:
                 Debug.Assert(false);
@@ -181,6 +191,23 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
             slaveTrader.AttackCount++;
         }
     }
+    private void AttackLust(bool isPlayer)
+    {
+        AttackBasic(isPlayer);
+        var lust = GetComponent<Lust>();
+        if(++lust.AttackCount > 3)
+        {
+            lust.AttackCount = 0;
+            if (isPlayer)
+            {
+                player.Stun(2f);
+            }
+            else
+            {
+                currentUnit.Stun(2f);
+            }
+        }
+    }
     private void AttackSloth(bool isPlayer)
     {
         var sloth = GetComponent<Sloth>();
@@ -237,6 +264,18 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
     {
         GetComponent<Gluttony>().ActiveEater();
     }
+    private void DoPatternJealousy()
+    {
+        GetComponent<Jealousy>().ActiveCrush();
+    }
+    private void DoPatternPride()
+    {
+        GetComponent<Pride>().ActiveDonut();
+    }
+    private void DoPatternDevil()
+    {
+        //GetComponent<Devil>().ActiveSword();
+    }
     private IEnumerator Co_PushOut()
     {
         Debug.Log("ÄÚ·çÆ¾ È£Ãâ");
@@ -271,6 +310,15 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
                     break;
                 case EBossKinds.Gluttony:
                     DoPatternGluttony();
+                    break;
+                case EBossKinds.Jealousy:
+                    DoPatternJealousy();
+                    break;
+                case EBossKinds.Pride:
+                    DoPatternPride();
+                    break;
+                case EBossKinds.Devil:
+                    DoPatternDevil();
                     break;
                 default:
                     Debug.Assert(false);

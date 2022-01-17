@@ -5,6 +5,7 @@ using DG.Tweening;
 
 public class Lust : MonoBehaviour
 {
+    private int attackCount = 0;
     private Boss boss;
     private List<GameObject> collisions = new List<GameObject>();
     private int posXMin = 2;
@@ -14,6 +15,7 @@ public class Lust : MonoBehaviour
     [SerializeField] private GameObject[] transitions;
 
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
+    public int AttackCount { get => attackCount; set => attackCount = value; }
 
     public void ActiveTransition()
     {

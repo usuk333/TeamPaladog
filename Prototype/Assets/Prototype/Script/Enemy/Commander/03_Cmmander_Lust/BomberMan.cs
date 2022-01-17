@@ -71,6 +71,11 @@ public class BomberMan : MonoBehaviour
         {
             transform.position = new Vector3(transform.position.x, target.transform.position.y, transform.position.z);
         }
+        else
+        {
+            target = player.gameObject;
+            transform.position = new Vector3(transform.position.x, target.transform.position.y, transform.position.z);
+        }
     }
     private void FixedUpdate()
     {
@@ -79,10 +84,6 @@ public class BomberMan : MonoBehaviour
             if (target != null)
             {
                 transform.position = Vector3.MoveTowards(transform.position, target.transform.position, moveSpeed * Time.deltaTime);
-            }
-            else
-            {
-                transform.position += Vector3.left * moveSpeed * Time.deltaTime;
             }
         }
     }

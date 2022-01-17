@@ -8,7 +8,8 @@ public class Donut : MonoBehaviour
     {
         In,
         Middle,
-        Out
+        Out,
+        Point
     }
     [SerializeField] private EKind eKind;
     private Pride pride;
@@ -22,7 +23,7 @@ public class Donut : MonoBehaviour
         {
             if(collision.tag == "PLAYER" || collision.tag == "UNIT")
             {
-                pride.isIn = true;
+                pride.IsIn = true;
                 if (!pride.Collisions.Contains(collision.gameObject))
                 {
                     pride.Collisions.Add(collision.gameObject);
@@ -39,12 +40,19 @@ public class Donut : MonoBehaviour
                 }
             }
         }
+        if(eKind == EKind.Point)
+        {
+            if (collision.tag == "PLAYER" || collision.tag == "UNIT")
+            {
+                pride.IsIn = false;
+            }
+        }
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
         if(eKind == EKind.Middle)
         {
-            if (!pride.isIn)
+            if (!pride.IsIn)
             {
                 if (collision.tag == "PLAYER" || collision.tag == "UNIT")
                 {
@@ -58,9 +66,23 @@ public class Donut : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if(eKind == EKind.In)
+        if (eKind == EKind.Point)
         {
-            pride.isIn = false;
+            if (collision.tag == "PLAYER" || collision.tag == "UNIT")
+            {
+                pride.IsIn = true;
+                if (!pride.Collisions.Contains(collision.gameObject))
+                {
+                    pride.Collisions.Add(collision.gameObject);
+                }
+            }
+        }
+        if (eKind == EKind.In)
+        {
+            if (collision.tag == "PLAYER" || collision.tag == "UNIT")
+            {
+                pride.IsIn = false;
+            }
         }
         if(eKind == EKind.Out)
         {
@@ -81,7 +103,6 @@ public class Donut : MonoBehaviour
                     pride.Collisions.Add(collision.gameObject);
                 }
             }
-        }
-        
+        }  
     }
 }

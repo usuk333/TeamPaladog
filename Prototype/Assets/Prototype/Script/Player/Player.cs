@@ -47,10 +47,10 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
         }
         InGameManager.Instance.UpdatePlayerHpMpUI(true);
     }
-    public void Stun()
+    public void Stun(float second)
     {
         isStun = true;
-        Invoke("Invoke_WakeUp", 2f);
+        Invoke("Invoke_WakeUp", second);
     }
     public void UseSkill(int index)
     {

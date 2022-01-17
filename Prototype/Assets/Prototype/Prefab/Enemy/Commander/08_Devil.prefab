@@ -99,10 +99,9 @@ GameObject:
   - component: {fileID: 1142180495872592853}
   - component: {fileID: 1142180495872592854}
   - component: {fileID: 4758097235038666499}
-  - component: {fileID: -1348908771318530545}
   - component: {fileID: 5452159755275475939}
   m_Layer: 0
-  m_Name: 06_Commander_Jealousy
+  m_Name: 08_Devil
   m_TagString: BOSS
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189,11 +188,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bossState: 1
-  eBossKinds: 9
+  eBossKinds: 11
   eBossPattern: 1
   maxHp: 100
   currentHp: 0
-  attackPower: 1
+  attackPower: 0
   attackSpeed: 1
   currentAttackSpeed: 0
   moveSpeed: 1
@@ -203,24 +202,6 @@ MonoBehaviour:
   player: {fileID: 0}
   patternHp: 0.8
   gluttonyHealPattern: 0.6
---- !u!114 &-1348908771318530545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1142180495872592855}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f877f3b1cffd57f43a74602b6d7074fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  damage: 3
-  donutDamage: 3
-  crushCount: 8
-  donutPrefab: {fileID: 959443482074800657, guid: dde4f757f3a22e74caa486761b2cc2d7, type: 3}
-  crushPrefab: {fileID: 6085836554326879880, guid: b7f0118977a234e488753c656b292f46, type: 3}
-  crushs: []
 --- !u!61 &5452159755275475939
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -325,7 +306,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uAD70\uB2E8\uC7A5 : \uC9C8\uD22C"
+  m_Text: BOSS
 --- !u!1 &1142180497596157139
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,7 +529,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.5, y: 0}
+  m_Offset: {x: -0.1, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -559,7 +540,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.5, y: 1.5}
+  m_Size: {x: 1.7, y: 1.5}
   m_EdgeRadius: 0
 --- !u!114 &588590948467889523
 MonoBehaviour:

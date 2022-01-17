@@ -142,7 +142,7 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
             }
             else
             {
-                player.Stun();
+                player.Stun(2f);
             }
         }
     }
