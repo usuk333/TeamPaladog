@@ -72,6 +72,7 @@
     <Compile Include="Assets\GooglePlayGames\BasicApi\SignInStatus.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Achievement.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\04_SlaveTrader\SlaveTrader.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander\03_Cmmander_Lust\BomberMan.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\Commander\01_Commander_Avarice\PoisonAttack.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidNearbyConnectionClient.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Video\IVideoClient.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleUtils.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleUI.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\NearbyConnectionClientFactory.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander\03_Cmmander_Lust\Transition.cs" />
     <Compile Include="Assets\Prototype\Script\Common\06_Assasin\Assasin.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidClient.cs" />
     <Compile Include="Assets\Prototype\Script\Unit\08_Druid\Druid.cs" />
@@ -153,6 +155,7 @@
     <Compile Include="Assets\Prototype\Script\Common\02_Archer\Archer.cs" />
     <Compile Include="Assets\Prototype\Script\Manager\ButtonManager.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleUnityVersion.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander\03_Cmmander_Lust\BombRange.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\ConnectionResponse.cs" />
     <Compile Include="Assets\Prototype\Script\Unit\07_Summoner\EffectRange.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\ConnectionRequest.cs" />
@@ -160,6 +163,7 @@
     <Compile Include="Assets\GooglePlayGames\OurUtils\PlayGamesHelperObject.cs" />
     <Compile Include="Assets\Prototype\Script\Unit\Utility\MpBar.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\02_MagicTool\LightningAttack.cs" />
+    <Compile Include="Assets\Prototype\Script\Enemy\Commander\03_Cmmander_Lust\Lust.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\Commander\01_Commander_Avarice\Avarice.cs" />
     <Compile Include="Assets\Prototype\Script\Common\02_Archer\Arrow.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SignInHelper.cs" />
