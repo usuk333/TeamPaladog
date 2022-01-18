@@ -52,6 +52,7 @@ public class GameCenterManager : MonoBehaviour
             {
                 if (success) // 성공하면
                 {
+                    Debug.Log("TryFirebaseLogin 함수 실행");
                     StartCoroutine(TryFirebaseLogin());
                 }
                 else // 실패하면
@@ -68,6 +69,7 @@ public class GameCenterManager : MonoBehaviour
         {
             PlayGamesPlatform.Instance.SignOut();
             auth.SignOut();
+            Debug.Log("auth.SignOut 완료");
         }
     }
 
@@ -86,9 +88,13 @@ public class GameCenterManager : MonoBehaviour
                 Debug.LogError("SignInAnonymouslyAsync encountered an error: " + task.Exception);
                 return;
             }
+            Debug.Log("게스트 로그인 완료");
 
             FirebaseUser newUser = task.Result;
-            writeNewUser(newUser.UserId);
+            Usersid = newUser.UserId;
+            //Debug.Log("writeNewUser 함수 발동");
+            //writeNewUser(newUser.UserId);
+            InitializeFirebase();
 
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
@@ -162,8 +168,10 @@ public class GameCenterManager : MonoBehaviour
             }
 
             FirebaseUser newUser = task.Result;     //newUser에 task정보 저장.
+            Usersid = newUser.UserId;
             //Users = newUser;
-            writeNewUser(newUser.UserId);
+            //writeNewUser(newUser.UserId);
+            InitializeFirebase();
             Debug.Log(newUser.UserId);
             //아마 이미 회원가입이 되어 있으면 writeNewUser를 발동 안해야함
             Debug.LogFormat("User signed in successfully: {0} ({1})",
@@ -171,10 +179,76 @@ public class GameCenterManager : MonoBehaviour
         });
     }
 
-    void writeNewUser(string userid) // 가입한 회원 고유 번호에 대한 사용자 기본값 설정
+    private void InitializeFirebase()
     {
-        /*FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
-        reference = FirebaseDatabase.DefaultInstance.RootReference; //데이터베이스 객체 초기화*/
+        reference.GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+                Debug.Log("InitializeFirebase 접근완료");
+
+                foreach (DataSnapshot data in snapshot.Children)
+                {
+                    Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
+                }
+            }
+        });
+    }
+
+    public void UpdateDbUserInfo()
+    {
+        Debug.LogFormat("[Database] insert !");
+        User users = new User();
+
+        users.user_name = "내 이름은 박찬중";
+        users.Skill1_Level = 1;
+        users.Skill2_Level = 1;
+        users.Skill3_Level = 1;
+        users.Area1 = false;
+        users.Area2 = false;
+        users.Area3 = false;
+        users.Area4 = false;
+        users.A1Stage1_achievement = 0;
+        users.A1Stage2_achievement = 0;
+        users.A1Stage3_achievement = 0;
+
+        string json = JsonUtility.ToJson(users);
+
+        string key = Usersid;
+        reference.Child("users").Child(key).SetRawJsonValueAsync(json);
+    }
+
+    public void ReadingDbUserInfo()
+    {
+        Debug.Log("리딩슈타이너 발동");
+        reference.Child("users").Child(Usersid).GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.LogError("Error Database");
+            }
+            else if (task.IsCompleted)
+            {
+                Debug.Log("리딩슈타이너 컴플릿트");
+
+                DataSnapshot snapshot = task.Result;
+
+                //가져온 데이터 snapshot을 json으로 변환 저장
+                //string json = JsonUtility.ToJson(snapshot);
+
+                foreach (DataSnapshot userdata in snapshot.Children)
+                {
+                    Debug.Log(userdata.Value);
+                }
+            }
+        });
+    }
+
+    /*void writeNewUser(string userid) // 가입한 회원 고유 번호에 대한 사용자 기본값 설정
+    {
+        //FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
+        //reference = FirebaseDatabase.DefaultInstance.RootReference; //데이터베이스 객체 초기화
 
         Debug.Log("데이터베이스 객체 초기화");
 
@@ -184,13 +258,13 @@ public class GameCenterManager : MonoBehaviour
         reference.Child(userid).SetRawJsonValueAsync(json); // 데이터베이스에 json 파일 업로드
 
         Usersid = userid;
-    }
+    }*/
 
-    void readingData()
+    /*public void readingData()
     {
         //FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
         //reference = FirebaseDatabase.DefaultInstance.RootReference; //데이터베이스 객체 초기화
-
+        Debug.Log("리딩슈타이너 발동");
         reference.Child(Usersid).GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
@@ -199,17 +273,21 @@ public class GameCenterManager : MonoBehaviour
             }
             else if (task.IsCompleted)
             {
-                DataSnapshot snapshot = task.Result;
-                object value = snapshot.Value;
+                Debug.Log("리딩슈타이너 컴플릿트");
 
-                /*if(null != (value as |Dictionary))
+                DataSnapshot snapshot = task.Result;
+
+                //가져온 데이터 snapshot을 json으로 변환 저장
+                //string json = JsonUtility.ToJson(snapshot);
+
+                foreach (DataSnapshot userdata in snapshot.Children)
                 {
-                    dic = 
-                }*/
+                    Debug.Log(userdata.Value);
+                }
             }
         }
         );
-    }
+    }*/
 
     public void Area1Clear()
     {
