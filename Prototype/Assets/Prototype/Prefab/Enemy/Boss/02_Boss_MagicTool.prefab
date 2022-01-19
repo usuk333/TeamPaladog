@@ -372,6 +372,7 @@ MonoBehaviour:
   currentUnit: {fileID: 0}
   player: {fileID: 0}
   patternHp: 0.8
+  gluttonyHealPattern: 0.6
 --- !u!114 &580756040451363296
 MonoBehaviour:
   m_ObjectHideFlags: 0

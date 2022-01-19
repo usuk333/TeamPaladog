@@ -4,28 +4,63 @@ using UnityEngine;
 
 public class Crush : MonoBehaviour
 {
+    private enum EParent
+    {
+        Jealousy,
+        Devil
+    }
+    private Devil devil;
     private Jealousy jealousy;
+    [SerializeField] private EParent parent;
     private void Start()
     {
-        jealousy = GetComponentInParent<Jealousy>();
+        if(parent == 0)
+        {
+            jealousy = GetComponentInParent<Jealousy>();
+        }
+        else
+        {
+            devil = GetComponentInParent<Devil>();
+        }
     }
     private void OnTriggerEnter2D(Collider2D collision)
-    {
+    {      
         if (collision.tag == "UNIT" || collision.tag == "PLAYER")
         {
-            if (!jealousy.Collisions.Contains(collision.gameObject))
+            if (jealousy)
             {
-                jealousy.Collisions.Add(collision.gameObject);
+                if (!jealousy.Collisions.Contains(collision.gameObject))
+                {
+                    jealousy.Collisions.Add(collision.gameObject);
+                }
             }
+            else
+            {
+                if (!devil.CrushCollisions.Contains(collision.gameObject))
+                {
+                    devil.CrushCollisions.Add(collision.gameObject);
+                }
+            }
+
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.tag == "UNIT" || collision.tag == "PLAYER")
         {
-            if (jealousy.Collisions.Contains(collision.gameObject))
+            if (jealousy)
             {
-                jealousy.Collisions.Remove(collision.gameObject);
+                if (jealousy.Collisions.Contains(collision.gameObject))
+                {
+                    jealousy.Collisions.Remove(collision.gameObject);
+                }
+            }
+            else
+            {
+                if (devil.CrushCollisions.Contains(collision.gameObject))
+                {
+                    devil.CrushCollisions.Remove(collision.gameObject);
+                }
             }
         }
     }

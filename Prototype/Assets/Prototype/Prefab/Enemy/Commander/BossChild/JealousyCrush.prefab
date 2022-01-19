@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 7280704773288423150}
   - component: {fileID: 6911265067096521222}
   m_Layer: 0
-  m_Name: Crush
+  m_Name: JealousyCrush
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -12,7 +12,7 @@ public class MagicTool : MonoBehaviour //보스캐릭터 강력한 마법도구의 공격 기능 
     private Boss boss;
     private List<GameObject> collisions = new List<GameObject>();
     [SerializeField] private GameObject[] lightnings;
-    [SerializeField] private float lightningPower;
+    [SerializeField] private float damage;
 
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
 
@@ -28,11 +28,11 @@ public class MagicTool : MonoBehaviour //보스캐릭터 강력한 마법도구의 공격 기능 
             {
                 if (collisions[i].GetComponent<Unit>())
                 {
-                    collisions[i].GetComponent<Unit>().DecreaseHp(lightningPower);
+                    collisions[i].GetComponent<Unit>().DecreaseHp(damage);
                 }
                 else if (collisions[i].GetComponent<Player>())
                 {
-                    collisions[i].GetComponent<Player>().DecreaseHp(lightningPower);
+                    collisions[i].GetComponent<Player>().DecreaseHp(damage);
                 }
             }
         }

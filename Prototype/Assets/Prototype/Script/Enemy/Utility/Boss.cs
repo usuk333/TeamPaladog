@@ -53,14 +53,23 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
     {
         currentHp -= damage + increaseDamage;
         bossHpBar.UpdateBossHpUI();
-        if(bossState != EUnitState.KnockBack)
+        if(currentHp <= 0)
         {
-            if (currentHp < maxHp * patternHp)
+            if(eBossKinds != EBossKinds.Devil)
             {
-                StartCoroutine(Co_PushOut());
-                patternHp -= 0.2f; //ÇØ´ç ºÎºÐµµ º¸½ºº°·Î ´Ù¸£°Ô ¼³Á¤ÇÏ±â À§ÇØ º¯¼ö·Î »©¾ßÇÒµí
+                Destroy(this.gameObject);
+                return;
             }
         }
+        if (currentHp <= maxHp * patternHp)
+        {
+            if (bossState != EUnitState.KnockBack)
+            {
+                StartCoroutine(Co_PushOut());
+            }
+            patternHp -= 0.2f; //ÇØ´ç ºÎºÐµµ º¸½ºº°·Î ´Ù¸£°Ô ¼³Á¤ÇÏ±â À§ÇØ º¯¼ö·Î »©¾ßÇÒµí
+        }
+      
         if(eBossKinds == EBossKinds.Gluttony)
         {
             if(currentHp < maxHp * gluttonyHealPattern)
@@ -274,7 +283,16 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
     }
     private void DoPatternDevil()
     {
-        //GetComponent<Devil>().ActiveSword();
+        var devil = GetComponent<Devil>();
+        if (!devil.IsPageChange)
+        {
+            patternHp = 1;
+            devil.ChangePage();
+        }
+        else
+        {
+            devil.ActiveCrush();
+        }
     }
     private IEnumerator Co_PushOut()
     {
@@ -396,14 +414,6 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
         if (bossState == EUnitState.KnockBack && eBossPattern != EBossPattern.Special)
         {
             transform.position += Vector3.right * knockBackSpeed * Time.deltaTime;
-        }
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        if (currentHp <= 0)
-        {
-            Destroy(this.gameObject);
         }
     }
 }

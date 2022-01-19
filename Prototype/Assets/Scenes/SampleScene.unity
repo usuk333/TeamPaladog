@@ -1873,7 +1873,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &612310918
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2997,7 +2997,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &894920759
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3757,6 +3757,7 @@ MonoBehaviour:
   - {fileID: 1142180495872592855, guid: c2d75356cf965434f9473f07c09e0bdc, type: 3}
   - {fileID: 1142180495872592855, guid: 67f36141f05d84d48b53395c186ef724, type: 3}
   - {fileID: 1142180495872592855, guid: 6530dd40441d6b24cb799701f6ea0815, type: 3}
+  - {fileID: 1142180495872592855, guid: a0db0e55de7a655468e12ca548cf8a90, type: 3}
   bossSpawnPoint: {fileID: 15165164}
   playerSpawnPoint: {fileID: 578705591}
 --- !u!114 &1188181718
@@ -4399,7 +4400,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 10
+          m_IntArgument: 6
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
