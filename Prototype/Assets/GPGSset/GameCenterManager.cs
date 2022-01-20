@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Firebase.Auth;
 using Firebase;
+using Firebase.Auth;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using UnityEngine.SceneManagement;
@@ -146,7 +146,7 @@ public class GameCenterManager : MonoBehaviour
         }
     }
 
-    IEnumerator TryFirebaseLogin()
+    public IEnumerator TryFirebaseLogin()
     {
         while (string.IsNullOrEmpty(((PlayGamesLocalUser)Social.localUser).GetIdToken()))
             yield return null;
@@ -172,7 +172,6 @@ public class GameCenterManager : MonoBehaviour
             //Users = newUser;
             //writeNewUser(newUser.UserId);
             InitializeFirebase();
-            Debug.Log(newUser.UserId);
             //아마 이미 회원가입이 되어 있으면 writeNewUser를 발동 안해야함
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
@@ -245,49 +244,36 @@ public class GameCenterManager : MonoBehaviour
         });
     }
 
-    /*void writeNewUser(string userid) // 가입한 회원 고유 번호에 대한 사용자 기본값 설정
+    public void onAnonyToGoogle()
     {
-        //FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
-        //reference = FirebaseDatabase.DefaultInstance.RootReference; //데이터베이스 객체 초기화
-
-        Debug.Log("데이터베이스 객체 초기화");
-
-
-        user = new User();
-        string json = JsonUtility.ToJson(user); // 생성한 사용자에 대한 정보 json 형식으로 저장
-        reference.Child(userid).SetRawJsonValueAsync(json); // 데이터베이스에 json 파일 업로드
-
-        Usersid = userid;
-    }*/
-
-    /*public void readingData()
-    {
-        //FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
-        //reference = FirebaseDatabase.DefaultInstance.RootReference; //데이터베이스 객체 초기화
-        Debug.Log("리딩슈타이너 발동");
-        reference.Child(Usersid).GetValueAsync().ContinueWith(task =>
+        if (auth.CurrentUser != null)
         {
-            if (task.IsFaulted)
+            Debug.Log(auth.CurrentUser.UserId);
+
+            string idToken = ((PlayGamesLocalUser)Social.localUser).GetIdToken();   //id토큰가져오기
+            string accessToken = null;
+
+            Credential credential = GoogleAuthProvider.GetCredential(idToken, accessToken);
+
+            auth.CurrentUser.LinkWithCredentialAsync(credential).ContinueWith(task =>
             {
-                Debug.LogError("Error Database");
-            }
-            else if (task.IsCompleted)
-            {
-                Debug.Log("리딩슈타이너 컴플릿트");
-
-                DataSnapshot snapshot = task.Result;
-
-                //가져온 데이터 snapshot을 json으로 변환 저장
-                //string json = JsonUtility.ToJson(snapshot);
-
-                foreach (DataSnapshot userdata in snapshot.Children)
+                if (task.IsCanceled)
                 {
-                    Debug.Log(userdata.Value);
+                    Debug.LogError("LinkWithCredentialAsync was canceled.");
+                    return;
                 }
-            }
+                if (task.IsFaulted)
+                {
+                    Debug.LogError("LinkWithCredentialAsync encountered an error: " + task.Exception);
+                    return;
+                }
+
+                FirebaseUser newUser = task.Result;
+                Debug.LogFormat("Credentials successfully linked to Firebase user: {0} ({1})",
+                    newUser.DisplayName, newUser.UserId);
+            });
         }
-        );
-    }*/
+    }
 
     public void Area1Clear()
     {
