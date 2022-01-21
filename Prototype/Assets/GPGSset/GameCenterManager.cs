@@ -246,33 +246,36 @@ public class GameCenterManager : MonoBehaviour
 
     public void onAnonyToGoogle()
     {
-        if (auth.CurrentUser != null)
+        Social.localUser.Authenticate((bool success) =>
         {
-            Debug.Log(auth.CurrentUser.UserId);
-
-            string idToken = ((PlayGamesLocalUser)Social.localUser).GetIdToken();   //id토큰가져오기
-            string accessToken = null;
-
-            Credential credential = GoogleAuthProvider.GetCredential(idToken, accessToken);
-
-            auth.CurrentUser.LinkWithCredentialAsync(credential).ContinueWith(task =>
+            if (success)
             {
-                if (task.IsCanceled)
-                {
-                    Debug.LogError("LinkWithCredentialAsync was canceled.");
-                    return;
-                }
-                if (task.IsFaulted)
-                {
-                    Debug.LogError("LinkWithCredentialAsync encountered an error: " + task.Exception);
-                    return;
-                }
+                string authCode = PlayGamesPlatform.Instance.GetServerAuthCode();
 
-                FirebaseUser newUser = task.Result;
-                Debug.LogFormat("Credentials successfully linked to Firebase user: {0} ({1})",
-                    newUser.DisplayName, newUser.UserId);
-            });
-        }
+                FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+                Credential credential = PlayGamesAuthProvider.GetCredential(authCode);
+
+                if (auth.CurrentUser != null)
+                {
+                    auth.CurrentUser.LinkWithCredentialAsync(credential).ContinueWith(task =>
+                    {
+                        if (task.IsCanceled)
+                        {
+                            Debug.LogError("LinkWithCredentialAsync was canceled.");
+                            return;
+                        }
+                        if (task.IsFaulted)
+                        {
+                            Debug.LogError("LinkWithCredentialAsync encountered an error: " + task.Exception);
+                            return;
+                        }
+                        FirebaseUser newUser = task.Result;
+                        Debug.LogFormat("User signed in successfully: {0} ({1})",
+      newUser.DisplayName, newUser.UserId);
+                    });
+                }
+            }
+        });
     }
 
     public void Area1Clear()

@@ -97,6 +97,7 @@
     <Compile Include="Assets\GooglePlayGames\BasicApi\SavedGame\ISavedGameClient.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesLeaderboard.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\Commander\08_Devil\Devil.cs" />
+    <Compile Include="Assets\Prototype\Script\SpineTest.cs" />
     <Compile Include="Assets\Prototype\Script\Manager\InGameManager.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\NearbyConnectionConfiguration.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleUtils.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="Assets\Prototype\Script\Common\HpBar.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleAudio.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\Commander\06_Commander_Jealousy\JealousyDonut.cs" />
+    <Compile Include="Assets\GPGSset\DataController.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidJavaConverter.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidTaskUtils.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\Commander\02_Commander_Rage\Rage.cs" />
@@ -176,7 +178,6 @@
     <Compile Include="Assets\Prototype\Script\Enemy\Commander\06_Commander_Jealousy\Jealousy.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\EndpointDetails.cs" />
     <Compile Include="Assets\Prototype\Script\Common\04_Wizard\Wizard.cs" />
-    <Compile Include="Assets\GPGSset\DataController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Spine\version.txt" />
@@ -196,6 +197,7 @@
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-analytics-unity\maven-metadata.xml" />
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-auth-unity\maven-metadata.xml" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Auth.dll" />
+    <None Include="Assets\Prototype\Sprite\spine\Unit\01_Warrior\WARRIOR.atlas.txt" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Database.dll" />
     <None Include="Assets\DOTween\DOTween.XML" />
     <None Include="Assets\Parse\Plugins\dotNet45\Unity.Compat.dll" />
