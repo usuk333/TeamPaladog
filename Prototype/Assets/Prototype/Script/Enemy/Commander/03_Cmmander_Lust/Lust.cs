@@ -5,17 +5,26 @@ using DG.Tweening;
 
 public class Lust : MonoBehaviour
 {
-    private int attackCount = 0;
-    private Boss boss;
     private List<GameObject> collisions = new List<GameObject>();
-    private int posXMin = 2;
-    private int posXMax = 3;
     private Queue<BomberMan> bomberManQueue = new Queue<BomberMan>();
-    [SerializeField] private GameObject bomberMan;
+    private int currentAttackCount = 0;
+    private Boss boss;
+    [Header("매혹을 위한 공격 횟수")]
+    [SerializeField] private int attackCount;
+    [Header("매혹 지속 시간")]
+    [SerializeField] private float stunSecond;
+    [Header("패턴 생성 후 변이 적용까지의 시간")]
+    [SerializeField] private float patternSecond;
+    [Header("패턴 범위 사이의 간격")]
+    [SerializeField] private int posXMin = 2;
+    [SerializeField] private int posXMax = 3;
+    [Header("생성할 변이 패턴 수")]
     [SerializeField] private GameObject[] transitions;
-
+    [SerializeField] private GameObject bomberMan;
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
-    public int AttackCount { get => attackCount; set => attackCount = value; }
+    public int AttackCount { get => attackCount; }
+    public int CurrentAttackCount { get => currentAttackCount; set => currentAttackCount = value; }
+    public float StunSecond { get => stunSecond; }
 
     public void ActiveTransition()
     {
@@ -94,11 +103,11 @@ public class Lust : MonoBehaviour
             Vector3 rand = new Vector3(Random.Range(transform.position.x - posXMin, transform.position.x - posXMax),
                                        Random.Range(transform.position.y, transform.position.y - 0.5f), transform.position.z);
             item.transform.position = rand;
-            item.transform.GetChild(0).GetComponent<Transform>().DOScale(1, 3f);
+            item.transform.GetChild(0).GetComponent<Transform>().DOScale(1, patternSecond);
             posXMin += 2;
             posXMax += 3;
         }
-        yield return new WaitForSeconds(3.1f);
+        yield return new WaitForSeconds(patternSecond + 0.1f);
         TransitionUnit();
     }
     private void Awake()

@@ -4,24 +4,27 @@ using UnityEngine;
 
 public class SlaveTrader : MonoBehaviour
 {
-    private int attackCount;
-    [SerializeField] private List<GameObject> collisions = new List<GameObject>();
-    public int AttackCount { get => attackCount; set => attackCount = value; }
+    private int currentAttackCount;
+    private List<GameObject> collisions = new List<GameObject>();
+    [Header("다중 타격을 위한 공격 횟수")]
+    [SerializeField] private int attackCount;
+    [SerializeField] private float damage;
+    public int AttackCount { get => attackCount; }
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
+    public int CurrentAttackCount { get => currentAttackCount; set => currentAttackCount = value; }
 
-    public void Attack(float damage)
+    public void Attack()
     {
-        for (int i = 0; i < collisions.Count; i++)
+        foreach (var item in collisions)
         {
-            if (collisions[i].GetComponent<Unit>())
+            if (item.GetComponent<Unit>())
             {
-                collisions[i].GetComponent<Unit>().DecreaseHp(damage);
+                item.GetComponent<Unit>().DecreaseHp(damage);
             }
-            else if (collisions[i].GetComponent<Player>())
+            else if (item.GetComponent<Player>())
             {
-                collisions[i].GetComponent<Player>().DecreaseHp(damage);
+                item.GetComponent<Player>().DecreaseHp(damage);
             }
         }
-        Debug.Log("노예상 간부 특수공격");
     }
 }

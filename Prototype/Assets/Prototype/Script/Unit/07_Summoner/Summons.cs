@@ -15,9 +15,19 @@ public class Summons : MonoBehaviour //소환사의 소환수 기능 스크립트
     private bool isBoom = false;
     private float damage;
     [SerializeField] private ESummonsKind summonsKind;
-    [SerializeField] private float value;
-    [SerializeField] private float duration;
+    [Header("소환수 이동속도")]
     [SerializeField] private float moveSpeed;
+    [Header("받는 피해 증가 지속시간")]
+    [SerializeField] private float duration;
+    [Header("받는 피해 증가 증가시킬 피해량('소환사 유닛 공격력/해당 변수'로 적용됨")]
+    [SerializeField] private float increaseValue;
+    [Header("도트딜 반복 횟수")]
+    [SerializeField] private int dotCount;
+    [Header("도트딜 반복 시간 간격")]
+    [SerializeField] private float dotSecond;
+    [Header("도트 데미지('소환사 유닛 공격력/해당 변수'로 적용됨")]
+    [SerializeField] private float dotDamage;
+
     [SerializeField] private List<GameObject> collisions = new List<GameObject>();
     [SerializeField] private BoxCollider2D effectRange;
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
@@ -29,11 +39,11 @@ public class Summons : MonoBehaviour //소환사의 소환수 기능 스크립트
             {
                 if (enemy.GetComponent<Enemy>())
                 {
-                    enemy.GetComponent<Enemy>().IncreaseDamage(damage / 10, duration);
+                    enemy.GetComponent<Enemy>().IncreaseDamage(damage / increaseValue, duration);
                 }
                 else if (enemy.GetComponent<Boss>())
                 {
-                    enemy.GetComponent<Boss>().IncreaseDamage(damage / 10, duration);
+                    enemy.GetComponent<Boss>().IncreaseDamage(damage / increaseValue, duration);
                 }
             }
         }
@@ -50,11 +60,11 @@ public class Summons : MonoBehaviour //소환사의 소환수 기능 스크립트
             {
                 if (enemy.GetComponent<Enemy>())
                 {
-                    enemy.GetComponent<Enemy>().DecreaseHpDot(3,damage / 10,1f);
+                    enemy.GetComponent<Enemy>().DecreaseHpDot(dotCount, damage / dotDamage, dotSecond);
                 }
                 else if (enemy.GetComponent<Boss>())
                 {
-                    enemy.GetComponent<Boss>().DecreaseHpDot(3, damage / 10, 1f);
+                    enemy.GetComponent<Boss>().DecreaseHpDot(dotCount, damage / dotDamage, dotSecond);
                 }
             }
         }

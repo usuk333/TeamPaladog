@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Summoner : MonoBehaviour //소환사 유닛의 기능 스크립트
 {
-    private int summonCount = 0;
+    private int currentSummonCount = 0;
     private float attakSpeed;
     private MpBar mpBar;
+    [Header("최대 소환 횟수")]
+    [SerializeField] private int summonCount;
     [SerializeField] private GameObject[] summons;
     public float AttakSpeed { get => attakSpeed; set => attakSpeed = value; }
 
@@ -20,7 +22,7 @@ public class Summoner : MonoBehaviour //소환사 유닛의 기능 스크립트
         int i = ChooseRandom();
         Instantiate(summons[i], transform.position, Quaternion.identity, transform); //나중에 로컬 풀링으로 전환하자 
         summonCount++;
-        if(summonCount > 1)
+        if(currentSummonCount > summonCount)
         {
             UnitPool.ReturnUnit(GetComponent<Unit>());
             InGameManager.Instance.UnitList.Remove(this.gameObject);
@@ -29,7 +31,7 @@ public class Summoner : MonoBehaviour //소환사 유닛의 기능 스크립트
     }
     public void ResetSummoner()
     {
-        summonCount = 0;
+        currentSummonCount = 0;
         if(mpBar != null)
         {
             mpBar.DecreaseMpBar();

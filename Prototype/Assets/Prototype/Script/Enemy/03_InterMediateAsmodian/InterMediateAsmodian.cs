@@ -4,31 +4,31 @@ using UnityEngine;
 
 public class InterMediateAsmodian : MonoBehaviour
 {
-    private float damage = 0.5f;
+    private int currentAttackCount;
+    private List<GameObject> archers = new List<GameObject>();
+    [Header("암흑화살 발사를 위한 공격 횟수")]
     [SerializeField] private int attackCount;
-    [SerializeField] private List<GameObject> archers = new List<GameObject>();
-    public int AttackCount { get => attackCount; set => attackCount = value; }
+    [SerializeField] private float damage;
+    public int AttackCount { get => attackCount; }
+    public int CurrentAttackCount { get => currentAttackCount; set => currentAttackCount = value; }
+
     public void AttackAllArcher()
     {
         UpdateArcherList();
-        for (int i = 0; i < archers.Count; i++)
+        foreach (var item in archers)
         {
-            archers[i].GetComponent<Unit>().DecreaseHp(damage);
+            item.GetComponent<Unit>().DecreaseHp(damage);
         }
-        ResetArcherList();
+        archers.Clear();
     }
     private void UpdateArcherList()
     {
-        for (int i = 0; i < InGameManager.Instance.UnitList.Count; i++)
+        foreach (var item in InGameManager.Instance.UnitList)
         {
-            if (InGameManager.Instance.UnitList[i].GetComponent<Archer>())
+            if (item.GetComponent<Archer>())
             {
-                archers.Add(InGameManager.Instance.UnitList[i]);
+                archers.Add(item);
             }
         }
-    }
-    private void ResetArcherList()
-    {
-        archers.Clear();
     }
 }

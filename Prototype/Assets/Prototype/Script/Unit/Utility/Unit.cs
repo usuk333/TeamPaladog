@@ -29,21 +29,22 @@ public class Unit : MonoBehaviour //모든 아군 유닛들의 능력치와 공격 로직을 호출
     [SerializeField] private EUnitState unitState = EUnitState.NonCombat;
     [SerializeField] private EUnitKinds unitKinds = EUnitKinds.Warrior;
     [SerializeField] private int index;
+    [SerializeField] private Enemy currentEnemy;
+    [SerializeField] private Boss boss;
+    [Header("유닛 능력치")]
     [SerializeField] private float maxHp;
     [SerializeField] private float currentHp;
     [SerializeField] private float attackPower;
     [SerializeField] private float attackSpeed;
     [SerializeField] private float moveSpeed;
+    [Header("유닛 비용")]
     [SerializeField] private float cost;
-    [SerializeField] private Enemy currentEnemy;
-    [SerializeField] private Boss boss;
 
     public EUnitState UnitState { get => unitState; }
     public Enemy CurrentEnemy { get => currentEnemy; set => currentEnemy = value; }
     public float CurrentHp { get => currentHp; }
     public float MaxHp { get => maxHp; }
     public float Cost { get => cost; }
-    public EUnitKinds UnitKinds { get => unitKinds; }
     public Boss Boss { get => boss; set => boss = value; }
     public float AttackPower { get => attackPower; set => attackPower = value; }
     public float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
@@ -84,7 +85,7 @@ public class Unit : MonoBehaviour //모든 아군 유닛들의 능력치와 공격 로직을 호출
             case EUnitKinds.Wizard:
                 break;
             case EUnitKinds.Shielder:
-                GetComponent<Shielder>().AttackCount = 0;
+                GetComponent<Shielder>().CurrentAttackCount = 0;
                 break;
             case EUnitKinds.Priest:
                 GetComponent<Priest>().ClearList();
@@ -156,13 +157,13 @@ public class Unit : MonoBehaviour //모든 아군 유닛들의 능력치와 공격 로직을 호출
     {
         AttackBasic(isBoss);
         var shielder = GetComponent<Shielder>();
-        shielder.AttackCount++;
-        if (shielder.AttackCount >= 3)
+        shielder.CurrentAttackCount++;
+        if (shielder.CurrentAttackCount >= shielder.AttackCount)
         {
-            shielder.AttackCount = 0;
+            shielder.CurrentAttackCount = 0;
             if (!isBoss)
             {
-                currentEnemy.Stun(2f);
+                currentEnemy.Stun(shielder.StunSecond);
             }
         }
     }

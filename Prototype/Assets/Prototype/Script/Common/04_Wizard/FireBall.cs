@@ -14,9 +14,12 @@ public class FireBall : MonoBehaviour //마법사의 마법 구체의 기능 스크립트
     private SpriteRenderer sprite;
     private bool isBoom = false;
     [SerializeField] private List<GameObject> collisions = new List<GameObject>();
-    [SerializeField] private float speed;
     [SerializeField] private BoxCollider2D explosionRange;
     [SerializeField] private EParent parent;
+    [Header("마법구체 속도")]
+    [SerializeField] private float speed;
+    [Header("마법구체 스플래쉬 데미지(곱으로 적용, 0.1~0.9 사이값으로")]
+    [SerializeField] private float splashDamage;
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
     public EParent Parent { get => parent; set => parent = value; }
     private void BoomFireBall()
@@ -33,11 +36,11 @@ public class FireBall : MonoBehaviour //마법사의 마법 구체의 기능 스크립트
                 {
                     if (collisions[i].GetComponent<Enemy>())
                     {
-                        collisions[i].GetComponent<Enemy>().DecreaseHp(i == 0 ? damage : damage * 0.5f);
+                        collisions[i].GetComponent<Enemy>().DecreaseHp(i == 0 ? damage : damage * splashDamage);
                     }
                     else if (collisions[i].GetComponent<Boss>())
                     {
-                        collisions[i].GetComponent<Boss>().DecreaseHp(i == 0 ? damage : damage * 0.5f);
+                        collisions[i].GetComponent<Boss>().DecreaseHp(i == 0 ? damage : damage * splashDamage);
                     }
                 }
             }

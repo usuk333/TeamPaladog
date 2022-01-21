@@ -6,6 +6,8 @@ public class Pride : MonoBehaviour
 {
     private bool isIn = false;
     private Boss boss;
+    [Header("패턴 생성 후 직접 피해를 주기까지 시간")]
+    [SerializeField] private float patternSecond;
     [SerializeField] private float damage;
     [SerializeField] private List<GameObject> collisions = new List<GameObject>();
     [SerializeField] private GameObject[] donuts = new GameObject[2];
@@ -45,11 +47,11 @@ public class Pride : MonoBehaviour
         yield return new WaitForSeconds(1f);
         Vector3 rand = new Vector3(Random.Range(1f, transform.position.x), 0);
         ActiveDonutInOrder(0, rand);
-        yield return new WaitForSeconds(3.1f);
+        yield return new WaitForSeconds(patternSecond + 0.1f);
         AttackDonut();
         DisableDonutInOrder(0);
         ActiveDonutInOrder(1, rand);
-        yield return new WaitForSeconds(3.1f);
+        yield return new WaitForSeconds(patternSecond + 0.1f);
         AttackDonut();
         DisableDonutInOrder(1);
         collisions.Clear();

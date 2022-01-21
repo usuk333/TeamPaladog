@@ -15,21 +15,19 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
         Assasin,
         BomberMan
     }
+    private float increaseDamage;
+    private HpBar hpBar;
+    [SerializeField] private Unit currentUnit;
+    [SerializeField] private Player player;
     [SerializeField] private int index;
     [SerializeField] private EUnitState enemyState = EUnitState.NonCombat;
     [SerializeField] private EEnemyKinds enemyKinds;
-
+    [Header("적 유닛 능력치")]
     [SerializeField] private float maxHp;
     [SerializeField] private float currentHp;
     [SerializeField] private float attackPower;
     [SerializeField] private float attackSpeed;
     [SerializeField] private float moveSpeed;   
-    [SerializeField] private float increaseDamage;
-
-    [SerializeField] private Unit currentUnit;
-    [SerializeField] private Player player;
-    private HpBar hpBar;
-
     public EUnitState EnemyState { get => enemyState; set => enemyState = value; }
     public float CurrentHp { get => currentHp; set => currentHp = value; }
     public Unit CurrentUnit { get => currentUnit; set => currentUnit = value; }
@@ -38,7 +36,6 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
     public float AttackPower { get => attackPower; set => attackPower = value; }
     public int Index { get => index; }
     public float MoveSpeed { get => moveSpeed; }
-
     public void DecreaseHp(float damage)
     {
         currentHp -= damage + increaseDamage;
@@ -74,7 +71,7 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
         switch (enemyKinds)
         {
             case EEnemyKinds.Shielder:
-                GetComponent<Shielder>().AttackCount = 0;
+                GetComponent<Shielder>().CurrentAttackCount = 0;
                 break;
             case EEnemyKinds.Priest:
                 GetComponent<Priest>().ClearEnemyList();
@@ -132,17 +129,17 @@ public class Enemy : MonoBehaviour //적 유닛들의 능력치 설정, 공격 로직을 호출하
     {
         AttackBasic(isPlayer);
         var shielder = GetComponent<Shielder>();
-        shielder.AttackCount++;
-        if (shielder.AttackCount >= 3)
+        shielder.CurrentAttackCount++;
+        if (shielder.CurrentAttackCount >= shielder.AttackCount)
         {
-            shielder.AttackCount = 0;
+            shielder.CurrentAttackCount = 0;
             if (!isPlayer)
             {
-                currentUnit.Stun(2f);
+                currentUnit.Stun(shielder.StunSecond);
             }
             else
             {
-                player.Stun(2f);
+                player.Stun(shielder.StunSecond);
             }
         }
     }

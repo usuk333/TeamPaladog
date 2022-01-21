@@ -24,10 +24,14 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
         Normal,
         Special
     }
+    private float increaseDamage;
+    private BossHpBar bossHpBar;
     [SerializeField] private EUnitState bossState = EUnitState.NonCombat;
     [SerializeField] private EBossKinds eBossKinds;
     [SerializeField] private EBossPattern eBossPattern;
-    // ÀÎ°ÔÀÓ ¸Å´ÏÀú¿¡´Ù hpÁõ°¡, °¨¼Ò ÇÔ¼ö¸¦ ¸¸µé°í ÆÄ¶ó¸ÞÅÍ·Î ´©±¸ hp¸¦ °¨¼Ò½ÃÅ³°Å³Ä
+    [SerializeField] private Unit currentUnit;
+    [SerializeField] private Player player;
+    [Header("º¸½º ´É·ÂÄ¡")]
     [SerializeField] private float maxHp;
     [SerializeField] private float currentHp;
     [SerializeField] private float attackPower;
@@ -35,14 +39,8 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
     [SerializeField] private float currentAttackSpeed;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float currentMoveSpeed;
-    private float increaseDamage;
     [SerializeField] private float knockBackSpeed;
-    [SerializeField] private Unit currentUnit;
-    [SerializeField] private Player player;
     [SerializeField] private float patternHp = 0.8f;
-    [SerializeField] private float gluttonyHealPattern = 0.6f;
-    private BossHpBar bossHpBar;
-
     public EUnitState BossState { get => bossState; set => bossState = value; }
     public float CurrentHp { get => currentHp; set => currentHp = value; }
     public Unit CurrentUnit { get => currentUnit; set => currentUnit = value; }
@@ -72,11 +70,7 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
       
         if(eBossKinds == EBossKinds.Gluttony)
         {
-            if(currentHp < maxHp * gluttonyHealPattern)
-            {
-                AttackGluttony();
-                gluttonyHealPattern -= 0.2f;
-            }
+            GetComponent<Gluttony>().AttackGluttony();
         }
     }
     public void DecreaseHpDot(int dotCount, float damage, float second)
@@ -160,86 +154,79 @@ public class Boss : MonoBehaviour //¸ðµç º¸½º Ä³¸¯ÅÍµéÀÇ ´É·ÂÄ¡ ¼³Á¤, °ø°Ý ·ÎÁ÷À
     private void AttackGoblinKing(bool isPlayer)
     {
         var goblinKing = GetComponent<GoblinKing>();
-        if(goblinKing.AttackCount > 3)
+        if(goblinKing.CurrentAttackCount > goblinKing.AttackCount)
         {
-            goblinKing.AttackShockWave(attackPower);
-            goblinKing.AttackCount = 0;
+            goblinKing.AttackShockWave();
+            goblinKing.CurrentAttackCount = 0;
         }
         else
         {
             AttackBasic(isPlayer);
-            goblinKing.AttackCount++;
+            goblinKing.CurrentAttackCount++;
         }
     }
     private void AttackInterMediateAsmodian(bool isPlayer)
     {
         var interMediateAsmodian = GetComponent<InterMediateAsmodian>();
-        if(interMediateAsmodian.AttackCount > 3)
+        if(interMediateAsmodian.CurrentAttackCount > interMediateAsmodian.AttackCount)
         {
             interMediateAsmodian.AttackAllArcher();
             AttackBasic(isPlayer);
-            interMediateAsmodian.AttackCount = 0;
+            interMediateAsmodian.CurrentAttackCount = 0;
         }
         else
         {
             AttackBasic(isPlayer);
-            interMediateAsmodian.AttackCount++;
+            interMediateAsmodian.CurrentAttackCount++;
         }
     }
     private void AttackSlaveTrader(bool isPlayer)
     {
         var slaveTrader = GetComponent<SlaveTrader>();
-        if(slaveTrader.AttackCount > 3)
+        if(slaveTrader.CurrentAttackCount > slaveTrader.AttackCount)
         {
-            slaveTrader.Attack(attackPower);
-            slaveTrader.AttackCount = 0;
+            slaveTrader.Attack();
+            slaveTrader.CurrentAttackCount = 0;
         }
         else
         {
             AttackBasic(isPlayer);
-            slaveTrader.AttackCount++;
+            slaveTrader.CurrentAttackCount++;
         }
     }
     private void AttackLust(bool isPlayer)
     {
         AttackBasic(isPlayer);
         var lust = GetComponent<Lust>();
-        if(++lust.AttackCount > 3)
+        if(++lust.CurrentAttackCount > lust.AttackCount)
         {
-            lust.AttackCount = 0;
+            lust.CurrentAttackCount = 0;
             if (isPlayer)
             {
-                player.Stun(2f);
+                player.Stun(lust.StunSecond);
             }
             else
             {
-                currentUnit.Stun(2f);
+                currentUnit.Stun(lust.StunSecond);
             }
         }
     }
     private void AttackSloth(bool isPlayer)
     {
         var sloth = GetComponent<Sloth>();
-        if(sloth.AttackCount > 3)
+        if(sloth.CurrentAttackCount > sloth.AttackCount)
         {
             float attack = attackPower;
-            attackPower = attackPower * 1.8f;
+            attackPower = attackPower * sloth.Critical;
             AttackBasic(isPlayer);
             attackPower = attack;
-            sloth.AttackCount = 0;
+            sloth.CurrentAttackCount = 0;
         }
         else
         {
             AttackBasic(isPlayer);
-            sloth.AttackCount++;
+            sloth.CurrentAttackCount++;
         }
-    }
-    private void AttackGluttony() //½ÄÅ½ ±º´ÜÀå¸¸ È£ÃâÇÒ ½Ã½ºÅÛÀû ÇÔ¼ö
-    {
-        int index = Random.Range(0, InGameManager.Instance.UnitList.Count);
-        float damage = InGameManager.Instance.UnitList[index].GetComponent<Unit>().CurrentHp;
-        InGameManager.Instance.UnitList[index].GetComponent<Unit>().DecreaseHp(damage);
-        IncreaseHp(damage);
     }
     private void Invoke_WakeUp()
     {

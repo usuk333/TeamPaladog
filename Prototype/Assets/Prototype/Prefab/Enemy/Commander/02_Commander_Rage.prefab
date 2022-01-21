@@ -276,6 +276,8 @@ MonoBehaviour:
   bossState: 1
   eBossKinds: 5
   eBossPattern: 1
+  currentUnit: {fileID: 0}
+  player: {fileID: 0}
   maxHp: 100
   currentHp: 0
   attackPower: 3
@@ -284,9 +286,8 @@ MonoBehaviour:
   moveSpeed: 1
   currentMoveSpeed: 0
   knockBackSpeed: 0
-  currentUnit: {fileID: 0}
-  player: {fileID: 0}
   patternHp: 0.8
+  gluttonyHealPattern: 0.6
 --- !u!114 &3538685227361716143
 MonoBehaviour:
   m_ObjectHideFlags: 0

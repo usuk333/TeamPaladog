@@ -7,8 +7,7 @@ using UnityEngine.UI;
 public class Devil : MonoBehaviour
 {
     private bool isPageChange;
-    private int posXMin = 2;
-    private int posXMax = 3;
+   
     private Boss boss;
     private Player player;
     private List<GameObject> collisions = new List<GameObject>();
@@ -17,9 +16,23 @@ public class Devil : MonoBehaviour
     [SerializeField] private List<GameObject> crushs = new List<GameObject>();
     [SerializeField] private Image annihilationImage;
     [SerializeField] private Text text;
+    [Header("떨어지는 칼 생성 주기")]
+    [SerializeField] private float swordSecond;
+    [Header("떨어지는 칼 생성 후 직접 피해를 주기까지 시간")]
+    [SerializeField] private float swordAttackSecond;
+    [Header("떨어지는 칼들 사이의 간격")]
+    [SerializeField] private int posXMin = 2;
+    [SerializeField] private int posXMax = 3;
+    [Header("떨어지는 칼 개수")]
     [SerializeField] private GameObject[] swords;
+    [Header("떨어지는 칼 데미지")]
     [SerializeField] private float swordDamage;
+    [Header("전멸 패턴 발동 시간")]
+    [SerializeField] private float annihiationSecond;
+    [Header("충격파 데미지")]
     [SerializeField] private float crushDamage;
+    [Header("충격파 생성 후 직접 피해를 주기까지 시간")]
+    [SerializeField] private float crushSecond;
     [SerializeField] private int crushCount;
 
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
@@ -49,29 +62,26 @@ public class Devil : MonoBehaviour
     }
     private void AttackSword()
     {
-        for (int i = 0; i < collisions.Count; i++)
+        foreach (var item in collisions)
         {
-            if (collisions[i] != null)
+            if (item.GetComponent<Unit>())
             {
-                if (collisions[i].GetComponent<Unit>())
-                {
-                    collisions[i].GetComponent<Unit>().DecreaseHp(swordDamage);
-                }
-                else if (collisions[i].GetComponent<Player>())
-                {
-                    collisions[i].GetComponent<Player>().DecreaseHp(swordDamage);
-                }
+                item.GetComponent<Unit>().DecreaseHp(swordDamage);
+            }
+            else if (item.GetComponent<Player>())
+            {
+                item.GetComponent<Player>().DecreaseHp(swordDamage);
             }
         }
         ResetSword();
     }
     private void ResetSword()
     {
-        for (int i = 0; i < swords.Length; i++)
+        foreach (var item in swords)
         {
-            swords[i].transform.GetChild(0).GetComponent<Transform>().localScale = Vector2.zero;
-            swords[i].SetActive(false);
-            swords[i].transform.SetParent(transform);
+            item.transform.GetChild(0).GetComponent<Transform>().localScale = Vector2.zero;
+            item.SetActive(false);
+            item.transform.SetParent(transform);
         }
         posXMin = 2;
         posXMax = 3;
@@ -102,8 +112,8 @@ public class Devil : MonoBehaviour
         foreach (var item in crushs)
         {
             item.SetActive(true);
-            item.transform.GetChild(0).GetComponent<Transform>().DOScale(1, 1f);
-            yield return new WaitForSeconds(1.1f);
+            item.transform.GetChild(0).GetComponent<Transform>().DOScale(1, crushSecond);
+            yield return new WaitForSeconds(crushSecond + 0.1f);
             AttackCrush();
             ResetCrush(item);
         }
@@ -111,8 +121,8 @@ public class Devil : MonoBehaviour
     }
     private IEnumerator Co_Annihilation()
     {
-        annihilationImage.DOFade(1, 3);
-        yield return new WaitForSeconds(3.1f);
+        annihilationImage.DOFade(1, annihiationSecond);
+        yield return new WaitForSeconds(annihiationSecond + 0.1f);
         foreach (var item in InGameManager.Instance.UnitList)
         {
             item.GetComponent<Unit>().DecreaseHp(item.GetComponent<Unit>().CurrentHp);
@@ -128,18 +138,18 @@ public class Devil : MonoBehaviour
     private IEnumerator Co_ActiveSword()
     {
         yield return new WaitForSeconds(1f);
-        for (int i = 0; i < swords.Length; i++)
+        foreach (var item in swords)
         {
-            swords[i].SetActive(true);
+            item.SetActive(true);
             Vector3 rand = new Vector3(Random.Range(transform.position.x - posXMin, transform.position.x - posXMax),
                                        Random.Range(transform.position.y, transform.position.y - 0.5f), transform.position.z);
-            swords[i].transform.position = rand;
-            swords[i].transform.SetParent(transform.parent);
-            swords[i].transform.GetChild(0).GetComponent<Transform>().DOScale(1, 3f);
+            item.transform.position = rand;
+            item.transform.SetParent(transform.parent);
+            item.transform.GetChild(0).GetComponent<Transform>().DOScale(1, swordAttackSecond);
             posXMin += 2;
             posXMax += 3;
         }
-        yield return new WaitForSeconds(3.1f);
+        yield return new WaitForSeconds(swordAttackSecond + 0.1f);
         AttackSword();
     }
     private IEnumerator Co_Sword()
@@ -149,7 +159,7 @@ public class Devil : MonoBehaviour
         {
             Debug.Log(time);
             time += Time.deltaTime;
-            if (time >= 5)
+            if (time >= swordSecond)
             {
                 StartCoroutine(Co_ActiveSword());
                 time = 0;

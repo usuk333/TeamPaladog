@@ -361,6 +361,8 @@ MonoBehaviour:
   bossState: 1
   eBossKinds: 1
   eBossPattern: 1
+  currentUnit: {fileID: 0}
+  player: {fileID: 0}
   maxHp: 100
   currentHp: 0
   attackPower: 1
@@ -369,8 +371,6 @@ MonoBehaviour:
   moveSpeed: 1
   currentMoveSpeed: 0
   knockBackSpeed: 0
-  currentUnit: {fileID: 0}
-  player: {fileID: 0}
   patternHp: 0.8
   gluttonyHealPattern: 0.6
 --- !u!114 &580756040451363296
@@ -385,12 +385,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a080721c900794241aa5ce25d54c3ecb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 2
+  posXMin: 2
+  posXMax: 3
+  patternCount: 3
+  patternSecond: 3
   lightnings:
   - {fileID: 7438615099725191511}
   - {fileID: 3600978498638562135}
   - {fileID: 1686554423276859105}
   - {fileID: 3400080185849783528}
-  lightningPower: 0
 --- !u!61 &5452159755275475939
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -5,35 +5,35 @@ using DG.Tweening;
 
 public class MagicTool : MonoBehaviour //보스캐릭터 강력한 마법도구의 공격 기능 스크립트
 {
-    private int patternCount = 3;
     private int currentPatternCount = 0;
-    private int posXMin = 2;
-    private int posXMax = 3;
     private Boss boss;
     private List<GameObject> collisions = new List<GameObject>();
-    [SerializeField] private GameObject[] lightnings;
     [SerializeField] private float damage;
-
+    [Header("번개 생성 간격")]
+    [SerializeField] private int posXMin = 2;
+    [SerializeField] private int posXMax = 3;
+    [Header("패턴 반복 횟수")]
+    [SerializeField] private int patternCount = 3;
+    [Header("범위 생성 후 번개가 떨어지기까지 시간")]
+    [SerializeField] private float patternSecond;
+    [Header("생성할 번개 수")]
+    [SerializeField] private GameObject[] lightnings;
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
-
     public void ActiveLightning()
     {      
         StartCoroutine(Co_ActiveLightning());
     }
     private void AttackLightning()
     {
-        for (int i = 0; i < collisions.Count; i++)
+        foreach (var item in collisions)
         {
-            if (collisions[i] != null)
+            if (item.GetComponent<Unit>())
             {
-                if (collisions[i].GetComponent<Unit>())
-                {
-                    collisions[i].GetComponent<Unit>().DecreaseHp(damage);
-                }
-                else if (collisions[i].GetComponent<Player>())
-                {
-                    collisions[i].GetComponent<Player>().DecreaseHp(damage);
-                }
+                item.GetComponent<Unit>().DecreaseHp(damage);
+            }
+            else if (item.GetComponent<Player>())
+            {
+                item.GetComponent<Player>().DecreaseHp(damage);
             }
         }
         ResetLightning();
@@ -49,10 +49,10 @@ public class MagicTool : MonoBehaviour //보스캐릭터 강력한 마법도구의 공격 기능 
     }
     private void ResetLightning()
     {
-        for (int i = 0; i < lightnings.Length; i++)
+        foreach (var item in lightnings)
         {
-            lightnings[i].transform.GetChild(0).GetComponent<Transform>().localScale = Vector2.zero;
-            lightnings[i].SetActive(false);
+            item.transform.GetChild(0).GetComponent<Transform>().localScale = Vector2.zero;
+            item.SetActive(false);
         }
         posXMin = 2;
         posXMax = 3;
@@ -61,17 +61,17 @@ public class MagicTool : MonoBehaviour //보스캐릭터 강력한 마법도구의 공격 기능 
     private IEnumerator Co_ActiveLightning()
     {
         yield return new WaitForSeconds(1f);
-        for (int i = 0; i < lightnings.Length; i++)
+        foreach (var item in lightnings)
         {
-            lightnings[i].SetActive(true);
-            Vector3 rand = new Vector3(Random.Range(transform.position.x - posXMin, transform.position.x - posXMax), 
+            item.SetActive(true);
+            Vector3 rand = new Vector3(Random.Range(transform.position.x - posXMin, transform.position.x - posXMax),
                                        Random.Range(transform.position.y, transform.position.y - 0.5f), transform.position.z);
-            lightnings[i].transform.position = rand;
-            lightnings[i].transform.GetChild(0).GetComponent<Transform>().DOScale(1, 3f);
+            item.transform.position = rand;
+            item.transform.GetChild(0).GetComponent<Transform>().DOScale(1, patternSecond);
             posXMin += 2;
             posXMax += 3;
         }
-        yield return new WaitForSeconds(3.1f);
+        yield return new WaitForSeconds(patternSecond + 0.1f);
         AttackLightning();
     }
     private void Awake()

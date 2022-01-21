@@ -10,8 +10,16 @@ public class Jealousy : MonoBehaviour
     private Boss boss;
     private GameObject donut;
     private bool isDonut;
-    [SerializeField] private float damage;
+    [Header("도넛 데미지")]
     [SerializeField] private float donutDamage;
+    [Header("도넛 생성 주기(초단위)")]
+    [SerializeField] private float donutSecond;
+    [Header("도넛 생성 후 피해를 주기까지의 시간")]
+    [SerializeField] private float donutAttackSecond;
+    [Header("충격파 데미지")]
+    [SerializeField] private float damage;
+    [Header("충격파 생성 후 직접 피해를 주기까지 시간")]
+    [SerializeField] private float crushSecond;
     [SerializeField] private int crushCount;
     [SerializeField] private GameObject donutPrefab;
     [SerializeField] private GameObject crushPrefab;
@@ -48,7 +56,7 @@ public class Jealousy : MonoBehaviour
         for (int i = index; i < crushs.Count; i+=2)
         {
             crushs[i].SetActive(true);
-            crushs[i].transform.GetChild(0).GetComponent<Transform>().DOScale(1, 3f);
+            crushs[i].transform.GetChild(0).GetComponent<Transform>().DOScale(1, crushSecond);
         }
     }
     private void ResetCrushInOrder(int index)
@@ -75,17 +83,17 @@ public class Jealousy : MonoBehaviour
     }
     private void AttackDonut()
     {
-        for (int i = 0; i < donutCollisions.Count; i++)
+        foreach (var item in donutCollisions)
         {
-            donutCollisions[i].DecreaseHp(donutDamage);
+            item.DecreaseHp(donutDamage);
         }
     }
     private IEnumerator Co_ActiveDonut()
     {
         isDonut = true;
         donut.SetActive(true);
-        donut.transform.GetChild(0).GetComponent<Transform>().DOScale(1, 3f);
-        yield return new WaitForSeconds(3.1f);
+        donut.transform.GetChild(0).GetComponent<Transform>().DOScale(1, donutAttackSecond);
+        yield return new WaitForSeconds(donutAttackSecond + 0.1f);
         AttackDonut();
         donut.SetActive(false);
         donut.transform.GetChild(0).GetComponent<Transform>().localScale = new Vector3(0, 0);
@@ -95,11 +103,11 @@ public class Jealousy : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         ActiveCrushInOrder(0);
-        yield return new WaitForSeconds(3.1f);
+        yield return new WaitForSeconds(crushSecond + 0.1f);
         AttackCrush();
         ResetCrushInOrder(0);
         ActiveCrushInOrder(1);
-        yield return new WaitForSeconds(3.1f);
+        yield return new WaitForSeconds(crushSecond + 0.1f);
         AttackCrush();
         ResetCrushInOrder(1);
         collisions.Clear();
@@ -114,7 +122,7 @@ public class Jealousy : MonoBehaviour
             if (!isDonut)
             {
                 time += Time.deltaTime;
-                if (time >= 5)
+                if (time >= donutSecond)
                 {
                     StartCoroutine(Co_ActiveDonut());
                     time = 0;

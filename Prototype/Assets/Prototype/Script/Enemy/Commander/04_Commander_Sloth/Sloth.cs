@@ -5,37 +5,45 @@ using DG.Tweening;
 
 public class Sloth : MonoBehaviour
 {
-    private int attackCount = 0;
-    private int patternCount = 3;
+    private int currentAttackCount = 0;
     private int currentPatternCount = 0;
-    private int posXMin = 2;
-    private int posXMax = 3;
     private Boss boss;
     private List<GameObject> collisions = new List<GameObject>();
+    [Header("치명타 공격을 위한 공격 횟수")]
+    [SerializeField] private int attackCount = 0;
+    [Header("치명타 데미지(공격력에 해당 수치 곱으로 적용")]
+    [SerializeField] private float critical = 0;
+    [Header("가시 생성 간격")]
+    [SerializeField] private int posXMin = 2;
+    [SerializeField] private int posXMax = 3;
+    [Header("생성할 가시 수")]
     [SerializeField] private GameObject[] thorns;
-    [SerializeField] private float thornPower;
+    [Header("패턴 반복 횟수")]
+    [SerializeField] private int patternCount = 3;
+    [Header("패턴 생성 후 직접 피해를 주기까지 시간")]
+    [SerializeField] private float patternSecond = 3;
+    [SerializeField] private float damage;
 
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
-    public int AttackCount { get => attackCount; set => attackCount = value; }
+    public int AttackCount { get => attackCount; }
+    public int CurrentAttackCount { get => currentAttackCount; set => currentAttackCount = value; }
+    public float Critical { get => critical; }
 
     public void ActiveThorn()
     {
         StartCoroutine(Co_ActiveThorn());
     }
     private void AttackThorn()
-    {
-        for (int i = 0; i < collisions.Count; i++)
+    { 
+        foreach (var item in collisions)
         {
-            if (collisions[i] != null)
+            if (item.GetComponent<Unit>())
             {
-                if (collisions[i].GetComponent<Unit>())
-                {
-                    collisions[i].GetComponent<Unit>().DecreaseHp(thornPower);
-                }
-                else if (collisions[i].GetComponent<Player>())
-                {
-                    collisions[i].GetComponent<Player>().DecreaseHp(thornPower);
-                }
+                item.GetComponent<Unit>().DecreaseHp(damage);
+            }
+            else if (item.GetComponent<Player>())
+            {
+                item.GetComponent<Player>().DecreaseHp(damage);
             }
         }
         ResetThorn();
@@ -51,10 +59,10 @@ public class Sloth : MonoBehaviour
     }
     private void ResetThorn()
     {
-        for (int i = 0; i < thorns.Length; i++)
+        foreach (var item in thorns)
         {
-            thorns[i].transform.GetChild(0).GetComponent<Transform>().localScale = Vector2.zero;
-            thorns[i].SetActive(false);
+            item.transform.GetChild(0).GetComponent<Transform>().localScale = Vector2.zero;
+            item.SetActive(false);
         }
         posXMin = 2;
         posXMax = 3;
@@ -64,17 +72,17 @@ public class Sloth : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         boss.BossState = EUnitState.Wait;
-        for (int i = 0; i < thorns.Length; i++)
+        foreach (var item in thorns)
         {
-            thorns[i].SetActive(true);
+            item.SetActive(true);
             Vector3 rand = new Vector3(Random.Range(transform.position.x - posXMin, transform.position.x - posXMax),
                                        Random.Range(transform.position.y, transform.position.y - 0.5f), transform.position.z);
-            thorns[i].transform.position = rand;
-            thorns[i].transform.GetChild(0).GetComponent<Transform>().DOScale(1, 3f);
+            item.transform.position = rand;
+            item.transform.GetChild(0).GetComponent<Transform>().DOScale(1, patternSecond);
             posXMin += 2;
             posXMax += 3;
         }
-        yield return new WaitForSeconds(3.1f);
+        yield return new WaitForSeconds(patternSecond + 0.1f);
         AttackThorn();
     }
     private void Awake()

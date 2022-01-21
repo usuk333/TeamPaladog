@@ -5,16 +5,26 @@ using DG.Tweening;
 
 public class Avarice : MonoBehaviour
 {
-    private int patternCount = 3;
     private int currentPatternCount = 0;
-    private int posXMin = 2;
-    private int posXMax = 3;
     private Boss boss;
-    [SerializeField] private List<GameObject> collisions = new List<GameObject>();
+    private List<GameObject> collisions = new List<GameObject>();
+    [Header("패턴 반복 횟수")]
+    [SerializeField] private int patternCount = 3;
+    [Header("패턴 생성 후 독 폭발까지의 시간")]
+    [SerializeField] private float patternSecond;
+    [Header("독 폭발 간격")]
+    [SerializeField] private int posXMin = 2;
+    [SerializeField] private int posXMax = 3;
+    [Header("독 도트딜 반복 횟수")]
     [SerializeField] private int dotCount;
-    [SerializeField] private GameObject[] poisons;
+    [Header("독 도트딜 반복 시간")]
+    [SerializeField] private float dotSecond;
+    [Header("독 폭발 데미지")]
     [SerializeField] private float explosionDamage;
+    [Header("독 도트 데미지")]
     [SerializeField] private float poisonDamage;
+    [Header("생성할 독 폭발 수")]
+    [SerializeField] private GameObject[] poisons;
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
     // Start is called before the first frame update
     public void ActivePoison()
@@ -23,20 +33,17 @@ public class Avarice : MonoBehaviour
     }
     private void AttackPoison()
     {
-        for (int i = 0; i < collisions.Count; i++)
+        foreach (var item in collisions)
         {
-            if (collisions[i] != null)
+            if (item.GetComponent<Unit>())
             {
-                if (collisions[i].GetComponent<Unit>())
-                {
-                    collisions[i].GetComponent<Unit>().DecreaseHp(explosionDamage);
-                    collisions[i].GetComponent<Unit>().DecreaseHpDot(dotCount, poisonDamage, 2f);
-                }
-                else if (collisions[i].GetComponent<Player>())
-                {
-                    collisions[i].GetComponent<Player>().DecreaseHp(explosionDamage);
-                    collisions[i].GetComponent<Player>().DecreaseHpDot(dotCount, poisonDamage, 2f);
-                }
+                item.GetComponent<Unit>().DecreaseHp(explosionDamage);
+                item.GetComponent<Unit>().DecreaseHpDot(dotCount, poisonDamage, dotSecond);
+            }
+            else if (item.GetComponent<Player>())
+            {
+                item.GetComponent<Player>().DecreaseHp(explosionDamage);
+                item.GetComponent<Player>().DecreaseHpDot(dotCount, poisonDamage, dotSecond);
             }
         }
         ResetPoison();
@@ -52,10 +59,10 @@ public class Avarice : MonoBehaviour
     }
     private void ResetPoison()
     {
-        for (int i = 0; i < poisons.Length; i++)
+        foreach (var item in poisons)
         {
-            poisons[i].transform.GetChild(0).GetComponent<Transform>().localScale = Vector2.zero;
-            poisons[i].SetActive(false);
+            item.transform.GetChild(0).GetComponent<Transform>().localScale = Vector2.zero;
+            item.SetActive(false);
         }
         posXMin = 2;
         posXMax = 3;
@@ -65,17 +72,17 @@ public class Avarice : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         boss.BossState = EUnitState.Wait;
-        for (int i = 0; i < poisons.Length; i++)
+        foreach (var item in poisons)
         {
-            poisons[i].SetActive(true);
+            item.SetActive(true);
             Vector3 rand = new Vector3(Random.Range(transform.position.x - posXMin, transform.position.x - posXMax),
                                        Random.Range(transform.position.y, transform.position.y - 0.5f), transform.position.z);
-            poisons[i].transform.position = rand;
-            poisons[i].transform.GetChild(0).GetComponent<Transform>().DOScale(1, 3f);
+            item.transform.position = rand;
+            item.transform.GetChild(0).GetComponent<Transform>().DOScale(1, patternSecond);
             posXMin += 2;
             posXMax += 3;
         }
-        yield return new WaitForSeconds(3.1f);
+        yield return new WaitForSeconds(patternSecond + 0.1f);
         AttackPoison();
     }
     private void Awake()

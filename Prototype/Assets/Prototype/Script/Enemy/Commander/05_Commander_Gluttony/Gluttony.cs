@@ -7,30 +7,47 @@ public class Gluttony : MonoBehaviour
 {
     private Boss boss;
     private List<GameObject> collisions = new List<GameObject>();
-    [SerializeField] private GameObject eater;
+    [Header("패턴 활성화 후 직접 피해를 주기까지 시간")]
+    [SerializeField] private float patternSecond;
+    [Header("잡아먹기 패턴 발동 체력(0~1 사이의 값으로)")]
+    [SerializeField] private float gluttonyHealPattern;
+    [Header("잡아먹기 패턴 발동 체력 감소식(뺄셈으로 적용)")]
+    [SerializeField] private float gluttonyHealPatternReduction;
     [SerializeField] private float damage;
-
+    [SerializeField] private GameObject eater;
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
 
+    public void AttackGluttony()
+    {
+        if (boss.CurrentHp < boss.MaxHp * gluttonyHealPattern)
+        {
+            int index = Random.Range(0, InGameManager.Instance.UnitList.Count);
+            float damage = InGameManager.Instance.UnitList[index].GetComponent<Unit>().CurrentHp;
+            InGameManager.Instance.UnitList[index].GetComponent<Unit>().DecreaseHp(damage);
+            boss.IncreaseHp(damage);
+            gluttonyHealPattern -= gluttonyHealPatternReduction;
+        }
+    }
     public void ActiveEater()
     {
         StartCoroutine(Co_ActiveEater());
     }
     private void AttackEater()
     {
-        for (int i = 0; i < collisions.Count; i++)
+        foreach (var item in collisions)
         {
-            if (collisions[i].GetComponent<Unit>())
+            if (item.GetComponent<Unit>())
             {
-                collisions[i].GetComponent<Unit>().DecreaseHp(damage);
-                if(collisions[i].GetComponent<Unit>().CurrentHp <= 0)
+                var unit = item.GetComponent<Unit>();
+                unit.DecreaseHp(damage);
+                if(unit.CurrentHp <= 0)
                 {
-                    boss.IncreaseHp(collisions[i].GetComponent<Unit>().MaxHp);
+                    boss.IncreaseHp(unit.MaxHp);
                 }
             }
-            else if (collisions[i].GetComponent<Player>())
+            else if (item.GetComponent<Player>())
             {
-                collisions[i].GetComponent<Player>().DecreaseHp(damage);
+                item.GetComponent<Player>().DecreaseHp(damage);
             }
         }
         ResetEater();
@@ -48,8 +65,8 @@ public class Gluttony : MonoBehaviour
         eater.SetActive(true);
         Vector3 rand = new Vector3(Random.Range(-8.5f, transform.position.x), transform.position.y);
         eater.transform.position = rand;
-        eater.transform.GetChild(0).transform.DOScale(1, 3f);
-        yield return new WaitForSeconds(3.1f);
+        eater.transform.GetChild(0).transform.DOScale(1, patternSecond);
+        yield return new WaitForSeconds(patternSecond + 0.1f);
         AttackEater();
     }
     private void Awake()

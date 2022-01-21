@@ -8,12 +8,12 @@ public class BomberMan : MonoBehaviour
     private Lust lust;
     private Enemy enemy;
     private Player player;
-    [SerializeField] private GameObject target;
     private float moveSpeed;
     private BoxCollider2D bombRange;
-    private Vector3 direction;
-    [SerializeField] private List<GameObject> collisions = new List<GameObject>();
+    [Header("Æø¹ß ½Ã°£")]
     [SerializeField] private float bombSecond;
+    [SerializeField] private List<GameObject> collisions = new List<GameObject>();
+    [SerializeField] private GameObject target;
 
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
     public Lust Lust { get => lust; set => lust = value; }

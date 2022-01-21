@@ -7,6 +7,7 @@ public class Arrow : MonoBehaviour //궁수 유닛이 사용하는 화살 오브젝트 기능 스�
     private float damage;
     private SpriteRenderer sprite;
     [SerializeField] private EParent parent;
+    [Header("화살 속도")]
     [SerializeField] private float speed;
     public EParent Parent { get => parent; set => parent = value; }
     private void AttackArrow(GameObject collision)

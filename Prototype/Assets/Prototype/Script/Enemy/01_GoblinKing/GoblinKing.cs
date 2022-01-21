@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class GoblinKing : MonoBehaviour //보스캐릭터 고블린왕 특수공격 스크립트
 {
-    private int attackCount = 0;
-    [SerializeField] private List<GameObject> collisions = new List<GameObject>();
-
-    public int AttackCount { get => attackCount; set => attackCount = value; }
+    private int currentAttackCount = 0;
+    private List<GameObject> collisions = new List<GameObject>();
+    [Header("충격파 발생을 위한 공격 횟수")]
+    [SerializeField] private int attackCount;
+    [SerializeField] private float damage;
+    public int AttackCount { get => attackCount; }
     public List<GameObject> Collisions { get => collisions; set => collisions = value; }
-    public void AttackShockWave(float damage)
+    public int CurrentAttackCount { get => currentAttackCount; set => currentAttackCount = value; }
+
+    public void AttackShockWave()
     {
         for (int i = 0; i < collisions.Count; i++)
         {

@@ -16,10 +16,12 @@ public class Druid : MonoBehaviour //드루이드 유닛의 기능 스크립트
     private float attackSpeed;
     private SpriteRenderer sprite;
     private Color originColor;
-    [SerializeField] private EDruidState druidState;
-    [SerializeField] private float maxTransmogValue;
-    [SerializeField] private float currentTransmogValue;
+    private EDruidState druidState;
+    private float currentTransmogValue;
     [SerializeField] private List<GameObject> collisions = new List<GameObject>();
+    [Header("변신에 필요한 게이지")]
+    [SerializeField] private float maxTransmogValue;
+    [Header("호랑이태세 공격력, 공격속도")]
     [SerializeField] private float tigerPower;
     [SerializeField] private float tigerSpeed;
     public bool IsTransmog { get => isTransmog; set => isTransmog = value; }
