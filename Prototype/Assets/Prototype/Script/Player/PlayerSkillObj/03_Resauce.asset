@@ -10,7 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c53d5af57b50114fb2d88548a4cf153, type: 3}
-  m_Name: 02_PowerUp
+  m_Name: 03_Resauce
   m_EditorClassIdentifier: 
-  value: 0
-  skillKind: 1
+  mp: 2
+  value: 2
+  coolTime: 5
+  icon: {fileID: 0}
+  skillKind: 3

@@ -43,9 +43,13 @@ public class AttackInteraction : MonoBehaviour //등장하는 모든 캐릭터들의 공격 �
     }
     private void UpdateEnemyCurrentTarget(GameObject target)
     {
+        if(target.tag == "SHIELD")
+        {
+            enemy.CurrentUnit = target.GetComponent<Unit>();
+        }
         if (target.tag == "UNIT" && target.GetComponent<Shielder>())
         {
-            if (enemy.CurrentUnit != null && !enemy.CurrentUnit.GetComponent<Shielder>())
+            if (enemy.CurrentUnit != null && !enemy.CurrentUnit.GetComponent<Shielder>() && enemy.CurrentUnit.tag != "SHIELD")
             {
                 enemy.CurrentUnit = target.GetComponent<Unit>();
             }
@@ -89,34 +93,38 @@ public class AttackInteraction : MonoBehaviour //등장하는 모든 캐릭터들의 공격 �
             }
         }
     }
-    private void UpdateBossCurrentTarget(GameObject collision)
+    private void UpdateBossCurrentTarget(GameObject target)
     {
-        if (collision.tag == "UNIT" && collision.GetComponent<Shielder>())
+        if (target.tag == "SHIELD")
         {
-            if (boss.CurrentUnit != null && !boss.CurrentUnit.GetComponent<Shielder>())
+            boss.CurrentUnit = target.GetComponent<Unit>();
+        }
+        if (target.tag == "UNIT" && target.GetComponent<Shielder>())
+        {
+            if (boss.CurrentUnit != null && !boss.CurrentUnit.GetComponent<Shielder>() && boss.CurrentUnit.tag != "SHIELD")
             {
-                boss.CurrentUnit = collision.GetComponent<Unit>();
+                boss.CurrentUnit = target.GetComponent<Unit>();
             }
         }
-        if (collision.tag == "UNIT" && collision.GetComponent<Assasin>())
+        if (target.tag == "UNIT" && target.GetComponent<Assasin>())
         {
-            if (boss.CurrentUnit != null && !boss.CurrentUnit.GetComponent<Shielder>())
+            if (boss.CurrentUnit != null && !boss.CurrentUnit.GetComponent<Shielder>() && boss.CurrentUnit.tag != "SHIELD")
             {
-                boss.CurrentUnit = collision.GetComponent<Unit>();
+                boss.CurrentUnit = target.GetComponent<Unit>();
             }
         }
-        if (collision.tag == "UNIT")
+        if (target.tag == "UNIT")
         {
             if(boss.CurrentUnit == null)
             {
-                boss.CurrentUnit = collision.GetComponent<Unit>();
+                boss.CurrentUnit = target.GetComponent<Unit>();
             }
         }
-        else if (collision.tag == "PLAYER")
+        else if (target.tag == "PLAYER")
         {
             if (boss.Player == null)
             {
-                boss.Player = collision.GetComponent<Player>();
+                boss.Player = target.GetComponent<Player>();
             }
         }
     }

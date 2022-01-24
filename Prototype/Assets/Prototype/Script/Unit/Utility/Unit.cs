@@ -26,6 +26,9 @@ public class Unit : MonoBehaviour //모든 아군 유닛들의 능력치와 공격 로직을 호출
         Druid,
         Special
     }
+    private float currentAttackSpeed;
+    private float currentMoveSpeed;
+    private bool isInvincibility = false;
     [SerializeField] private EUnitState unitState = EUnitState.NonCombat;
     [SerializeField] private EUnitKinds unitKinds = EUnitKinds.Warrior;
     [SerializeField] private int index;
@@ -43,14 +46,24 @@ public class Unit : MonoBehaviour //모든 아군 유닛들의 능력치와 공격 로직을 호출
     public EUnitState UnitState { get => unitState; }
     public Enemy CurrentEnemy { get => currentEnemy; set => currentEnemy = value; }
     public float CurrentHp { get => currentHp; }
-    public float MaxHp { get => maxHp; }
+    public float MaxHp { get => maxHp; set => maxHp = value; }
     public float Cost { get => cost; }
     public Boss Boss { get => boss; set => boss = value; }
     public float AttackPower { get => attackPower; set => attackPower = value; }
     public float AttackSpeed { get => attackSpeed; set => attackSpeed = value; }
     public int Index { get => index; }
+    public float MoveSpeed { get => moveSpeed; }
+    public float CurrentMoveSpeed { get => currentMoveSpeed; set => currentMoveSpeed = value; }
+    public float AttackSpeed1 { get => attackSpeed; }
+    public float CurrentAttackSpeed { get => currentAttackSpeed; set => currentAttackSpeed = value; }
+    public bool IsInvincibility { get => isInvincibility; set => isInvincibility = value; }
+
     public void DecreaseHp(float damage)
     {
+        if (isInvincibility)
+        {
+            return;
+        }
         currentHp -= damage;
         GetComponentInChildren<HpBar>().UpdateUnitOrEnemyHpBar();
     }
@@ -75,6 +88,8 @@ public class Unit : MonoBehaviour //모든 아군 유닛들의 능력치와 공격 로직을 호출
     private void initializeUnit()
     {
         currentHp = maxHp;
+        currentAttackSpeed = attackSpeed;
+        currentMoveSpeed = moveSpeed;
         GetComponentInChildren<HpBar>().ResetHpBar();
         switch (unitKinds)
         {
@@ -247,7 +262,7 @@ public class Unit : MonoBehaviour //모든 아군 유닛들의 능력치와 공격 로직을 호출
                 {
                     Attack(true);
                 }
-                yield return new WaitForSeconds(attackSpeed);
+                yield return new WaitForSeconds(currentAttackSpeed);
             }
             yield return null;
         }
@@ -271,17 +286,21 @@ public class Unit : MonoBehaviour //모든 아군 유닛들의 능력치와 공격 로직을 호출
     {
         if (unitState == EUnitState.NonCombat)
         {
-            transform.position += Vector3.right * moveSpeed * Time.deltaTime;
+            transform.position += Vector3.right * currentMoveSpeed * Time.deltaTime;
         }
         else if (unitState == EUnitState.Back)
         {
-            transform.position += Vector3.left * moveSpeed * Time.deltaTime;
+            transform.position += Vector3.left * currentMoveSpeed * Time.deltaTime;
         }
     }
     private void Update()
     {
         if (currentHp <= 0)
         {
+            if(this.tag == "SHIELD")
+            {
+                Destroy(this.gameObject);
+            }
             if (unitKinds == EUnitKinds.Priest)
             {
                 InGameManager.Instance.UpdatePriestList(GetComponent<Priest>());

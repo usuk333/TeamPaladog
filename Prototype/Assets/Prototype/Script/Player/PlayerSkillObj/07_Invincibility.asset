@@ -10,7 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9c53d5af57b50114fb2d88548a4cf153, type: 3}
-  m_Name: 05_SpeedUp
+  m_Name: 07_Invincibility
   m_EditorClassIdentifier: 
-  value: 0
-  skillKind: 4
+  mp: 1
+  value: 3
+  coolTime: 60
+  icon: {fileID: 0}
+  skillKind: 7
