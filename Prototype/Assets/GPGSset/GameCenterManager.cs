@@ -295,4 +295,22 @@ public class GameCenterManager : MonoBehaviour
         reference.Child(Usersid).SetRawJsonValueAsync(json);
         text2.text = "@Area2 => Clear";
     }
+
+    public void SaveData()
+    {
+        /*if (!Directory.Exists(Application.persistentDataPath + "/생성할 폴더 이름"))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + "/생성할 폴더 이름");
+        }*/
+
+        /*[안드로이드 External]
+        Application.persistentDataPath : / mnt / sdcard / Android / data / com.YourProductName.YourCompanyName / files[파일 읽기 / 쓰기 가능]
+        Application.dataPath : / data / app / 번들이름 - 번호.apk
+        Application.streamingAssetsPath : jar: file:///data/app/번들이름.apk!/assets [파일이 아닌 WWW로 읽기 가능]
+
+        [안드로이드 Internal]
+        Application.persistentDataPath : / Android / data / com.YourProductName.YourCompanyName / files[파일 읽기 / 쓰기 가능]
+        Application.dataPath : / data / app / 번들이름 - 번호.apk
+        Application.streamingAssetsPath : jar: file:///data/app/번들이름.apk!/assets [파일이 아닌 WWW로 읽기 가능]*/
+    }
 }
