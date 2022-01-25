@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleSprite.cs" />
+    <Compile Include="Assets\Prototype\Script\Player\SkillRange.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Events\Event.cs" />
     <Compile Include="Assets\Prototype\Script\Unit\07_Summoner\Summoner.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SavedGame\ISavedGameMetadata.cs" />

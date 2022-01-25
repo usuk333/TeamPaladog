@@ -21,6 +21,8 @@ public class GameCenterManager : MonoBehaviour
 
     User user;
 
+    DataController dataController;
+
     [SerializeField] Text text1;
     [SerializeField] Text text2;
 
@@ -94,6 +96,7 @@ public class GameCenterManager : MonoBehaviour
             Usersid = newUser.UserId;
             //Debug.Log("writeNewUser 함수 발동");
             //writeNewUser(newUser.UserId);
+            dataController.UIDSave(newUser.UserId);
             InitializeFirebase();
 
             Debug.LogFormat("User signed in successfully: {0} ({1})",
