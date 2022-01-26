@@ -9,7 +9,8 @@ public class SkillRange : MonoBehaviour
         SpeedUp,
         Invincibility,
         Healing,
-        Teleport
+        Teleport,
+        Ultimate
     }
     private Player player;
     [SerializeField] private ERangeKind eRangeKind;
@@ -35,10 +36,20 @@ public class SkillRange : MonoBehaviour
                 case ERangeKind.Teleport:
                     player.TeleportUnits.Add(collision.transform);
                     break;
+                case ERangeKind.Ultimate:
+                    player.UltimateList.Add(collision.gameObject);
+                    break;
                 default:
                     Debug.Assert(false);
                     break;
             }
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if(eRangeKind == ERangeKind.Ultimate)
+        {
+            player.UltimateList.Remove(collision.gameObject);
         }
     }
 }

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c53d5af57b50114fb2d88548a4cf153, type: 3}
   m_Name: 01_Ultimate
   m_EditorClassIdentifier: 
-  mp: 0
-  value: 0
-  coolTime: 0
+  mp: 2
+  value: 3
+  coolTime: 60
   icon: {fileID: 0}
   skillKind: 1

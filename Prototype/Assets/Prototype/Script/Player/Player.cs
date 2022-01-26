@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
 {
@@ -23,6 +24,7 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
     [SerializeField] private float maxMp;
     [SerializeField] private float currentHp;
     [SerializeField] private float currentMp;
+    [SerializeField] private float attackPower;
     [SerializeField] private float moveSpeed;
     [SerializeField] private PlayerSkill[] playerSkills;
     [SerializeField] private Enemy currentEnemy;
@@ -31,6 +33,8 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
     [SerializeField] private List<Unit> invincibilityUnits = new List<Unit>();
     [SerializeField] private List<Unit> healingUnits = new List<Unit>();
     [SerializeField] private List<Transform> teleportUnits = new List<Transform>();
+    [SerializeField] private List<GameObject> ultimateList = new List<GameObject>();
+    [SerializeField] private GameObject[] ultimates;
     public Enemy CurrentEnemy { get => currentEnemy; set => currentEnemy = value; }
     public bool IsLeft { get => isLeft; set => isLeft = value; }
     public bool IsRight { get => isRight; set => isRight = value; }
@@ -45,6 +49,7 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
     public List<Unit> InvincibilityUnits { get => invincibilityUnits; set => invincibilityUnits = value; }
     public List<Unit> HealingUnits { get => healingUnits; set => healingUnits = value; }
     public List<Transform> TeleportUnits { get => teleportUnits; set => teleportUnits = value; }
+    public List<GameObject> UltimateList { get => ultimateList; set => ultimateList = value; }
 
     public void DecreaseHp(float damage)
     {
@@ -85,6 +90,7 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
                     Skill_Attack(index);
                     break;
                 case ESkillKind.Ultimate:
+                    StartCoroutine(Skill_Ultimate(index));
                     break;
                 case ESkillKind.SpeedUp:
                     StartCoroutine(Skill_SpeedUp(index));
@@ -153,9 +159,29 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
             Debug.Log("헛스윙");
         }
     }
-    private void Skill_Ultimate()
+    private void AttackUltimate(int index)
     {
-        //DoSomething
+        foreach (var item in ultimateList)
+        {
+            if (item.GetComponent<Unit>())
+            {
+                item.GetComponent<Unit>().DecreaseHp(playerSkills[index].Value + attackPower);
+            }
+            else if (item.GetComponent<Player>())
+            {
+                item.GetComponent<Player>().DecreaseHp(playerSkills[index].Value + attackPower);
+            }
+        }
+        ResetUltimate();
+    }
+    private void ResetUltimate()
+    {
+        foreach (var item in ultimates)
+        {
+            item.transform.GetChild(0).GetComponent<Transform>().localScale = Vector2.zero;
+            item.SetActive(false);
+        }
+        ultimateList.Clear();
     }
     private void Skill_Resauce(int index)
     {
@@ -169,21 +195,39 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
         obj.GetComponent<Unit>().MaxHp = playerSkills[index].Value;
         obj.SetActive(true);
     }
-    private IEnumerator Skill_Teleport(int index)
+    private void InitializeSkill() //나중에 player DB 완성되면 수정
     {
-        teleportRange.SetActive(true);
-        yield return new WaitForSeconds(0.5f);
-        teleportRange.SetActive(false);
-        foreach (var item in teleportUnits)
+        foreach (var item in playerSkills)
         {
-            item.position = new Vector3(transform.position.x, item.position.y);
+            if(item.SkillKind == ESkillKind.Attack)
+            {
+                item.Value = attackPower;
+            }
+            else if(item.SkillKind == ESkillKind.Ultimate)
+            {
+                item.Value += attackPower;
+            }
         }
-        teleportUnits.Clear();
-        //DoSomething
     }
     private void Invoke_WakeUp()
     {
         isStun = false;
+    }
+    private IEnumerator Skill_Ultimate(int index)
+    {
+        //DoSomething
+        foreach (var item in ultimates)
+        {
+            item.SetActive(true);
+            Vector3 rand = new Vector3
+                (Random.Range(InGameManager.Instance.PlayerSpawnPoint.position.x, InGameManager.Instance.BossSpawnPoint.position.x),
+                 0.25f, transform.position.z);
+            item.transform.position = rand;
+            item.transform.GetChild(0).GetComponent<Transform>().DOScale(1, 2);
+            item.transform.SetParent(GameObject.Find("Field").transform);
+        }
+        yield return new WaitForSeconds(2.1f);
+        AttackUltimate(index);
     }
     private IEnumerator Skill_SpeedUp(int index)
     {
@@ -216,6 +260,17 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
         }
         IncreaseHp(playerSkills[index].Value);
         healingUnits.Clear();
+    }
+    private IEnumerator Skill_Teleport(int index)
+    {
+        teleportRange.SetActive(true);
+        yield return new WaitForSeconds(0.5f);
+        teleportRange.SetActive(false);
+        foreach (var item in teleportUnits)
+        {
+            item.position = new Vector3(transform.position.x, item.position.y);
+        }
+        teleportUnits.Clear();
     }
     private IEnumerator Skill_Invincibility(int index)
     {
@@ -269,11 +324,11 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
         healingRange = transform.Find("HealingRange").gameObject;
         teleportRange = transform.Find("TeleportRange").gameObject;
     }
-    void Start()
+    private void Start()
     {
         StartCoroutine(Co_UpdateResauceInternal());
     }
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (isStun)
         {
