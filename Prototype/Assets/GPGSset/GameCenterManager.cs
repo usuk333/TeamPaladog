@@ -19,17 +19,19 @@ public class GameCenterManager : MonoBehaviour
 
     string Usersid;
 
-    User user;
-
-    DataController dataController;
+    //User user;
 
     [SerializeField] Text text1;
     [SerializeField] Text text2;
+
+    MyUserData userdata;
 
     void Awake()
     {
         FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
         reference = FirebaseDatabase.DefaultInstance.RootReference;
+
+        userdata = new MyUserData();
     }
     void Start()
     {
@@ -96,7 +98,7 @@ public class GameCenterManager : MonoBehaviour
             Usersid = newUser.UserId;
             //Debug.Log("writeNewUser 함수 발동");
             //writeNewUser(newUser.UserId);
-            dataController.UIDSave(newUser.UserId);
+            UIDSave(newUser.UserId);        //기기 저장소 확인하는 if조건문 만들어주는게 좋을듯
             InitializeFirebase();
 
             Debug.LogFormat("User signed in successfully: {0} ({1})",
@@ -119,7 +121,7 @@ public class GameCenterManager : MonoBehaviour
         SceneManager.LoadScene("SampleScene");
     }
 
-    public class User
+    /*public class User
     {
         public string user_name;        //디폴트네임
         public bool Area1;       //진척도
@@ -147,6 +149,22 @@ public class GameCenterManager : MonoBehaviour
             this.Skill2_Level = 1;
             this.Skill3_Level = 1;
         }
+    }*/
+
+    public class MyUserData
+    {
+        public string uid;
+        public string user_name;        //디폴트네임
+        public bool Area1;       //진척도
+        public bool Area2;
+        public bool Area3;
+        public bool Area4;
+        public int A1Stage1_achievement;
+        public int A1Stage2_achievement;
+        public int A1Stage3_achievement;
+        public int Skill1_Level;
+        public int Skill2_Level;
+        public int Skill3_Level;
     }
 
     public IEnumerator TryFirebaseLogin()
@@ -198,7 +216,29 @@ public class GameCenterManager : MonoBehaviour
         });
     }
 
-    public void UpdateDbUserInfo()
+    public void UIDSave(string uid)
+    {
+        Debug.Log("UID 저장하기");
+
+        userdata.user_name = "박찬중";
+        userdata.Area1 = false;
+        userdata.Area2 = false;
+        userdata.Area3 = false;
+        userdata.Area4 = false;
+        userdata.A1Stage1_achievement = 0;
+        userdata.A1Stage2_achievement = 0;
+        userdata.A1Stage3_achievement = 0;
+        userdata.Skill1_Level = 1;
+        userdata.Skill2_Level = 1;
+        userdata.Skill3_Level = 1;
+        userdata.uid = uid;
+
+        string json = JsonUtility.ToJson(userdata, true);
+
+        Debug.Log(json);
+    }
+
+    /*public void UpdateDbUserInfo()
     {
         Debug.LogFormat("[Database] insert !");
         User users = new User();
@@ -219,7 +259,7 @@ public class GameCenterManager : MonoBehaviour
 
         string key = Usersid;
         reference.Child("users").Child(key).SetRawJsonValueAsync(json);
-    }
+    }*/
 
     public void ReadingDbUserInfo()
     {
@@ -283,18 +323,18 @@ public class GameCenterManager : MonoBehaviour
 
     public void Area1Clear()
     {
-        user.Area1 = true;      //1스테이지 클리어시
+        userdata.Area1 = true;      //1스테이지 클리어시
 
-        string json = JsonUtility.ToJson(user);
+        string json = JsonUtility.ToJson(userdata);
         reference.Child(Usersid).SetRawJsonValueAsync(json);
         text1.text = "@Area1 => Clear";
     }
 
     public void Area2Clear()
     {
-        user.Area2 = true;      //2스테이지 클리어시
+        userdata.Area2 = true;      //2스테이지 클리어시
 
-        string json = JsonUtility.ToJson(user);
+        string json = JsonUtility.ToJson(userdata);
         reference.Child(Usersid).SetRawJsonValueAsync(json);
         text2.text = "@Area2 => Clear";
     }
