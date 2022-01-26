@@ -557,6 +557,7 @@ GameObject:
   m_Component:
   - component: {fileID: 186116602}
   - component: {fileID: 186116603}
+  - component: {fileID: 186116604}
   m_Layer: 0
   m_Name: Test
   m_TagString: Untagged
@@ -593,6 +594,18 @@ MonoBehaviour:
   FireBaseId: 
   text1: {fileID: 12889693}
   text2: {fileID: 250713500}
+--- !u!114 &186116604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 186116601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f76546124a132e4d8e5c4977608dc4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &250713498
 GameObject:
   m_ObjectHideFlags: 0
