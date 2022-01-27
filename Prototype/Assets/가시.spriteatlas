@@ -38,8 +38,10 @@ SpriteAtlas:
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 21300000, guid: fd82569068a7d954e8a019ca84f74b85, type: 3}
   - {fileID: 21300000, guid: 51556e2140b563d47b4eef8b7f0f4eb7, type: 3}
   - {fileID: 21300000, guid: 634bf8b1bc9b1f74b81e4c45fee689c6, type: 3}
+  - {fileID: 21300000, guid: ea2c0194fec5ffa4894e35a67e9f0dda, type: 3}
   - {fileID: 21300000, guid: 7ab58fd426ce65f4cab0d14fa3dbb860, type: 3}
   - {fileID: 21300000, guid: 61920f0586a7f6d49ba49348554799d4, type: 3}
   - {fileID: 21300000, guid: e880dc87c0d28874c888e0fc71387d14, type: 3}
@@ -47,14 +49,18 @@ SpriteAtlas:
   - {fileID: 21300000, guid: e7b3291a12f8ce143a5dcc36e7461ef4, type: 3}
   - {fileID: 21300000, guid: b8382a5af5931634bb2af358e35c5b55, type: 3}
   - {fileID: 21300000, guid: 56af23ba200061e4585b4275baeb31df, type: 3}
+  - {fileID: 21300000, guid: 2fff0dab6983ec145ab66ad224323600, type: 3}
   - {fileID: 21300000, guid: 31306b4c2ee417e48bff59d88a86e3ee, type: 3}
+  - {fileID: 21300000, guid: 58e4491d6f9d144429d8fd571bd0ad6e, type: 3}
   - {fileID: 21300000, guid: 9f37b82d238abde449619baaf46807dd, type: 3}
   - {fileID: 21300000, guid: 8bae96ae1b7ce2143aa53155130d63d6, type: 3}
   - {fileID: 21300000, guid: 3e38a13ff127aa7408aff17867273c6e, type: 3}
   - {fileID: 21300000, guid: 17b1888fa46e43f438ebbd71a55467d3, type: 3}
   m_PackedSpriteNamesToIndex:
+  - Gold500
   - fdd_05
   - fdd_09
+  - Gold150
   - fdd_15
   - fdd_14
   - fdd_12
@@ -62,7 +68,9 @@ SpriteAtlas:
   - fdd_16
   - fdd_03
   - fdd_06
+  - Gold3000
   - fdd_07
+  - Gold1200
   - fdd_10
   - fdd_04
   - fdd_08

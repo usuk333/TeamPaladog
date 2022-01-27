@@ -15,5 +15,5 @@ MonoBehaviour:
   mp: 2
   value: 5
   coolTime: 0
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 2fff0dab6983ec145ab66ad224323600, type: 3}
   skillKind: 5

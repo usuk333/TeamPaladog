@@ -35,4 +35,5 @@ public class PlayerSkill : ScriptableObject //플레이어 스킬 오브젝트
     public float Value { get => value; set => this.value = value; }
     public float Mp { get => mp; set => mp = value; }
     public float CoolTime { get => coolTime; set => coolTime = value; }
+    public Sprite Icon { get => icon; }
 }

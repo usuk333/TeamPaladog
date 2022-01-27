@@ -397,7 +397,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7203407333747131729, guid: 4015be6647d30e547b628b7e0eedb7ee, type: 3}
       propertyPath: playerSkills.Array.size
-      value: 8
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -7203407333747131729, guid: 4015be6647d30e547b628b7e0eedb7ee, type: 3}
       propertyPath: ultimates.Array.data[0]
@@ -426,11 +426,11 @@ PrefabInstance:
     - target: {fileID: -7203407333747131729, guid: 4015be6647d30e547b628b7e0eedb7ee, type: 3}
       propertyPath: playerSkills.Array.data[2]
       value: 
-      objectReference: {fileID: 11400000, guid: c1e8445e7c365974281e52d8a76d3350, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: -7203407333747131729, guid: 4015be6647d30e547b628b7e0eedb7ee, type: 3}
       propertyPath: playerSkills.Array.data[3]
       value: 
-      objectReference: {fileID: 11400000, guid: c22ec2f666b2e694ba0514cad18daa64, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: -7203407333747131729, guid: 4015be6647d30e547b628b7e0eedb7ee, type: 3}
       propertyPath: playerSkills.Array.data[4]
       value: 
@@ -1541,7 +1541,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -5443,6 +5443,9 @@ MonoBehaviour:
   - {fileID: 1142180495872592855, guid: a0db0e55de7a655468e12ca548cf8a90, type: 3}
   bossSpawnPoint: {fileID: 15165164}
   playerSpawnPoint: {fileID: 578705591}
+  selectSkills:
+  - {fileID: 1698721643}
+  - {fileID: 237006237}
 --- !u!114 &1188181718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7343,7 +7346,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

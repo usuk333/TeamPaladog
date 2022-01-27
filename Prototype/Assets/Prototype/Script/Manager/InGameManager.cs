@@ -31,6 +31,7 @@ public class InGameManager : MonoBehaviour //ÀÎ°ÔÀÓ ÇÃ·¹ÀÌ¾î µ¥ÀÌÅÍ¿Í ÀüÃ¼ÀûÀÎ °
     [SerializeField] private GameObject[] bossObjects;
     [SerializeField] private Transform bossSpawnPoint;
     [SerializeField] private Transform playerSpawnPoint;
+    [SerializeField] private Button[] selectSkills;
     public List<GameObject> UnitList { get => unitList; }
     public List<GameObject> EnemyList { get => enemyList; }
     public static InGameManager Instance { get => instance; }
@@ -127,6 +128,15 @@ public class InGameManager : MonoBehaviour //ÀÎ°ÔÀÓ ÇÃ·¹ÀÌ¾î µ¥ÀÌÅÍ¿Í ÀüÃ¼ÀûÀÎ °
         int j = (int)i;
         obj.GetComponent<SpriteRenderer>().sortingOrder = -j;
     }
+    private void InitSkillData()
+    {
+        player.PlayerSkills[2] = SkillData.Instance.First;
+        player.PlayerSkills[3] = SkillData.Instance.Second;
+        for (int i = 0; i < selectSkills.Length; i++)
+        {
+            selectSkills[i].image.sprite = player.PlayerSkills[2 + i].Icon;
+        }
+    }
     private IEnumerator Co_UpdateResauceUI()
     {
         while (true)
@@ -156,8 +166,9 @@ public class InGameManager : MonoBehaviour //ÀÎ°ÔÀÓ ÇÃ·¹ÀÌ¾î µ¥ÀÌÅÍ¿Í ÀüÃ¼ÀûÀÎ °
     private void Awake()
     {
         instance = this;
-        area = startPoint.GetComponent<BoxCollider2D>();
         player = FindObjectOfType<Player>();
+        InitSkillData();
+        area = startPoint.GetComponent<BoxCollider2D>();
         resauceGraph = GameObject.Find("Resauce").transform.GetChild(0).GetComponent<Image>();
         resauceText = GameObject.Find("Resauce").transform.GetChild(1).GetComponent<Text>();
         timer = GameObject.Find("Timer").transform.GetChild(0).GetComponent<Text>();

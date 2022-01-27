@@ -50,6 +50,7 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
     public List<Unit> HealingUnits { get => healingUnits; set => healingUnits = value; }
     public List<Transform> TeleportUnits { get => teleportUnits; set => teleportUnits = value; }
     public List<GameObject> UltimateList { get => ultimateList; set => ultimateList = value; }
+    public PlayerSkill[] PlayerSkills { get => playerSkills; set => playerSkills = value; }
 
     public void DecreaseHp(float damage)
     {
