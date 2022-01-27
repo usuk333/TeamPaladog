@@ -8,6 +8,7 @@ using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using UnityEngine.SceneManagement;
 using Firebase.Database;
+using System.IO;
 
 
 public class GameCenterManager : MonoBehaviour
@@ -98,7 +99,8 @@ public class GameCenterManager : MonoBehaviour
             Usersid = newUser.UserId;
             //Debug.Log("writeNewUser 함수 발동");
             //writeNewUser(newUser.UserId);
-            UIDSave(newUser.UserId);        //기기 저장소 확인하는 if조건문 만들어주는게 좋을듯
+            
+            UIDRigister(newUser.UserId);        //기기 저장소 확인하는 if조건문 만들어주는게 좋을듯
             InitializeFirebase();
 
             Debug.LogFormat("User signed in successfully: {0} ({1})",
@@ -154,6 +156,7 @@ public class GameCenterManager : MonoBehaviour
     public class MyUserData
     {
         public string uid;
+        public int level;
         public string user_name;        //디폴트네임
         public bool Area1;       //진척도
         public bool Area2;
@@ -216,9 +219,29 @@ public class GameCenterManager : MonoBehaviour
         });
     }
 
-    public void UIDSave(string uid)
+    public void UIDRigister(string uid)
     {
-        Debug.Log("UID 저장하기");
+        if(File.Exists(Application.persistentDataPath + "/Userdata.json"))
+        {
+            Debug.Log("UID를 비롯한 유저 정보 엑세스");
+            string json = File.ReadAllText(Application.persistentDataPath + "/Userdata.json");
+            userdata = JsonUtility.FromJson<MyUserData>(json);
+        }
+        else
+        {
+            Debug.Log("UID 저장하기");
+
+            userdata.user_name = "박찬중";
+            userdata.uid = uid;
+            userdata.Skill1_Level = 1;
+            userdata.Skill2_Level = 1;
+            userdata.Skill3_Level = 1;
+            userdata.level = 1;
+
+            File.WriteAllText(Application.persistentDataPath + "/Userdata.json", JsonUtility.ToJson(userdata));
+        }
+
+        /*Debug.Log("UID 저장하기");
 
         userdata.user_name = "박찬중";
         userdata.Area1 = false;
@@ -234,8 +257,11 @@ public class GameCenterManager : MonoBehaviour
         userdata.uid = uid;
 
         string json = JsonUtility.ToJson(userdata, true);
+        string key = uid;
 
-        Debug.Log(json);
+        reference.Child("users").Child(key).SetRawJsonValueAsync(json);
+
+        Debug.Log(json);*/
     }
 
     /*public void UpdateDbUserInfo()
@@ -307,11 +333,13 @@ public class GameCenterManager : MonoBehaviour
                             Debug.LogError("LinkWithCredentialAsync was canceled.");
                             return;
                         }
+
                         if (task.IsFaulted)
                         {
                             Debug.LogError("LinkWithCredentialAsync encountered an error: " + task.Exception);
                             return;
                         }
+
                         FirebaseUser newUser = task.Result;
                         Debug.LogFormat("User signed in successfully: {0} ({1})",
       newUser.DisplayName, newUser.UserId);
