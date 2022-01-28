@@ -100,6 +100,7 @@ public class GameCenterManager : MonoBehaviour
             //Debug.Log("writeNewUser 함수 발동");
             //writeNewUser(newUser.UserId);
             
+            Debug.Log("UIDRigister 시작");
             UIDRigister(newUser.UserId);        //기기 저장소 확인하는 if조건문 만들어주는게 좋을듯
             InitializeFirebase();
 
@@ -158,13 +159,6 @@ public class GameCenterManager : MonoBehaviour
         public string uid;
         public int level;
         public string user_name;        //디폴트네임
-        public bool Area1;       //진척도
-        public bool Area2;
-        public bool Area3;
-        public bool Area4;
-        public int A1Stage1_achievement;
-        public int A1Stage2_achievement;
-        public int A1Stage3_achievement;
         public int Skill1_Level;
         public int Skill2_Level;
         public int Skill3_Level;
@@ -221,9 +215,12 @@ public class GameCenterManager : MonoBehaviour
 
     public void UIDRigister(string uid)
     {
+        Debug.Log("UIDRigister 진입 성공");
+
         if(File.Exists(Application.persistentDataPath + "/Userdata.json"))
         {
             Debug.Log("UID를 비롯한 유저 정보 엑세스");
+
             string json = File.ReadAllText(Application.persistentDataPath + "/Userdata.json");
             userdata = JsonUtility.FromJson<MyUserData>(json);
         }
@@ -238,7 +235,11 @@ public class GameCenterManager : MonoBehaviour
             userdata.Skill3_Level = 1;
             userdata.level = 1;
 
-            File.WriteAllText(Application.persistentDataPath + "/Userdata.json", JsonUtility.ToJson(userdata));
+            string json = JsonUtility.ToJson(userdata);
+            string key = Usersid;
+
+            File.WriteAllText(Application.persistentDataPath + "/Userdata.json", JsonUtility.ToJson(userdata, true));
+            reference.Child("users").Child(key).SetRawJsonValueAsync(json);
         }
 
         /*Debug.Log("UID 저장하기");
@@ -349,7 +350,7 @@ public class GameCenterManager : MonoBehaviour
         });
     }
 
-    public void Area1Clear()
+    /*public void Area1Clear()
     {
         userdata.Area1 = true;      //1스테이지 클리어시
 
@@ -365,7 +366,7 @@ public class GameCenterManager : MonoBehaviour
         string json = JsonUtility.ToJson(userdata);
         reference.Child(Usersid).SetRawJsonValueAsync(json);
         text2.text = "@Area2 => Clear";
-    }
+    }*/
 
     public void SaveData()
     {

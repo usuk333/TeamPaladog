@@ -112,6 +112,7 @@
     <Compile Include="Assets\Prototype\Script\Enemy\Commander\06_Commander_Jealousy\Crush.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModulePhysics2D.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesUserProfile.cs" />
+    <Compile Include="Assets\Prototype\Script\StageManager.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\PlayerProfile.cs" />
     <Compile Include="Assets\GooglePlayGames\OurUtils\PlatformUtils.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\Commander\08_Devil\SwordAttack.cs" />
@@ -175,6 +176,7 @@
     <Compile Include="Assets\GooglePlayGames\BasicApi\SignInHelper.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\Commander\04_Commander_Sloth\ThornAttack.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidTokenClient.cs" />
+    <Compile Include="Assets\Prototype\Script\StageSkillData.cs" />
     <Compile Include="Assets\Prototype\Script\Player\Player.cs" />
     <Compile Include="Assets\Prototype\Script\Enemy\Commander\06_Commander_Jealousy\Jealousy.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\EndpointDetails.cs" />
