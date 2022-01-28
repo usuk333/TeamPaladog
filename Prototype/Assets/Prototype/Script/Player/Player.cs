@@ -91,10 +91,10 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
                     Skill_Attack(index);
                     break;
                 case ESkillKind.Ultimate:
-                    StartCoroutine(Skill_Ultimate(index));
+                    StartCoroutine(Co_Skill_Ultimate(index));
                     break;
                 case ESkillKind.SpeedUp:
-                    StartCoroutine(Skill_SpeedUp(index));
+                    StartCoroutine(Co_Skill_SpeedUp(index));
                     break;
                 case ESkillKind.Resauce:
                     Skill_Resauce(index);
@@ -103,13 +103,13 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
                     Skill_Shield(index);
                     break;
                 case ESkillKind.Healing:
-                    StartCoroutine(Skill_Healing(index));
+                    StartCoroutine(Co_Skill_Healing(index));
                     break;
                 case ESkillKind.Teleport:
-                    StartCoroutine(Skill_Teleport(index));
+                    StartCoroutine(Co_Skill_Teleport(index));
                     break;
                 case ESkillKind.Invincibility:
-                    StartCoroutine(Skill_Invincibility(index));
+                    StartCoroutine(Co_Skill_Invincibility(index));
                     break;
                 default:
                     Debug.Assert(false);
@@ -214,7 +214,7 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
     {
         isStun = false;
     }
-    private IEnumerator Skill_Ultimate(int index)
+    private IEnumerator Co_Skill_Ultimate(int index)
     {
         //DoSomething
         foreach (var item in ultimates)
@@ -230,7 +230,7 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
         yield return new WaitForSeconds(2.1f);
         AttackUltimate(index);
     }
-    private IEnumerator Skill_SpeedUp(int index)
+    private IEnumerator Co_Skill_SpeedUp(int index)
     {
         speedUpRange.SetActive(true);
         yield return new WaitForSeconds(0.5f);
@@ -250,7 +250,7 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
         currentMoveSpeed = moveSpeed;
         speedUpUnits.Clear();
     }
-    private IEnumerator Skill_Healing(int index)
+    private IEnumerator Co_Skill_Healing(int index)
     {
         healingRange.SetActive(true);
         yield return new WaitForSeconds(0.5f);
@@ -262,7 +262,7 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
         IncreaseHp(playerSkills[index].Value);
         healingUnits.Clear();
     }
-    private IEnumerator Skill_Teleport(int index)
+    private IEnumerator Co_Skill_Teleport(int index)
     {
         teleportRange.SetActive(true);
         yield return new WaitForSeconds(0.5f);
@@ -273,7 +273,7 @@ public class Player : MonoBehaviour //플레이어 능력치와 기능을 관리하는 스크립트
         }
         teleportUnits.Clear();
     }
-    private IEnumerator Skill_Invincibility(int index)
+    private IEnumerator Co_Skill_Invincibility(int index)
     {
         invincibilityRange.SetActive(true);
         yield return new WaitForSeconds(0.5f);

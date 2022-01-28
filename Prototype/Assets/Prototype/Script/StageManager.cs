@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class StageManager : MonoBehaviour
+public class StageManager : MonoBehaviour //스킬을 아무것도 안 고른 경우 0번 스킬(스피드 증가)이 넘어가는 거 막아야 함
 {
     private GameObject skillSelectPopUp;
     [SerializeField] private int firstSkill;
