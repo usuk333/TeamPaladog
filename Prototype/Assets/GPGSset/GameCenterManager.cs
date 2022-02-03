@@ -162,6 +162,13 @@ public class GameCenterManager : MonoBehaviour
         public int Skill1_Level;
         public int Skill2_Level;
         public int Skill3_Level;
+        
+        public class Goods
+        {
+            public int gold;
+            public int Skillstone;
+            public int Unitstone;
+        }
     }
 
     public IEnumerator TryFirebaseLogin()
