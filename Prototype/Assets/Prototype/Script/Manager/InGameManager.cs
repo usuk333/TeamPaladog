@@ -169,8 +169,8 @@ public class InGameManager : MonoBehaviour //인게임 플레이어 데이터와 전체적인 �
         player = FindObjectOfType<Player>();
         InitSkillData();
         area = startPoint.GetComponent<BoxCollider2D>();
-        resauceGraph = GameObject.Find("Resauce").transform.GetChild(0).GetComponent<Image>();
-        resauceText = GameObject.Find("Resauce").transform.GetChild(1).GetComponent<Text>();
+        //resauceGraph = GameObject.Find("Resauce").transform.GetChild(0).GetComponent<Image>();
+        //resauceText = GameObject.Find("Resauce").transform.GetChild(1).GetComponent<Text>();
         timer = GameObject.Find("Timer").transform.GetChild(0).GetComponent<Text>();
         playerHp = GameObject.Find("PlayerHP").transform.GetChild(0).GetComponent<Image>();
         playerMp = GameObject.Find("PlayerMP").transform.GetChild(0).GetComponent<Image>();
@@ -178,7 +178,7 @@ public class InGameManager : MonoBehaviour //인게임 플레이어 데이터와 전체적인 �
     }
     private void Start()
     {
-        StartCoroutine(Co_UpdateResauceUI());
+        //StartCoroutine(Co_UpdateResauceUI());
         StartCoroutine(Co_Timer());
     }
 }
