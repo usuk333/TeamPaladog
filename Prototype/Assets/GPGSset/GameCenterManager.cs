@@ -169,6 +169,13 @@ public class GameCenterManager : MonoBehaviour
             public int Skillstone;
             public int Unitstone;
         }
+        public class Stage
+        {
+            class Stage1
+            {
+                public bool S1EClear;
+            }
+        }
     }
 
     public IEnumerator TryFirebaseLogin()
