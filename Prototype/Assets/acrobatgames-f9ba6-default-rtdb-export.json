@@ -3,8 +3,8 @@
     "BtcfMMXlaqfTh5JNub7gAJ0z54F2" : {
       "Goods" : {
         "Gold" : 0,
-        "Skillstone" : 0,
-        "Unitstone" : 0
+        "SkillPoints" : 0,
+        "UnitPoints" : 0
       },
       "Skill" : {
         "Skill1" : {
@@ -38,24 +38,101 @@
       },
       "Stage" : {
         "Stage1" : {
-          "Stage1-1" : false,
-          "Stage1-2" : false
+          "S1Easy" : {
+            "S1EClear" : false
+          },
+          "S1Hard" : {
+            "S1HClear" : false
+          },
+          "S1Normal" : {
+            "S1NClear" : false
+          }
         },
         "Stage2" : {
-          "Stage2-1" : false,
-          "Stage2-2" : false,
-          "Stage2-3" : false
+          "S2Easy" : {
+            "S2EClear" : false
+          },
+          "S2Hard" : {
+            "S2HClear" : false
+          },
+          "S2Normal" : {
+            "S2NClear" : false
+          }
         },
         "Stage3" : {
-          "Stage3-1" : false,
-          "Stage3-2" : false,
-          "Stage3-3" : false
+          "S3Easy" : {
+            "S3EClear" : false
+          },
+          "S3Hard" : {
+            "S3HClear" : false
+          },
+          "S3Normal" : {
+            "S3NClear" : false
+          }
+        },
+        "Stage4" : {
+          "S4Easy" : {
+            "S4EClear" : false
+          },
+          "S4Hard" : {
+            "S4HClear" : false
+          },
+          "S4Normal" : {
+            "S4NClear" : false
+          }
+        },
+        "Stage5" : {
+          "S5Easy" : {
+            "S5EClear" : false
+          },
+          "S5Hard" : {
+            "S5HClear" : false
+          },
+          "S5Normal" : {
+            "S5NClear" : false
+          }
+        },
+        "Stage6" : {
+          "S6Easy" : {
+            "S6EClear" : false
+          },
+          "S6Hard" : {
+            "S6HClear" : false
+          },
+          "S6Normal" : {
+            "S6NClear" : false
+          }
+        },
+        "Stage7" : {
+          "S7Easy" : {
+            "S7EClear" : false
+          },
+          "S7Hard" : {
+            "S7HClear" : false
+          },
+          "S7Normal" : {
+            "S7NClear" : false
+          }
+        },
+        "Stage8" : {
+          "S8Easy" : {
+            "S8EClear" : false
+          },
+          "S8Hard" : {
+            "S8HClear" : false
+          },
+          "S8Normal" : {
+            "S8NClear" : false
+          }
         }
       },
       "Status" : {
+        "ATKPower" : 1,
         "EXP" : 0,
+        "HP" : 100,
         "Level" : 1,
-        "Nickname" : "default"
+        "MP" : 50,
+        "Speed" : 5
       },
       "Unit" : {
         "Archor" : {
@@ -74,9 +151,8 @@
           "Magician_Level" : 1,
           "Magician_Unlock" : false
         },
-        "Priest" : {
-          "Priest_Level" : 1,
-          "Priest_Unlock" : false
+        "Mechanic" : {
+          "MechanicLevel" : 1
         },
         "Shielder" : {
           "Shielder_Level" : 1,
@@ -85,10 +161,6 @@
         "Specialist" : {
           "Specialist_Unlock" : false,
           "Specialist_level" : 1
-        },
-        "Summoner" : {
-          "Summoner_Level" : 1,
-          "Summoner_Unlock" : false
         },
         "Warrior" : {
           "Warrior_Level" : 1,
