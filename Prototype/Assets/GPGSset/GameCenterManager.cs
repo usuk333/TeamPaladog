@@ -22,10 +22,13 @@ public class GameCenterManager : MonoBehaviour
 
     //User user;
 
-    [SerializeField] Text text1;
-    [SerializeField] Text text2;
 
     MyUserData userdata;
+
+
+    public bool StartTouch;
+    [SerializeField] private Text StartText;
+    [SerializeField] private GameObject LoginPanel;
 
     void Awake()
     {
@@ -47,6 +50,28 @@ public class GameCenterManager : MonoBehaviour
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
         //auth = FirebaseAuth.DefaultInstance;
+
+        StartTouch = true;      //로딩 완료
+        GameStart();
+    }
+
+    private void Update()
+    {
+        if(StartTouch == true && Input.touchCount > 0)
+        {
+            StartText.gameObject.SetActive(false);
+            StartTouch = false;
+
+            LoginPanel.SetActive(true);
+        }
+    }
+
+    private void GameStart()
+    {
+        if(StartTouch == true)
+        {
+            StartText.gameObject.SetActive(true);
+        }
     }
 
     public void GoogleLogin()
@@ -124,56 +149,229 @@ public class GameCenterManager : MonoBehaviour
         SceneManager.LoadScene("SampleScene");
     }
 
-    /*public class User
-    {
-        public string user_name;        //디폴트네임
-        public bool Area1;       //진척도
-        public bool Area2;
-        public bool Area3;
-        public bool Area4;
-        public int A1Stage1_achievement;
-        public int A1Stage2_achievement;
-        public int A1Stage3_achievement;
-        public int Skill1_Level;
-        public int Skill2_Level;
-        public int Skill3_Level;
 
-        public User()
-        {
-            this.user_name = "defalut";
-            this.Area1 = false;
-            this.Area2 = false;
-            this.Area3 = false;
-            this.Area4 = false;
-            this.A1Stage1_achievement = 0;
-            this.A1Stage1_achievement = 0;
-            this.A1Stage1_achievement = 0;
-            this.Skill1_Level = 1;
-            this.Skill2_Level = 1;
-            this.Skill3_Level = 1;
-        }
-    }*/
-
-    public class MyUserData
+    public class MyUserData //데이터
     {
-        public string uid;
-        public int level;
-        public string user_name;        //디폴트네임
-        public int Skill1_Level;
-        public int Skill2_Level;
-        public int Skill3_Level;
+        public string UID;
         
         public class Goods
         {
-            public int gold;
-            public int Skillstone;
-            public int Unitstone;
+            public int Gold;
+            public int SkillPoints;
+            public int UnitPoints;
         }
+        public class Skill
+        {
+            public class Skill1
+            {
+                public int Skill1_Level;
+                public bool Skill1_Unlock;
+            }
+            public class Skill2
+            {
+                public int Skill2_Level;
+                public bool Skill2_Unlock;
+            }
+            public class Skill3
+            {
+                public int Skill3_Level;
+                public bool Skill3_Unlock;
+            }
+            public class Skill4
+            {
+                public int Skill4_Level;
+                public bool Skill4_Unlock;
+            }
+            public class Skill5
+            {
+                public int Skill5_Level;
+                public bool Skill5_Unlock;
+            }
+            public class Skill6
+            {
+                public int Skill6_Level;
+                public bool Skill6_Unlock;
+            }
+            public class Skill7
+            {
+                public int Skill7_Level;
+                public bool Skill7_Unlock;
+            }
+        }
+
         public class Stage
         {
-            class Stage1
+            public class Stage1
             {
-                public bool S1EClear;
+                public class S1Easy
+                {
+                    public bool S1EClear;
+                }
+                public class S1Normal
+                {
+                    public bool S1NClear;
+                }
+                public class S1Hard
+                {
+                    public bool S1HClear;
+                }
+            }
+            public class Stage2
+            {
+                public class S2Easy
+                {
+                    public bool S2EClear;
+                }
+                public class S2Normal
+                {
+                    public bool S2NClear;
+                }
+                public class S2Hard
+                {
+                    public bool S2HClear;
+                }
+            }
+            public class Stage3
+            {
+                public class S3Easy
+                {
+                    public bool S3EClear;
+                }
+                public class S3Normal
+                {
+                    public bool S3NClear;
+                }
+                public class S3Hard
+                {
+                    public bool S3HClear;
+                }
+            }
+            public class Stage4
+            {
+                public class S4Easy
+                {
+                    public bool S4EClear;
+                }
+                public class S4Normal
+                {
+                    public bool S4NClear;
+                }
+                public class S4Hard
+                {
+                    public bool S4HClear;
+                }
+            }
+            public class Stage5
+            {
+                public class S5Easy
+                {
+                    public bool S5EClear;
+                }
+                public class S5Normal
+                {
+                    public bool S5NClear;
+                }
+                public class S5Hard
+                {
+                    public bool S5HClear;
+                }
+            }
+            public class Stage6
+            {
+                public class S6Easy
+                {
+                    public bool S6EClear;
+                }
+                public class S6Normal
+                {
+                    public bool S6NClear;
+                }
+                public class S6Hard
+                {
+                    public bool S6HClear;
+                }
+            }
+            public class Stage7
+            {
+                public class S7Easy
+                {
+                    public bool S7EClear;
+                }
+                public class S7Normal
+                {
+                    public bool S7NClear;
+                }
+                public class S7Hard
+                {
+                    public bool S7HClear;
+                }
+            }
+            public class Stage8
+            {
+                public class S8Easy
+                {
+                    public bool S8EClear;
+                }
+                public class S8Normal
+                {
+                    public bool S8NClear;
+                }
+                public class S8Hard
+                {
+                    public bool S8HClear;
+                }
+            }
+        }
+        public class Status
+        {
+            public int Level;
+            public int EXP;
+            public float speed;
+            public float HP;
+            public float MP;
+            public float ATKPower;
+        }
+        public class Unit
+        {
+            public class Warrior
+            {
+                public int Warrior_Level;
+                public bool Warrior_Unlock;
+            }
+            public class Assassin
+            {
+                public int Assassin_Level;
+                public bool Assassin_Unlock;
+            }
+            public class Druid
+            {
+                public int Druid_Level;
+                public bool Druid_Unlock;
+            }
+            public class Shielder
+            {
+                public int Shielder_Level;
+                public bool Shielder_Unlock;
+            }
+            public class Archor
+            {
+                public int Archor_Level;
+                public bool Archor_Unlock;
+            }
+            public class Mechanic
+            {
+                public int Mechanic_Level;
+                public bool Mechanic_Unlock;
+            }
+            public class Magician
+            {
+                public int Magician_Level;
+                public bool Magician_Unlock;
+            }
+            public class Specialist
+            {
+                public int Specialist_Level;
+                public bool Specialist_Unlock;
             }
         }
     }
@@ -203,6 +401,7 @@ public class GameCenterManager : MonoBehaviour
             Usersid = newUser.UserId;
             //Users = newUser;
             //writeNewUser(newUser.UserId);
+            UIDRigister(newUser.UserId);
             InitializeFirebase();
             //아마 이미 회원가입이 되어 있으면 writeNewUser를 발동 안해야함
             Debug.LogFormat("User signed in successfully: {0} ({1})",
@@ -231,8 +430,8 @@ public class GameCenterManager : MonoBehaviour
     {
         Debug.Log("UIDRigister 진입 성공");
 
-        if(File.Exists(Application.persistentDataPath + "/Userdata.json"))
-        {
+        if(File.Exists(Application.persistentDataPath + "/Userdata.json"))  //이미 유저 데이터가 로컬 저장소에
+        {                                                                   //존재 한다면
             Debug.Log("UID를 비롯한 유저 정보 엑세스");
 
             string json = File.ReadAllText(Application.persistentDataPath + "/Userdata.json");
@@ -242,12 +441,7 @@ public class GameCenterManager : MonoBehaviour
         {
             Debug.Log("UID 저장하기");
 
-            userdata.user_name = "박찬중";
-            userdata.uid = uid;
-            userdata.Skill1_Level = 1;
-            userdata.Skill2_Level = 1;
-            userdata.Skill3_Level = 1;
-            userdata.level = 1;
+            userdata.UID = uid;
 
             string json = JsonUtility.ToJson(userdata);
             string key = Usersid;
@@ -364,23 +558,6 @@ public class GameCenterManager : MonoBehaviour
         });
     }
 
-    /*public void Area1Clear()
-    {
-        userdata.Area1 = true;      //1스테이지 클리어시
-
-        string json = JsonUtility.ToJson(userdata);
-        reference.Child(Usersid).SetRawJsonValueAsync(json);
-        text1.text = "@Area1 => Clear";
-    }
-
-    public void Area2Clear()
-    {
-        userdata.Area2 = true;      //2스테이지 클리어시
-
-        string json = JsonUtility.ToJson(userdata);
-        reference.Child(Usersid).SetRawJsonValueAsync(json);
-        text2.text = "@Area2 => Clear";
-    }*/
 
     public void SaveData()
     {
