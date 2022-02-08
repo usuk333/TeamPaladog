@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 2111611688301950846}
   - component: {fileID: 2111611688301950845}
   - component: {fileID: 2111611688301950844}
-  m_Layer: 0
+  - component: {fileID: 949009840}
+  m_Layer: 7
   m_Name: RemoteDealer_Test
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -73,9 +74,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9236485, g: 0.9433962, b: 0.18244925, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -132,3 +133,23 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 5
+--- !u!114 &949009840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2111611688301950843}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc9dfa78ca9700c49b287f3c83a34043, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss: {fileID: 0}
+  maxHp: 1
+  currentHp: 0
+  attackDamage: 0.6
+  attackSpeed: 1
+  moveSpeed: 0
+  eUnitType: 3
+  eUnitKind: 1
