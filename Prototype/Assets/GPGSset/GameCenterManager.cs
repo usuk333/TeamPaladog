@@ -24,6 +24,7 @@ public class GameCenterManager : MonoBehaviour
 
 
     MyUserData userdata;
+    
 
 
     public bool StartTouch;
@@ -57,13 +58,14 @@ public class GameCenterManager : MonoBehaviour
 
     private void Update()
     {
-        if(StartTouch == true && Input.touchCount > 0)
+        if(StartTouch == true && Input.GetMouseButton(0))
         {
             StartText.gameObject.SetActive(false);
             StartTouch = false;
 
             LoginPanel.SetActive(true);
         }
+
     }
 
     private void GameStart()
@@ -153,12 +155,109 @@ public class GameCenterManager : MonoBehaviour
     public class MyUserData //데이터
     {
         public string UID;
-        
-        public class Goods
+
+        //Goods
+        public int Gold;
+        public int SkillPoints;
+        public int UnitPoints;
+
+        //Skill
+        //Skill1
+        public int Skill1_Level;
+        public bool Skill1_Unlock;
+        //Skill2
+        public int Skill2_Level;
+        public bool Skill2_Unlock;
+        //Skill3
+        public int Skill3_Level;
+        public bool Skill3_Unlock;
+        //Skill4
+        public int Skill4_Level;
+        public bool Skill4_Unlock;
+        //Skill5
+        public int Skill5_Level;
+        public bool Skill5_Unlock;
+        //Skill6
+        public int Skill6_Level;
+        public bool Skill6_Unlock;
+        //Skill7
+        public int Skill7_Level;
+        public bool Skill7_Unlock;
+
+        //Stage
+        //Stage1
+        public bool S1EClear;
+        public bool S1NClear;
+        public bool S1HClear;
+        //Stage2
+        public bool S2EClear;
+        public bool S2NClear;
+        public bool S2HClear;
+        //Stage3
+        public bool S3EClear;
+        public bool S3NClear;
+        public bool S3HClear;
+        //Stage4
+        public bool S4EClear;
+        public bool S4NClear;
+        public bool S4HClear;
+        //Stage5
+        public bool S5EClear;
+        public bool S5NClear;
+        public bool S5HClear;
+        //Stage6
+        public bool S6EClear;
+        public bool S6NClear;
+        public bool S6HClear;
+        //Stage7
+        public bool S7EClear;
+        public bool S7NClear;
+        public bool S7HClear;
+        //Stage8
+        public bool S8EClear;
+        public bool S8NClear;
+        public bool S8HClear;
+
+        //Status
+        public int Level;
+        public int EXP;
+        public float Speed;
+        public float HP;
+        public float MP;
+        public float ATKPower;
+
+        //Unit
+        //Warrior
+        public int Warrior_Level;       
+        public bool Warrior_Unlock;
+        //Assassin
+        public int Assassin_Level;
+        public bool Assassin_Unlock;
+        //Druid
+        public int Druid_Level;
+        public bool Druid_Unlock;
+        //Shielder
+        public int Shielder_Level;
+        public bool Shielder_Unlock;
+        //Archo
+        public int Archor_Level;
+        public bool Archor_Unlock;
+        //Mechanic
+        public int Mechanic_Level;
+        public bool Mechanic_Unlock;
+        //Magician
+        public int Magician_Level;
+        public bool Magician_Unlock;
+        //Specialist
+        public int Specialist_Level;
+        public bool Specialist_Unlock;
+
+
+        /*public class Goods
         {
-            public int Gold;
-            public int SkillPoints;
-            public int UnitPoints;
+            public int Gold = 0;
+            public int SkillPoints = 0;
+            public int UnitPoints = 0;
         }
         public class Skill
         {
@@ -373,7 +472,7 @@ public class GameCenterManager : MonoBehaviour
                 public int Specialist_Level;
                 public bool Specialist_Unlock;
             }
-        }
+        }*/
     }
 
     public IEnumerator TryFirebaseLogin()
@@ -439,9 +538,92 @@ public class GameCenterManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("UID 저장하기");
+            Debug.Log("UID 생성하고 데이터 처음 만들기");
 
             userdata.UID = uid;
+
+            userdata.Gold = 0;
+            userdata.SkillPoints = 0;
+            userdata.UnitPoints = 0;
+
+            userdata.Skill1_Level = 1;
+            userdata.Skill1_Unlock = true;
+            userdata.Skill2_Level = 1;
+            userdata.Skill2_Unlock = false;
+            userdata.Skill3_Level = 1;
+            userdata.Skill3_Unlock = false;
+            userdata.Skill4_Level = 1;
+            userdata.Skill4_Unlock = false;
+            userdata.Skill5_Level = 1;
+            userdata.Skill5_Unlock = false;
+            userdata.Skill6_Level = 1;
+            userdata.Skill6_Unlock = false;
+            userdata.Skill7_Level = 1;
+            userdata.Skill7_Unlock = false;
+
+            userdata.S1EClear = false;
+            userdata.S1HClear = false;
+            userdata.S1NClear = false;
+
+            userdata.S2EClear = false;
+            userdata.S2HClear = false;
+            userdata.S2NClear = false;
+
+            userdata.S3EClear = false;
+            userdata.S3HClear = false;
+            userdata.S3NClear = false;
+
+            userdata.S4EClear = false;
+            userdata.S4HClear = false;
+            userdata.S4NClear = false;
+
+            userdata.S5EClear = false;
+            userdata.S5HClear = false;
+            userdata.S5NClear = false;
+
+            userdata.S6EClear = false;
+            userdata.S6HClear = false;
+            userdata.S6NClear = false;
+
+            userdata.S7EClear = false;
+            userdata.S7HClear = false;
+            userdata.S7NClear = false;
+
+            userdata.S8EClear = false;
+            userdata.S8HClear = false;
+            userdata.S8NClear = false;
+
+            userdata.ATKPower = 1;
+            userdata.EXP = 0;
+            userdata.HP = 100;
+            userdata.Level = 1;
+            userdata.MP = 1;
+            userdata.Speed = 5;
+
+            userdata.Warrior_Level = 1;
+            userdata.Warrior_Unlock = true;
+
+            userdata.Assassin_Level = 1;
+            userdata.Assassin_Unlock = false;
+
+            userdata.Shielder_Level = 1;
+            userdata.Shielder_Unlock = true;
+
+            userdata.Druid_Level = 1;
+            userdata.Druid_Unlock = false;
+
+            userdata.Archor_Level = 1;
+            userdata.Archor_Unlock = true;
+
+            userdata.Mechanic_Level = 1;
+            userdata.Mechanic_Unlock = false;
+
+            userdata.Magician_Level = 1;
+            userdata.Magician_Unlock = true;
+
+            userdata.Specialist_Level = 1;
+            userdata.Specialist_Unlock = false;
+
 
             string json = JsonUtility.ToJson(userdata);
             string key = Usersid;

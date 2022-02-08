@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "R3CRB0T1SVV",
         "name": "com.paladog.acrobatgames",
-        "processId": 22203,
+        "processId": 8372,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -11,49 +11,43 @@
         {
             "deviceId": "R3CRB0T1SVV",
             "name": "com.paladog.acrobatgames",
-            "processId": 13321,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CRB0T1SVV",
-            "name": "com.paladog.acrobatgames",
-            "processId": 16671,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CRB0T1SVV",
-            "name": "com.paladog.acrobatgames",
-            "processId": 13770,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CRB0T1SVV",
-            "name": "com.paladog.acrobatgames",
-            "processId": 23617,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CRB0T1SVV",
-            "name": "com.paladog.acrobatgames",
-            "processId": 4930,
-            "exited": true
-        },
-        {
-            "deviceId": "R3CRB0T1SVV",
-            "name": "com.paladog.acrobatgames",
             "processId": 12356,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "R3CRB0T1SVV",
             "name": "com.paladog.acrobatgames",
             "processId": 15614,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "R3CRB0T1SVV",
             "name": "com.paladog.acrobatgames",
             "processId": 22203,
+            "exited": true
+        },
+        {
+            "deviceId": "R3CRB0T1SVV",
+            "name": "com.paladog.acrobatgames",
+            "processId": 24163,
+            "exited": true
+        },
+        {
+            "deviceId": "R3CRB0T1SVV",
+            "name": "com.sec.android.app.launcher",
+            "processId": 3298,
+            "exited": false
+        },
+        {
+            "deviceId": "R3CRB0T1SVV",
+            "name": "com.paladog.acrobatgames",
+            "processId": 29154,
+            "exited": true
+        },
+        {
+            "deviceId": "R3CRB0T1SVV",
+            "name": "com.paladog.acrobatgames",
+            "processId": 8372,
             "exited": false
         }
     ],
