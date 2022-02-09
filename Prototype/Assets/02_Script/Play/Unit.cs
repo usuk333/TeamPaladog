@@ -25,6 +25,12 @@ public class Unit : MonoBehaviour
         Mechanic,
         Mage
     }
+    private enum EUnitValue
+    {
+        Count,
+        Percentage
+    }
+    [SerializeField] private EUnitValue eUnitValue;
     [SerializeField] private EUnitState eUnitState = EUnitState.Idle;
     [SerializeField] private Boss boss;
     [SerializeField] private float maxHp;
@@ -98,6 +104,26 @@ public class Unit : MonoBehaviour
         var obj = UnitProjectilePool.GetProjectile(i);
         obj.GetComponent<Projectile>().Initialze(boss, transform, attackDamage);
     }
+    private bool AttackSpecial_Count()
+    {
+        var count = GetComponent<CountUnit>();
+        if (count.CurrentAttackCount < count.AttackCount)
+        {
+            Attack();
+            count.CurrentAttackCount++;
+            return true;
+        }
+        else
+        {
+            count.AttackSpecial();
+            count.CurrentAttackCount = 0;
+            return false;
+        }
+    }
+    private void AttackPercentage()
+    {
+        //DoSomething
+    }
     private IEnumerator Co_Dead() //유닛 죽는 애니메이션 연출 코루틴
     {
         var sprite = GetComponent<SpriteRenderer>();
@@ -127,7 +153,22 @@ public class Unit : MonoBehaviour
                     //DoMoveAnim
                     break;
                 case EUnitState.Attack:
-                    Attack();
+                    if(eUnitValue == EUnitValue.Count)
+                    {
+                        if (AttackSpecial_Count())
+                        {
+                            eUnitState = EUnitState.Idle;
+                        }
+                        else
+                        {
+                            yield return new WaitForSeconds(2f); // 나중에 스킬 시전시간 변수로 변경 
+                            eUnitState = EUnitState.Idle;
+                        }
+                    }
+                    else
+                    {
+                        AttackPercentage();
+                    }
                     eUnitState = EUnitState.Idle;
                     break;
                 case EUnitState.Skill:

@@ -19,6 +19,37 @@ public class InGameManager : MonoBehaviour
     {
         instance = this;
         StartCoroutine(Co_InitializeInGameData());
+        units = FindObjectsOfType<Unit>();
+        Unit unit;
+        for (int i = 0; i < units.Length; i++) //이 부분 추후에 함수로 빼기 (유닛리스트 탱커 ~ 원거리 순으로 정렬)
+        {
+            switch (units[i].UnitType)
+            {
+                case Unit.EUnitType.Tanker:
+                    unit = units[0];
+                    units[0] = units[i];
+                    units[i] = unit;
+                    break;
+                case Unit.EUnitType.CloseDealer:
+                    unit = units[1];
+                    units[1] = units[i];
+                    units[i] = unit;
+                    break;
+                case Unit.EUnitType.Wizard:
+                    unit = units[2];
+                    units[2] = units[i];
+                    units[i] = unit;
+                    break;
+                case Unit.EUnitType.RemoteDealer:
+                    unit = units[3];
+                    units[3] = units[i];
+                    units[i] = unit;
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
+        }
     }
 
     // Update is called once per frame
