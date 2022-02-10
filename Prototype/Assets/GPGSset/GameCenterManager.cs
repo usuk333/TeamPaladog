@@ -22,14 +22,13 @@ public class GameCenterManager : MonoBehaviour
 
     //User user;
 
-
-    MyUserData userdata;
-    
-
+    public MyUserData userdata;
 
     public bool StartTouch;
     [SerializeField] private Text StartText;
     [SerializeField] private GameObject LoginPanel;
+
+    Data data;
 
     void Awake()
     {
@@ -251,228 +250,6 @@ public class GameCenterManager : MonoBehaviour
         //Specialist
         public int Specialist_Level;
         public bool Specialist_Unlock;
-
-
-        /*public class Goods
-        {
-            public int Gold = 0;
-            public int SkillPoints = 0;
-            public int UnitPoints = 0;
-        }
-        public class Skill
-        {
-            public class Skill1
-            {
-                public int Skill1_Level;
-                public bool Skill1_Unlock;
-            }
-            public class Skill2
-            {
-                public int Skill2_Level;
-                public bool Skill2_Unlock;
-            }
-            public class Skill3
-            {
-                public int Skill3_Level;
-                public bool Skill3_Unlock;
-            }
-            public class Skill4
-            {
-                public int Skill4_Level;
-                public bool Skill4_Unlock;
-            }
-            public class Skill5
-            {
-                public int Skill5_Level;
-                public bool Skill5_Unlock;
-            }
-            public class Skill6
-            {
-                public int Skill6_Level;
-                public bool Skill6_Unlock;
-            }
-            public class Skill7
-            {
-                public int Skill7_Level;
-                public bool Skill7_Unlock;
-            }
-        }
-
-        public class Stage
-        {
-            public class Stage1
-            {
-                public class S1Easy
-                {
-                    public bool S1EClear;
-                }
-                public class S1Normal
-                {
-                    public bool S1NClear;
-                }
-                public class S1Hard
-                {
-                    public bool S1HClear;
-                }
-            }
-            public class Stage2
-            {
-                public class S2Easy
-                {
-                    public bool S2EClear;
-                }
-                public class S2Normal
-                {
-                    public bool S2NClear;
-                }
-                public class S2Hard
-                {
-                    public bool S2HClear;
-                }
-            }
-            public class Stage3
-            {
-                public class S3Easy
-                {
-                    public bool S3EClear;
-                }
-                public class S3Normal
-                {
-                    public bool S3NClear;
-                }
-                public class S3Hard
-                {
-                    public bool S3HClear;
-                }
-            }
-            public class Stage4
-            {
-                public class S4Easy
-                {
-                    public bool S4EClear;
-                }
-                public class S4Normal
-                {
-                    public bool S4NClear;
-                }
-                public class S4Hard
-                {
-                    public bool S4HClear;
-                }
-            }
-            public class Stage5
-            {
-                public class S5Easy
-                {
-                    public bool S5EClear;
-                }
-                public class S5Normal
-                {
-                    public bool S5NClear;
-                }
-                public class S5Hard
-                {
-                    public bool S5HClear;
-                }
-            }
-            public class Stage6
-            {
-                public class S6Easy
-                {
-                    public bool S6EClear;
-                }
-                public class S6Normal
-                {
-                    public bool S6NClear;
-                }
-                public class S6Hard
-                {
-                    public bool S6HClear;
-                }
-            }
-            public class Stage7
-            {
-                public class S7Easy
-                {
-                    public bool S7EClear;
-                }
-                public class S7Normal
-                {
-                    public bool S7NClear;
-                }
-                public class S7Hard
-                {
-                    public bool S7HClear;
-                }
-            }
-            public class Stage8
-            {
-                public class S8Easy
-                {
-                    public bool S8EClear;
-                }
-                public class S8Normal
-                {
-                    public bool S8NClear;
-                }
-                public class S8Hard
-                {
-                    public bool S8HClear;
-                }
-            }
-        }
-        public class Status
-        {
-            public int Level;
-            public int EXP;
-            public float speed;
-            public float HP;
-            public float MP;
-            public float ATKPower;
-        }
-        public class Unit
-        {
-            public class Warrior
-            {
-                public int Warrior_Level;
-                public bool Warrior_Unlock;
-            }
-            public class Assassin
-            {
-                public int Assassin_Level;
-                public bool Assassin_Unlock;
-            }
-            public class Druid
-            {
-                public int Druid_Level;
-                public bool Druid_Unlock;
-            }
-            public class Shielder
-            {
-                public int Shielder_Level;
-                public bool Shielder_Unlock;
-            }
-            public class Archor
-            {
-                public int Archor_Level;
-                public bool Archor_Unlock;
-            }
-            public class Mechanic
-            {
-                public int Mechanic_Level;
-                public bool Mechanic_Unlock;
-            }
-            public class Magician
-            {
-                public int Magician_Level;
-                public bool Magician_Unlock;
-            }
-            public class Specialist
-            {
-                public int Specialist_Level;
-                public bool Specialist_Unlock;
-            }
-        }*/
     }
 
     public IEnumerator TryFirebaseLogin()
@@ -540,14 +317,14 @@ public class GameCenterManager : MonoBehaviour
         {
             Debug.Log("UID 생성하고 데이터 처음 만들기");
 
-            userdata.UID = uid;
+            data.UID = uid;
 
-            userdata.Gold = 0;
-            userdata.SkillPoints = 0;
-            userdata.UnitPoints = 0;
+            data.Gold = 0;
+            data.SkillPoints = 0;
+            data.UnitPoints = 0;
 
-            userdata.Skill1_Level = 1;
-            userdata.Skill1_Unlock = true;
+            data.Skill1_Level = 1;
+            data.Skill1_Unlock = true;
             userdata.Skill2_Level = 1;
             userdata.Skill2_Unlock = false;
             userdata.Skill3_Level = 1;
