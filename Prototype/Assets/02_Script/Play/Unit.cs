@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine.Unity;
+using Spine.Unity.AnimationTools;
 
 public class Unit : MonoBehaviour
 {
@@ -20,8 +22,8 @@ public class Unit : MonoBehaviour
     }
     private enum EUnitKind
     {
-        None,
-        Archer,
+        Other,
+        Taoist,
         Mechanic,
         Mage
     }
@@ -30,6 +32,11 @@ public class Unit : MonoBehaviour
         Count,
         Percentage
     }
+    private SkeletonAnimation spine;
+    private CountUnit countUnit;
+    private PercentageUnit percentageUnit;
+    [SerializeField] private ParticleSystem basicEffect;
+    [SerializeField] private ParticleSystem skillEffect;
     [SerializeField] private EUnitValue eUnitValue;
     [SerializeField] private EUnitState eUnitState = EUnitState.Idle;
     [SerializeField] private Boss boss;
@@ -56,10 +63,12 @@ public class Unit : MonoBehaviour
         }
     }
     public float CurrentHp { get => currentHp; set => currentHp = value; }
+    public float AttackDamage { get => attackDamage; }
 
     public bool InitializeUnitStatus()//해당 함수는 InGameManager의 Awake에서 실행될 코루틴에서 호출
     {
         //초기화 필요한 변수들 초기화
+        spine = GetComponent<SkeletonAnimation>();
         boss = FindObjectOfType<Boss>();
         //maxHp = DB 맥스체력
         //currentHp = maxHp;
@@ -77,15 +86,26 @@ public class Unit : MonoBehaviour
             StartCoroutine(Co_Dead());
         }
     }
+    #region -투사체 발사 함수-
+    private void SetProjectile(int i)//투사체 발사하는 유닛만 사용. 투사체 풀에서 꺼내오면서 초기화
+    {
+        var obj = UnitProjectilePool.GetProjectile(i);
+        obj.GetComponent<Projectile>().Initialze(boss, transform, attackDamage);
+    }
+    #endregion
     private void Attack() //공격 로직
     {
+        if (basicEffect != null)
+        {
+            basicEffect.Play();
+        }
         switch (eUnitKind)
         {
-            case EUnitKind.None:
+            case EUnitKind.Other:
                 boss.DecreaseHp(attackDamage); //투사체 발사 유닛이 아닌 경우에는 그냥 타격
                 break;
             //이 밑으로는 투사체 발사 유닛. 유닛 종류에 맞게 투사체 꺼내오는 함수 호출
-            case EUnitKind.Archer:
+            case EUnitKind.Taoist:
                 SetProjectile(0);
                 break;
             case EUnitKind.Mechanic:
@@ -98,46 +118,67 @@ public class Unit : MonoBehaviour
                 Debug.Assert(false);
                 break;
         }
-    }
-    private void SetProjectile(int i)//투사체 발사하는 유닛만 사용. 투사체 풀에서 꺼내오면서 초기화
-    {
-        var obj = UnitProjectilePool.GetProjectile(i);
-        obj.GetComponent<Projectile>().Initialze(boss, transform, attackDamage);
-    }
-    private bool AttackSpecial_Count()
-    {
-        var count = GetComponent<CountUnit>();
-        if (count.CurrentAttackCount < count.AttackCount)
+        if (countUnit) //카운트 유닛 공격횟수 증가
         {
-            Attack();
-            count.CurrentAttackCount++;
-            return true;
+            countUnit.CurrentAttackCount++;
+        }
+    }
+    private void AttackSkill() // 스킬 사용 함수. 카운트 유닛 or 퍼센트 유닛으로 나눠짐
+    {
+        if (skillEffect != null)
+        {
+            skillEffect.Play();
+        }
+        if (countUnit)
+        {
+            countUnit.UseSkill();
+        }
+        else if (percentageUnit)
+        {
+            percentageUnit.UseSkill();
+        }
+    }
+    private void TransitionCount()//카운트 유닛 상태 전이 함수
+    {
+        if (countUnit.CurrentAttackCount >= countUnit.AttackCount)
+        {
+            countUnit.CurrentAttackCount = 0;
+            eUnitState = EUnitState.Skill;         
         }
         else
         {
-            count.AttackSpecial();
-            count.CurrentAttackCount = 0;
-            return false;
+            eUnitState = EUnitState.Attack;
         }
     }
-    private void AttackPercentage()
+    private void TransitionPercentage()//퍼센트 유닛 상태 전이 함수
     {
-        //DoSomething
+        float rand = Random.value * 100;
+        Debug.Log(rand);
+        if (rand <= percentageUnit.SkillPercentage)
+        {
+            eUnitState = EUnitState.Skill;
+        }
+        else
+        {
+            eUnitState = EUnitState.Attack;
+        }
     }
     private IEnumerator Co_Dead() //유닛 죽는 애니메이션 연출 코루틴
     {
-        var sprite = GetComponent<SpriteRenderer>();
+        yield return null;
+        /*var material = GetComponent<MeshRenderer>().material;
         float alpha = 1;
-        while(sprite.color.a > 0)
+        while(material.color.a > 0)
         {
-            sprite.color = new Color(sprite.color.r, sprite.color.g, sprite.color.b, alpha);
+            material.color = new Color(material.color.r, material.color.g, material.color.b, alpha);
             alpha -= 0.01f;
             yield return new WaitForSeconds(0.01f);
         }
-        transform.gameObject.SetActive(false);
+        transform.gameObject.SetActive(false);*/
     }
-    private IEnumerator Co_UpdateState() //유닛 유한상태기계
+    private IEnumerator Co_UpdateState() //유닛 유한상태기계(사실상 무한임)
     {
+        yield return new WaitForSeconds(2f);
         while (true)
         {
             switch (eUnitState)
@@ -146,33 +187,33 @@ public class Unit : MonoBehaviour
                     yield return new WaitForSeconds(attackSpeed);
                     if(currentHp > 0)
                     {
-                        eUnitState = EUnitState.Attack;
+                        switch (eUnitValue)
+                        {
+                            case EUnitValue.Count:
+                                TransitionCount();
+                                break;
+                            case EUnitValue.Percentage:
+                                TransitionPercentage();
+                                break;
+                            default:
+                                Debug.Assert(false);
+                                break;
+                        }
                     }
                     break;
                 case EUnitState.Move:
                     //DoMoveAnim
                     break;
                 case EUnitState.Attack:
-                    if(eUnitValue == EUnitValue.Count)
-                    {
-                        if (AttackSpecial_Count())
-                        {
-                            eUnitState = EUnitState.Idle;
-                        }
-                        else
-                        {
-                            yield return new WaitForSeconds(2f); // 나중에 스킬 시전시간 변수로 변경 
-                            eUnitState = EUnitState.Idle;
-                        }
-                    }
-                    else
-                    {
-                        AttackPercentage();
-                    }
+                    Attack();
+                    //공격 애니메이션 재생 시간만큼 코루틴에 지연시간 주기
                     eUnitState = EUnitState.Idle;
                     break;
                 case EUnitState.Skill:
-                    //DoSkill
+                    AttackSkill();
+                    
+                    //스킬 애니메이션 재생 시간만큼 코루틴에 지연시간 주기
+                    eUnitState = EUnitState.Idle;
                     break;
                 default:
                     Debug.Assert(false);
@@ -183,6 +224,20 @@ public class Unit : MonoBehaviour
     }
     private void Awake()
     {
+        //spine = GetComponent<SkeletonAnimation>();
+        if (eUnitValue == EUnitValue.Count)
+        {
+            countUnit = GetComponent<CountUnit>();  
+        }
+        else
+        {
+            percentageUnit = GetComponent<PercentageUnit>();
+        }
+        if (transform.childCount > 0)
+        {
+            basicEffect = transform.GetChild(0).GetComponent<ParticleSystem>();
+            skillEffect = transform.GetChild(1).GetComponent<ParticleSystem>();
+        }
         boss = FindObjectOfType<Boss>();
         currentHp = maxHp;
     }

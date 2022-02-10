@@ -6,7 +6,7 @@ public class Projectile : MonoBehaviour
 {
     private enum EProjectileKind
     {
-        Arrow,
+        Charm,
         Bullet,
         FireBall
     }
@@ -38,7 +38,7 @@ public class Projectile : MonoBehaviour
             boss.DecreaseHp(attackDamage);
             switch (eProjectileKind)
             {
-                case EProjectileKind.Arrow:
+                case EProjectileKind.Charm:
                     UnitProjectilePool.ReturnProjectile(this.gameObject, UnitProjectilePool.Instance.ArrowQueue);
                     break;
                 case EProjectileKind.Bullet:
