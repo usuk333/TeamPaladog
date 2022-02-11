@@ -8,6 +8,12 @@ public class PlayerUI : MonoBehaviour
     private Player player;
     [SerializeField] private Image hpBar; //플레이어 Hp바 이미지
     [SerializeField] private Image mpBar; //플레이어 Mp바 이미지
+    [SerializeField] private Image castingBar;
+    public void ActiveCastingBar()
+    {
+        castingBar.transform.parent.gameObject.SetActive(true);
+        //star
+    }
     private IEnumerator Co_UpdatePlayerUI() //플레이어 UI 플레이어 정보에 맞게 갱신
     {
         while (true)

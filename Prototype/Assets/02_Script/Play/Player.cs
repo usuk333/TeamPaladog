@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
     private bool isRight; //오른쪽 이동 체크
     private bool isLeft; // 왼쪽 이동 체크
     private Boss boss;
+    private bool isCast = false;
     [SerializeField] private float maxHp;
     [SerializeField] private float currentHp;
     [SerializeField] private float maxMp;
@@ -15,6 +16,18 @@ public class Player : MonoBehaviour
     [SerializeField] private float mpRegenerationTime;
     [SerializeField] private float moveSpeed; //이동 속도
 
+    public bool IsCast
+    {
+        get
+        {
+            return isCast;
+        }
+        set
+        {
+            isCast = value;
+
+        }
+    }
     public float MaxHp
     { 
         get
@@ -90,6 +103,10 @@ public class Player : MonoBehaviour
         else if (Input.GetKeyUp(KeyCode.LeftArrow))
         {
             isLeft = false;
+        }
+        if (isCast)
+        {
+
         }
     }
     private void FixedUpdate()
