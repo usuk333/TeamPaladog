@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Data
+public class UserData
 {
     public string UID;
+
+    public string LastLogin;
 
     //Goods
     public int Gold;
@@ -102,4 +104,6 @@ public class Data
     //Specialist
     public int Specialist_Level;
     public bool Specialist_Unlock;
+
+
 }
