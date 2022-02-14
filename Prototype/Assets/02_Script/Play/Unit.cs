@@ -153,7 +153,6 @@ public class Unit : MonoBehaviour
     private void TransitionPercentage()//퍼센트 유닛 상태 전이 함수
     {
         float rand = Random.value * 100;
-        Debug.Log(rand);
         if (rand <= percentageUnit.SkillPercentage)
         {
             eUnitState = EUnitState.Skill;

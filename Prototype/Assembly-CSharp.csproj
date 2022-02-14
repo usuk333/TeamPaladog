@@ -58,6 +58,7 @@
     <Compile Include="Assets\GooglePlayGames\BasicApi\SavedGame\ISavedGameMetadata.cs" />
     <Compile Include="Assets\GPGSset\GameCenterManager.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesAchievement.cs" />
+    <Compile Include="Assets\Boss_TimeJudge.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\INearbyConnectionClient.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\CommonStatusCodes.cs" />
     <Compile Include="Assets\02_Script\Play\BossHpBar.cs" />
@@ -135,7 +136,8 @@
     <Compile Include="Assets\02_Script\Play\Unit\PercentageUnit.cs" />
     <Compile Include="Assets\02_Script\Play\UnitProjectilePool.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\EndpointDetails.cs" />
-    <Compile Include="Assets\Boss_TimeJudge.cs" />
+    <Compile Include="Assets\02_Script\Play\CastingObject.cs" />
+    <Compile Include="Assets\02_Script\Play\Portal.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Spine\version.txt" />

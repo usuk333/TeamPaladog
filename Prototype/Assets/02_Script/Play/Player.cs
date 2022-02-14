@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    private const float CASTING_TIME = 2f;
     private bool isRight; //오른쪽 이동 체크
     private bool isLeft; // 왼쪽 이동 체크
     private Boss boss;
     private bool isCast = false;
+    public bool isCastFinish { get; set; } = false;
+    private PlayerUI playerUI;
     [SerializeField] private float maxHp;
     [SerializeField] private float currentHp;
     [SerializeField] private float maxMp;
@@ -15,19 +18,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float mpRegenerative;
     [SerializeField] private float mpRegenerationTime;
     [SerializeField] private float moveSpeed; //이동 속도
-
-    public bool IsCast
-    {
-        get
-        {
-            return isCast;
-        }
-        set
-        {
-            isCast = value;
-
-        }
-    }
     public float MaxHp
     { 
         get
@@ -78,6 +68,7 @@ public class Player : MonoBehaviour
     }
     private void Awake() // 이니셜라이징으로 뺄거임 22.02.08
     {
+        playerUI = FindObjectOfType<PlayerUI>();
         boss = FindObjectOfType<Boss>();
         currentHp = maxHp;
         currentMp = maxMp;
@@ -104,10 +95,6 @@ public class Player : MonoBehaviour
         {
             isLeft = false;
         }
-        if (isCast)
-        {
-
-        }
     }
     private void FixedUpdate()
     {
@@ -120,4 +107,5 @@ public class Player : MonoBehaviour
             Move(Vector3.left);
         }
     }
+   
 }
