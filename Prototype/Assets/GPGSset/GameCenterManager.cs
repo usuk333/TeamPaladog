@@ -22,20 +22,18 @@ public class GameCenterManager : MonoBehaviour
 
     //User user;
 
-    public MyUserData userdata;
 
     public bool StartTouch;
     [SerializeField] private Text StartText;
     [SerializeField] private GameObject LoginPanel;
 
-    Data data;
+    public UserData userdata;
 
     void Awake()
     {
         FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
         reference = FirebaseDatabase.DefaultInstance.RootReference;
-
-        userdata = new MyUserData();
+        
     }
     void Start()
     {
@@ -53,6 +51,33 @@ public class GameCenterManager : MonoBehaviour
 
         StartTouch = true;      //로딩 완료
         GameStart();
+
+        //실험구간
+
+        Usersid = "NaIxowYCsaSqdaYaWtWbIYErkqM2";
+
+        reference.Child("users").Child(Usersid).GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.LogError("failed reading...");
+            }
+            else if (task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+
+                Debug.Log("컴플릿떳음");
+
+                foreach (DataSnapshot data in snapshot.Children)
+                {
+                    //IDictionary userinfo = (IDictionary)data.Value;
+                    //딕셔너리 공부해야할듯. 이해가 안댐
+                    Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
+
+                    //아씨발좆같다
+                }
+            }
+        });
     }
 
     private void Update()
@@ -62,9 +87,8 @@ public class GameCenterManager : MonoBehaviour
             StartText.gameObject.SetActive(false);
             StartTouch = false;
 
-            LoginPanel.SetActive(true);
+            CheckUID();
         }
-
     }
 
     private void GameStart()
@@ -72,6 +96,42 @@ public class GameCenterManager : MonoBehaviour
         if(StartTouch == true)
         {
             StartText.gameObject.SetActive(true);
+        }
+    }
+
+    private void CheckUID()
+    {
+        if(File.Exists(Application.persistentDataPath + "/Userdata.json"))
+        {
+            string json = File.ReadAllText(Application.persistentDataPath + "/Userdata.json");
+            userdata = JsonUtility.FromJson<UserData>(json);
+
+            Usersid = userdata.UID;
+
+            reference.Child("users").Child(Usersid).GetValueAsync().ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    Debug.LogError("failed reading...");
+                }
+                else if (task.IsCompleted)
+                {
+                    DataSnapshot snapshot = task.Result;
+
+                    Debug.Log("InitializeFirebase 접근완료");
+
+                    foreach (DataSnapshot data in snapshot.Children)
+                    {
+                        IDictionary userinfo = (IDictionary)data.Value;
+                        //딕셔너리 공부해야할듯. 이해가 안댐
+                        Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
+                    }
+                }
+            });
+        }
+        else
+        {
+            LoginPanel.SetActive(true);
         }
     }
 
@@ -127,7 +187,7 @@ public class GameCenterManager : MonoBehaviour
             //writeNewUser(newUser.UserId);
             
             Debug.Log("UIDRigister 시작");
-            UIDRigister(newUser.UserId);        //기기 저장소 확인하는 if조건문 만들어주는게 좋을듯
+            UIDRigister(newUser.UserId, "Guest");        //기기 저장소 확인하는 if조건문 만들어주는게 좋을듯
             InitializeFirebase();
 
             Debug.LogFormat("User signed in successfully: {0} ({1})",
@@ -274,12 +334,12 @@ public class GameCenterManager : MonoBehaviour
             }
 
             FirebaseUser newUser = task.Result;     //newUser에 task정보 저장.
+
             Usersid = newUser.UserId;
-            //Users = newUser;
-            //writeNewUser(newUser.UserId);
-            UIDRigister(newUser.UserId);
+
+            UIDRigister(newUser.UserId, "Google");
             InitializeFirebase();
-            //아마 이미 회원가입이 되어 있으면 writeNewUser를 발동 안해야함
+
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
         });
@@ -302,7 +362,7 @@ public class GameCenterManager : MonoBehaviour
         });
     }
 
-    public void UIDRigister(string uid)
+    public void UIDRigister(string uid, string LastLogin)
     {
         Debug.Log("UIDRigister 진입 성공");
 
@@ -311,20 +371,21 @@ public class GameCenterManager : MonoBehaviour
             Debug.Log("UID를 비롯한 유저 정보 엑세스");
 
             string json = File.ReadAllText(Application.persistentDataPath + "/Userdata.json");
-            userdata = JsonUtility.FromJson<MyUserData>(json);
+            userdata = JsonUtility.FromJson<UserData>(json);
         }
         else
         {
             Debug.Log("UID 생성하고 데이터 처음 만들기");
 
-            data.UID = uid;
+            userdata.UID = uid;
+            userdata.LastLogin = LastLogin;
 
-            data.Gold = 0;
-            data.SkillPoints = 0;
-            data.UnitPoints = 0;
+            userdata.Gold = 0;
+            userdata.SkillPoints = 0;
+            userdata.UnitPoints = 0;
 
-            data.Skill1_Level = 1;
-            data.Skill1_Unlock = true;
+            userdata.Skill1_Level = 1;
+            userdata.Skill1_Unlock = true;
             userdata.Skill2_Level = 1;
             userdata.Skill2_Unlock = false;
             userdata.Skill3_Level = 1;

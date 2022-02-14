@@ -33,13 +33,13 @@ public class MainSceneManager : MonoBehaviour
     }
     private void Loading()
     {
-        /*if(gameCenterManager.userdata != null)
+        if(gameCenterManager.userdata != null)
         {
             EXP = gameCenterManager.userdata.EXP;
             Lv = gameCenterManager.userdata.Level;
 
             TEXP.text = EXP.ToString();
             TLv.text = Lv.ToString();
-        }*/
+        }
     }
 }
