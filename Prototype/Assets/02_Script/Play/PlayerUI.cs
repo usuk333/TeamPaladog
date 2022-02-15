@@ -9,12 +9,19 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Image hpBar; //플레이어 Hp바 이미지
     [SerializeField] private Image mpBar; //플레이어 Mp바 이미지
     [SerializeField] private Image castingBar;
-    private void DisableCastingBar()
+    public void DisableCastingBar()
     {
         castingBar.transform.parent.gameObject.SetActive(false);
         castingBar.fillAmount = 0;
     }
-   // private IEnumerator Co_   
+    public void ActiveCastingBar()
+    {
+        castingBar.transform.parent.gameObject.SetActive(true);
+    }      
+    public void UpdateCastingBar(float time, float progress)
+    {
+        castingBar.fillAmount = 1 / time * progress;
+    }
     private IEnumerator Co_UpdatePlayerUI() //플레이어 UI 플레이어 정보에 맞게 갱신
     {
         while (true)
@@ -26,7 +33,7 @@ public class PlayerUI : MonoBehaviour
     }
     private void Awake() //해당 부분도 이니셜라이징 함수로 빼야할까?
     {
-        player = FindObjectOfType<Player>();
+        player = GetComponent<Player>();
     }
     private void Start()
     {

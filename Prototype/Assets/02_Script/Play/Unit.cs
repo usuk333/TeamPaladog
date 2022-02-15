@@ -19,6 +19,7 @@ public class Unit : MonoBehaviour
         Move,
         Attack,
         Skill,
+        Invincibility
     }
     private enum EUnitKind
     {
@@ -35,6 +36,8 @@ public class Unit : MonoBehaviour
     private SkeletonAnimation spine;
     private CountUnit countUnit;
     private PercentageUnit percentageUnit;
+    private bool isInvincibility;
+    private IEnumerator updateState;
     [SerializeField] private ParticleSystem basicEffect;
     [SerializeField] private ParticleSystem skillEffect;
     [SerializeField] private EUnitValue eUnitValue;
@@ -47,7 +50,6 @@ public class Unit : MonoBehaviour
     [SerializeField] private float moveSpeed;
     [SerializeField] private EUnitType eUnitType;
     [SerializeField] private EUnitKind eUnitKind;
-
     public EUnitType UnitType { get => eUnitType; }
     public Boss Boss { get => boss; }
     public float MaxHp
@@ -65,6 +67,11 @@ public class Unit : MonoBehaviour
     public float CurrentHp { get => currentHp; set => currentHp = value; }
     public float AttackDamage { get => attackDamage; }
 
+
+    public void SetInvincibility(float time)
+    {
+        StartCoroutine(Co_SetInvincibility(time));
+    }
     public bool InitializeUnitStatus()//해당 함수는 InGameManager의 Awake에서 실행될 코루틴에서 호출
     {
         //초기화 필요한 변수들 초기화
@@ -79,10 +86,14 @@ public class Unit : MonoBehaviour
     }
     public void DecreaseHp(float damage) //유닛 Hp 감소 함수(공격하는 쪽에서 호출함)
     {
+        if (isInvincibility)
+        {
+            return;
+        }
         currentHp -= damage;
         if(currentHp <= 0)
         {
-            StopCoroutine(Co_UpdateState());
+            StopCoroutine(updateState);
             StartCoroutine(Co_Dead());
         }
     }
@@ -162,6 +173,11 @@ public class Unit : MonoBehaviour
             eUnitState = EUnitState.Attack;
         }
     }
+    private void Invoke_UnInvincibility()
+    {
+        isInvincibility = false;
+        eUnitState = EUnitState.Idle;
+    }
     private IEnumerator Co_Dead() //유닛 죽는 애니메이션 연출 코루틴
     {
         yield return null;
@@ -183,6 +199,7 @@ public class Unit : MonoBehaviour
             switch (eUnitState)
             {
                 case EUnitState.Idle:
+                    Debug.Log("코루틴 도는중");
                     yield return new WaitForSeconds(attackSpeed);
                     if(currentHp > 0)
                     {
@@ -214,12 +231,23 @@ public class Unit : MonoBehaviour
                     //스킬 애니메이션 재생 시간만큼 코루틴에 지연시간 주기
                     eUnitState = EUnitState.Idle;
                     break;
+                case EUnitState.Invincibility:
+                    Debug.Log("무적");
+                    break;
                 default:
                     Debug.Assert(false);
                     break;
             }
             yield return null;
         }
+    }
+    private IEnumerator Co_SetInvincibility(float time)
+    {
+        isInvincibility = true;
+        StopCoroutine(updateState);
+        yield return new WaitForSeconds(time);
+        isInvincibility = false;
+        StartCoroutine(updateState);
     }
     private void Awake()
     {
@@ -238,10 +266,11 @@ public class Unit : MonoBehaviour
             skillEffect = transform.GetChild(1).GetComponent<ParticleSystem>();
         }
         boss = FindObjectOfType<Boss>();
+        updateState = Co_UpdateState();
         currentHp = maxHp;
     }
     private void Start()
     {
-        StartCoroutine(Co_UpdateState());
+        StartCoroutine(updateState);
     }
 }

@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: DevilCastle
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 8d9cb116b89412249ae730e08c80181b, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: ee22c8106121a1446b2cb17467c63579, type: 3}
+  - {fileID: 21300000, guid: 9041ab52a3113a846a12de099865396e, type: 3}
+  - {fileID: 21300000, guid: 94d3f5f2138d79b408347745174841f9, type: 3}
+  - {fileID: 21300000, guid: 557e96748d565cd41a3739f9b1b2c647, type: 3}
+  - {fileID: 21300000, guid: 1bc2e968710f00d49a40a4e69657f6f4, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - 1
+  - 5
+  - 2
+  - 4_screen
+  - 3
+  m_RenderDataMap: {}
+  m_Tag: DevilCastle
+  m_IsVariant: 0
