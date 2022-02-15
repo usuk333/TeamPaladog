@@ -20,6 +20,8 @@ public class MainSceneManager : MonoBehaviour
     [SerializeField] private Text TLv;
     [SerializeField] private Text TEXP;
 
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,11 +37,28 @@ public class MainSceneManager : MonoBehaviour
     {
         if(gameCenterManager.userdata != null)
         {
-            EXP = gameCenterManager.userdata.EXP;
-            Lv = gameCenterManager.userdata.Level;
+            gameCenterManager.reference.Child("users").Child(gameCenterManager.Usersid)
+                .GetValueAsync().ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    Debug.LogError("failed reading...");
+                }
+                else if (task.IsCompleted)
+                {
+                    DataSnapshot snapshot = task.Result;
 
-            TEXP.text = EXP.ToString();
-            TLv.text = Lv.ToString();
+                    Debug.Log("InitializeFirebase 접근완료");
+
+                    foreach (DataSnapshot data in snapshot.Children)
+                    {
+                        IDictionary userinfo = (IDictionary)data.Value;
+                        //딕셔너리 공부해야할듯. 이해가 안댐
+                        Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
+                    }
+                    
+                }
+            });
         }
     }
 }

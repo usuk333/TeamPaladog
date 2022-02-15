@@ -16,9 +16,9 @@ public class GameCenterManager : MonoBehaviour
     public string FireBaseId = string.Empty;
     FirebaseAuth auth;      //파이어베이스 인증 관리 객체
 
-    DatabaseReference reference;        //데이터를 쓰기위한 reference
+    public DatabaseReference reference;        //데이터를 쓰기위한 reference
 
-    string Usersid;
+    public string Usersid;
 
     //User user;
 
@@ -73,7 +73,10 @@ public class GameCenterManager : MonoBehaviour
                     //IDictionary userinfo = (IDictionary)data.Value;
                     //딕셔너리 공부해야할듯. 이해가 안댐
                     Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
-
+                    if(data.Key == "EXP")
+                    {
+                        Debug.Log("EXP 발견, 값은" + data.Value);
+                    }
                     //아씨발좆같다
                 }
             }
@@ -122,7 +125,7 @@ public class GameCenterManager : MonoBehaviour
 
                     foreach (DataSnapshot data in snapshot.Children)
                     {
-                        IDictionary userinfo = (IDictionary)data.Value;
+                        //IDictionary userinfo = (IDictionary)data.Value;
                         //딕셔너리 공부해야할듯. 이해가 안댐
                         Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
                     }
