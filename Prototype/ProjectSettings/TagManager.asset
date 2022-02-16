@@ -7,6 +7,7 @@ TagManager:
   - BOSS
   - CAST
   - PLAYER
+  - UNIT
   layers:
   - Default
   - TransparentFX

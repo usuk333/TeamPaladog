@@ -43,12 +43,14 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 94d3f5f2138d79b408347745174841f9, type: 3}
   - {fileID: 21300000, guid: 557e96748d565cd41a3739f9b1b2c647, type: 3}
   - {fileID: 21300000, guid: 1bc2e968710f00d49a40a4e69657f6f4, type: 3}
+  - {fileID: 21300000, guid: 47f30bbcafdd774488e3f1c0943808f0, type: 3}
   m_PackedSpriteNamesToIndex:
   - 1
   - 5
   - 2
   - 4_screen
   - 3
+  - 1_1
   m_RenderDataMap: {}
   m_Tag: DevilCastle
   m_IsVariant: 0

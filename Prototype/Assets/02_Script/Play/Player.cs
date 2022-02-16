@@ -86,6 +86,7 @@ public class Player : MonoBehaviour
             yield return null;
         }
         isCastFinish = true;
+        playerUI.DisableCastingBar();
     }
     private IEnumerator Co_UpdateMp() // 마나 갱신 코루틴
     {

@@ -14,7 +14,19 @@ public class Boss_TimeJudge : MonoBehaviour
     private RectTransform rectParent;
     private Text timeBombSecText;
     private Unit[] units;
+    private IEnumerator timeBombCoroutine;
+    [SerializeField] private List<GameObject> unitMarksUI = new List<GameObject>();
+    [SerializeField] private List<GameObject> unitMarksObj = new List<GameObject>();
+    [SerializeField] private Text unitMarksCount;
+    [SerializeField] private List<UnitMark> unitMarks = new List<UnitMark>();
+    [SerializeField] private bool[] isMarking;
+    public bool isBombMoveFutuer { get; set; } = false;
     public bool isPresent { get; set; } = true;
+    public List<UnitMark> UnitMarks { get => unitMarks; set => unitMarks = value; }
+    public Unit[] Units { get => units; }
+
+    private float timeBombStack = 1;
+    [SerializeField] private Transform futuerPlayer;
     [SerializeField] private float timeLimitToFutuer;
     [SerializeField] private float timeBombInvincibleSec;
     [SerializeField] private float timeBombDamage;
@@ -30,10 +42,11 @@ public class Boss_TimeJudge : MonoBehaviour
     {
         foreach (var item in units)
         {
-            item.DecreaseHp(timeBombDamage);
+            item.DecreaseHp(Mathf.Pow(timeBombDamage, timeBombStack));
             item.SetInvincibility(timeBombInvincibleSec);
         }
-        player.DecreaseHp(timeBombDamage);
+        player.DecreaseHp(Mathf.Pow(timeBombDamage, timeBombStack));
+        timeBombStack++;
         player.SetInvincibility(timeBombInvincibleSec);
     }
     private void AttackLaser()
@@ -45,6 +58,21 @@ public class Boss_TimeJudge : MonoBehaviour
         }
         player.DecreaseHp(player.MaxHp);
     }
+    private void ShuffleMarks()
+    {
+        for (int i = unitMarksUI.Count - 1; i > 0; i--)
+        {
+            int rand = Random.Range(0, i);
+            ShuffleList(unitMarksUI, i, rand);
+            ShuffleList(unitMarksObj, i, rand);
+        }
+    }
+    private void ShuffleList(List<GameObject> list, int index, int rand)
+    {
+        GameObject temp = list[index];
+        list[index] = list[rand];
+        list[rand] = temp;
+    }
     private void Awake()
     {
         canvas = GetComponentInChildren<Canvas>();
@@ -53,13 +81,37 @@ public class Boss_TimeJudge : MonoBehaviour
         camera = Camera.main;
         player = FindObjectOfType<Player>();
         timeBombSecText = timeBomb.GetComponentInChildren<Text>();
+        timeBombCoroutine = Co_TimeBomb();
+        ShuffleMarks();
     }
     private IEnumerator Start()
     {
         units = InGameManager.Instance.Units;
         yield return new WaitForSeconds(5f);
-        StartCoroutine(Co_TimeBomb());
-        StartCoroutine(Co_TimeLaser());
+        //StartCoroutine(timeBombCoroutine);
+        //StartCoroutine(Co_TimeLaser());
+        StartCoroutine(Co_Marking());
+    }
+    private IEnumerator Co_Marking()
+    {
+        for (int i = 0; i < unitMarksUI.Count; i++)
+        {
+            unitMarksUI[i].SetActive(true);
+            unitMarksObj[i].SetActive(true);
+            float time = 10;
+            while(time > 0)
+            {
+                time -= Time.deltaTime;
+                unitMarksCount.text = string.Format("{0:0}", System.Math.Ceiling(time));
+                yield return null;
+            }
+            unitMarksUI[i].SetActive(false);
+            unitMarksCount.text = "";
+        }
+        for (int i = 0; i < unitMarks.Count; i++)
+        {
+           // units[i].transform.
+        }
     }
     private IEnumerator Co_TimeLaser()
     {
@@ -73,7 +125,21 @@ public class Boss_TimeJudge : MonoBehaviour
             StartCoroutine(Co_FutuerTimer());      
             yield return new WaitForSeconds(timeLimitToFutuer);
             MoveCameraToPresent();
-            yield return new WaitForSeconds(120f);          
+            yield return new WaitForSeconds(cameraWorkTime);
+            if (isBombMoveFutuer)
+            {
+                StopCoroutine(timeBombCoroutine);
+                StartCoroutine(Co_Marking());
+                timeBombStack = 1;
+                yield return new WaitForSeconds(10f); //과거에서 현재로 폭탄 가져다주기까지 시간
+                StartCoroutine(timeBombCoroutine = Co_TimeBomb());
+                isBombMoveFutuer = false;
+            }
+            else
+            {
+                StartCoroutine(Co_Marking());
+            }
+            yield return new WaitForSeconds(30f);          
         }
     }
     private IEnumerator Co_FutuerTimer()
@@ -104,13 +170,16 @@ public class Boss_TimeJudge : MonoBehaviour
             yield return null;
         }
         timeBombSecText.text = "";
-        yield return new WaitForSeconds(3f);
         ExplosionTimeBomb();
+        yield return new WaitForSeconds(timeBombInvincibleSec);
+        timeBombSec = 30f;
+        yield return new WaitForSeconds(cameraWorkTime);
+        StartCoroutine(timeBombCoroutine = Co_TimeBomb());
     }
     private void MoveCameraToFuture()
     {
         camera.DOOrthoSize(7.2f, cameraWorkTime);
-        camera.transform.DOMoveY(-2.6f, cameraWorkTime);
+        camera.transform.DOMoveY(-3.5f, cameraWorkTime);
         field.DOMove(new Vector3(0, -2.7f, 0), cameraWorkTime);
         field.DOScaleY(1.1f, cameraWorkTime);
         timeBomb.transform.DOScale(new Vector3(0.6f, 0.6f), cameraWorkTime);
@@ -131,10 +200,20 @@ public class Boss_TimeJudge : MonoBehaviour
     {
         if (timeBomb.activeInHierarchy)
         {
-            var screenPos = Camera.main.WorldToScreenPoint(player.transform.position + timeBombOffset);
-            var localPos = Vector2.zero;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(rectParent, screenPos, uiCamera, out localPos);
-            timeBomb.transform.localPosition = localPos;
+            if (!isBombMoveFutuer)
+            {
+                var screenPos = Camera.main.WorldToScreenPoint(player.transform.position + timeBombOffset);
+                var localPos = Vector2.zero;
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(rectParent, screenPos, uiCamera, out localPos);
+                timeBomb.transform.localPosition = localPos;
+            }
+            else
+            {
+                var screenPos = Camera.main.WorldToScreenPoint(futuerPlayer.position + timeBombOffset);
+                var localPos = Vector2.zero;
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(rectParent, screenPos, uiCamera, out localPos);
+                timeBomb.transform.localPosition = localPos;
+            }
         }
     }
 }
