@@ -5,6 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private bool isInvincibility;
+    private bool isInpacable;
     private bool isRight; //오른쪽 이동 체크
     private bool isLeft; // 왼쪽 이동 체크
     private Boss boss;
@@ -44,6 +45,11 @@ public class Player : MonoBehaviour
         }
     }
     public float CurrentMp { get => currentMp; }
+    public void KnockBack(Vector3 pos)
+    {
+        isInpacable = true;
+        StartCoroutine(Co_KnockBack(pos));
+    }
     public void SetInvincibility(float time)
     {
         isInvincibility = true;
@@ -70,6 +76,19 @@ public class Player : MonoBehaviour
     private void Invoke_UnInvincibility()
     {
         isInvincibility = false;
+    }
+    private IEnumerator Co_KnockBack(Vector3 pos)
+    {
+        if(transform.position.x >= pos.x)
+        {
+            yield break;
+        }
+        while (transform.position != pos)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, pos, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+        isInpacable = false;
     }
     private IEnumerator Co_Casting(float time)
     {
@@ -132,7 +151,7 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (isInvincibility)
+        if (isInvincibility || isInpacable)
         {
             return;
         }

@@ -19,7 +19,8 @@ public class Unit : MonoBehaviour
         Move,
         Attack,
         Skill,
-        Invincibility
+        Invincibility,
+        Incapable
     }
     private enum EUnitKind
     {
@@ -38,6 +39,10 @@ public class Unit : MonoBehaviour
     private PercentageUnit percentageUnit;
     private bool isInvincibility;
     private IEnumerator updateState;
+    private Rigidbody2D rigidbody2D;
+    [SerializeField] private Transform pitch;
+    [SerializeField] private Vector3 basicEffectOffset;
+    [SerializeField] private Vector3 skillEffectOffset;
     [SerializeField] private ParticleSystem basicEffect;
     [SerializeField] private ParticleSystem skillEffect;
     [SerializeField] private EUnitValue eUnitValue;
@@ -66,8 +71,13 @@ public class Unit : MonoBehaviour
     }
     public float CurrentHp { get => currentHp; set => currentHp = value; }
     public float AttackDamage { get => attackDamage; }
-
-
+    public Rigidbody2D Rigidbody2D { get => rigidbody2D; set => rigidbody2D = value; }
+    
+    public void KnockBack(Vector3 pos)
+    {
+        eUnitState = EUnitState.Incapable;
+        StartCoroutine(Co_KnockBack(pos));
+    }
     public void SetInvincibility(float time)
     {
         StartCoroutine(Co_SetInvincibility(time));
@@ -178,6 +188,15 @@ public class Unit : MonoBehaviour
         isInvincibility = false;
         eUnitState = EUnitState.Idle;
     }
+    private IEnumerator Co_KnockBack(Vector3 pos)
+    {
+        while(transform.position != pos)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, pos, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+        eUnitState = EUnitState.Move;
+    }
     private IEnumerator Co_Dead() //유닛 죽는 애니메이션 연출 코루틴
     {
         yield return null;
@@ -218,7 +237,7 @@ public class Unit : MonoBehaviour
                     }
                     break;
                 case EUnitState.Move:
-                    //DoMoveAnim
+                    transform.position = Vector3.MoveTowards(transform.position, pitch.position, moveSpeed * Time.deltaTime);
                     break;
                 case EUnitState.Attack:
                     Attack();
@@ -233,6 +252,8 @@ public class Unit : MonoBehaviour
                     break;
                 case EUnitState.Invincibility:
                     Debug.Log("무적");
+                    break;
+                case EUnitState.Incapable:
                     break;
                 default:
                     Debug.Assert(false);
@@ -251,6 +272,9 @@ public class Unit : MonoBehaviour
     }
     private void Awake()
     {
+        boss = FindObjectOfType<Boss>();
+        updateState = Co_UpdateState();
+        currentHp = maxHp;
         //spine = GetComponent<SkeletonAnimation>();
         if (eUnitValue == EUnitValue.Count)
         {
@@ -264,10 +288,10 @@ public class Unit : MonoBehaviour
         {
             basicEffect = transform.GetChild(0).GetComponent<ParticleSystem>();
             skillEffect = transform.GetChild(1).GetComponent<ParticleSystem>();
+            basicEffect.transform.position = boss.transform.position + basicEffectOffset;
+            skillEffect.transform.position = boss.transform.position + skillEffectOffset;
         }
-        boss = FindObjectOfType<Boss>();
-        updateState = Co_UpdateState();
-        currentHp = maxHp;
+        rigidbody2D = GetComponent<Rigidbody2D>();
     }
     private void Start()
     {

@@ -15,15 +15,20 @@ public class Boss_TimeJudge : MonoBehaviour
     private Text timeBombSecText;
     private Unit[] units;
     private IEnumerator timeBombCoroutine;
+    private IEnumerator laserCoroutine;
+    private IEnumerator markingCoroutine;
+    private List<GameObject> laserCollisions = new List<GameObject>();
+    [SerializeField] private BoxCollider2D laser;
     [SerializeField] private List<GameObject> unitMarksUI = new List<GameObject>();
     [SerializeField] private List<GameObject> unitMarksObj = new List<GameObject>();
     [SerializeField] private Text unitMarksCount;
-    [SerializeField] private List<UnitMark> unitMarks = new List<UnitMark>();
+    [SerializeField] private UnitMark[] unitMarks;
     [SerializeField] private bool[] isMarking;
     public bool isBombMoveFutuer { get; set; } = false;
     public bool isPresent { get; set; } = true;
-    public List<UnitMark> UnitMarks { get => unitMarks; set => unitMarks = value; }
     public Unit[] Units { get => units; }
+    public UnitMark[] UnitMarks { get => unitMarks; set => unitMarks = value; }
+    public List<GameObject> LaserCollisions { get => laserCollisions; set => laserCollisions = value; }
 
     private float timeBombStack = 1;
     [SerializeField] private Transform futuerPlayer;
@@ -38,6 +43,9 @@ public class Boss_TimeJudge : MonoBehaviour
     [SerializeField] private float cameraWorkTime;
     [SerializeField] private Transform leftInvinsibleWall;
     [SerializeField] private Transform rightInvinsibleWall;
+    [SerializeField] private float judgementDamage;
+    [SerializeField] private float laserDamage;
+    
     private void ExplosionTimeBomb()
     {
         foreach (var item in units)
@@ -49,7 +57,27 @@ public class Boss_TimeJudge : MonoBehaviour
         timeBombStack++;
         player.SetInvincibility(timeBombInvincibleSec);
     }
-    private void AttackLaser()
+    private void AttackLaser(int rand)
+    {
+        bool isPlayerIn = false;
+        foreach (var item in laserCollisions)
+        {
+            if(item.tag == "PLAYER")
+            {
+                isPlayerIn = true;
+            }
+        }
+        if (isPlayerIn)
+        {
+            units[rand].DecreaseHp(laserDamage);
+            player.DecreaseHp(laserDamage);
+        }
+        else
+        {
+            units[rand].DecreaseHp(Mathf.Pow(laserDamage,3));
+        }
+    }
+    private void AttackTimeLaser()
     {
         Debug.Log("레이저 발사");
         foreach (var item in units)
@@ -73,6 +101,14 @@ public class Boss_TimeJudge : MonoBehaviour
         list[index] = list[rand];
         list[rand] = temp;
     }
+    private void MarkJudgement(int i)
+    {
+        if(unitMarks[i] && unitMarks[i].MarkType == units[i].UnitType)
+        {
+            return;
+        }
+        units[i].DecreaseHp(judgementDamage);
+    }
     private void Awake()
     {
         canvas = GetComponentInChildren<Canvas>();
@@ -82,7 +118,8 @@ public class Boss_TimeJudge : MonoBehaviour
         player = FindObjectOfType<Player>();
         timeBombSecText = timeBomb.GetComponentInChildren<Text>();
         timeBombCoroutine = Co_TimeBomb();
-        ShuffleMarks();
+        laserCoroutine = Co_Laser();
+        markingCoroutine = Co_Marking();
     }
     private IEnumerator Start()
     {
@@ -90,10 +127,31 @@ public class Boss_TimeJudge : MonoBehaviour
         yield return new WaitForSeconds(5f);
         //StartCoroutine(timeBombCoroutine);
         //StartCoroutine(Co_TimeLaser());
-        StartCoroutine(Co_Marking());
+        //StartCoroutine(markingCoroutine);
+        StartCoroutine(laserCoroutine);
+    }
+    private IEnumerator Co_Laser()
+    {
+        int rand = Random.Range(0, units.Length);
+        Vector3 pos = new Vector3(units[rand].transform.position.x, 0.6f);
+        laser.transform.position = pos;
+        laser.gameObject.SetActive(true);
+        laser.transform.DOScaleY(2.7f, 2f);
+        laser.transform.DOMoveY(-0.8f, 2f);
+        yield return new WaitForSeconds(2f);
+        laser.enabled = true;
+        yield return new WaitForSeconds(2f);
+        AttackLaser(rand);
+        laser.enabled = false;
+        laser.gameObject.SetActive(false);
+        laser.transform.DOScaleY(0, 0);
+        laserCollisions.Clear();
+        yield return new WaitForSeconds(2f);
+        StartCoroutine(laserCoroutine = Co_Laser());
     }
     private IEnumerator Co_Marking()
     {
+        ShuffleMarks();
         for (int i = 0; i < unitMarksUI.Count; i++)
         {
             unitMarksUI[i].SetActive(true);
@@ -106,19 +164,28 @@ public class Boss_TimeJudge : MonoBehaviour
                 yield return null;
             }
             unitMarksUI[i].SetActive(false);
+            if(unitMarksObj[i].transform.root == transform)
+            {
+                unitMarksObj[i].SetActive(false);
+            }
             unitMarksCount.text = "";
         }
-        for (int i = 0; i < unitMarks.Count; i++)
+        for (int i = 0; i < units.Length; i++)
         {
-           // units[i].transform.
+            MarkJudgement(i);
+            yield return new WaitForSeconds(1f);
+            unitMarks[i].gameObject.SetActive(false);
+            unitMarks[i].InitMark();
         }
+        StartCoroutine(markingCoroutine = Co_Marking());
+
     }
     private IEnumerator Co_TimeLaser()
     {
         yield return new WaitForSeconds(9f);
         while (true)
         {
-            AttackLaser();
+            AttackTimeLaser();
             yield return new WaitForSeconds(2f);           
             MoveCameraToFuture();
             yield return new WaitForSeconds(cameraWorkTime);

@@ -13,13 +13,25 @@ public class UnitMark : MonoBehaviour
     private Boss_TimeJudge boss_TimeJudge;
     private Boss boss;
     public Unit.EUnitType MarkType { get => eUnitType; }
+    public void InitMark()
+    {
+        isMoveMark = false;
+        boxCollider2D.enabled = true;
+        transform.SetParent(boss_TimeJudge.transform);
+    }
     private void MoveMark(Transform unit)
     {
         isMoveMark = true;
         boxCollider2D.enabled = false;
         transform.SetParent(unit);
         transform.position = new Vector3(unit.position.x, transform.position.y);
-        boss_TimeJudge.UnitMarks.Add(this);
+        for (int i = 0; i < boss_TimeJudge.Units.Length; i++)
+        {
+            if(unit.gameObject == boss_TimeJudge.Units[i].gameObject)
+            {
+                boss_TimeJudge.UnitMarks[i] = this;
+            }
+        }
     }
     private void Awake()
     {
@@ -42,7 +54,7 @@ public class UnitMark : MonoBehaviour
     {
         if (collision.tag == castingObject.UnitTag)
         {
-            if (isMoveMark)
+            if (isMoveMark || collision.GetComponentInChildren<UnitMark>())
             {
                 return;
             }
@@ -55,6 +67,10 @@ public class UnitMark : MonoBehaviour
         {
             if (player.isCastFinish)
             {
+                if (isMoveMark || collision.GetComponentInChildren<UnitMark>())
+                {
+                    return;
+                }
                 player.isCastFinish = false;
                 MoveMark(collision.transform);
             }
