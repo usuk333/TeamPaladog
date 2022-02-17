@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - BOSS
+  - CAST
+  - PLAYER
+  - UNIT
   layers:
   - Default
   - TransparentFX
@@ -42,6 +45,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Projectile
+  - name: Unit
     uniqueID: 164526591
+    locked: 0
+  - name: Player
+    uniqueID: 4260605799
+    locked: 0
+  - name: Projectile
+    uniqueID: 3142139821
     locked: 0

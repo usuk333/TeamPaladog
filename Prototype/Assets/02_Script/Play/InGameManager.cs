@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class InGameManager : MonoBehaviour
 {
     private static InGameManager instance; //인게임씬 클래스들이 접근 용이하도록 스태틱으로 사용
+
+    private float timerSecond;
+    private int timerMinute;
+    [SerializeField] private Text timer;
     [SerializeField] private Unit[] units;
 
     public static InGameManager Instance { get => instance; }
@@ -14,6 +19,21 @@ public class InGameManager : MonoBehaviour
     private IEnumerator Co_InitializeInGameData() //초기화가 필요한 모든 인게임 데이터 초기화. 완료되면 true 반환 후 로딩 완료.
     {
         yield return null;
+    }
+    private IEnumerator Co_Timer()
+    {
+        while (true)
+        {
+            if ((int)timerSecond > 59)
+            {
+                timerSecond = 0;
+                timerMinute++;
+            }
+            timerSecond += Time.deltaTime;
+            timer.text = string.Format("{0:00}:{1:00}", timerMinute, timerSecond);
+
+            yield return null;
+        }
     }
     private void Awake()
     {
@@ -51,10 +71,8 @@ public class InGameManager : MonoBehaviour
             }
         }
     }
-
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        StartCoroutine(Co_Timer());
     }
 }
