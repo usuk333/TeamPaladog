@@ -125,8 +125,8 @@ public class Boss_TimeJudge : MonoBehaviour
     {
         units = InGameManager.Instance.Units;
         yield return new WaitForSeconds(5f);
-        //StartCoroutine(timeBombCoroutine);
-        //StartCoroutine(Co_TimeLaser());
+       // StartCoroutine(timeBombCoroutine);
+       // StartCoroutine(Co_TimeLaser());
         //StartCoroutine(markingCoroutine);
         StartCoroutine(laserCoroutine);
     }
@@ -174,6 +174,10 @@ public class Boss_TimeJudge : MonoBehaviour
         {
             MarkJudgement(i);
             yield return new WaitForSeconds(1f);
+            if(unitMarks[i] == null)
+            {
+                continue;
+            }
             unitMarks[i].gameObject.SetActive(false);
             unitMarks[i].InitMark();
         }
@@ -196,7 +200,7 @@ public class Boss_TimeJudge : MonoBehaviour
             if (isBombMoveFutuer)
             {
                 StopCoroutine(timeBombCoroutine);
-                StartCoroutine(Co_Marking());
+               // StartCoroutine(Co_Marking());
                 timeBombStack = 1;
                 yield return new WaitForSeconds(10f); //과거에서 현재로 폭탄 가져다주기까지 시간
                 StartCoroutine(timeBombCoroutine = Co_TimeBomb());
@@ -204,7 +208,7 @@ public class Boss_TimeJudge : MonoBehaviour
             }
             else
             {
-                StartCoroutine(Co_Marking());
+               // StartCoroutine(Co_Marking());
             }
             yield return new WaitForSeconds(30f);          
         }

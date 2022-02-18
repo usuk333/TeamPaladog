@@ -444,7 +444,7 @@ public class GameCenterManager : MonoBehaviour
 
         // 위에 정리한 json을 서버에 보내 DB에 저장한다.
         // 새로운 유저에 대한 데이터를 DB에 보낸다.
-        Server.Instance.NewUserJsonDBSave(json, () => {
+       /* Server.Instance.NewUserJsonDBSave(json, () => {
             // DB에 저장 후 디바이스 user정보에도 저장한다.
             User.Instance.mainUser = newUser;
 
@@ -455,7 +455,7 @@ public class GameCenterManager : MonoBehaviour
                 // 다음씬으로 이동
                 NextSecne();
             });
-        });
+        });*/
     }
 
     public void GuestLogout()
