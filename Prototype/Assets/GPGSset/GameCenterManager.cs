@@ -18,33 +18,33 @@ using System.Threading.Tasks;
 
 public class GameCenterManager : MonoBehaviour
 {
-    //ÆÄÀÌ¾îº£ÀÌ½º ÀÎÁõ °ü¸® °´Ã¼
+    //ï¿½ï¿½ï¿½Ì¾îº£ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼
     FirebaseAuth auth = null;
 
-    //»ç¿ëÀÚ °èÁ¤
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     FirebaseUser user = null;
 
-    //·Î±×ÀÎ ¼±ÅÃ È­¸é
+    //ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È­ï¿½ï¿½
     public GameObject LoginPanel;
 
-    //ÀÓ½Ã ·Îµù ÆÐ³Î
+    //ï¿½Ó½ï¿½ ï¿½Îµï¿½ ï¿½Ð³ï¿½
     public GameObject LoadingPanel;
 
-    // ´Ð³×ÀÓ ¼³Á¤ ÆÐ³Î
+    // ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½
     public GameObject NicknamePanel;
 
-    //±â±â ¿¬µ¿ÀÌ µÇ¾î ÀÖ´Â »óÅÂÀÎÁö Ã¼Å©ÇÏ´Â bool º¯¼ö
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ç¾ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã¼Å©ï¿½Ï´ï¿½ bool ï¿½ï¿½ï¿½ï¿½
     private bool signedIn = false;
 
     public string FireBaseId = string.Empty;
 
-    public DatabaseReference reference;        //µ¥ÀÌÅÍ¸¦ ¾²±âÀ§ÇÑ reference
+    public DatabaseReference reference;        //ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ reference
 
     [SerializeField] public string Usersid;
 
     //User user;
 
-    // ÀÓ½ÃÀúÀå¿ë Å¬·¡½º
+    // ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
     private User.userLoginData.LoginType tempLoginType = User.userLoginData.LoginType.None;
     private string tempemail = string.Empty;
     private string temppw = string.Empty;
@@ -63,18 +63,18 @@ public class GameCenterManager : MonoBehaviour
 
     private void Awake()
     {
-        //Auth¿ë instance ÃÊ±âÈ­
+        //Authï¿½ï¿½ instance ï¿½Ê±ï¿½È­
         auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
 
-        //À¯ÀúÀÇ ·Î±×ÀÎ Á¤º¸¿¡ ¾î¶² º¯°æÀÌ »ý±â¸é ½ÇÇàµÇ°Ô ÀÌº¥Æ®¸¦ °É¾îÁØ´Ù.
+        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½î¶² ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ ï¿½Ìºï¿½Æ®ï¿½ï¿½ ï¿½É¾ï¿½ï¿½Ø´ï¿½.
         auth.StateChanged += AuthStateChanged;
         //AuthStateChanged(this, null);
 
-        //·Î±×ÀÎ ·Îµù ÆÐ³Î ºñÈ°¼º
+        //ï¿½Î±ï¿½ï¿½ï¿½ ï¿½Îµï¿½ ï¿½Ð³ï¿½ ï¿½ï¿½È°ï¿½ï¿½
         LoginPanel.SetActive(false);
         LoadingPanel.SetActive(false);
 
-        //Firebase °æ·Î¹× reference ÃÊ±âÈ­
+        //Firebase ï¿½ï¿½ï¿½Î¹ï¿½ reference ï¿½Ê±ï¿½È­
         FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
         reference = FirebaseDatabase.DefaultInstance.RootReference;
     }
@@ -92,10 +92,10 @@ public class GameCenterManager : MonoBehaviour
         PlayGamesPlatform.Activate();
         //auth = FirebaseAuth.DefaultInstance;
 
-        //StartTouch = true;      //·Îµù ¿Ï·á
+        //StartTouch = true;      //ï¿½Îµï¿½ ï¿½Ï·ï¿½
         //GameStart();
 
-        //½ÇÇè±¸°£
+        //ï¿½ï¿½ï¿½è±¸ï¿½ï¿½
 
         //Usersid = "NaIxowYCsaSqdaYaWtWbIYErkqM2";
 
@@ -109,7 +109,7 @@ public class GameCenterManager : MonoBehaviour
             {
                 DataSnapshot snapshot = task.Result;
 
-                Debug.Log("ÄÄÇÃ¸´¶¸À½");
+                Debug.Log("ï¿½ï¿½ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½ï¿½");
 
                 foreach (DataSnapshot data in snapshot.Children)
                 {
@@ -117,23 +117,23 @@ public class GameCenterManager : MonoBehaviour
                     Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
                     if(data.Key == "LV")
                     {
-                        Debug.Log("LV ¹ß°ß, °ªÀº" + data.Value);
+                        Debug.Log("LV ï¿½ß°ï¿½, ï¿½ï¿½ï¿½ï¿½" + data.Value);
                         ULVs = data.Value.ToString();
                         ULV.text = "LV : " + ULVs;
                     }
-                    //¾Æ
+                    //ï¿½ï¿½
                 }
             }
         });
     }
 
 
-    //°èÁ¤¿¡ ¾î¶°ÇÑ º¯°æÀÌ ¹ß»ý ½Ã ÁøÇà
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½î¶°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     void AuthStateChanged(object sender, System.EventArgs eventArgs)
     {
         if(auth.CurrentUser != user)
         {
-            //¿¬µ¿µÈ °èÁ¤°ú ±â±âÀÇ °èÁ¤ÀÌ °°´Ù¸é true ¸®ÅÏ
+            //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½ true ï¿½ï¿½ï¿½ï¿½
             signedIn = user != auth.CurrentUser && auth.CurrentUser != null;
 
             if(!signedIn && user != null)
@@ -150,8 +150,8 @@ public class GameCenterManager : MonoBehaviour
         }
     }
 
-    //·Î±×ÀÎ ¼±ÅÃ ÆÐ³ÎÀ» ¿­¸ç ·Î±×ÀÎÇÑ user°¡ ÀÖ´ÂÁö È®ÀÎÇÑ´Ù
-    //¾øÀ¸¸é °èÁ¤ »ý¼º ½ÃÀÛ
+    //ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ï¿½ï¿½ userï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ñ´ï¿½
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public void LoginCheck()
     {
         if (!signedIn)
@@ -164,17 +164,17 @@ public class GameCenterManager : MonoBehaviour
         }
     }
 
-    //±âÁ¸ À¯Àú Á¤º¸ ¼­¹ö¿¡¼­ °¡Á®¿Â´Ù
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½
     public IEnumerator CurrentUserDataGet()
     {
         LoadingPanel.SetActive(true);
         /*
-        // À¯Àú Á¤º¸
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         User.Instance.GetUserData(auth.CurrentUser.UserId, new System.Action(() => {
-            Debug.Log("À¯Àú Á¤º¸ ·Îµå ¿Ï·á!");
-            // À¯Àú ÀÎº¥ Á¤º¸
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ ï¿½Ï·ï¿½!");
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½ ï¿½ï¿½ï¿½ï¿½
             User.Instance.GetUserInven(auth.CurrentUser.UserId, new System.Action(() => {
-                // ´ÙÀ½ ¾ÀÀ¸·Î ³Ñ±ä´Ù.
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ±ï¿½ï¿½ï¿½.
                 NextSecne();
             }));
         }));
@@ -182,10 +182,10 @@ public class GameCenterManager : MonoBehaviour
         yield return null;
     }
 
-    //°ÔÀÓ¸ÞÀÎ¾ÀÀ¸·Î ³Ñ¾î°¨
+    //ï¿½ï¿½ï¿½Ó¸ï¿½ï¿½Î¾ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ¾î°¨
     public void NextScene()
     {
-        Debug.Log("GameSceneÀ¸·Î");
+        Debug.Log("GameSceneï¿½ï¿½ï¿½ï¿½");
 
         SceneManager.LoadSceneAsync(1);
     }
@@ -228,12 +228,12 @@ public class GameCenterManager : MonoBehaviour
                 {
                     DataSnapshot snapshot = task.Result;
 
-                    Debug.Log("InitializeFirebase Á¢±Ù¿Ï·á");
+                    Debug.Log("InitializeFirebase ï¿½ï¿½ï¿½Ù¿Ï·ï¿½");
 
                     foreach (DataSnapshot data in snapshot.Children)
                     {
                         //IDictionary userinfo = (IDictionary)data.Value;
-                        //µñ¼Å³Ê¸® °øºÎÇØ¾ßÇÒµí. ÀÌÇØ°¡ ¾È´ï
+                        //ï¿½ï¿½ï¿½Å³Ê¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½Òµï¿½. ï¿½ï¿½ï¿½Ø°ï¿½ ï¿½È´ï¿½
                         Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
                     }
                 }
@@ -249,16 +249,16 @@ public class GameCenterManager : MonoBehaviour
     {
         if (!Social.localUser.authenticated)
         {
-            Social.localUser.Authenticate(success => // ·Î±×ÀÎ ½Ãµµ
+            Social.localUser.Authenticate(success => // ï¿½Î±ï¿½ï¿½ï¿½ ï¿½Ãµï¿½
             {
-                if (success) // ¼º°øÇÏ¸é
+                if (success) // ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½
                 {
-                    Debug.Log("TryFirebaseLogin ÇÔ¼ö ½ÇÇà");
+                    Debug.Log("TryFirebaseLogin ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½");
                     //StartCoroutine(TryFirebaseLogin());
                 }
-                else // ½ÇÆÐÇÏ¸é
+                else // ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½
                 {
-                    Debug.Log("½ÇÆÐ!");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½!");
                 }
             });
         }
@@ -270,11 +270,11 @@ public class GameCenterManager : MonoBehaviour
         {
             PlayGamesPlatform.Instance.SignOut();
             auth.SignOut();
-            Debug.Log("auth.SignOut ¿Ï·á");
+            Debug.Log("auth.SignOut ï¿½Ï·ï¿½");
         }
     }
 
-    //ÀÍ¸í ·Î±×ÀÎ
+    //ï¿½Í¸ï¿½ ï¿½Î±ï¿½ï¿½ï¿½
     public void GuestLogin()
     {
         //LoadingPanel.SetActive(true);
@@ -290,47 +290,47 @@ public class GameCenterManager : MonoBehaviour
                 Debug.LogError("SignInAnonymouslyAsync encountered an error: " + task.Exception);
                 return;
             }
-            Debug.Log("°Ô½ºÆ® ·Î±×ÀÎ ¿Ï·á");
+            Debug.Log("ï¿½Ô½ï¿½Æ® ï¿½Î±ï¿½ï¿½ï¿½ ï¿½Ï·ï¿½");
 
             FirebaseUser newUser = task.Result;
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
 
             Usersid = newUser.UserId;
-            //Debug.Log("writeNewUser ÇÔ¼ö ¹ßµ¿");
+            //Debug.Log("writeNewUser ï¿½Ô¼ï¿½ ï¿½ßµï¿½");
             //writeNewUser(newUser.UserId);
 
-            Debug.Log("UIDRigister ½ÃÀÛ");
-            UIDRigister(newUser.UserId, "Guest");        //±â±â ÀúÀå¼Ò È®ÀÎÇÏ´Â ifÁ¶°Ç¹® ¸¸µé¾îÁÖ´Â°Ô ÁÁÀ»µí
+            Debug.Log("UIDRigister ï¿½ï¿½ï¿½ï¿½");
+            UIDRigister(newUser.UserId, "Guest");        //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½ï¿½Ï´ï¿½ ifï¿½ï¿½ï¿½Ç¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´Â°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             InitializeFirebase();
         });
 
-        //½Å±Ô À¯Àú µ¥ÀÌÅÍ ÀÓ½ÃÀúÀå
+        //ï¿½Å±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ó½ï¿½ï¿½ï¿½ï¿½ï¿½
         userDataInit();
         userDataTempSave(User.userLoginData.LoginType.anony);
 
         //LoadingPanel.SetActive(false);
     }
 
-    //±¸±Û ·Î±×ÀÎ
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½
     public void GoogleLogin()
     {
         //LoadingPanel.SetActive(true);
 
         try
         {
-            //±¸±Û ·Î±×ÀÎ Ã³¸® ºÎºÐ
-            //±¸±Û ·Î±×ÀÎ ÆË¾÷Ã¢ÀÌ ²¨Áö¸é ½ÇÇàµÉ ÄÝ¹éÇÔ¼ö¸¦ ¼±¾ðÇÑ´Ù.
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½Îºï¿½
+            //ï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½Ë¾ï¿½Ã¢ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ý¹ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
             TryFirebaseLogin(new System.Action<bool>((bool chk) =>
             {
                 if (chk)
                 {
-                    //½Å±Ô À¯Àú µ¥ÀÌÅÍ ÀÓ½Ã ÀúÀå
+                    //ï¿½Å±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ó½ï¿½ ï¿½ï¿½ï¿½ï¿½
                     userDataInit();
                     userDataTempSave(User.userLoginData.LoginType.google);
 
                     //LoadingPanel.SetActive(false);
-                    //´Ð³×ÀÓ Ã¢ ÄÑÁÖ±â
+                    //ï¿½Ð³ï¿½ï¿½ï¿½ Ã¢ ï¿½ï¿½ï¿½Ö±ï¿½
                     //NicknamePanel.SetActive(true);
                 }
                 else
@@ -347,18 +347,18 @@ public class GameCenterManager : MonoBehaviour
     }
 
 
-    //±¸±Û ·Î±×ÀÎ ±¸µ¿
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     public IEnumerator TryFirebaseLogin(System.Action<bool> callback)
     {
         while (string.IsNullOrEmpty(((PlayGamesLocalUser)Social.localUser).GetIdToken()))
             yield return null;
 
-        string idToken = ((PlayGamesLocalUser)Social.localUser).GetIdToken();   //idÅäÅ«°¡Á®¿À±â
+        string idToken = ((PlayGamesLocalUser)Social.localUser).GetIdToken();   //idï¿½ï¿½Å«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         string accessToken = null;
 
         Credential credential = GoogleAuthProvider.GetCredential(idToken, accessToken);
         auth.SignInWithCredentialAsync(credential).ContinueWith(task => { //ContinueWithOnMainThread
-            if (task.IsCanceled)        //½ÇÆÐ°æ¿ì
+            if (task.IsCanceled)        //ï¿½ï¿½ï¿½Ð°ï¿½ï¿½ï¿½
             {
                 Debug.LogError("SignInWithCredentialAsync was canceled.");
                 callback(false);
@@ -371,7 +371,7 @@ public class GameCenterManager : MonoBehaviour
                 return;
             }
 
-            user = task.Result;     //newUser¿¡ taskÁ¤º¸ ÀúÀå.
+            user = task.Result;     //newUserï¿½ï¿½ taskï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½.
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 user.DisplayName, user.UserId);
 
@@ -384,7 +384,7 @@ public class GameCenterManager : MonoBehaviour
         });
     }
 
-    //À¯Àú ´Ð³×ÀÓ ÀÔ·Â ½ÃÀÛ
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½
     private void InsertNewUserData()
     {
         var nickname = NicknamePanel.transform.Find("InputField").Find("NickNameInput")
@@ -392,17 +392,17 @@ public class GameCenterManager : MonoBehaviour
 
         if(nickname.Length > 0)
         {
-            //½Å±Ô À¯Àú µ¥ÀÌÅÍ ÀÔ·Â
+            //ï¿½Å±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½
             //loginDataSave(tempLoginType, nickname, tempemail, temppw);
         }
         else
         {
-            Debug.Log("º°¸íÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½");
             return;
         }
     }
 
-    // À¯Àú ÀÓ½Ã µ¥ÀÌÅÍ ÃÊ±âÈ­
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Ó½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
     private void userDataInit()
     {
         tempLoginType = User.userLoginData.LoginType.None;
@@ -410,7 +410,7 @@ public class GameCenterManager : MonoBehaviour
         temppw = string.Empty;
     }
 
-    // À¯Àú µ¥ÀÌÅÍ ÀÓ½Ã ÀúÀå
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ó½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private void userDataTempSave(User.userLoginData.LoginType loginType, string email = null, string pw = null)
     {
         tempLoginType = loginType;
@@ -418,14 +418,14 @@ public class GameCenterManager : MonoBehaviour
         temppw = pw;
     }
 
-    // ½Å±Ô À¯Àú µ¥ÀÌÅÍ ÀÔ·Â
+    // ï¿½Å±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½
     /*private void loginDataSave(User.userLoginData.LoginType loginType, string nickname = null,
         string email = null, string pw = null)
     {
-        // À¯Àú µ¥ÀÌÅÍ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         var newUser = new User.userLoginData();
 
-        // DB¿¡ ÀúÀåµÉ À¯Àúµ¥ÀÌÅÍ ÃÊ±âÈ­
+        // DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
         newUser.loginType = tempLoginType;
         newUser.nickname = nickname;
         newUser.uid = user.UserId;
@@ -439,10 +439,10 @@ public class GameCenterManager : MonoBehaviour
         string json = JsonUtility.ToJson(newUser);
 
 
-        // ÄÚÀÎ ÀúÀå¿ë
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         var newUserInventory = new User.userGoodsData();
 
-        // DB¿¡ ÀúÀåµÉ À¯Àúµ¥ÀÌÅÍ ÃÊ±âÈ­
+        // DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
         newUserInventory.uid = user.UserId;
         newUserInventory.coin = 0;
 
@@ -450,17 +450,17 @@ public class GameCenterManager : MonoBehaviour
         LoginPanel.SetActive(false);
         NicknamePanel.SetActive(false);
 
-        // À§¿¡ Á¤¸®ÇÑ jsonÀ» ¼­¹ö¿¡ º¸³» DB¿¡ ÀúÀåÇÑ´Ù.
-        // »õ·Î¿î À¯Àú¿¡ ´ëÇÑ µ¥ÀÌÅÍ¸¦ DB¿¡ º¸³½´Ù.
-        Server.Instance.NewUserJsonDBSave(json, () => {
-            // DB¿¡ ÀúÀå ÈÄ µð¹ÙÀÌ½º userÁ¤º¸¿¡µµ ÀúÀåÇÑ´Ù.
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ jsonï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+        // ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
+       /* Server.Instance.NewUserJsonDBSave(json, () => {
+            // DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ userï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
             User.Instance.mainUser = newUser;
 
-            // »õ·Î¿î À¯ÀúÀÇ ÀÎº¥Åä¸® µ¥ÀÌÅÍ¸¦ DB¿¡ º¸³½´Ù.
+            // ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½ï¿½ä¸® ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
             Server.Instance.NewUserInventoryJsonDBSave(JsonUtility.ToJson(newUserInventory), () => {
-                // DB¿¡ ÀúÀå ÈÄ µð¹ÙÀÌ½º userÁ¤º¸¿¡µµ ÀúÀåÇÑ´Ù.
+                // DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ userï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
                 User.Instance.mainInventory = newUserInventory;
-                // ´ÙÀ½¾ÀÀ¸·Î ÀÌµ¿
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
                 NextSecne();
             });
         });
@@ -470,7 +470,7 @@ public class GameCenterManager : MonoBehaviour
     {
         if(auth == null)
         {
-            Debug.Log("auth ¹ÌÂüÁ¶");
+            Debug.Log("auth ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
         }
         else
             auth.SignOut();
@@ -482,7 +482,7 @@ public class GameCenterManager : MonoBehaviour
     }
 
 
-    public class MyUserData //µ¥ÀÌÅÍ
+    public class MyUserData //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         public string UID;
 
@@ -558,7 +558,7 @@ public class GameCenterManager : MonoBehaviour
 
         //Unit
         //Warrior
-        public int Warrior_Level;       
+        public int Warrior_Level;
         public bool Warrior_Unlock;
         //Assassin
         public int Assassin_Level;
@@ -591,7 +591,7 @@ public class GameCenterManager : MonoBehaviour
             if (task.IsCompleted)
             {
                 DataSnapshot snapshot = task.Result;
-                Debug.Log("InitializeFirebase Á¢±Ù¿Ï·á");
+                Debug.Log("InitializeFirebase ï¿½ï¿½ï¿½Ù¿Ï·ï¿½");
 
                 foreach (DataSnapshot data in snapshot.Children)
                 {
@@ -603,18 +603,18 @@ public class GameCenterManager : MonoBehaviour
 
     public void UIDRigister(string uid, string LastLogin)
     {
-        Debug.Log("UIDRigister ÁøÀÔ ¼º°ø");
+        Debug.Log("UIDRigister ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 
-        if(File.Exists(Application.persistentDataPath + "/Userdata.json"))  //ÀÌ¹Ì À¯Àú µ¥ÀÌÅÍ°¡ ·ÎÄÃ ÀúÀå¼Ò¿¡
-        {                                                                   //Á¸Àç ÇÑ´Ù¸é
-            Debug.Log("UID¸¦ ºñ·ÔÇÑ À¯Àú Á¤º¸ ¿¢¼¼½º");
+        if(File.Exists(Application.persistentDataPath + "/Userdata.json"))  //ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ò¿ï¿½
+        {                                                                   //ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´Ù¸ï¿½
+            Debug.Log("UIDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 
             string json = File.ReadAllText(Application.persistentDataPath + "/Userdata.json");
             userdata = JsonUtility.FromJson<UserData>(json);
         }
         else
         {
-            Debug.Log("UID »ý¼ºÇÏ°í µ¥ÀÌÅÍ Ã³À½ ¸¸µé±â");
+            Debug.Log("UID ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
 
             userdata.UID = uid;
             userdata.LastLogin = LastLogin;
@@ -709,9 +709,9 @@ public class GameCenterManager : MonoBehaviour
             reference.Child("users").Child(key).SetRawJsonValueAsync(json);
         }
 
-        /*Debug.Log("UID ÀúÀåÇÏ±â");
+        /*Debug.Log("UID ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½");
 
-        userdata.user_name = "¹ÚÂùÁß";
+        userdata.user_name = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
         userdata.Area1 = false;
         userdata.Area2 = false;
         userdata.Area3 = false;
@@ -737,7 +737,7 @@ public class GameCenterManager : MonoBehaviour
         Debug.LogFormat("[Database] insert !");
         User users = new User();
 
-        users.user_name = "³» ÀÌ¸§Àº ¹ÚÂùÁß";
+        users.user_name = "ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
         users.Skill1_Level = 1;
         users.Skill2_Level = 1;
         users.Skill3_Level = 1;
@@ -755,10 +755,10 @@ public class GameCenterManager : MonoBehaviour
         reference.Child("users").Child(key).SetRawJsonValueAsync(json);
     }*/
 
-    //·¹ÆÛ·±½º µ¥ÀÌÅÍ ÀÐ¾î¿À±â
+    //ï¿½ï¿½ï¿½Û·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð¾ï¿½ï¿½ï¿½ï¿½ï¿½
     public void ReadingDbUserInfo()
     {
-        Debug.Log("¸®µù½´Å¸ÀÌ³Ê ¹ßµ¿");
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¸ï¿½Ì³ï¿½ ï¿½ßµï¿½");
         reference.Child("users").Child(Usersid).GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
@@ -767,11 +767,11 @@ public class GameCenterManager : MonoBehaviour
             }
             else if (task.IsCompleted)
             {
-                Debug.Log("¸®µù½´Å¸ÀÌ³Ê ÄÄÇÃ¸´Æ®");
+                Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Å¸ï¿½Ì³ï¿½ ï¿½ï¿½ï¿½Ã¸ï¿½Æ®");
 
                 DataSnapshot snapshot = task.Result;
 
-                //°¡Á®¿Â µ¥ÀÌÅÍ snapshotÀ» jsonÀ¸·Î º¯È¯ ÀúÀå
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ snapshotï¿½ï¿½ jsonï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½
                 //string json = JsonUtility.ToJson(snapshot);
 
                 foreach (DataSnapshot userdata in snapshot.Children)
@@ -782,7 +782,7 @@ public class GameCenterManager : MonoBehaviour
         });
     }
 
-    //±¸±Û°èÁ¤À¸·Î ÀüÈ¯
+    //ï¿½ï¿½ï¿½Û°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
     public void onAnonyToGoogle()
     {
         Social.localUser.Authenticate((bool success) =>
@@ -819,7 +819,7 @@ public class GameCenterManager : MonoBehaviour
         });
     }
 
-    //Shop¾ÀÀ¸·Î ÀÌµ¿
+    //Shopï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
     public void GoShop()
     {
         SceneManager.LoadScene("Shop");
@@ -828,19 +828,19 @@ public class GameCenterManager : MonoBehaviour
 
     public void SaveData()
     {
-        /*if (!Directory.Exists(Application.persistentDataPath + "/»ý¼ºÇÒ Æú´õ ÀÌ¸§"))
+        /*if (!Directory.Exists(Application.persistentDataPath + "/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½"))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + "/»ý¼ºÇÒ Æú´õ ÀÌ¸§");
+            Directory.CreateDirectory(Application.persistentDataPath + "/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½");
         }*/
 
-        /*[¾Èµå·ÎÀÌµå External]
-        Application.persistentDataPath : / mnt / sdcard / Android / data / com.YourProductName.YourCompanyName / files[ÆÄÀÏ ÀÐ±â / ¾²±â °¡´É]
-        Application.dataPath : / data / app / ¹øµéÀÌ¸§ - ¹øÈ£.apk
-        Application.streamingAssetsPath : jar: file:///data/app/¹øµéÀÌ¸§.apk!/assets [ÆÄÀÏÀÌ ¾Æ´Ñ WWW·Î ÀÐ±â °¡´É]
+        /*[ï¿½Èµï¿½ï¿½ï¿½ï¿½Ìµï¿½ External]
+        Application.persistentDataPath : / mnt / sdcard / Android / data / com.YourProductName.YourCompanyName / files[ï¿½ï¿½ï¿½ï¿½ ï¿½Ð±ï¿½ / ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½]
+        Application.dataPath : / data / app / ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ - ï¿½ï¿½È£.apk
+        Application.streamingAssetsPath : jar: file:///data/app/ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½.apk!/assets [ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ WWWï¿½ï¿½ ï¿½Ð±ï¿½ ï¿½ï¿½ï¿½ï¿½]
 
-        [¾Èµå·ÎÀÌµå Internal]
-        Application.persistentDataPath : / Android / data / com.YourProductName.YourCompanyName / files[ÆÄÀÏ ÀÐ±â / ¾²±â °¡´É]
-        Application.dataPath : / data / app / ¹øµéÀÌ¸§ - ¹øÈ£.apk
-        Application.streamingAssetsPath : jar: file:///data/app/¹øµéÀÌ¸§.apk!/assets [ÆÄÀÏÀÌ ¾Æ´Ñ WWW·Î ÀÐ±â °¡´É]*/
+        [ï¿½Èµï¿½ï¿½ï¿½ï¿½Ìµï¿½ Internal]
+        Application.persistentDataPath : / Android / data / com.YourProductName.YourCompanyName / files[ï¿½ï¿½ï¿½ï¿½ ï¿½Ð±ï¿½ / ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½]
+        Application.dataPath : / data / app / ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ - ï¿½ï¿½È£.apk
+        Application.streamingAssetsPath : jar: file:///data/app/ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½.apk!/assets [ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ WWWï¿½ï¿½ ï¿½Ð±ï¿½ ï¿½ï¿½ï¿½ï¿½]*/
     }
 }
