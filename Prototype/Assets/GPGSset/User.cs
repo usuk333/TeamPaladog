@@ -97,7 +97,7 @@ public class User : MonoBehaviour
 
 
     // 서버에서 유저 데이터 받아오기
-    public void GetUserData(string uid, System.Action callback)
+    /*public void GetUserData(string uid, System.Action callback)
     {
         Server.Instance.GetUserDataDB(uid, callback);
     }
@@ -106,5 +106,5 @@ public class User : MonoBehaviour
     public void GetUserInven(string uid, System.Action callback)
     {
         Server.Instance.GetUserInvenDB(uid, callback);
-    }
+    }*/
 }

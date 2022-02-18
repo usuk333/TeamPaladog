@@ -40,7 +40,7 @@ public class GameCenterManager : MonoBehaviour
 
     public DatabaseReference reference;        //데이터를 쓰기위한 reference
 
-    public string Usersid;
+    [SerializeField] public string Usersid;
 
     //User user;
 
@@ -54,6 +54,12 @@ public class GameCenterManager : MonoBehaviour
     [SerializeField] private Text StartText;
 
     public UserData userdata;
+
+    [SerializeField] private Text ULV;
+    [SerializeField] private Text UEXP;
+
+    private string UEXPs;
+    private string ULVs;
 
     private void Awake()
     {
@@ -86,12 +92,12 @@ public class GameCenterManager : MonoBehaviour
         PlayGamesPlatform.Activate();
         //auth = FirebaseAuth.DefaultInstance;
 
-        StartTouch = true;      //로딩 완료
-        GameStart();
+        //StartTouch = true;      //로딩 완료
+        //GameStart();
 
         //실험구간
 
-        Usersid = "NaIxowYCsaSqdaYaWtWbIYErkqM2";
+        //Usersid = "NaIxowYCsaSqdaYaWtWbIYErkqM2";
 
         reference.Child("users").Child(Usersid).GetValueAsync().ContinueWith(task =>
         {
@@ -108,17 +114,19 @@ public class GameCenterManager : MonoBehaviour
                 foreach (DataSnapshot data in snapshot.Children)
                 {
                     //IDictionary userinfo = (IDictionary)data.Value;
-                    //딕셔너리 공부해야할듯. 이해가 안댐
                     Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
-                    if(data.Key == "EXP")
+                    if(data.Key == "LV")
                     {
-                        Debug.Log("EXP 발견, 값은" + data.Value);
+                        Debug.Log("LV 발견, 값은" + data.Value);
+                        ULVs = data.Value.ToString();
+                        ULV.text = "LV : " + ULVs;
                     }
-                    //아씨발좆같다
+                    //아
                 }
             }
         });
     }
+
 
     //계정에 어떠한 변경이 발생 시 진행
     void AuthStateChanged(object sender, System.EventArgs eventArgs)
@@ -385,7 +393,7 @@ public class GameCenterManager : MonoBehaviour
         if(nickname.Length > 0)
         {
             //신규 유저 데이터 입력
-            loginDataSave(tempLoginType, nickname, tempemail, temppw);
+            //loginDataSave(tempLoginType, nickname, tempemail, temppw);
         }
         else
         {
@@ -411,7 +419,7 @@ public class GameCenterManager : MonoBehaviour
     }
 
     // 신규 유저 데이터 입력
-    private void loginDataSave(User.userLoginData.LoginType loginType, string nickname = null,
+    /*private void loginDataSave(User.userLoginData.LoginType loginType, string nickname = null,
         string email = null, string pw = null)
     {
         // 유저 데이터
@@ -456,7 +464,7 @@ public class GameCenterManager : MonoBehaviour
                 NextSecne();
             });
         });
-    }
+    }*/
 
     public void GuestLogout()
     {
@@ -470,7 +478,7 @@ public class GameCenterManager : MonoBehaviour
 
     public void GoBattle()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Stage");
     }
 
 
@@ -747,6 +755,7 @@ public class GameCenterManager : MonoBehaviour
         reference.Child("users").Child(key).SetRawJsonValueAsync(json);
     }*/
 
+    //레퍼런스 데이터 읽어오기
     public void ReadingDbUserInfo()
     {
         Debug.Log("리딩슈타이너 발동");
@@ -773,6 +782,7 @@ public class GameCenterManager : MonoBehaviour
         });
     }
 
+    //구글계정으로 전환
     public void onAnonyToGoogle()
     {
         Social.localUser.Authenticate((bool success) =>
@@ -807,6 +817,12 @@ public class GameCenterManager : MonoBehaviour
                 }
             }
         });
+    }
+
+    //Shop씬으로 이동
+    public void GoShop()
+    {
+        SceneManager.LoadScene("Shop");
     }
 
 
