@@ -15,15 +15,21 @@ using UnityEngine.SceneManagement;
 using System.IO;
 using System.Threading.Tasks;
 
+
 public class ShopManager : MonoBehaviour
 {
+    public class UserInfo
+    {
+        public int Gold = 0;
+    }
+
     [SerializeField] private string Userid;
 
     private DatabaseReference reference;
 
     private bool isLoad;
 
-    private string Golds;
+    private string Golds = "999";
     private string TLvs;
     private string THps;
     private string FLvs;
@@ -72,18 +78,33 @@ public class ShopManager : MonoBehaviour
 
                 foreach (DataSnapshot data in snapshot.Children)
                 {
-                    IDictionary userinfo = (IDictionary)data.Value;
+                    //Dictionary<string, string> userinfo = (Dictionary<string, string>)data.Value;
                     Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
+                    if(data.Key == "Gold")
+                    {
+                        Golds = data.Value.ToString();
+                        Debug.LogFormat("씨발value는 {0}", data.Value);
+                        Debug.Log("좆같은Golds는 " + Golds);//내일은 미쳐날뛰는 링크로 해보자
+                    }
                 }
             }
         });
-        StartCoroutine(UpdateData());
+        isLoad = true;
+        Debug.Log("끝!");
+        //StartCoroutine(UpdateData());
+        GoUpdate();
     }
     IEnumerator UpdateData()
     {
         yield return new WaitUntil(() => isLoad);
-        isLoad = false;
 
+        Gold.text = "Gold : " + Golds;
+        isLoad = false;
     }
 
+    void GoUpdate()
+    {
+        Debug.Log("Golds는 " + Golds);
+        Gold.text = "Gold : " + Golds;
+    }
 }

@@ -20,8 +20,6 @@ public class MainSceneManager : MonoBehaviour
     [SerializeField] private Text TLv;
     [SerializeField] private Text TEXP;
 
-
-
     // Start is called before the first frame update
     void Start()
     {

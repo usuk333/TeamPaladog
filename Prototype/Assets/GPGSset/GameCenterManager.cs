@@ -18,33 +18,33 @@ using System.Threading.Tasks;
 
 public class GameCenterManager : MonoBehaviour
 {
-    //���̾�̽� ���� ���� ��ü
+    //Auth용 instance
     FirebaseAuth auth = null;
 
-    //������ ����
+    //사용자 계정
     FirebaseUser user = null;
 
-    //�α��� ���� ȭ��
+    //로그인 패널
     public GameObject LoginPanel;
 
-    //�ӽ� �ε� �г�
+    //로딩 화면
     public GameObject LoadingPanel;
 
-    // �г��� ���� �г�
+    //닉네임 설정 화면
     public GameObject NicknamePanel;
 
-    //���� ������ �Ǿ� �ִ� �������� üũ�ϴ� bool ����
+    //기기연동이 되어있는 상태인지 체크하는 변수
     private bool signedIn = false;
 
     public string FireBaseId = string.Empty;
 
-    public DatabaseReference reference;        //�����͸� �������� reference
+    public DatabaseReference reference;        //데이터베이스 reference
 
     [SerializeField] public string Usersid;
 
     //User user;
 
-    // �ӽ������� Ŭ����
+    // 임시저장클래스
     private User.userLoginData.LoginType tempLoginType = User.userLoginData.LoginType.None;
     private string tempemail = string.Empty;
     private string temppw = string.Empty;
@@ -63,18 +63,18 @@ public class GameCenterManager : MonoBehaviour
 
     private void Awake()
     {
-        //Auth�� instance �ʱ�ȭ
-        auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        //초기화 auth
+        auth = FirebaseAuth.DefaultInstance;
 
-        //������ �α��� ������ � ������ ������ �����ǰ� �̺�Ʈ�� �ɾ��ش�.
+        //유저의 로그인 정보에 변경점을 체크하면 이벤트를 걸어줌
         auth.StateChanged += AuthStateChanged;
         //AuthStateChanged(this, null);
 
-        //�α��� �ε� �г� ��Ȱ��
+        //첫 시작시 Off
         LoginPanel.SetActive(false);
         LoadingPanel.SetActive(false);
 
-        //Firebase ���ι� reference �ʱ�ȭ
+        //Firebase reference 경로 설정
         FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
         reference = FirebaseDatabase.DefaultInstance.RootReference;
     }
@@ -92,10 +92,10 @@ public class GameCenterManager : MonoBehaviour
         PlayGamesPlatform.Activate();
         //auth = FirebaseAuth.DefaultInstance;
 
-        //StartTouch = true;      //�ε� �Ϸ�
+        //StartTouch = true;
         //GameStart();
 
-        //���豸��
+        //실험용
 
         //Usersid = "NaIxowYCsaSqdaYaWtWbIYErkqM2";
 
@@ -121,19 +121,18 @@ public class GameCenterManager : MonoBehaviour
                         ULVs = data.Value.ToString();
                         ULV.text = "LV : " + ULVs;
                     }
-                    //��
                 }
             }
         });
     }
 
 
-    //������ ��� ������ �߻� �� ����
+    //계정 로그인에 어떠한 변경점 발생 시 진입
     void AuthStateChanged(object sender, System.EventArgs eventArgs)
     {
         if(auth.CurrentUser != user)
         {
-            //������ ������ ������ ������ ���ٸ� true ����
+            //연동된 계정과 기기의 계정이 같다면 true 리턴
             signedIn = user != auth.CurrentUser && auth.CurrentUser != null;
 
             if(!signedIn && user != null)
@@ -150,10 +149,11 @@ public class GameCenterManager : MonoBehaviour
         }
     }
 
-    //�α��� ���� �г��� ���� �α����� user�� �ִ��� Ȯ���Ѵ�
-    //������ ���� ���� ����
+    //로그인 선택패널을 열며 로그인 user가 있는지 확인
+    //없으면 계정 생성 시작
     public void LoginCheck()
     {
+        //연동 상태가 아니라면
         if (!signedIn)
         {
             LoginPanel.SetActive(true);
@@ -164,7 +164,7 @@ public class GameCenterManager : MonoBehaviour
         }
     }
 
-    //���� ���� ���� �������� �����´�
+    //기존 유저 정보 서버에서 가져오기
     public IEnumerator CurrentUserDataGet()
     {
         LoadingPanel.SetActive(true);
@@ -182,7 +182,7 @@ public class GameCenterManager : MonoBehaviour
         yield return null;
     }
 
-    //���Ӹ��ξ����� �Ѿ
+    //게임 씬으로 넘어가기
     public void NextScene()
     {
         Debug.Log("GameScene����");
@@ -274,7 +274,7 @@ public class GameCenterManager : MonoBehaviour
         }
     }
 
-    //�͸� �α���
+    //익명 로그인
     public void GuestLogin()
     {
         //LoadingPanel.SetActive(true);
@@ -290,7 +290,7 @@ public class GameCenterManager : MonoBehaviour
                 Debug.LogError("SignInAnonymouslyAsync encountered an error: " + task.Exception);
                 return;
             }
-            Debug.Log("�Խ�Ʈ �α��� �Ϸ�");
+            Debug.Log("익명 로그인 컴플리트");
 
             FirebaseUser newUser = task.Result;
             Debug.LogFormat("User signed in successfully: {0} ({1})",
@@ -300,37 +300,37 @@ public class GameCenterManager : MonoBehaviour
             //Debug.Log("writeNewUser �Լ� �ߵ�");
             //writeNewUser(newUser.UserId);
 
-            Debug.Log("UIDRigister ����");
-            UIDRigister(newUser.UserId, "Guest");        //���� ������ Ȯ���ϴ� if���ǹ� �������ִ°� ������
+            Debug.Log("UIDRigister 작동");
+            UIDRigister(newUser.UserId, "Guest");
             InitializeFirebase();
         });
 
-        //�ű� ���� ������ �ӽ�����
+        //신규 유저 데이터 임시 저장 함수
         userDataInit();
         userDataTempSave(User.userLoginData.LoginType.anony);
 
         //LoadingPanel.SetActive(false);
     }
 
-    //���� �α���
+    //구글 로그인
     public void GoogleLogin()
     {
         //LoadingPanel.SetActive(true);
 
         try
         {
-            //���� �α��� ó�� �κ�
-            //���� �α��� �˾�â�� ������ ������ �ݹ��Լ��� �����Ѵ�.
+            //구글로그인 처리 부분
+            //구글 로그인 팝업창이 꺼지면 실행할 콜백 함수 선언
             TryFirebaseLogin(new System.Action<bool>((bool chk) =>
             {
                 if (chk)
                 {
-                    //�ű� ���� ������ �ӽ� ����
+                    //신규 유저 데이터 임시 저장
                     userDataInit();
                     userDataTempSave(User.userLoginData.LoginType.google);
 
                     //LoadingPanel.SetActive(false);
-                    //�г��� â ���ֱ�
+                    //닉네임 창 켜주기
                     //NicknamePanel.SetActive(true);
                 }
                 else
@@ -347,13 +347,13 @@ public class GameCenterManager : MonoBehaviour
     }
 
 
-    //���� �α��� ����
+    //구글 로그인 구동
     public IEnumerator TryFirebaseLogin(System.Action<bool> callback)
     {
         while (string.IsNullOrEmpty(((PlayGamesLocalUser)Social.localUser).GetIdToken()))
             yield return null;
 
-        string idToken = ((PlayGamesLocalUser)Social.localUser).GetIdToken();   //id��ū��������
+        string idToken = ((PlayGamesLocalUser)Social.localUser).GetIdToken();
         string accessToken = null;
 
         Credential credential = GoogleAuthProvider.GetCredential(idToken, accessToken);
@@ -384,7 +384,7 @@ public class GameCenterManager : MonoBehaviour
         });
     }
 
-    //���� �г��� �Է� ����
+    //유저 닉네임 입력 시작
     private void InsertNewUserData()
     {
         var nickname = NicknamePanel.transform.Find("InputField").Find("NickNameInput")
@@ -392,7 +392,7 @@ public class GameCenterManager : MonoBehaviour
 
         if(nickname.Length > 0)
         {
-            //�ű� ���� ������ �Է�
+            //신규 유저 데이터 입력
             //loginDataSave(tempLoginType, nickname, tempemail, temppw);
         }
         else
@@ -402,7 +402,7 @@ public class GameCenterManager : MonoBehaviour
         }
     }
 
-    // ���� �ӽ� ������ �ʱ�ȭ
+    //유저데이터 임시 초기화
     private void userDataInit()
     {
         tempLoginType = User.userLoginData.LoginType.None;
@@ -410,7 +410,7 @@ public class GameCenterManager : MonoBehaviour
         temppw = string.Empty;
     }
 
-    // ���� ������ �ӽ� ����
+    // 임시 저장
     private void userDataTempSave(User.userLoginData.LoginType loginType, string email = null, string pw = null)
     {
         tempLoginType = loginType;
@@ -758,7 +758,7 @@ public class GameCenterManager : MonoBehaviour
     //���۷��� ������ �о�����
     public void ReadingDbUserInfo()
     {
-        Debug.Log("������Ÿ�̳� �ߵ�");
+        Debug.Log("리딩 슈타이너 발동");
         reference.Child("users").Child(Usersid).GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
@@ -767,7 +767,7 @@ public class GameCenterManager : MonoBehaviour
             }
             else if (task.IsCompleted)
             {
-                Debug.Log("������Ÿ�̳� ���ø�Ʈ");
+                Debug.Log("리딩슈타이너 컴플릿");
 
                 DataSnapshot snapshot = task.Result;
 
