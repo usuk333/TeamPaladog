@@ -53,7 +53,7 @@ public class GameCenterManager : MonoBehaviour
     public bool StartTouch;
     [SerializeField] private Text StartText;
 
-    public UserData userdata;
+    public PlayerData playerdata;
 
     [SerializeField] private Text ULV;
     [SerializeField] private Text UEXP;
@@ -117,7 +117,7 @@ public class GameCenterManager : MonoBehaviour
                     Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
                     if(data.Key == "LV")
                     {
-                        Debug.Log("LV �߰�, ����" + data.Value);
+                        Debug.Log("LV," + data.Value);
                         ULVs = data.Value.ToString();
                         ULV.text = "LV : " + ULVs;
                     }
@@ -125,6 +125,7 @@ public class GameCenterManager : MonoBehaviour
             }
         });
     }
+
 
 
     //계정 로그인에 어떠한 변경점 발생 시 진입
@@ -214,9 +215,9 @@ public class GameCenterManager : MonoBehaviour
         if(File.Exists(Application.persistentDataPath + "/Userdata.json"))
         {
             string json = File.ReadAllText(Application.persistentDataPath + "/Userdata.json");
-            userdata = JsonUtility.FromJson<UserData>(json);
+            //userdata = JsonUtility.FromJson<UserData>(json);
 
-            Usersid = userdata.UID;
+            Usersid = playerdata.UID;
 
             reference.Child("users").Child(Usersid).GetValueAsync().ContinueWith(task =>
             {
@@ -358,7 +359,7 @@ public class GameCenterManager : MonoBehaviour
 
         Credential credential = GoogleAuthProvider.GetCredential(idToken, accessToken);
         auth.SignInWithCredentialAsync(credential).ContinueWith(task => { //ContinueWithOnMainThread
-            if (task.IsCanceled)        //���а���
+            if (task.IsCanceled)        //취소
             {
                 Debug.LogError("SignInWithCredentialAsync was canceled.");
                 callback(false);
@@ -371,7 +372,7 @@ public class GameCenterManager : MonoBehaviour
                 return;
             }
 
-            user = task.Result;     //newUser�� task���� ����.
+            user = task.Result;     //newuser 인식
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 user.DisplayName, user.UserId);
 
@@ -603,109 +604,109 @@ public class GameCenterManager : MonoBehaviour
 
     public void UIDRigister(string uid, string LastLogin)
     {
-        Debug.Log("UIDRigister ���� ����");
+        Debug.Log("UIDRigister 함수 실행");
 
         if(File.Exists(Application.persistentDataPath + "/Userdata.json"))  //�̹� ���� �����Ͱ� ���� �����ҿ�
         {                                                                   //���� �Ѵٸ�
-            Debug.Log("UID�� ������ ���� ���� ������");
+            Debug.Log("UID인식 후 데이터 접근");
 
             string json = File.ReadAllText(Application.persistentDataPath + "/Userdata.json");
-            userdata = JsonUtility.FromJson<UserData>(json);
+            //userdata = JsonUtility.FromJson<UserData>(json);
         }
         else
         {
-            Debug.Log("UID �����ϰ� ������ ó�� ������");
+            Debug.Log("UID 기초값 생성");
 
-            userdata.UID = uid;
-            userdata.LastLogin = LastLogin;
+            playerdata.UID = uid;
+            playerdata.LastLogin = LastLogin;
 
-            userdata.Gold = 0;
-            userdata.SkillPoints = 0;
-            userdata.UnitPoints = 0;
+            playerdata.Gold = 0;
+            playerdata.SkillPoints = 0;
+            playerdata.UnitPoints = 0;
 
-            userdata.Skill1_Level = 1;
-            userdata.Skill1_Unlock = true;
-            userdata.Skill2_Level = 1;
-            userdata.Skill2_Unlock = false;
-            userdata.Skill3_Level = 1;
-            userdata.Skill3_Unlock = false;
-            userdata.Skill4_Level = 1;
-            userdata.Skill4_Unlock = false;
-            userdata.Skill5_Level = 1;
-            userdata.Skill5_Unlock = false;
-            userdata.Skill6_Level = 1;
-            userdata.Skill6_Unlock = false;
-            userdata.Skill7_Level = 1;
-            userdata.Skill7_Unlock = false;
+            /*playerdata.Skill1_Level = 1;
+            playerdata.Skill1_Unlock = true;
+            playerdata.Skill2_Level = 1;
+            playerdata.Skill2_Unlock = false;
+            playerdata.Skill3_Level = 1;
+            playerdata.Skill3_Unlock = false;
+            playerdata.Skill4_Level = 1;
+            playerdata.Skill4_Unlock = false;
+            playerdata.Skill5_Level = 1;
+            playerdata.Skill5_Unlock = false;
+            playerdata.Skill6_Level = 1;
+            playerdata.Skill6_Unlock = false;
+            playerdata.Skill7_Level = 1;
+            playerdata.Skill7_Unlock = false;
 
-            userdata.S1EClear = false;
-            userdata.S1HClear = false;
-            userdata.S1NClear = false;
+            playerdata.S1EClear = false;
+            playerdata.S1HClear = false;
+            playerdata.S1NClear = false;
 
-            userdata.S2EClear = false;
-            userdata.S2HClear = false;
-            userdata.S2NClear = false;
+            playerdata.S2EClear = false;
+            playerdata.S2HClear = false;
+            playerdata.S2NClear = false;
 
-            userdata.S3EClear = false;
-            userdata.S3HClear = false;
-            userdata.S3NClear = false;
+            playerdata.S3EClear = false;
+            playerdata.S3HClear = false;
+            playerdata.S3NClear = false;
 
-            userdata.S4EClear = false;
-            userdata.S4HClear = false;
-            userdata.S4NClear = false;
+            playerdata.S4EClear = false;
+            playerdata.S4HClear = false;
+            playerdata.S4NClear = false;
 
-            userdata.S5EClear = false;
-            userdata.S5HClear = false;
-            userdata.S5NClear = false;
+            playerdata.S5EClear = false;
+            playerdata.S5HClear = false;
+            playerdata.S5NClear = false;
 
-            userdata.S6EClear = false;
-            userdata.S6HClear = false;
-            userdata.S6NClear = false;
+            playerdata.S6EClear = false;
+            playerdata.S6HClear = false;
+            playerdata.S6NClear = false;
 
-            userdata.S7EClear = false;
-            userdata.S7HClear = false;
-            userdata.S7NClear = false;
+            playerdata.S7EClear = false;
+            playerdata.S7HClear = false;
+            playerdata.S7NClear = false;
 
-            userdata.S8EClear = false;
-            userdata.S8HClear = false;
-            userdata.S8NClear = false;
+            playerdata.S8EClear = false;
+            playerdata.S8HClear = false;
+            playerdata.S8NClear = false;
 
-            userdata.ATKPower = 1;
-            userdata.EXP = 0;
-            userdata.HP = 100;
-            userdata.Level = 1;
-            userdata.MP = 1;
-            userdata.Speed = 5;
+            playerdata.ATKPower = 1;
+            playerdata.EXP = 0;
+            playerdata.HP = 100;
+            playerdata.Level = 1;
+            playerdata.MP = 1;
+            playerdata.Speed = 5;
 
-            userdata.Warrior_Level = 1;
-            userdata.Warrior_Unlock = true;
+            playerdata.Warrior_Level = 1;
+            playerdata.Warrior_Unlock = true;
 
-            userdata.Assassin_Level = 1;
-            userdata.Assassin_Unlock = false;
+            playerdata.Assassin_Level = 1;
+            playerdata.Assassin_Unlock = false;
 
-            userdata.Shielder_Level = 1;
-            userdata.Shielder_Unlock = true;
+            playerdata.Shielder_Level = 1;
+            playerdata.Shielder_Unlock = true;
 
-            userdata.Druid_Level = 1;
-            userdata.Druid_Unlock = false;
+            playerdata.Druid_Level = 1;
+            playerdata.Druid_Unlock = false;
 
-            userdata.Archor_Level = 1;
-            userdata.Archor_Unlock = true;
+            playerdata.Archor_Level = 1;
+            playerdata.Archor_Unlock = true;
 
-            userdata.Mechanic_Level = 1;
-            userdata.Mechanic_Unlock = false;
+            playerdata.Mechanic_Level = 1;
+            playerdata.Mechanic_Unlock = false;
 
-            userdata.Magician_Level = 1;
-            userdata.Magician_Unlock = true;
+            playerdata.Magician_Level = 1;
+            playerdata.Magician_Unlock = true;
 
-            userdata.Specialist_Level = 1;
-            userdata.Specialist_Unlock = false;
+            playerdata.Specialist_Level = 1;
+            playerdata.Specialist_Unlock = false;*/
 
 
-            string json = JsonUtility.ToJson(userdata);
+            string json = JsonUtility.ToJson(playerdata);
             string key = Usersid;
 
-            File.WriteAllText(Application.persistentDataPath + "/Userdata.json", JsonUtility.ToJson(userdata, true));
+            File.WriteAllText(Application.persistentDataPath + "/Userdata.json", JsonUtility.ToJson(playerdata, true));
             reference.Child("users").Child(key).SetRawJsonValueAsync(json);
         }
 

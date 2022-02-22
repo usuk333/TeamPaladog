@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
+using Firebase.Extensions;
 
 using Google;
 using GooglePlayGames;
@@ -53,9 +54,14 @@ public class ShopManager : MonoBehaviour
     private long strLen;
     int count = 0;
 
+    FirebaseDatabase firebaseDatabase;
+
+    FirebaseApp firebaseApp;
+
     void Awake()
     {
-        FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
+        firebaseApp = FirebaseApp.DefaultInstance;
+        firebaseDatabase = FirebaseDatabase.GetInstance(firebaseApp, "https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
         reference = FirebaseDatabase.DefaultInstance.RootReference;
     }
 
@@ -63,7 +69,7 @@ public class ShopManager : MonoBehaviour
     void Start()
     {
         //Usersid = "NaIxowYCsaSqdaYaWtWbIYErkqM2";
-
+        //reference.Child("users").Child(Userid).GetValueAsync().ContinueWith
         reference.Child("users").Child(Userid).GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
@@ -74,25 +80,33 @@ public class ShopManager : MonoBehaviour
             {
                 DataSnapshot snapshot = task.Result;
 
+                string Usersinfo = snapshot.Child("NaIxowYCsaSqdaYaWtWbIYErkqM2").Child("Gold").Value.ToString();
+
+                //Debug.Log("Gold : " + Usersinfo);
+
+                //Debug.Log(snapshot.ChildrenCount);
+
+                Gold.text = "Gold : " + Usersinfo;
                 Debug.Log("컴플릿떳음");
 
-                foreach (DataSnapshot data in snapshot.Children)
+                /*foreach (DataSnapshot data in snapshot.Children)
                 {
                     //Dictionary<string, string> userinfo = (Dictionary<string, string>)data.Value;
                     Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
                     if(data.Key == "Gold")
                     {
                         Golds = data.Value.ToString();
-                        Debug.LogFormat("씨발value는 {0}", data.Value);
-                        Debug.Log("좆같은Golds는 " + Golds);//내일은 미쳐날뛰는 링크로 해보자
+                        Debug.LogFormat("value는 {0}", data.Value);
+                        Debug.Log("Golds는 " + Golds);//h
+                        Gold.text = "Gold : " + Golds;
                     }
-                }
+                }*/
             }
         });
         isLoad = true;
         Debug.Log("끝!");
         //StartCoroutine(UpdateData());
-        GoUpdate();
+        //GoUpdate();
     }
     IEnumerator UpdateData()
     {
@@ -102,7 +116,7 @@ public class ShopManager : MonoBehaviour
         isLoad = false;
     }
 
-    void GoUpdate()
+    public void GoUpdate()
     {
         Debug.Log("Golds는 " + Golds);
         Gold.text = "Gold : " + Golds;
