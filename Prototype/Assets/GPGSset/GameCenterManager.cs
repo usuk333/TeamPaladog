@@ -18,33 +18,33 @@ using System.Threading.Tasks;
 
 public class GameCenterManager : MonoBehaviour
 {
-    //ÆÄÀÌ¾îº£ÀÌ½º ÀÎÁõ °ü¸® °´Ã¼
+    //Authìš© instance
     FirebaseAuth auth = null;
 
-    //»ç¿ëÀÚ °èÁ¤
+    //ì‚¬ìš©ì ê³„ì •
     FirebaseUser user = null;
 
-    //·Î±×ÀÎ ¼±ÅÃ È­¸é
+    //ë¡œê·¸ì¸ íŒ¨ë„
     public GameObject LoginPanel;
 
-    //ÀÓ½Ã ·Îµù ÆĞ³Î
+    //ë¡œë”© í™”ë©´
     public GameObject LoadingPanel;
 
-    // ´Ğ³×ÀÓ ¼³Á¤ ÆĞ³Î
+    //ë‹‰ë„¤ì„ ì„¤ì • í™”ë©´
     public GameObject NicknamePanel;
 
-    //±â±â ¿¬µ¿ÀÌ µÇ¾î ÀÖ´Â »óÅÂÀÎÁö Ã¼Å©ÇÏ´Â bool º¯¼ö
+    //ê¸°ê¸°ì—°ë™ì´ ë˜ì–´ìˆëŠ” ìƒíƒœì¸ì§€ ì²´í¬í•˜ëŠ” ë³€ìˆ˜
     private bool signedIn = false;
 
     public string FireBaseId = string.Empty;
 
-    public DatabaseReference reference;        //µ¥ÀÌÅÍ¸¦ ¾²±âÀ§ÇÑ reference
+    public DatabaseReference reference;        //ë°ì´í„°ë² ì´ìŠ¤ reference
 
-    public string Usersid;
+    [SerializeField] public string Usersid;
 
     //User user;
 
-    // ÀÓ½ÃÀúÀå¿ë Å¬·¡½º
+    // ì„ì‹œì €ì¥í´ë˜ìŠ¤
     private User.userLoginData.LoginType tempLoginType = User.userLoginData.LoginType.None;
     private string tempemail = string.Empty;
     private string temppw = string.Empty;
@@ -53,22 +53,28 @@ public class GameCenterManager : MonoBehaviour
     public bool StartTouch;
     [SerializeField] private Text StartText;
 
-    public UserData userdata;
+    public PlayerData playerdata;
+
+    [SerializeField] private Text ULV;
+    [SerializeField] private Text UEXP;
+
+    private string UEXPs;
+    private string ULVs;
 
     private void Awake()
     {
-        //Auth¿ë instance ÃÊ±âÈ­
-        auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+        //ì´ˆê¸°í™” auth
+        auth = FirebaseAuth.DefaultInstance;
 
-        //À¯ÀúÀÇ ·Î±×ÀÎ Á¤º¸¿¡ ¾î¶² º¯°æÀÌ »ı±â¸é ½ÇÇàµÇ°Ô ÀÌº¥Æ®¸¦ °É¾îÁØ´Ù.
+        //ìœ ì €ì˜ ë¡œê·¸ì¸ ì •ë³´ì— ë³€ê²½ì ì„ ì²´í¬í•˜ë©´ ì´ë²¤íŠ¸ë¥¼ ê±¸ì–´ì¤Œ
         auth.StateChanged += AuthStateChanged;
         //AuthStateChanged(this, null);
 
-        //·Î±×ÀÎ ·Îµù ÆĞ³Î ºñÈ°¼º
+        //ì²« ì‹œì‘ì‹œ Off
         LoginPanel.SetActive(false);
         LoadingPanel.SetActive(false);
 
-        //Firebase °æ·Î¹× reference ÃÊ±âÈ­
+        //Firebase reference ê²½ë¡œ ì„¤ì •
         FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
         reference = FirebaseDatabase.DefaultInstance.RootReference;
     }
@@ -86,12 +92,12 @@ public class GameCenterManager : MonoBehaviour
         PlayGamesPlatform.Activate();
         //auth = FirebaseAuth.DefaultInstance;
 
-        StartTouch = true;      //·Îµù ¿Ï·á
-        GameStart();
+        //StartTouch = true;
+        //GameStart();
 
-        //½ÇÇè±¸°£
+        //ì‹¤í—˜ìš©
 
-        Usersid = "NaIxowYCsaSqdaYaWtWbIYErkqM2";
+        //Usersid = "NaIxowYCsaSqdaYaWtWbIYErkqM2";
 
         reference.Child("users").Child(Usersid).GetValueAsync().ContinueWith(task =>
         {
@@ -103,29 +109,31 @@ public class GameCenterManager : MonoBehaviour
             {
                 DataSnapshot snapshot = task.Result;
 
-                Debug.Log("ÄÄÇÃ¸´¶¸À½");
+                Debug.Log("ï¿½ï¿½ï¿½Ã¸ï¿½ï¿½ï¿½ï¿½ï¿½");
 
                 foreach (DataSnapshot data in snapshot.Children)
                 {
                     //IDictionary userinfo = (IDictionary)data.Value;
-                    //µñ¼Å³Ê¸® °øºÎÇØ¾ßÇÒµí. ÀÌÇØ°¡ ¾È´ï
                     Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
-                    if(data.Key == "EXP")
+                    if(data.Key == "LV")
                     {
-                        Debug.Log("EXP ¹ß°ß, °ªÀº" + data.Value);
+                        Debug.Log("LV," + data.Value);
+                        ULVs = data.Value.ToString();
+                        ULV.text = "LV : " + ULVs;
                     }
-                    //¾Æ¾¾¹ßÁ¿°°´Ù
                 }
             }
         });
     }
 
-    //°èÁ¤¿¡ ¾î¶°ÇÑ º¯°æÀÌ ¹ß»ı ½Ã ÁøÇà
+
+
+    //ê³„ì • ë¡œê·¸ì¸ì— ì–´ë– í•œ ë³€ê²½ì  ë°œìƒ ì‹œ ì§„ì…
     void AuthStateChanged(object sender, System.EventArgs eventArgs)
     {
         if(auth.CurrentUser != user)
         {
-            //¿¬µ¿µÈ °èÁ¤°ú ±â±âÀÇ °èÁ¤ÀÌ °°´Ù¸é true ¸®ÅÏ
+            //ì—°ë™ëœ ê³„ì •ê³¼ ê¸°ê¸°ì˜ ê³„ì •ì´ ê°™ë‹¤ë©´ true ë¦¬í„´
             signedIn = user != auth.CurrentUser && auth.CurrentUser != null;
 
             if(!signedIn && user != null)
@@ -142,10 +150,11 @@ public class GameCenterManager : MonoBehaviour
         }
     }
 
-    //·Î±×ÀÎ ¼±ÅÃ ÆĞ³ÎÀ» ¿­¸ç ·Î±×ÀÎÇÑ user°¡ ÀÖ´ÂÁö È®ÀÎÇÑ´Ù
-    //¾øÀ¸¸é °èÁ¤ »ı¼º ½ÃÀÛ
+    //ë¡œê·¸ì¸ ì„ íƒíŒ¨ë„ì„ ì—´ë©° ë¡œê·¸ì¸ userê°€ ìˆëŠ”ì§€ í™•ì¸
+    //ì—†ìœ¼ë©´ ê³„ì • ìƒì„± ì‹œì‘
     public void LoginCheck()
     {
+        //ì—°ë™ ìƒíƒœê°€ ì•„ë‹ˆë¼ë©´
         if (!signedIn)
         {
             LoginPanel.SetActive(true);
@@ -156,17 +165,17 @@ public class GameCenterManager : MonoBehaviour
         }
     }
 
-    //±âÁ¸ À¯Àú Á¤º¸ ¼­¹ö¿¡¼­ °¡Á®¿Â´Ù
+    //ê¸°ì¡´ ìœ ì € ì •ë³´ ì„œë²„ì—ì„œ ê°€ì ¸ì˜¤ê¸°
     public IEnumerator CurrentUserDataGet()
     {
         LoadingPanel.SetActive(true);
         /*
-        // À¯Àú Á¤º¸
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         User.Instance.GetUserData(auth.CurrentUser.UserId, new System.Action(() => {
-            Debug.Log("À¯Àú Á¤º¸ ·Îµå ¿Ï·á!");
-            // À¯Àú ÀÎº¥ Á¤º¸
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ ï¿½Ï·ï¿½!");
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½ ï¿½ï¿½ï¿½ï¿½
             User.Instance.GetUserInven(auth.CurrentUser.UserId, new System.Action(() => {
-                // ´ÙÀ½ ¾ÀÀ¸·Î ³Ñ±ä´Ù.
+                // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ±ï¿½ï¿½ï¿½.
                 NextSecne();
             }));
         }));
@@ -174,10 +183,10 @@ public class GameCenterManager : MonoBehaviour
         yield return null;
     }
 
-    //°ÔÀÓ¸ŞÀÎ¾ÀÀ¸·Î ³Ñ¾î°¨
+    //ê²Œì„ ì”¬ìœ¼ë¡œ ë„˜ì–´ê°€ê¸°
     public void NextScene()
     {
-        Debug.Log("GameSceneÀ¸·Î");
+        Debug.Log("GameSceneï¿½ï¿½ï¿½ï¿½");
 
         SceneManager.LoadSceneAsync(1);
     }
@@ -206,9 +215,9 @@ public class GameCenterManager : MonoBehaviour
         if(File.Exists(Application.persistentDataPath + "/Userdata.json"))
         {
             string json = File.ReadAllText(Application.persistentDataPath + "/Userdata.json");
-            userdata = JsonUtility.FromJson<UserData>(json);
+            //userdata = JsonUtility.FromJson<UserData>(json);
 
-            Usersid = userdata.UID;
+            Usersid = playerdata.UID;
 
             reference.Child("users").Child(Usersid).GetValueAsync().ContinueWith(task =>
             {
@@ -220,12 +229,12 @@ public class GameCenterManager : MonoBehaviour
                 {
                     DataSnapshot snapshot = task.Result;
 
-                    Debug.Log("InitializeFirebase Á¢±Ù¿Ï·á");
+                    Debug.Log("InitializeFirebase ï¿½ï¿½ï¿½Ù¿Ï·ï¿½");
 
                     foreach (DataSnapshot data in snapshot.Children)
                     {
                         //IDictionary userinfo = (IDictionary)data.Value;
-                        //µñ¼Å³Ê¸® °øºÎÇØ¾ßÇÒµí. ÀÌÇØ°¡ ¾È´ï
+                        //ï¿½ï¿½ï¿½Å³Ê¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½Òµï¿½. ï¿½ï¿½ï¿½Ø°ï¿½ ï¿½È´ï¿½
                         Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
                     }
                 }
@@ -241,16 +250,16 @@ public class GameCenterManager : MonoBehaviour
     {
         if (!Social.localUser.authenticated)
         {
-            Social.localUser.Authenticate(success => // ·Î±×ÀÎ ½Ãµµ
+            Social.localUser.Authenticate(success => // ï¿½Î±ï¿½ï¿½ï¿½ ï¿½Ãµï¿½
             {
-                if (success) // ¼º°øÇÏ¸é
+                if (success) // ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½
                 {
-                    Debug.Log("TryFirebaseLogin ÇÔ¼ö ½ÇÇà");
+                    Debug.Log("TryFirebaseLogin ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½");
                     //StartCoroutine(TryFirebaseLogin());
                 }
-                else // ½ÇÆĞÇÏ¸é
+                else // ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½
                 {
-                    Debug.Log("½ÇÆĞ!");
+                    Debug.Log("ï¿½ï¿½ï¿½ï¿½!");
                 }
             });
         }
@@ -262,11 +271,11 @@ public class GameCenterManager : MonoBehaviour
         {
             PlayGamesPlatform.Instance.SignOut();
             auth.SignOut();
-            Debug.Log("auth.SignOut ¿Ï·á");
+            Debug.Log("auth.SignOut ï¿½Ï·ï¿½");
         }
     }
 
-    //ÀÍ¸í ·Î±×ÀÎ
+    //ìµëª… ë¡œê·¸ì¸
     public void GuestLogin()
     {
         //LoadingPanel.SetActive(true);
@@ -282,47 +291,47 @@ public class GameCenterManager : MonoBehaviour
                 Debug.LogError("SignInAnonymouslyAsync encountered an error: " + task.Exception);
                 return;
             }
-            Debug.Log("°Ô½ºÆ® ·Î±×ÀÎ ¿Ï·á");
+            Debug.Log("ìµëª… ë¡œê·¸ì¸ ì»´í”Œë¦¬íŠ¸");
 
             FirebaseUser newUser = task.Result;
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 newUser.DisplayName, newUser.UserId);
 
             Usersid = newUser.UserId;
-            //Debug.Log("writeNewUser ÇÔ¼ö ¹ßµ¿");
+            //Debug.Log("writeNewUser ï¿½Ô¼ï¿½ ï¿½ßµï¿½");
             //writeNewUser(newUser.UserId);
 
-            Debug.Log("UIDRigister ½ÃÀÛ");
-            UIDRigister(newUser.UserId, "Guest");        //±â±â ÀúÀå¼Ò È®ÀÎÇÏ´Â ifÁ¶°Ç¹® ¸¸µé¾îÁÖ´Â°Ô ÁÁÀ»µí
+            Debug.Log("UIDRigister ì‘ë™");
+            UIDRigister(newUser.UserId, "Guest");
             InitializeFirebase();
         });
 
-        //½Å±Ô À¯Àú µ¥ÀÌÅÍ ÀÓ½ÃÀúÀå
+        //ì‹ ê·œ ìœ ì € ë°ì´í„° ì„ì‹œ ì €ì¥ í•¨ìˆ˜
         userDataInit();
         userDataTempSave(User.userLoginData.LoginType.anony);
 
         //LoadingPanel.SetActive(false);
     }
 
-    //±¸±Û ·Î±×ÀÎ
+    //êµ¬ê¸€ ë¡œê·¸ì¸
     public void GoogleLogin()
     {
         //LoadingPanel.SetActive(true);
 
         try
         {
-            //±¸±Û ·Î±×ÀÎ Ã³¸® ºÎºĞ
-            //±¸±Û ·Î±×ÀÎ ÆË¾÷Ã¢ÀÌ ²¨Áö¸é ½ÇÇàµÉ Äİ¹éÇÔ¼ö¸¦ ¼±¾ğÇÑ´Ù.
+            //êµ¬ê¸€ë¡œê·¸ì¸ ì²˜ë¦¬ ë¶€ë¶„
+            //êµ¬ê¸€ ë¡œê·¸ì¸ íŒì—…ì°½ì´ êº¼ì§€ë©´ ì‹¤í–‰í•  ì½œë°± í•¨ìˆ˜ ì„ ì–¸
             TryFirebaseLogin(new System.Action<bool>((bool chk) =>
             {
                 if (chk)
                 {
-                    //½Å±Ô À¯Àú µ¥ÀÌÅÍ ÀÓ½Ã ÀúÀå
+                    //ì‹ ê·œ ìœ ì € ë°ì´í„° ì„ì‹œ ì €ì¥
                     userDataInit();
                     userDataTempSave(User.userLoginData.LoginType.google);
 
                     //LoadingPanel.SetActive(false);
-                    //´Ğ³×ÀÓ Ã¢ ÄÑÁÖ±â
+                    //ë‹‰ë„¤ì„ ì°½ ì¼œì£¼ê¸°
                     //NicknamePanel.SetActive(true);
                 }
                 else
@@ -339,18 +348,18 @@ public class GameCenterManager : MonoBehaviour
     }
 
 
-    //±¸±Û ·Î±×ÀÎ ±¸µ¿
+    //êµ¬ê¸€ ë¡œê·¸ì¸ êµ¬ë™
     public IEnumerator TryFirebaseLogin(System.Action<bool> callback)
     {
         while (string.IsNullOrEmpty(((PlayGamesLocalUser)Social.localUser).GetIdToken()))
             yield return null;
 
-        string idToken = ((PlayGamesLocalUser)Social.localUser).GetIdToken();   //idÅäÅ«°¡Á®¿À±â
+        string idToken = ((PlayGamesLocalUser)Social.localUser).GetIdToken();
         string accessToken = null;
 
         Credential credential = GoogleAuthProvider.GetCredential(idToken, accessToken);
         auth.SignInWithCredentialAsync(credential).ContinueWith(task => { //ContinueWithOnMainThread
-            if (task.IsCanceled)        //½ÇÆĞ°æ¿ì
+            if (task.IsCanceled)        //ì·¨ì†Œ
             {
                 Debug.LogError("SignInWithCredentialAsync was canceled.");
                 callback(false);
@@ -363,7 +372,7 @@ public class GameCenterManager : MonoBehaviour
                 return;
             }
 
-            user = task.Result;     //newUser¿¡ taskÁ¤º¸ ÀúÀå.
+            user = task.Result;     //newuser ì¸ì‹
             Debug.LogFormat("User signed in successfully: {0} ({1})",
                 user.DisplayName, user.UserId);
 
@@ -376,7 +385,7 @@ public class GameCenterManager : MonoBehaviour
         });
     }
 
-    //À¯Àú ´Ğ³×ÀÓ ÀÔ·Â ½ÃÀÛ
+    //ìœ ì € ë‹‰ë„¤ì„ ì…ë ¥ ì‹œì‘
     private void InsertNewUserData()
     {
         var nickname = NicknamePanel.transform.Find("InputField").Find("NickNameInput")
@@ -384,17 +393,17 @@ public class GameCenterManager : MonoBehaviour
 
         if(nickname.Length > 0)
         {
-            //½Å±Ô À¯Àú µ¥ÀÌÅÍ ÀÔ·Â
-            loginDataSave(tempLoginType, nickname, tempemail, temppw);
+            //ì‹ ê·œ ìœ ì € ë°ì´í„° ì…ë ¥
+            //loginDataSave(tempLoginType, nickname, tempemail, temppw);
         }
         else
         {
-            Debug.Log("º°¸íÀ» ÀÔ·ÂÇØÁÖ¼¼¿ä");
+            Debug.Log("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½");
             return;
         }
     }
 
-    // À¯Àú ÀÓ½Ã µ¥ÀÌÅÍ ÃÊ±âÈ­
+    //ìœ ì €ë°ì´í„° ì„ì‹œ ì´ˆê¸°í™”
     private void userDataInit()
     {
         tempLoginType = User.userLoginData.LoginType.None;
@@ -402,7 +411,7 @@ public class GameCenterManager : MonoBehaviour
         temppw = string.Empty;
     }
 
-    // À¯Àú µ¥ÀÌÅÍ ÀÓ½Ã ÀúÀå
+    // ì„ì‹œ ì €ì¥
     private void userDataTempSave(User.userLoginData.LoginType loginType, string email = null, string pw = null)
     {
         tempLoginType = loginType;
@@ -410,14 +419,14 @@ public class GameCenterManager : MonoBehaviour
         temppw = pw;
     }
 
-    // ½Å±Ô À¯Àú µ¥ÀÌÅÍ ÀÔ·Â
-    private void loginDataSave(User.userLoginData.LoginType loginType, string nickname = null,
+    // ï¿½Å±ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½
+    /*private void loginDataSave(User.userLoginData.LoginType loginType, string nickname = null,
         string email = null, string pw = null)
     {
-        // À¯Àú µ¥ÀÌÅÍ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         var newUser = new User.userLoginData();
 
-        // DB¿¡ ÀúÀåµÉ À¯Àúµ¥ÀÌÅÍ ÃÊ±âÈ­
+        // DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
         newUser.loginType = tempLoginType;
         newUser.nickname = nickname;
         newUser.uid = user.UserId;
@@ -431,10 +440,10 @@ public class GameCenterManager : MonoBehaviour
         string json = JsonUtility.ToJson(newUser);
 
 
-        // ÄÚÀÎ ÀúÀå¿ë
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         var newUserInventory = new User.userGoodsData();
 
-        // DB¿¡ ÀúÀåµÉ À¯Àúµ¥ÀÌÅÍ ÃÊ±âÈ­
+        // DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
         newUserInventory.uid = user.UserId;
         newUserInventory.coin = 0;
 
@@ -442,27 +451,27 @@ public class GameCenterManager : MonoBehaviour
         LoginPanel.SetActive(false);
         NicknamePanel.SetActive(false);
 
-        // À§¿¡ Á¤¸®ÇÑ jsonÀ» ¼­¹ö¿¡ º¸³» DB¿¡ ÀúÀåÇÑ´Ù.
-        // »õ·Î¿î À¯Àú¿¡ ´ëÇÑ µ¥ÀÌÅÍ¸¦ DB¿¡ º¸³½´Ù.
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ jsonï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+        // ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
        /* Server.Instance.NewUserJsonDBSave(json, () => {
-            // DB¿¡ ÀúÀå ÈÄ µğ¹ÙÀÌ½º userÁ¤º¸¿¡µµ ÀúÀåÇÑ´Ù.
+            // DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ userï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
             User.Instance.mainUser = newUser;
 
-            // »õ·Î¿î À¯ÀúÀÇ ÀÎº¥Åä¸® µ¥ÀÌÅÍ¸¦ DB¿¡ º¸³½´Ù.
+            // ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½ï¿½ä¸® ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
             Server.Instance.NewUserInventoryJsonDBSave(JsonUtility.ToJson(newUserInventory), () => {
-                // DB¿¡ ÀúÀå ÈÄ µğ¹ÙÀÌ½º userÁ¤º¸¿¡µµ ÀúÀåÇÑ´Ù.
+                // DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì½ï¿½ userï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
                 User.Instance.mainInventory = newUserInventory;
-                // ´ÙÀ½¾ÀÀ¸·Î ÀÌµ¿
+                // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
                 NextSecne();
             });
-        });*/
-    }
+        });
+    }*/
 
     public void GuestLogout()
     {
         if(auth == null)
         {
-            Debug.Log("auth ¹ÌÂüÁ¶");
+            Debug.Log("auth ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
         }
         else
             auth.SignOut();
@@ -470,11 +479,11 @@ public class GameCenterManager : MonoBehaviour
 
     public void GoBattle()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("Stage");
     }
 
 
-    public class MyUserData //µ¥ÀÌÅÍ
+    public class MyUserData //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     {
         public string UID;
 
@@ -550,7 +559,7 @@ public class GameCenterManager : MonoBehaviour
 
         //Unit
         //Warrior
-        public int Warrior_Level;       
+        public int Warrior_Level;
         public bool Warrior_Unlock;
         //Assassin
         public int Assassin_Level;
@@ -583,7 +592,7 @@ public class GameCenterManager : MonoBehaviour
             if (task.IsCompleted)
             {
                 DataSnapshot snapshot = task.Result;
-                Debug.Log("InitializeFirebase Á¢±Ù¿Ï·á");
+                Debug.Log("InitializeFirebase ï¿½ï¿½ï¿½Ù¿Ï·ï¿½");
 
                 foreach (DataSnapshot data in snapshot.Children)
                 {
@@ -595,115 +604,115 @@ public class GameCenterManager : MonoBehaviour
 
     public void UIDRigister(string uid, string LastLogin)
     {
-        Debug.Log("UIDRigister ÁøÀÔ ¼º°ø");
+        Debug.Log("UIDRigister í•¨ìˆ˜ ì‹¤í–‰");
 
-        if(File.Exists(Application.persistentDataPath + "/Userdata.json"))  //ÀÌ¹Ì À¯Àú µ¥ÀÌÅÍ°¡ ·ÎÄÃ ÀúÀå¼Ò¿¡
-        {                                                                   //Á¸Àç ÇÑ´Ù¸é
-            Debug.Log("UID¸¦ ºñ·ÔÇÑ À¯Àú Á¤º¸ ¿¢¼¼½º");
+        if(File.Exists(Application.persistentDataPath + "/Userdata.json"))  //ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ò¿ï¿½
+        {                                                                   //ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´Ù¸ï¿½
+            Debug.Log("UIDì¸ì‹ í›„ ë°ì´í„° ì ‘ê·¼");
 
             string json = File.ReadAllText(Application.persistentDataPath + "/Userdata.json");
-            userdata = JsonUtility.FromJson<UserData>(json);
+            //userdata = JsonUtility.FromJson<UserData>(json);
         }
         else
         {
-            Debug.Log("UID »ı¼ºÇÏ°í µ¥ÀÌÅÍ Ã³À½ ¸¸µé±â");
+            Debug.Log("UID ê¸°ì´ˆê°’ ìƒì„±");
 
-            userdata.UID = uid;
-            userdata.LastLogin = LastLogin;
+            playerdata.UID = uid;
+            playerdata.LastLogin = LastLogin;
 
-            userdata.Gold = 0;
-            userdata.SkillPoints = 0;
-            userdata.UnitPoints = 0;
+            playerdata.Gold = 0;
+            playerdata.SkillPoints = 0;
+            playerdata.UnitPoints = 0;
 
-            userdata.Skill1_Level = 1;
-            userdata.Skill1_Unlock = true;
-            userdata.Skill2_Level = 1;
-            userdata.Skill2_Unlock = false;
-            userdata.Skill3_Level = 1;
-            userdata.Skill3_Unlock = false;
-            userdata.Skill4_Level = 1;
-            userdata.Skill4_Unlock = false;
-            userdata.Skill5_Level = 1;
-            userdata.Skill5_Unlock = false;
-            userdata.Skill6_Level = 1;
-            userdata.Skill6_Unlock = false;
-            userdata.Skill7_Level = 1;
-            userdata.Skill7_Unlock = false;
+            /*playerdata.Skill1_Level = 1;
+            playerdata.Skill1_Unlock = true;
+            playerdata.Skill2_Level = 1;
+            playerdata.Skill2_Unlock = false;
+            playerdata.Skill3_Level = 1;
+            playerdata.Skill3_Unlock = false;
+            playerdata.Skill4_Level = 1;
+            playerdata.Skill4_Unlock = false;
+            playerdata.Skill5_Level = 1;
+            playerdata.Skill5_Unlock = false;
+            playerdata.Skill6_Level = 1;
+            playerdata.Skill6_Unlock = false;
+            playerdata.Skill7_Level = 1;
+            playerdata.Skill7_Unlock = false;
 
-            userdata.S1EClear = false;
-            userdata.S1HClear = false;
-            userdata.S1NClear = false;
+            playerdata.S1EClear = false;
+            playerdata.S1HClear = false;
+            playerdata.S1NClear = false;
 
-            userdata.S2EClear = false;
-            userdata.S2HClear = false;
-            userdata.S2NClear = false;
+            playerdata.S2EClear = false;
+            playerdata.S2HClear = false;
+            playerdata.S2NClear = false;
 
-            userdata.S3EClear = false;
-            userdata.S3HClear = false;
-            userdata.S3NClear = false;
+            playerdata.S3EClear = false;
+            playerdata.S3HClear = false;
+            playerdata.S3NClear = false;
 
-            userdata.S4EClear = false;
-            userdata.S4HClear = false;
-            userdata.S4NClear = false;
+            playerdata.S4EClear = false;
+            playerdata.S4HClear = false;
+            playerdata.S4NClear = false;
 
-            userdata.S5EClear = false;
-            userdata.S5HClear = false;
-            userdata.S5NClear = false;
+            playerdata.S5EClear = false;
+            playerdata.S5HClear = false;
+            playerdata.S5NClear = false;
 
-            userdata.S6EClear = false;
-            userdata.S6HClear = false;
-            userdata.S6NClear = false;
+            playerdata.S6EClear = false;
+            playerdata.S6HClear = false;
+            playerdata.S6NClear = false;
 
-            userdata.S7EClear = false;
-            userdata.S7HClear = false;
-            userdata.S7NClear = false;
+            playerdata.S7EClear = false;
+            playerdata.S7HClear = false;
+            playerdata.S7NClear = false;
 
-            userdata.S8EClear = false;
-            userdata.S8HClear = false;
-            userdata.S8NClear = false;
+            playerdata.S8EClear = false;
+            playerdata.S8HClear = false;
+            playerdata.S8NClear = false;
 
-            userdata.ATKPower = 1;
-            userdata.EXP = 0;
-            userdata.HP = 100;
-            userdata.Level = 1;
-            userdata.MP = 1;
-            userdata.Speed = 5;
+            playerdata.ATKPower = 1;
+            playerdata.EXP = 0;
+            playerdata.HP = 100;
+            playerdata.Level = 1;
+            playerdata.MP = 1;
+            playerdata.Speed = 5;
 
-            userdata.Warrior_Level = 1;
-            userdata.Warrior_Unlock = true;
+            playerdata.Warrior_Level = 1;
+            playerdata.Warrior_Unlock = true;
 
-            userdata.Assassin_Level = 1;
-            userdata.Assassin_Unlock = false;
+            playerdata.Assassin_Level = 1;
+            playerdata.Assassin_Unlock = false;
 
-            userdata.Shielder_Level = 1;
-            userdata.Shielder_Unlock = true;
+            playerdata.Shielder_Level = 1;
+            playerdata.Shielder_Unlock = true;
 
-            userdata.Druid_Level = 1;
-            userdata.Druid_Unlock = false;
+            playerdata.Druid_Level = 1;
+            playerdata.Druid_Unlock = false;
 
-            userdata.Archor_Level = 1;
-            userdata.Archor_Unlock = true;
+            playerdata.Archor_Level = 1;
+            playerdata.Archor_Unlock = true;
 
-            userdata.Mechanic_Level = 1;
-            userdata.Mechanic_Unlock = false;
+            playerdata.Mechanic_Level = 1;
+            playerdata.Mechanic_Unlock = false;
 
-            userdata.Magician_Level = 1;
-            userdata.Magician_Unlock = true;
+            playerdata.Magician_Level = 1;
+            playerdata.Magician_Unlock = true;
 
-            userdata.Specialist_Level = 1;
-            userdata.Specialist_Unlock = false;
+            playerdata.Specialist_Level = 1;
+            playerdata.Specialist_Unlock = false;*/
 
 
-            string json = JsonUtility.ToJson(userdata);
+            string json = JsonUtility.ToJson(playerdata);
             string key = Usersid;
 
-            File.WriteAllText(Application.persistentDataPath + "/Userdata.json", JsonUtility.ToJson(userdata, true));
+            File.WriteAllText(Application.persistentDataPath + "/Userdata.json", JsonUtility.ToJson(playerdata, true));
             reference.Child("users").Child(key).SetRawJsonValueAsync(json);
         }
 
-        /*Debug.Log("UID ÀúÀåÇÏ±â");
+        /*Debug.Log("UID ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½");
 
-        userdata.user_name = "¹ÚÂùÁß";
+        userdata.user_name = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
         userdata.Area1 = false;
         userdata.Area2 = false;
         userdata.Area3 = false;
@@ -729,7 +738,7 @@ public class GameCenterManager : MonoBehaviour
         Debug.LogFormat("[Database] insert !");
         User users = new User();
 
-        users.user_name = "³» ÀÌ¸§Àº ¹ÚÂùÁß";
+        users.user_name = "ï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½";
         users.Skill1_Level = 1;
         users.Skill2_Level = 1;
         users.Skill3_Level = 1;
@@ -747,9 +756,10 @@ public class GameCenterManager : MonoBehaviour
         reference.Child("users").Child(key).SetRawJsonValueAsync(json);
     }*/
 
+    //ï¿½ï¿½ï¿½Û·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ğ¾ï¿½ï¿½ï¿½ï¿½ï¿½
     public void ReadingDbUserInfo()
     {
-        Debug.Log("¸®µù½´Å¸ÀÌ³Ê ¹ßµ¿");
+        Debug.Log("ë¦¬ë”© ìŠˆíƒ€ì´ë„ˆ ë°œë™");
         reference.Child("users").Child(Usersid).GetValueAsync().ContinueWith(task =>
         {
             if (task.IsFaulted)
@@ -758,11 +768,11 @@ public class GameCenterManager : MonoBehaviour
             }
             else if (task.IsCompleted)
             {
-                Debug.Log("¸®µù½´Å¸ÀÌ³Ê ÄÄÇÃ¸´Æ®");
+                Debug.Log("ë¦¬ë”©ìŠˆíƒ€ì´ë„ˆ ì»´í”Œë¦¿");
 
                 DataSnapshot snapshot = task.Result;
 
-                //°¡Á®¿Â µ¥ÀÌÅÍ snapshotÀ» jsonÀ¸·Î º¯È¯ ÀúÀå
+                //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ snapshotï¿½ï¿½ jsonï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯ ï¿½ï¿½ï¿½ï¿½
                 //string json = JsonUtility.ToJson(snapshot);
 
                 foreach (DataSnapshot userdata in snapshot.Children)
@@ -773,6 +783,7 @@ public class GameCenterManager : MonoBehaviour
         });
     }
 
+    //ï¿½ï¿½ï¿½Û°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¯
     public void onAnonyToGoogle()
     {
         Social.localUser.Authenticate((bool success) =>
@@ -809,22 +820,28 @@ public class GameCenterManager : MonoBehaviour
         });
     }
 
+    //Shopï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
+    public void GoShop()
+    {
+        SceneManager.LoadScene("Shop");
+    }
+
 
     public void SaveData()
     {
-        /*if (!Directory.Exists(Application.persistentDataPath + "/»ı¼ºÇÒ Æú´õ ÀÌ¸§"))
+        /*if (!Directory.Exists(Application.persistentDataPath + "/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½"))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + "/»ı¼ºÇÒ Æú´õ ÀÌ¸§");
+            Directory.CreateDirectory(Application.persistentDataPath + "/ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½");
         }*/
 
-        /*[¾Èµå·ÎÀÌµå External]
-        Application.persistentDataPath : / mnt / sdcard / Android / data / com.YourProductName.YourCompanyName / files[ÆÄÀÏ ÀĞ±â / ¾²±â °¡´É]
-        Application.dataPath : / data / app / ¹øµéÀÌ¸§ - ¹øÈ£.apk
-        Application.streamingAssetsPath : jar: file:///data/app/¹øµéÀÌ¸§.apk!/assets [ÆÄÀÏÀÌ ¾Æ´Ñ WWW·Î ÀĞ±â °¡´É]
+        /*[ï¿½Èµï¿½ï¿½ï¿½ï¿½Ìµï¿½ External]
+        Application.persistentDataPath : / mnt / sdcard / Android / data / com.YourProductName.YourCompanyName / files[ï¿½ï¿½ï¿½ï¿½ ï¿½Ğ±ï¿½ / ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½]
+        Application.dataPath : / data / app / ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ - ï¿½ï¿½È£.apk
+        Application.streamingAssetsPath : jar: file:///data/app/ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½.apk!/assets [ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ WWWï¿½ï¿½ ï¿½Ğ±ï¿½ ï¿½ï¿½ï¿½ï¿½]
 
-        [¾Èµå·ÎÀÌµå Internal]
-        Application.persistentDataPath : / Android / data / com.YourProductName.YourCompanyName / files[ÆÄÀÏ ÀĞ±â / ¾²±â °¡´É]
-        Application.dataPath : / data / app / ¹øµéÀÌ¸§ - ¹øÈ£.apk
-        Application.streamingAssetsPath : jar: file:///data/app/¹øµéÀÌ¸§.apk!/assets [ÆÄÀÏÀÌ ¾Æ´Ñ WWW·Î ÀĞ±â °¡´É]*/
+        [ï¿½Èµï¿½ï¿½ï¿½ï¿½Ìµï¿½ Internal]
+        Application.persistentDataPath : / Android / data / com.YourProductName.YourCompanyName / files[ï¿½ï¿½ï¿½ï¿½ ï¿½Ğ±ï¿½ / ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½]
+        Application.dataPath : / data / app / ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ - ï¿½ï¿½È£.apk
+        Application.streamingAssetsPath : jar: file:///data/app/ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½.apk!/assets [ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Æ´ï¿½ WWWï¿½ï¿½ ï¿½Ğ±ï¿½ ï¿½ï¿½ï¿½ï¿½]*/
     }
 }

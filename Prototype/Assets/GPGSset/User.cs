@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class User : MonoBehaviour
 {
-    // ½º·¹µå¿¡ ¾ÈÀüÇÑ ½Ì±ÛÅæ ¼±¾ð
+    // ï¿½ï¿½ï¿½ï¿½ï¿½å¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     private static bool shuttingDown = false;
     private static object Lock = new object();
     private static User instance;
@@ -45,12 +45,12 @@ public class User : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    // °ÔÀÓ¿¡¼­ »ç¿ëÇÒ À¯Àú Á¤º¸¸¦ ÀúÀåÇØµÎ´Â °÷
+    // ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ØµÎ´ï¿½ ï¿½ï¿½
     public userLoginData mainUser;
-    // À¯ÀúÀÇ ÀÎº¥Åä¸®
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½ï¿½ä¸®
     public userGoodsData mainInventory;
 
-    // À¯Àú Á¤º¸ Å¬·¡½º
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
     [System.Serializable]
     public class userLoginData
     {
@@ -73,7 +73,7 @@ public class User : MonoBehaviour
         public ulong createDate;
     }
 
-    // À¯Àú ÀçÈ­ º¸À¯ Å¬·¡½º
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
     [System.Serializable]
     public class userGoodsData
     {
@@ -81,7 +81,7 @@ public class User : MonoBehaviour
         public int coin;
     }
 
-    // À¯Àú ¿µ¼öÁõ Á¤º¸
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     [System.Serializable]
     public class userReceipt
     {
@@ -96,15 +96,15 @@ public class User : MonoBehaviour
     }
 
 
-    // ¼­¹ö¿¡¼­ À¯Àú µ¥ÀÌÅÍ ¹Þ¾Æ¿À±â
-    public void GetUserData(string uid, System.Action callback)
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½
+    /*public void GetUserData(string uid, System.Action callback)
     {
         //Server.Instance.GetUserDataDB(uid, callback);
     }
 
-    // ¼­¹ö¿¡¼­ À¯Àú ÀÎº¥ Á¤º¸ ¹Þ¾Æ¿À±â
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½
     public void GetUserInven(string uid, System.Action callback)
     {
-       // Server.Instance.GetUserInvenDB(uid, callback);
-    }
+        Server.Instance.GetUserInvenDB(uid, callback);
+    }*/
 }

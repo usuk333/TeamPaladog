@@ -14,14 +14,21 @@ public class MainSceneManager : MonoBehaviour
 {
     GameCenterManager gameCenterManager;
 
-    private int Lv;
-    private int EXP;
+    private string Lv;
+    private string EXP;
 
     [SerializeField] private Text TLv;
     [SerializeField] private Text TEXP;
 
+    [SerializeField] private string Userid;
 
+    private DatabaseReference reference;
 
+    private void Awake()
+    {
+        FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
+        reference = FirebaseDatabase.DefaultInstance.RootReference;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -35,30 +42,35 @@ public class MainSceneManager : MonoBehaviour
     }
     private void Loading()
     {
-        if(gameCenterManager.userdata != null)
+        Debug.Log(Userid);
+
+        reference.Child("users").Child(Userid).GetValueAsync().ContinueWith(task =>
         {
-            gameCenterManager.reference.Child("users").Child(gameCenterManager.Usersid)
-                .GetValueAsync().ContinueWith(task =>
+            if (task.IsFaulted)
             {
-                if (task.IsFaulted)
-                {
-                    Debug.LogError("failed reading...");
-                }
-                else if (task.IsCompleted)
-                {
-                    DataSnapshot snapshot = task.Result;
+                Debug.LogError("failed reading...");
+            }
+            else if (task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
 
-                    Debug.Log("InitializeFirebase 접근완료");
-
-                    foreach (DataSnapshot data in snapshot.Children)
+                foreach (DataSnapshot data in snapshot.Children)
+                {
+                    //딕셔너리 공부해야할듯. 이해가 안댐
+                    Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
+                    if (data.Key == "EXP")
                     {
-                        IDictionary userinfo = (IDictionary)data.Value;
-                        //딕셔너리 공부해야할듯. 이해가 안댐
-                        Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
+                        EXP = data.Value.ToString();
                     }
-                    
                 }
-            });
-        }
+            }
+        });
+
+        
+    }
+
+    public void UserInfoUpdate()
+    {
+        TEXP.text = "EXP : " + EXP;
     }
 }
