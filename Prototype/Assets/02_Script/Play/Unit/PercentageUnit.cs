@@ -41,7 +41,7 @@ public class PercentageUnit : MonoBehaviour
     }
     private void Skill_Assasin() //암살자 스킬
     {
-        boss.DecreaseHp(unit.AttackDamage + skillValue); //추후 곱절 or 퍼센트 연산으로 적용
+        boss.CommonStatus.DecreaseHp(unit.CommonStatus.AttackDamage + skillValue); //추후 곱절 or 퍼센트 연산으로 적용
     }
     private void Skill_Druid() //드루이드 스킬
     {
@@ -49,11 +49,11 @@ public class PercentageUnit : MonoBehaviour
     }
     private void Skill_Mage()
     {
-        boss.DecreaseHp(unit.AttackDamage + skillValue); //추후 곱절 or 퍼센트 연산으로 적용
+        boss.CommonStatus.DecreaseHp(unit.CommonStatus.AttackDamage + skillValue); //추후 곱절 or 퍼센트 연산으로 적용
     }
     private void Skill_Elementalist()
     {
-        boss.DecreaseHp(unit.AttackDamage + skillValue); //추후 곱절 or 퍼센트 연산으로 적용
+        boss.CommonStatus.DecreaseHp(unit.CommonStatus.AttackDamage + skillValue); //추후 곱절 or 퍼센트 연산으로 적용
     }
     private void Awake()
     {

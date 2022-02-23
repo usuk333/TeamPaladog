@@ -4,36 +4,114 @@ using UnityEngine;
 
 public class Beast : MonoBehaviour
 {
-    [SerializeField] private float shoutDamage;
-    [SerializeField] private Transform knockBackPoint;
-    [SerializeField] private GameObject crush;
-    private Player player;
-    private Unit[] units;
-    private List<GameObject> crushCollisions = new List<GameObject>();
+    private bool isCrush;
+    private bool isShout;
+    private Boss boss;
+    [SerializeField] private BossUtility bossUtility;
+    [SerializeField] private float[] crushDamages;
+    [SerializeField] private GameObject[] crushs;
+    [SerializeField] private float[] conditionHp;
+
     private void Shouting()
     {
-        Vector3 pos = new Vector3(knockBackPoint.position.x, -1.735f);
-        foreach (var item in units)
+        bossUtility.KnockBack();
+        isShout = true;
+    }
+    private IEnumerator Co_Crush()
+    {
+        while (true)
         {
-            item.KnockBack(pos);
-            item.DecreaseHp(shoutDamage);
+            if (isCrush)
+            {
+                boss.isPattern = true;
+                /* float rand = Random.Range(x, y); 패턴 반복 시간 (x~y 사이의 랜덤한 값마다 반복, 랜덤 값은 반복 할 때마다 변경됨)
+                yield return new WaitForSeconds(rand);*/
+                yield return new WaitForSeconds(1f);
+                crushs[1].SetActive(true);
+                yield return new WaitForSeconds(2f);
+                Crush();
+                crushs[1].SetActive(false);
+                boss.PatternCollisions.Clear();
+                isCrush = false;
+                boss.isPattern = false;
+            }
+            yield return null;
         }
-        player.KnockBack(pos);
-        StartCoroutine(Co_KnockBackCrush());
     }
     private IEnumerator Co_KnockBackCrush()
     {
-        crush.SetActive(true);
-        yield return null;
+        while (true)
+        {
+            if (isShout)
+            {
+                boss.isPattern = true;
+                crushs[0].SetActive(true);
+                yield return new WaitForSeconds(4f);
+                KnockBackCrush();
+                crushs[0].SetActive(false);
+                boss.PatternCollisions.Clear();
+                isShout = false;
+                boss.isPattern = false;
+            }
+            yield return null;
+        }      
+    }
+    private IEnumerator Co_CheckHp()
+    {
+        for (int i = 0; i < conditionHp.Length; i++)
+        {
+            yield return new WaitUntil(() => boss.CommonStatus.CurrentHp <= conditionHp[i]);
+            boss.CommonStatus.AttackDamage = boss.CommonStatus.AttackDamage * 1.2f;
+            boss.CommonStatus.AttackSpeed = boss.CommonStatus.AttackSpeed / 1.1f;
+        }
+    }
+    private void Crush()
+    {
+        foreach (var item in InGameManager.Instance.Units)
+        {
+            if (boss.PatternCollisions.Contains(item.gameObject))
+            {
+                item.CommonStatus.DecreaseHp(crushDamages[1]);
+            }
+        }
+        if (boss.PatternCollisions.Contains(boss.Player.gameObject))
+        {
+            boss.Player.DecreaseHp(crushDamages[1]);
+        }
+    }
+    private void KnockBackCrush()
+    {
+        foreach (var item in InGameManager.Instance.Units)
+        {
+            if (boss.PatternCollisions.Contains(item.gameObject))
+            {
+                item.CommonStatus.DecreaseHp(crushDamages[0]);
+            }
+        }
+        if (boss.PatternCollisions.Contains(boss.Player.gameObject))
+        {
+            boss.Player.DecreaseHp(crushDamages[0]);
+        }
     }
     private void Awake()
     {
-        player = FindObjectOfType<Player>();
+        boss = GetComponent<Boss>();
     }
     private void Start()
     {
-        units = InGameManager.Instance.Units;
-        Shouting();
+        StartCoroutine(Co_KnockBackCrush());
+        StartCoroutine(Co_Crush());
+        StartCoroutine(Co_CheckHp());
     }
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Shouting();
+        }
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            isCrush = true;
+        }
+    }
 }

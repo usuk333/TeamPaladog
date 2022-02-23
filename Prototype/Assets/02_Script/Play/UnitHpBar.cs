@@ -13,7 +13,7 @@ public class UnitHpBar : MonoBehaviour
     {
         while (true)
         {
-            hpBar.fillAmount = 1 / unit.MaxHp * unit.CurrentHp;
+            hpBar.fillAmount = 1 / unit.CommonStatus.MaxHp * unit.CommonStatus.CurrentHp;
             yield return null;
         }
     }

@@ -81,6 +81,7 @@ public class Player : MonoBehaviour
     {
         if(transform.position.x >= pos.x)
         {
+            isInpacable = false;
             yield break;
         }
         while (transform.position != pos)

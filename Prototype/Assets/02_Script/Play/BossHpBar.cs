@@ -11,7 +11,7 @@ public class BossHpBar : MonoBehaviour
     {
         while (true)
         {
-            hpBar.fillAmount = 1 / boss.MaxHp * boss.CurrentHp;
+            hpBar.fillAmount = 1 / boss.CommonStatus.MaxHp * boss.CommonStatus.CurrentHp;
             yield return null;
         }
     }

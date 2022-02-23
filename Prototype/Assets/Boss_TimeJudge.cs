@@ -50,8 +50,8 @@ public class Boss_TimeJudge : MonoBehaviour
     {
         foreach (var item in units)
         {
-            item.DecreaseHp(Mathf.Pow(timeBombDamage, timeBombStack));
-            item.SetInvincibility(timeBombInvincibleSec);
+            item.CommonStatus.DecreaseHp(Mathf.Pow(timeBombDamage, timeBombStack));
+          //  item.SetInvincibility(timeBombInvincibleSec);
         }
         player.DecreaseHp(Mathf.Pow(timeBombDamage, timeBombStack));
         timeBombStack++;
@@ -69,12 +69,12 @@ public class Boss_TimeJudge : MonoBehaviour
         }
         if (isPlayerIn)
         {
-            units[rand].DecreaseHp(laserDamage);
+            units[rand].CommonStatus.DecreaseHp(laserDamage);
             player.DecreaseHp(laserDamage);
         }
         else
         {
-            units[rand].DecreaseHp(Mathf.Pow(laserDamage,3));
+            units[rand].CommonStatus.DecreaseHp(Mathf.Pow(laserDamage,3));
         }
     }
     private void AttackTimeLaser()
@@ -82,7 +82,7 @@ public class Boss_TimeJudge : MonoBehaviour
         Debug.Log("레이저 발사");
         foreach (var item in units)
         {
-            item.DecreaseHp(item.MaxHp);
+            item.CommonStatus.DecreaseHp(item.CommonStatus.MaxHp);
         }
         player.DecreaseHp(player.MaxHp);
     }
@@ -107,7 +107,7 @@ public class Boss_TimeJudge : MonoBehaviour
         {
             return;
         }
-        units[i].DecreaseHp(judgementDamage);
+        units[i].CommonStatus.DecreaseHp(judgementDamage);
     }
     private void Awake()
     {

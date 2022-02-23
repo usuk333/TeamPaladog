@@ -19,8 +19,6 @@ public class Unit : MonoBehaviour
         Move,
         Attack,
         Skill,
-        Invincibility,
-        Incapable
     }
     private enum EUnitKind
     {
@@ -34,12 +32,19 @@ public class Unit : MonoBehaviour
         Count,
         Percentage
     }
-    private SkeletonAnimation spine;
+
+    //테스트
+    public bool isKnockBack { get; set; }
+    public float penaltyTime { get; set; }
+    public bool isIncapable { get; set; }
+    [SerializeField] private Transform knockBackPoint;
+
+
+   // private SkeletonAnimation spine;
     private CountUnit countUnit;
     private PercentageUnit percentageUnit;
-    private bool isInvincibility;
-    private IEnumerator updateState;
-    private Rigidbody2D rigidbody2D;
+    
+
     [SerializeField] private Transform pitch;
     [SerializeField] private Vector3 basicEffectOffset;
     [SerializeField] private Vector3 skillEffectOffset;
@@ -48,44 +53,16 @@ public class Unit : MonoBehaviour
     [SerializeField] private EUnitValue eUnitValue;
     [SerializeField] private EUnitState eUnitState = EUnitState.Idle;
     [SerializeField] private Boss boss;
-    [SerializeField] private float maxHp;
-    [SerializeField] private float currentHp;
-    [SerializeField] private float attackDamage;
-    [SerializeField] private float attackSpeed;
-    [SerializeField] private float moveSpeed;
     [SerializeField] private EUnitType eUnitType;
     [SerializeField] private EUnitKind eUnitKind;
+    [SerializeField] private CommonStatus commonStatus = new CommonStatus();
     public EUnitType UnitType { get => eUnitType; }
     public Boss Boss { get => boss; }
-    public float MaxHp
-    {
-        get
-        {
-            return maxHp;
-        }
-        set
-        {
-            maxHp = value;
-            currentHp = maxHp;
-        }
-    }
-    public float CurrentHp { get => currentHp; set => currentHp = value; }
-    public float AttackDamage { get => attackDamage; }
-    public Rigidbody2D Rigidbody2D { get => rigidbody2D; set => rigidbody2D = value; }
-    
-    public void KnockBack(Vector3 pos)
-    {
-        eUnitState = EUnitState.Incapable;
-        StartCoroutine(Co_KnockBack(pos));
-    }
-    public void SetInvincibility(float time)
-    {
-        StartCoroutine(Co_SetInvincibility(time));
-    }
+    public CommonStatus CommonStatus { get => commonStatus; set => commonStatus = value; }
     public bool InitializeUnitStatus()//해당 함수는 InGameManager의 Awake에서 실행될 코루틴에서 호출
     {
         //초기화 필요한 변수들 초기화
-        spine = GetComponent<SkeletonAnimation>();
+       // spine = GetComponent<SkeletonAnimation>();
         boss = FindObjectOfType<Boss>();
         //maxHp = DB 맥스체력
         //currentHp = maxHp;
@@ -94,24 +71,11 @@ public class Unit : MonoBehaviour
         //이동속도도?
         return true;
     }
-    public void DecreaseHp(float damage) //유닛 Hp 감소 함수(공격하는 쪽에서 호출함)
-    {
-        if (isInvincibility)
-        {
-            return;
-        }
-        currentHp -= damage;
-        if(currentHp <= 0)
-        {
-            StopCoroutine(updateState);
-            StartCoroutine(Co_Dead());
-        }
-    }
     #region -투사체 발사 함수-
     private void SetProjectile(int i)//투사체 발사하는 유닛만 사용. 투사체 풀에서 꺼내오면서 초기화
     {
         var obj = UnitProjectilePool.GetProjectile(i);
-        obj.GetComponent<Projectile>().Initialze(boss, transform, attackDamage);
+        obj.GetComponent<Projectile>().Initialze(boss, transform, commonStatus.AttackDamage);
     }
     #endregion
     private void Attack() //공격 로직
@@ -123,7 +87,7 @@ public class Unit : MonoBehaviour
         switch (eUnitKind)
         {
             case EUnitKind.Other:
-                boss.DecreaseHp(attackDamage); //투사체 발사 유닛이 아닌 경우에는 그냥 타격
+                boss.CommonStatus.DecreaseHp(commonStatus.AttackDamage); //투사체 발사 유닛이 아닌 경우에는 그냥 타격
                 break;
             //이 밑으로는 투사체 발사 유닛. 유닛 종류에 맞게 투사체 꺼내오는 함수 호출
             case EUnitKind.Taoist:
@@ -183,20 +147,6 @@ public class Unit : MonoBehaviour
             eUnitState = EUnitState.Attack;
         }
     }
-    private void Invoke_UnInvincibility()
-    {
-        isInvincibility = false;
-        eUnitState = EUnitState.Idle;
-    }
-    private IEnumerator Co_KnockBack(Vector3 pos)
-    {
-        while(transform.position != pos)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, pos, moveSpeed * Time.deltaTime);
-            yield return null;
-        }
-        eUnitState = EUnitState.Move;
-    }
     private IEnumerator Co_Dead() //유닛 죽는 애니메이션 연출 코루틴
     {
         yield return null;
@@ -210,17 +160,45 @@ public class Unit : MonoBehaviour
         }
         transform.gameObject.SetActive(false);*/
     }
+    private IEnumerator Co_OutOfStateCondition() //행동 불가 상태 정의
+    {
+        while (true)
+        {
+            yield return null;
+            if (isKnockBack)
+            {
+                while(transform.position != knockBackPoint.position)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, knockBackPoint.position, commonStatus.MoveSpeed * Time.deltaTime);
+                    yield return null;
+                }
+                isKnockBack = false;
+                isIncapable = true;
+            }
+            if (isIncapable)
+            {
+                yield return new WaitForSeconds(penaltyTime);
+                isIncapable = false;
+                eUnitState = EUnitState.Move;
+            }
+        }
+    }
     private IEnumerator Co_UpdateState() //유닛 유한상태기계(사실상 무한임)
     {
         yield return new WaitForSeconds(2f);
         while (true)
         {
+            yield return null;
+            if (isKnockBack || isIncapable)
+            {
+                continue;
+            }
             switch (eUnitState)
             {
                 case EUnitState.Idle:
-                    Debug.Log("코루틴 도는중");
-                    yield return new WaitForSeconds(attackSpeed);
-                    if(currentHp > 0)
+                   // Debug.Log("코루틴 도는중");
+                    yield return new WaitForSeconds(commonStatus.AttackSpeed);
+                    if(commonStatus.CurrentHp > 0)
                     {
                         switch (eUnitValue)
                         {
@@ -235,46 +213,37 @@ public class Unit : MonoBehaviour
                                 break;
                         }
                     }
+                    yield return null;
                     break;
                 case EUnitState.Move:
-                    transform.position = Vector3.MoveTowards(transform.position, pitch.position, moveSpeed * Time.deltaTime);
+                    transform.position = Vector3.MoveTowards(transform.position, pitch.position,commonStatus.MoveSpeed*Time.deltaTime);
+                    if (transform.position == pitch.position)
+                    {
+                        eUnitState = EUnitState.Idle;
+                    }
                     break;
                 case EUnitState.Attack:
                     Attack();
+                    yield return null;
                     //공격 애니메이션 재생 시간만큼 코루틴에 지연시간 주기
                     eUnitState = EUnitState.Idle;
                     break;
                 case EUnitState.Skill:
                     AttackSkill();
-                    
+                    yield return null;
                     //스킬 애니메이션 재생 시간만큼 코루틴에 지연시간 주기
                     eUnitState = EUnitState.Idle;
-                    break;
-                case EUnitState.Invincibility:
-                    Debug.Log("무적");
-                    break;
-                case EUnitState.Incapable:
                     break;
                 default:
                     Debug.Assert(false);
                     break;
             }
-            yield return null;
         }
-    }
-    private IEnumerator Co_SetInvincibility(float time)
-    {
-        isInvincibility = true;
-        StopCoroutine(updateState);
-        yield return new WaitForSeconds(time);
-        isInvincibility = false;
-        StartCoroutine(updateState);
     }
     private void Awake()
     {
         boss = FindObjectOfType<Boss>();
-        updateState = Co_UpdateState();
-        currentHp = maxHp;
+        commonStatus.CurrentHp = commonStatus.MaxHp;
         //spine = GetComponent<SkeletonAnimation>();
         if (eUnitValue == EUnitValue.Count)
         {
@@ -291,10 +260,18 @@ public class Unit : MonoBehaviour
             basicEffect.transform.position = boss.transform.position + basicEffectOffset;
             skillEffect.transform.position = boss.transform.position + skillEffectOffset;
         }
-        rigidbody2D = GetComponent<Rigidbody2D>();
     }
     private void Start()
     {
-        StartCoroutine(updateState);
+        StartCoroutine(Co_UpdateState());
+        StartCoroutine(Co_OutOfStateCondition());
+    }
+    private void Update()
+    {
+       /* if (Input.GetKeyDown(KeyCode.A))
+        {
+            isKnockBack = true;
+            penaltyTime = 5f;
+        }*/
     }
 }

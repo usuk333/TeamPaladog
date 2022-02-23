@@ -42,25 +42,25 @@ public class CountUnit : MonoBehaviour
     }
     private void Skill_Warrior() //전사 스킬
     {
-        boss.DecreaseHp(skillValue);
+        boss.CommonStatus.DecreaseHp(skillValue);
     }
     private void Skill_Shielder() // 방패병 스킬
     {
-        unit.CurrentHp += skillValue;
-        if(unit.CurrentHp > unit.MaxHp)
+        unit.CommonStatus.CurrentHp += skillValue;
+        if(unit.CommonStatus.CurrentHp > unit.CommonStatus.MaxHp)
         {
-            unit.CurrentHp = unit.MaxHp;
+            unit.CommonStatus.CurrentHp = unit.CommonStatus.MaxHp;
         }
     }
     private void Skill_Taoist()
     {
         //연출을 트페 w 카드 뽑듯이 머리 위에 스킬 부적 뜨게 한다음 보스 밑에서 불기둥 일어나게 하는건 어떤지
-        boss.DecreaseHp(skillValue);
+        boss.CommonStatus.DecreaseHp(skillValue);
     }
     private void Skill_Mechanic()
     {
         //보스 머리위에서 폭탄 투하? 아니면 사선으로 투하?
-        boss.DecreaseHp(skillValue);
+        boss.CommonStatus.DecreaseHp(skillValue);
     }
     private void Awake()
     {

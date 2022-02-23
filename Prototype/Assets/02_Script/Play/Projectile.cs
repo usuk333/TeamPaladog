@@ -35,7 +35,7 @@ public class Projectile : MonoBehaviour
     {
         if(collision.tag == "BOSS")
         {
-            boss.DecreaseHp(attackDamage);
+            boss.CommonStatus.DecreaseHp(attackDamage);
             switch (eProjectileKind)
             {
                 case EProjectileKind.Charm:

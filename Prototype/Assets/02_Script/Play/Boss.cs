@@ -7,35 +7,30 @@ public class Boss : MonoBehaviour
     private enum EBossState
     {
         Idle,
-        Attack,
-        Skill
+        Attack
     }
+    public bool isPattern { get; set; }
     private Player player;
+    [SerializeField] private List<GameObject> patternCollisions = new List<GameObject>();
     [SerializeField] private Unit currentUnit;
-    [SerializeField] private float maxHp; // 보스 최대 체력, 난이도에 따라 씬 로딩 시 초기화
-    [SerializeField] private float currentHp; // 보스 현재 체력. 씬 로딩 시 maxHp로 초기화
-    [SerializeField] private float attackDamage; // 보스 공격력. 난이도에 따라 씬 로딩 시 초기화
-    [SerializeField] private float attackSpeed; // 보스 공격 속도. 난이도에 따라 씬 로딩 시 초기화
     [SerializeField] private EBossState eBossState;
-    public float MaxHp { get => maxHp; }
-    public float CurrentHp { get => currentHp; }
+    [SerializeField] private CommonStatus commonStatus = new CommonStatus();
+    public CommonStatus CommonStatus { get => commonStatus; set => commonStatus = value; }
+    public Player Player { get => player; }
+    public List<GameObject> PatternCollisions { get => patternCollisions; set => patternCollisions = value; }
 
     public void InitializeBossStatus()//해당 함수는 InGameManager의 Awake에서 실행될 코루틴에서 호출
     {
         //초기화 필요한 변수들 초기화
     }
-    public void DecreaseHp(float damage)//체력 감소 함수 (공격하는 쪽에서 호출)
-    {
-        currentHp -= damage;
-    }
     private void Attack() //보스 평타
     {
         if(currentUnit == null) //유닛 다 죽으면 플레이어 공격
         {
-            player.DecreaseHp(attackDamage);
+            player.DecreaseHp(commonStatus.AttackDamage);
             return;
         }
-        currentUnit.DecreaseHp(attackDamage);
+        currentUnit.CommonStatus.DecreaseHp(commonStatus.AttackDamage);
     }
     private IEnumerator Co_UpdateUnitReference()
     {
@@ -44,7 +39,7 @@ public class Boss : MonoBehaviour
         currentUnit = InGameManager.Instance.Units[i];
         while (true)
         {
-            if(currentUnit.CurrentHp <= 0)
+            if(currentUnit.CommonStatus.CurrentHp <= 0)
             {
                 if(i >= 3)
                 {
@@ -60,17 +55,20 @@ public class Boss : MonoBehaviour
     {
         while (true)
         {
+            yield return null;
+            if (isPattern)
+            {
+                continue;
+            }
             switch (eBossState)
             {
                 case EBossState.Idle:
-                    yield return new WaitForSeconds(attackSpeed);
+                    yield return new WaitForSeconds(commonStatus.AttackSpeed);
                     eBossState = EBossState.Attack;
                     break;
                 case EBossState.Attack:
                     Attack();
                     eBossState = EBossState.Idle;
-                    break;
-                case EBossState.Skill:
                     break;
                 default:
                     break;
@@ -79,17 +77,12 @@ public class Boss : MonoBehaviour
     }
     private void Awake()//임시로 초기화
     {
-        currentHp = maxHp;
         player = FindObjectOfType<Player>();
+        commonStatus.CurrentHp = commonStatus.MaxHp;
     }
     private void Start()
     {
         StartCoroutine(Co_UpdateUnitReference());
         StartCoroutine(Co_UpdateState());
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
