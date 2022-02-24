@@ -30,15 +30,11 @@ public class ShopManager : MonoBehaviour
 
     private bool isLoad;
 
-    private string Golds = "999";
-    private string TLvs;
-    private string THps;
-    private string FLvs;
-    private string FHps;
-    private string MksLvs;
-    private string MksHps;
-    private string MLvs;
-    private string MHps;
+    private string Unitpoints = string.Empty;
+    private string Warrior_level = string.Empty;
+    private string Shielder_level = string.Empty;
+    private string Archor_level = string.Empty;
+    private string Magician_level = string.Empty;
 
     [SerializeField] private Text Gold;
     [SerializeField] private Text TLv;
@@ -50,9 +46,7 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Text MLv;
     [SerializeField] private Text MHp;
 
-    private string[] str;
-    private long strLen;
-    int count = 0;
+    DataSnapshot snapshot;
 
     FirebaseDatabase firebaseDatabase;
 
@@ -70,7 +64,7 @@ public class ShopManager : MonoBehaviour
     {
         //Usersid = "NaIxowYCsaSqdaYaWtWbIYErkqM2";
         //reference.Child("users").Child(Userid).GetValueAsync().ContinueWith
-        reference.Child("users").Child(Userid).GetValueAsync().ContinueWith(task =>
+        reference.Child("users").Child(Userid).Child("Unit").GetValueAsync().ContinueWithOnMainThread(task =>
         {
             if (task.IsFaulted)
             {
@@ -78,47 +72,39 @@ public class ShopManager : MonoBehaviour
             }
             else if (task.IsCompleted)
             {
-                DataSnapshot snapshot = task.Result;
-
-                string Usersinfo = snapshot.Child("NaIxowYCsaSqdaYaWtWbIYErkqM2").Child("Gold").Value.ToString();
-
-                //Debug.Log("Gold : " + Usersinfo);
-
-                //Debug.Log(snapshot.ChildrenCount);
-
-                Gold.text = "Gold : " + Usersinfo;
                 Debug.Log("컴플릿떳음");
+                snapshot = task.Result;
 
-                /*foreach (DataSnapshot data in snapshot.Children)
-                {
-                    //Dictionary<string, string> userinfo = (Dictionary<string, string>)data.Value;
-                    Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
-                    if(data.Key == "Gold")
-                    {
-                        Golds = data.Value.ToString();
-                        Debug.LogFormat("value는 {0}", data.Value);
-                        Debug.Log("Golds는 " + Golds);//h
-                        Gold.text = "Gold : " + Golds;
-                    }
-                }*/
+                StartCoroutine(UIupdate());
             }
         });
-        isLoad = true;
-        Debug.Log("끝!");
-        //StartCoroutine(UpdateData());
-        //GoUpdate();
     }
     IEnumerator UpdateData()
     {
         yield return new WaitUntil(() => isLoad);
 
-        Gold.text = "Gold : " + Golds;
+
         isLoad = false;
     }
-
-    public void GoUpdate()
+    IEnumerator UIupdate()
     {
-        Debug.Log("Golds는 " + Golds);
-        Gold.text = "Gold : " + Golds;
+        yield return null;
+
+        Debug.Log("UI업데이트시작");
+
+        Unitpoints = snapshot.Child("UnitPoints").Value.ToString();
+        Warrior_level = snapshot.Child("Warrior").Child("Warrior_Level").Value.ToString();
+        Archor_level = snapshot.Child("Archor").Child("Archor_Level").Value.ToString();
+        Shielder_level = snapshot.Child("Shielder").Child("Shielder_Level").Value.ToString();
+        Magician_level = snapshot.Child("Magician").Child("Magician_Level").Value.ToString();
+
+        Debug.Log("스냅샷 자식 수는 " + snapshot.ChildrenCount);
+
+        Gold.text = "UnitPoints : " + Unitpoints;
+        FLv.text = "LV : " + Warrior_level;
+        TLv.text = "LV : " + Shielder_level;
+        MksLv.text = "LV : " + Archor_level;
+        MLv.text = "LV : " + Magician_level;
     }
+
 }

@@ -555,6 +555,7 @@ GameObject:
   m_Component:
   - component: {fileID: 186116602}
   - component: {fileID: 186116603}
+  - component: {fileID: 186116604}
   m_Layer: 0
   m_Name: Test
   m_TagString: Untagged
@@ -595,74 +596,45 @@ MonoBehaviour:
   Usersid: NaIxowYCsaSqdaYaWtWbIYErkqM2
   StartTouch: 0
   StartText: {fileID: 256006295}
-  userdata:
-    UID: 
-    LastLogin: 
+  playerdata:
+    Nickname: 
     Gold: 0
-    SkillPoints: 0
-    UnitPoints: 0
-    Skill1_Level: 0
-    Skill1_Unlock: 0
-    Skill2_Level: 0
-    Skill2_Unlock: 0
-    Skill3_Level: 0
-    Skill3_Unlock: 0
-    Skill4_Level: 0
-    Skill4_Unlock: 0
-    Skill5_Level: 0
-    Skill5_Unlock: 0
-    Skill6_Level: 0
-    Skill6_Unlock: 0
-    Skill7_Level: 0
-    Skill7_Unlock: 0
-    S1EClear: 0
-    S1NClear: 0
-    S1HClear: 0
-    S2EClear: 0
-    S2NClear: 0
-    S2HClear: 0
-    S3EClear: 0
-    S3NClear: 0
-    S3HClear: 0
-    S4EClear: 0
-    S4NClear: 0
-    S4HClear: 0
-    S5EClear: 0
-    S5NClear: 0
-    S5HClear: 0
-    S6EClear: 0
-    S6NClear: 0
-    S6HClear: 0
-    S7EClear: 0
-    S7NClear: 0
-    S7HClear: 0
-    S8EClear: 0
-    S8NClear: 0
-    S8HClear: 0
     Level: 0
     EXP: 0
     Speed: 0
     HP: 0
     MP: 0
     ATKPower: 0
-    Warrior_Level: 0
-    Warrior_Unlock: 0
-    Assassin_Level: 0
-    Assassin_Unlock: 0
-    Druid_Level: 0
-    Druid_Unlock: 0
-    Shielder_Level: 0
-    Shielder_Unlock: 0
-    Archor_Level: 0
-    Archor_Unlock: 0
-    Mechanic_Level: 0
-    Mechanic_Unlock: 0
-    Magician_Level: 0
-    Magician_Unlock: 0
-    Specialist_Level: 0
-    Specialist_Unlock: 0
-  ULV: {fileID: 0}
-  UEXP: {fileID: 0}
+    UID: 
+    SkillPoints: 0
+    UnitPoints: 0
+  ULV: {fileID: 1311970923}
+  UEXP: {fileID: 1662558685}
+--- !u!114 &186116604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 186116601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9066884b6adb8d549907161a838abcd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Playerdatas:
+  - Nickname: 
+    Gold: 0
+    Level: 0
+    EXP: 0
+    Speed: 0
+    HP: 0
+    MP: 0
+    ATKPower: 0
+    UID: 
+    SkillPoints: 0
+    UnitPoints: 0
+  playerlogintype: 00000000
 --- !u!1 &256006294
 GameObject:
   m_ObjectHideFlags: 0
