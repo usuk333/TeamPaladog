@@ -216,7 +216,7 @@ public class Unit : MonoBehaviour
                     yield return null;
                     break;
                 case EUnitState.Move:
-                    transform.position = Vector3.MoveTowards(transform.position, pitch.position,commonStatus.MoveSpeed*Time.deltaTime);
+                    transform.position = Vector3.MoveTowards(transform.position, pitch.position,commonStatus.CurrentMoveSpeed*Time.deltaTime);
                     if (transform.position == pitch.position)
                     {
                         eUnitState = EUnitState.Idle;
@@ -244,6 +244,7 @@ public class Unit : MonoBehaviour
     {
         boss = FindObjectOfType<Boss>();
         commonStatus.CurrentHp = commonStatus.MaxHp;
+        commonStatus.CurrentMoveSpeed = commonStatus.MoveSpeed;
         //spine = GetComponent<SkeletonAnimation>();
         if (eUnitValue == EUnitValue.Count)
         {

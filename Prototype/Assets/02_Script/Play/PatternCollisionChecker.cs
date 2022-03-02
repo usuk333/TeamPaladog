@@ -7,6 +7,7 @@ public class PatternCollisionChecker : MonoBehaviour
 {
     private Boss boss;
     private BoxCollider2D boxCollider2D;
+    [SerializeField] private int arrayCount;
     private void Awake()
     {
         boss = GetComponentInParent<Boss>();
@@ -23,35 +24,59 @@ public class PatternCollisionChecker : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "PLAYER" || collision.tag == "UNIT")
+        /* if(collision.tag == "PLAYER" || collision.tag == "UNIT")
+         {
+              if (boss.PatternCollisions.Contains(collision.gameObject))
+              {
+                  return;
+              }
+              boss.PatternCollisions.Add(collision.gameObject);
+         }*/
+        if (collision.tag == "PLAYER" || collision.tag == "UNIT")
         {
-             if (boss.PatternCollisions.Contains(collision.gameObject))
-             {
-                 return;
-             }
-             boss.PatternCollisions.Add(collision.gameObject);
+            if (boss.CollisionsArray[arrayCount].Contains(collision.gameObject))
+            {
+                return;
+            }
+            boss.CollisionsArray[arrayCount].Add(collision.gameObject);
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.tag == "PLAYER" || collision.tag == "UNIT")
+        /*if (collision.tag == "PLAYER" || collision.tag == "UNIT")
         {
             if (boss.PatternCollisions.Contains(collision.gameObject))
             {
                 return;
             }
             boss.PatternCollisions.Add(collision.gameObject);
+        }*/
+        if (collision.tag == "PLAYER" || collision.tag == "UNIT")
+        {
+            if (boss.CollisionsArray[arrayCount].Contains(collision.gameObject))
+            {
+                return;
+            }
+            boss.CollisionsArray[arrayCount].Add(collision.gameObject);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.tag == "PLAYER" || collision.tag == "UNIT")
+        /*if (collision.tag == "PLAYER" || collision.tag == "UNIT")
         {
             if (!boss.PatternCollisions.Contains(collision.gameObject))
             {
                 return;
             }
             boss.PatternCollisions.Remove(collision.gameObject);
+        }*/
+        if (collision.tag == "PLAYER" || collision.tag == "UNIT")
+        {
+            if (!boss.CollisionsArray[arrayCount].Contains(collision.gameObject))
+            {
+                return;
+            }
+            boss.CollisionsArray[arrayCount].Remove(collision.gameObject);
         }
     }
 }

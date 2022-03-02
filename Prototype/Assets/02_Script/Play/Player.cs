@@ -18,7 +18,9 @@ public class Player : MonoBehaviour
     [SerializeField] private float currentMp;
     [SerializeField] private float mpRegenerative;
     [SerializeField] private float mpRegenerationTime;
-    [SerializeField] private float moveSpeed; //이동 속도
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float currentMoveSpeed; //이동 속도
+    private float castingTime;
     public float MaxHp
     { 
         get
@@ -57,7 +59,7 @@ public class Player : MonoBehaviour
     }
     public void Move(Vector3 direction) // 이동 함수 (매개변수로 이동할 방향 벡터를 받음)
     {
-        transform.position += direction * moveSpeed * Time.deltaTime;
+        transform.position += direction * currentMoveSpeed * Time.deltaTime;
     }
     public void DecreaseHp(float damage) // 체력 감소 함수 (공격하는 쪽에서 호출)
     {
@@ -69,9 +71,18 @@ public class Player : MonoBehaviour
     }
     public void Casting(float time)
     {
+        castingTime = time;
         isCast = true;
         playerUI.ActiveCastingBar();
-        StartCoroutine(Co_Casting(time));
+    }
+    public void SlowDown(bool isReturn, float percentage = 0)
+    {
+        if (isReturn)
+        {
+            currentMoveSpeed = moveSpeed;
+            return;
+        }
+        currentMoveSpeed = moveSpeed - moveSpeed * percentage / 100;
     }
     private void Invoke_UnInvincibility()
     {
@@ -86,27 +97,37 @@ public class Player : MonoBehaviour
         }
         while (transform.position != pos)
         {
-            transform.position = Vector3.MoveTowards(transform.position, pos, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, pos, currentMoveSpeed * Time.deltaTime);
             yield return null;
         }
         isInpacable = false;
     }
-    private IEnumerator Co_Casting(float time)
+    private IEnumerator Co_Casting()
     {
-        float progress = 0;
-        while(progress < time)
+        while (true)
         {
-            if (!isCast)
+            if (isCast)
             {
+                float progress = 0;
+                while (progress < castingTime)
+                {
+                    if (!isCast)
+                    {
+                        playerUI.DisableCastingBar();
+                        break;
+                    }
+                    playerUI.UpdateCastingBar(castingTime, progress);
+                    progress += Time.deltaTime;
+                    yield return null;
+                }
+                if(progress >= castingTime)
+                {
+                    isCastFinish = true;
+                }
                 playerUI.DisableCastingBar();
-                yield break;
             }
-            playerUI.UpdateCastingBar(time, progress);
-            progress += Time.deltaTime;
             yield return null;
         }
-        isCastFinish = true;
-        playerUI.DisableCastingBar();
     }
     private IEnumerator Co_UpdateMp() // 마나 갱신 코루틴
     {
@@ -126,10 +147,12 @@ public class Player : MonoBehaviour
         boss = FindObjectOfType<Boss>();
         currentHp = maxHp;
         currentMp = maxMp;
+        currentMoveSpeed = moveSpeed;
     }
     private void Start()
     {
         StartCoroutine(Co_UpdateMp());
+        StartCoroutine(Co_Casting());
     }
     private void Update()
     {

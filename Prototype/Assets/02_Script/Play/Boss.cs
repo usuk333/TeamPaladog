@@ -11,6 +11,8 @@ public class Boss : MonoBehaviour
     }
     public bool isPattern { get; set; }
     private Player player;
+    [SerializeField] private int arrayCount;
+    [SerializeField] private List<List<GameObject>> collisionsArray = new List<List<GameObject>>();
     [SerializeField] private List<GameObject> patternCollisions = new List<GameObject>();
     [SerializeField] private Unit currentUnit;
     [SerializeField] private EBossState eBossState;
@@ -18,6 +20,7 @@ public class Boss : MonoBehaviour
     public CommonStatus CommonStatus { get => commonStatus; set => commonStatus = value; }
     public Player Player { get => player; }
     public List<GameObject> PatternCollisions { get => patternCollisions; set => patternCollisions = value; }
+    public List<List<GameObject>> CollisionsArray { get => collisionsArray; set => collisionsArray = value; }
 
     public void InitializeBossStatus()//해당 함수는 InGameManager의 Awake에서 실행될 코루틴에서 호출
     {
@@ -79,6 +82,10 @@ public class Boss : MonoBehaviour
     {
         player = FindObjectOfType<Player>();
         commonStatus.CurrentHp = commonStatus.MaxHp;
+        for (int i = 0; i < arrayCount; i++)
+        {
+            collisionsArray.Add(new List<GameObject>());
+        }
     }
     private void Start()
     {
