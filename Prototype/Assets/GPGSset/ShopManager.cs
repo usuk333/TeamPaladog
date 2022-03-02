@@ -31,8 +31,8 @@ public class ShopManager : MonoBehaviour
     private bool isLoad;
 
     private string Unitpoints = string.Empty;
-    private string Warrior_level = string.Empty;
     private string Shielder_level = string.Empty;
+    private string Warrior_level = string.Empty;
     private string Archor_level = string.Empty;
     private string Magician_level = string.Empty;
 
@@ -46,6 +46,11 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Text MLv;
     [SerializeField] private Text MHp;
 
+    [SerializeField] private GameObject[] Jobpanel = new GameObject[4];
+    private bool[] panelsonoff = new bool[4];
+
+    public bool panelonoff = false;
+
     DataSnapshot snapshot;
 
     FirebaseDatabase firebaseDatabase;
@@ -57,6 +62,11 @@ public class ShopManager : MonoBehaviour
         firebaseApp = FirebaseApp.DefaultInstance;
         firebaseDatabase = FirebaseDatabase.GetInstance(firebaseApp, "https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
         reference = FirebaseDatabase.DefaultInstance.RootReference;
+
+        panelsonoff[0] = false;
+        panelsonoff[1] = false;
+        panelsonoff[2] = false;
+        panelsonoff[3] = false;
     }
 
     // Start is called before the first frame update
@@ -93,57 +103,159 @@ public class ShopManager : MonoBehaviour
         Debug.Log("UI업데이트시작");
 
         Unitpoints = snapshot.Child("UnitPoints").Value.ToString();
+        Shielder_level = snapshot.Child("Shielder").Child("Shielder_Level").Value.ToString();
         Warrior_level = snapshot.Child("Warrior").Child("Warrior_Level").Value.ToString();
         Archor_level = snapshot.Child("Archor").Child("Archor_Level").Value.ToString();
-        Shielder_level = snapshot.Child("Shielder").Child("Shielder_Level").Value.ToString();
         Magician_level = snapshot.Child("Magician").Child("Magician_Level").Value.ToString();
 
         Debug.Log("스냅샷 자식 수는 " + snapshot.ChildrenCount);
 
         Gold.text = "UnitPoints : " + Unitpoints;
-        FLv.text = "LV : " + Warrior_level;
         TLv.text = "LV : " + Shielder_level;
+        FLv.text = "LV : " + Warrior_level;
         MksLv.text = "LV : " + Archor_level;
         MLv.text = "LV : " + Magician_level;
 
         //HP 공식 추가되면 함수 만들기
     }
 
+    //메인으로 버튼
     public void ShopGoMain()
     {
         SceneManager.LoadScene("StartScene");
     }
 
-    public void TankerUp()
+    public void JobInfo(int i)
     {
-        int SL = int.Parse(Shielder_level);
-        int SLs = SL + 1;
-        Shielder_level = SLs.ToString();
-        TLv.text = "LV : " + SLs;
-        //reference.Child("users").Child(Userid).Child("Unit").SetValueAsync(json);
+        if(panelonoff == false)
+        {
+            Jobpanel[i].SetActive(true);
+            panelsonoff[i] = true;
+
+            panelonoff = true;
+        }
+        else
+        {
+            for (int p =0; p < panelsonoff.Length; p++)
+            {
+                if(panelsonoff[p] == true)
+                {
+                    Jobpanel[p].SetActive(false);
+                    panelsonoff[p] = false;
+                }
+            }
+            Jobpanel[i].SetActive(true);
+            panelsonoff[i] = true;
+        }
     }
 
-    public void WarriorUp()
+    //탱커 레벨 업
+    public void TankerLevelUp()
     {
-        int WL = int.Parse(Warrior_level);
-        int WLs = WL + 1;
-        Warrior_level = WLs.ToString();
-        FLv.text = "LV : " + WLs;
+
+        int UL = int.Parse(Shielder_level) + 1;
+
+        Dictionary<string, object> update = new Dictionary<string, object>();
+        update.Add("Shielder_Level", UL);
+
+        reference.Child("users").Child(Userid).Child("Unit").Child("Shielder").UpdateChildrenAsync(update);
+
+        reference.Child("users").Child(Userid).Child("Unit").Child("Shielder").Child("Shielder_Level").GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.LogError("failed reading...");
+            }
+            else if (task.IsCompleted)
+            {
+                Debug.Log("탱커 데이터 접속");
+                DataSnapshot snapshot = task.Result;
+
+                Shielder_level = snapshot.Value.ToString();
+                TLv.text = "LV : " + Shielder_level;
+            }
+        });
     }
 
-    public void MarksmanUp()
+    //전사 레벨 업
+    public void FighterLevelUp()
     {
-        int AL = int.Parse(Archor_level);
-        int ALs = AL + 1;
-        Archor_level = ALs.ToString();
-        TLv.text = "LV : " + ALs;
+
+        int UL = int.Parse(Warrior_level) + 1;
+
+        Dictionary<string, object> update = new Dictionary<string, object>();
+        update.Add("Warrior_Level", UL);
+
+        reference.Child("users").Child(Userid).Child("Unit").Child("Warrior").UpdateChildrenAsync(update);
+
+        reference.Child("users").Child(Userid).Child("Unit").Child("Warrior").Child("Warrior_Level").GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.LogError("failed reading...");
+            }
+            else if (task.IsCompleted)
+            {
+                Debug.Log("전사 데이터 접속");
+                DataSnapshot snapshot = task.Result;
+
+                Warrior_level = snapshot.Value.ToString();
+                FLv.text = "LV : " + Warrior_level;
+            }
+        });
     }
 
-    public void MagicianUp()
+    //원딜 레벨 업
+    public void MarksmanLevelUp()
     {
-        int SL = int.Parse(Shielder_level);
-        int SLs = SL + 1;
-        Shielder_level = SLs.ToString();
-        TLv.text = "LV : " + SLs;
+        int UL = int.Parse(Archor_level) + 1;
+
+        Dictionary<string, object> update = new Dictionary<string, object>();
+        update.Add("Archor_Level", UL);
+
+        reference.Child("users").Child(Userid).Child("Unit").Child("Archor").UpdateChildrenAsync(update);
+
+        reference.Child("users").Child(Userid).Child("Unit").Child("Archor").Child("Archor_Level").GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.LogError("failed reading...");
+            }
+            else if (task.IsCompleted)
+            {
+                Debug.Log("원딜 데이터 접속");
+                DataSnapshot snapshot = task.Result;
+
+                Archor_level = snapshot.Value.ToString();
+                MksLv.text = "LV : " + Archor_level;
+            }
+        });
+    }
+
+    //법사류 레벨 업
+    public void MageLevelUp()
+    {
+        int UL = int.Parse(Magician_level) + 1;
+
+        Dictionary<string, object> update = new Dictionary<string, object>();
+        update.Add("Magician_Level", UL);
+
+        reference.Child("users").Child(Userid).Child("Unit").Child("Magician").UpdateChildrenAsync(update);
+
+        reference.Child("users").Child(Userid).Child("Unit").Child("Magician").Child("Magician_Level").GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.LogError("failed reading...");
+            }
+            else if (task.IsCompleted)
+            {
+                Debug.Log("마법사 데이터 접속");
+                DataSnapshot snapshot = task.Result;
+
+                Magician_level = snapshot.Value.ToString();
+                MLv.text = "LV : " + Magician_level;
+            }
+        });
     }
 }

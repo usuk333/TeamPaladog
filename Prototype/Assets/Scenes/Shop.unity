@@ -136,12 +136,12 @@ GameObject:
   - component: {fileID: 28603896}
   - component: {fileID: 28603895}
   m_Layer: 5
-  m_Name: Wup
+  m_Name: TLvup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &28603894
 RectTransform:
   m_ObjectHideFlags: 0
@@ -154,12 +154,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 216519956}
-  m_Father: {fileID: 1044043900}
-  m_RootOrder: 8
+  m_Father: {fileID: 65509548}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -133.18549, y: 114.70239}
+  m_AnchoredPosition: {x: -155, y: -165}
   m_SizeDelta: {x: 160, y: 92.4365}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &28603895
@@ -208,7 +208,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 765986603}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
-        m_MethodName: WarriorUp
+        m_MethodName: TankerLevelUp
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -352,7 +352,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &65509548
 RectTransform:
   m_ObjectHideFlags: 0
@@ -367,6 +367,7 @@ RectTransform:
   - {fileID: 685481172}
   - {fileID: 540743073}
   - {fileID: 879244360}
+  - {fileID: 28603894}
   m_Father: {fileID: 1044043900}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -445,7 +446,7 @@ RectTransform:
   m_Children:
   - {fileID: 1391819923}
   m_Father: {fileID: 1044043900}
-  m_RootOrder: 11
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -495,7 +496,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 112997911}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 765986603}
+        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
+        m_MethodName: JobInfo
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &112997911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -552,7 +565,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &118016476
 RectTransform:
   m_ObjectHideFlags: 0
@@ -565,12 +578,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1674967443}
-  m_Father: {fileID: 1044043900}
-  m_RootOrder: 9
+  m_Father: {fileID: 1002073953}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 116.814514, y: 114.70239}
+  m_AnchoredPosition: {x: -155, y: -165}
   m_SizeDelta: {x: 160, y: 92.4365}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &118016477
@@ -619,7 +632,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 765986603}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
-        m_MethodName: MarksmanUp
+        m_MethodName: MarksmanLevelUp
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -816,7 +829,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC804\uC0AC \uAC15\uD654"
+  m_Text: "\uD0F1\uCEE4 \uB808\uBCA8 \uAC15\uD654"
 --- !u!222 &216519958
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -857,7 +870,7 @@ RectTransform:
   m_Children:
   - {fileID: 1759904160}
   m_Father: {fileID: 1044043900}
-  m_RootOrder: 13
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -907,7 +920,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 219778891}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 765986603}
+        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
+        m_MethodName: JobInfo
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &219778891
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1111,7 +1136,7 @@ RectTransform:
   m_Children:
   - {fileID: 1036541198}
   m_Father: {fileID: 1044043900}
-  m_RootOrder: 12
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1161,7 +1186,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 452063722}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 765986603}
+        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
+        m_MethodName: JobInfo
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &452063722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1218,7 +1255,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &490975470
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1231,12 +1268,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1715563962}
-  m_Father: {fileID: 1044043900}
-  m_RootOrder: 7
+  m_Father: {fileID: 1111946523}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -371.8255, y: 114.70239}
+  m_AnchoredPosition: {x: -155, y: -165}
   m_SizeDelta: {x: 160, y: 92.4365}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &490975471
@@ -1285,7 +1322,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 765986603}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
-        m_MethodName: TankerUp
+        m_MethodName: FighterLevelUp
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1838,6 +1875,12 @@ MonoBehaviour:
   MksHp: {fileID: 1102866610}
   MLv: {fileID: 967497347}
   MHp: {fileID: 610682487}
+  Jobpanel:
+  - {fileID: 65509547}
+  - {fileID: 1111946522}
+  - {fileID: 1002073952}
+  - {fileID: 1251199938}
+  panelonoff: 0
 --- !u!4 &765986604
 Transform:
   m_ObjectHideFlags: 0
@@ -1959,7 +2002,7 @@ RectTransform:
   m_Children:
   - {fileID: 1430137113}
   m_Father: {fileID: 1044043900}
-  m_RootOrder: 14
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2009,7 +2052,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 832359592}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 765986603}
+        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
+        m_MethodName: JobInfo
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &832359592
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2444,7 +2499,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1002073953
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2459,6 +2514,7 @@ RectTransform:
   - {fileID: 670822090}
   - {fileID: 537650363}
   - {fileID: 1102866609}
+  - {fileID: 118016476}
   m_Father: {fileID: 1044043900}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2682,10 +2738,6 @@ RectTransform:
   - {fileID: 1111946523}
   - {fileID: 1002073953}
   - {fileID: 1251199939}
-  - {fileID: 490975470}
-  - {fileID: 28603894}
-  - {fileID: 118016476}
-  - {fileID: 1470722797}
   - {fileID: 112997909}
   - {fileID: 452063720}
   - {fileID: 219778889}
@@ -2873,7 +2925,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1111946523
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2888,6 +2940,7 @@ RectTransform:
   - {fileID: 1743005544}
   - {fileID: 908231373}
   - {fileID: 1091881527}
+  - {fileID: 490975470}
   m_Father: {fileID: 1044043900}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3101,7 +3154,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1251199939
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3116,6 +3169,7 @@ RectTransform:
   - {fileID: 767541982}
   - {fileID: 967497346}
   - {fileID: 610682486}
+  - {fileID: 1470722797}
   m_Father: {fileID: 1044043900}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3492,7 +3546,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1470722797
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3505,12 +3559,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1703629404}
-  m_Father: {fileID: 1044043900}
-  m_RootOrder: 10
+  m_Father: {fileID: 1251199939}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 358.8145, y: 114.70239}
+  m_AnchoredPosition: {x: -155, y: -165}
   m_SizeDelta: {x: 160, y: 92.4365}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1470722798
@@ -3559,7 +3613,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 765986603}
         m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
-        m_MethodName: MagicianUp
+        m_MethodName: MageLevelUp
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
