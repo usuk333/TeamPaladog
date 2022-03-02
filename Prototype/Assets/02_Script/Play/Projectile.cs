@@ -21,7 +21,7 @@ public class Projectile : MonoBehaviour
         transform.position = parent.position;
         transform.gameObject.SetActive(true);
     }
-    private void Update()
+    private void FixedUpdate()
     {
         transform.position = Vector3.MoveTowards(transform.position, boss.transform.position, speed * Time.deltaTime);
         //1. 백터 뺄셈을 통해 투사체가 보스 오브젝트를 바라보는 방향 벡터를 구함
