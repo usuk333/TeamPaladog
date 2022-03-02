@@ -86,7 +86,7 @@ public class ShopManager : MonoBehaviour
 
         isLoad = false;
     }
-    IEnumerator UIupdate()
+    private IEnumerator UIupdate()
     {
         yield return null;
 
@@ -105,6 +105,45 @@ public class ShopManager : MonoBehaviour
         TLv.text = "LV : " + Shielder_level;
         MksLv.text = "LV : " + Archor_level;
         MLv.text = "LV : " + Magician_level;
+
+        //HP 공식 추가되면 함수 만들기
     }
 
+    public void ShopGoMain()
+    {
+        SceneManager.LoadScene("StartScene");
+    }
+
+    public void TankerUp()
+    {
+        int SL = int.Parse(Shielder_level);
+        int SLs = SL + 1;
+        Shielder_level = SLs.ToString();
+        TLv.text = "LV : " + SLs;
+        //reference.Child("users").Child(Userid).Child("Unit").SetValueAsync(json);
+    }
+
+    public void WarriorUp()
+    {
+        int WL = int.Parse(Warrior_level);
+        int WLs = WL + 1;
+        Warrior_level = WLs.ToString();
+        FLv.text = "LV : " + WLs;
+    }
+
+    public void MarksmanUp()
+    {
+        int AL = int.Parse(Archor_level);
+        int ALs = AL + 1;
+        Archor_level = ALs.ToString();
+        TLv.text = "LV : " + ALs;
+    }
+
+    public void MagicianUp()
+    {
+        int SL = int.Parse(Shielder_level);
+        int SLs = SL + 1;
+        Shielder_level = SLs.ToString();
+        TLv.text = "LV : " + SLs;
+    }
 }

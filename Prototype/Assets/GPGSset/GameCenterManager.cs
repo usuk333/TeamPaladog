@@ -59,9 +59,10 @@ public class GameCenterManager : MonoBehaviour
     [SerializeField] private Text ULV;
     [SerializeField] private Text UEXP;
 
-    private string UEXPs;
-    private string ULVs;
+    private string UEXPs = string.Empty;
+    private string ULVs = string.Empty;
 
+    DataSnapshot snapshot;
     private void Awake()
     {
         //초기화 auth
@@ -100,7 +101,7 @@ public class GameCenterManager : MonoBehaviour
 
         //Usersid = "NaIxowYCsaSqdaYaWtWbIYErkqM2";
 
-        reference.Child("users").Child(Usersid).GetValueAsync().ContinueWithOnMainThread(task =>
+        reference.Child("users").Child(Usersid).Child("Info").GetValueAsync().ContinueWithOnMainThread(task =>
         {
             if (task.IsFaulted)
             {
@@ -108,20 +109,23 @@ public class GameCenterManager : MonoBehaviour
             }
             else if (task.IsCompleted)
             {
-                DataSnapshot snapshot = task.Result;
-
+                snapshot = task.Result;
                 Debug.Log("데이터 접속");
 
-                ULVs = snapshot.Child("Level").Value.ToString();
-                UEXPs = snapshot.Child("EXP").Value.ToString();
-
-                Debug.Log(ULVs);
-
-                ULV.text = "Level : " + ULVs;
-                UEXP.text = "Exp : " + UEXPs;
-
+                StartCoroutine(Startuiupdate());
             }
         });
+    }
+
+    private IEnumerator Startuiupdate()
+    {
+        yield return null;
+
+        ULVs = snapshot.Child("Level").Value.ToString();
+        UEXPs = snapshot.Child("EXP").Value.ToString();
+
+        ULV.text = "Level : " + ULVs;
+        UEXP.text = "Exp : " + UEXPs;
     }
 
 
@@ -587,7 +591,7 @@ public class GameCenterManager : MonoBehaviour
     //Shop������ �̵�
     public void GoShop()
     {
-        SceneManager.LoadScene("Shop");
+        SceneManager.LoadScene("LoadingScene");
     }
 
 
