@@ -85,6 +85,7 @@
     <Compile Include="Assets\GooglePlayGames\OurUtils\Misc.cs" />
     <Compile Include="Assets\GPGSset\Server.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SavedGame\SavedGameMetadataUpdate.cs" />
+    <Compile Include="Assets\02_Script\Play\TrackingObject.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidHelperFragment.cs" />
     <Compile Include="Assets\GPGSset\ShopManager.cs" />
     <Compile Include="Assets\02_Script\Play\InGameManager.cs" />
