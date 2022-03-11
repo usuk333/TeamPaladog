@@ -58,64 +58,66 @@
   <ItemGroup>
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleSprite.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Events\Event.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\07_Summoner\Summoner.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SavedGame\ISavedGameMetadata.cs" />
     <Compile Include="Assets\GPGSset\GameCenterManager.cs" />
-    <Compile Include="Assets\Prototype\Script\Common\AttackInteraction.cs" />
+    <Compile Include="Assets\GPGSset\SerializableDictionary.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesAchievement.cs" />
+    <Compile Include="Assets\02_Script\Play\UnitMark.cs" />
+    <Compile Include="Assets\Boss_TimeJudge.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\INearbyConnectionClient.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\CommonStatusCodes.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\07_Summoner\Summons.cs" />
+    <Compile Include="Assets\02_Script\Play\BossHpBar.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SignInStatus.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Achievement.cs" />
+    <Compile Include="Assets\02_Script\Play\Boss.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidNearbyConnectionClient.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Video\IVideoClient.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesScore.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidSavedGameClient.cs" />
+    <Compile Include="Assets\02_Script\Play\InGameUIManager.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\PlayGamesClientConfiguration.cs" />
-    <Compile Include="Assets\Prototype\Script\Common\BossHpBar.cs" />
-    <Compile Include="Assets\Prototype\Script\Enemy\Utility\Boss.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\03_Shielder\Shielder.cs" />
     <Compile Include="Assets\GooglePlayGames\OurUtils\Logger.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\AdvertisingResult.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Video\VideoCaptureState.cs" />
-    <Compile Include="Assets\Prototype\Script\Enemy\Utility\Enemy.cs" />
+    <Compile Include="Assets\02_Script\Play\PlayerUI.cs" />
+    <Compile Include="Assets\GPGSIds.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SignInInteractivity.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\05_Priest\Priest.cs" />
     <Compile Include="Assets\GooglePlayGames\OurUtils\Misc.cs" />
+    <Compile Include="Assets\GPGSset\Server.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SavedGame\SavedGameMetadataUpdate.cs" />
+    <Compile Include="Assets\02_Script\Play\TrackingObject.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidHelperFragment.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\Utility\UnitPool.cs" />
+    <Compile Include="Assets\GPGSset\ShopManager.cs" />
+    <Compile Include="Assets\02_Script\Play\InGameManager.cs" />
+    <Compile Include="Assets\02_Script\Play\Player.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SavedGame\ISavedGameClient.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesLeaderboard.cs" />
-    <Compile Include="Assets\Prototype\Script\Manager\InGameManager.cs" />
+    <Compile Include="Assets\02_Script\Play\UnitHpBar.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\NearbyConnectionConfiguration.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleUtils.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleUI.cs" />
+    <Compile Include="Assets\02_Script\Play\FallingObjectPool.cs" />
+    <Compile Include="Assets\02_Script\Play\Projectile.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\NearbyConnectionClientFactory.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\06_Assasin\Assasin.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidClient.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\08_Druid\Druid.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModulePhysics2D.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesUserProfile.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\PlayerProfile.cs" />
+    <Compile Include="Assets\02_Script\CommonStatus.cs" />
+    <Compile Include="Assets\GPGSset\PlayerDataManager.cs" />
     <Compile Include="Assets\GooglePlayGames\OurUtils\PlatformUtils.cs" />
-    <Compile Include="Assets\Prototype\Script\Enemy\Utility\EnemyPool.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\Utility\Unit.cs" />
+    <Compile Include="Assets\GPGSset\LoadingManager.cs" />
     <Compile Include="Assets\GooglePlayGames\OurUtils\NearbyHelperObject.cs" />
-    <Compile Include="Assets\Prototype\Script\Common\InGameScrollView.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\04_Wizard\FireBall.cs" />
-    <Compile Include="Assets\Prototype\Script\Player\PlayerSkill.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Video\VideoCapabilities.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\DummyClient.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesPlatform.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleEPOOutline.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Events\IEvent.cs" />
-    <Compile Include="Assets\Prototype\Script\Enemy\Commander_Pride\Pride.cs" />
-    <Compile Include="Assets\Prototype\Script\Common\HpBar.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleAudio.cs" />
+    <Compile Include="Assets\02_Script\Play\Unit.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidJavaConverter.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidTaskUtils.cs" />
+    <Compile Include="Assets\GPGSset\User.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\DummyNearbyConnectionClient.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\PlayGamesClientFactory.cs" />
     <Compile Include="Assets\GooglePlayGames\GameInfo.cs" />
@@ -125,40 +127,42 @@
     <Compile Include="Assets\GooglePlayGames\BasicApi\IPlayGamesClient.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Video\CaptureOverlayStateListener.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\CommonTypes.cs" />
-    <Compile Include="Assets\Prototype\Script\Enemy\01_GoblinKing\GoblinKing.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidSnapshotMetadata.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\ScorePageToken.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidVideoClient.cs" />
     <Compile Include="Assets\GooglePlayGames\PluginVersion.cs" />
+    <Compile Include="Assets\02_Script\Play\CastingObject.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\LeaderboardScoreData.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\04_Wizard\ExplosionRange.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModulePhysics.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\02_Archer\ProjectilePool.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\PlayerStats.cs" />
-    <Compile Include="Assets\Prototype\Script\Enemy\Commander_Pride\Donut.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\TokenClient.cs" />
-    <Compile Include="Assets\Prototype\Script\Enemy\01_GoblinKing\ShockWave.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\02_Archer\Archer.cs" />
-    <Compile Include="Assets\Prototype\Script\Manager\ButtonManager.cs" />
+    <Compile Include="Assets\02_Script\Play\Unit\CountUnit.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleUnityVersion.cs" />
+    <Compile Include="Assets\02_Script\Play\FuturePlayer.cs" />
+    <Compile Include="Assets\02_Script\Play\Portal.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\ConnectionResponse.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\07_Summoner\EffectRange.cs" />
+    <Compile Include="Assets\02_Script\Play\BossUtility.cs" />
+    <Compile Include="Assets\02_Script\Play\PatternCollisionChecker.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\ConnectionRequest.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidEventsClient.cs" />
     <Compile Include="Assets\GooglePlayGames\OurUtils\PlayGamesHelperObject.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\Utility\MpBar.cs" />
-    <Compile Include="Assets\Prototype\Script\Enemy\02_MagicTool\LightningAttack.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\02_Archer\Arrow.cs" />
+    <Compile Include="Assets\GPGSset\MainSceneManager.cs" />
+    <Compile Include="Assets\GPGSset\UIManager.cs" />
+    <Compile Include="Assets\02_Script\Play\FallingObject.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SignInHelper.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidTokenClient.cs" />
-    <Compile Include="Assets\Prototype\Script\Player\Player.cs" />
-    <Compile Include="Assets\Prototype\Script\Enemy\02_MagicTool\MaigcTool.cs" />
+    <Compile Include="Assets\02_Script\Play\Unit\PercentageUnit.cs" />
+    <Compile Include="Assets\02_Script\Play\Gargoyle.cs" />
+    <Compile Include="Assets\02_Script\Play\UnitProjectilePool.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\EndpointDetails.cs" />
-    <Compile Include="Assets\Prototype\Script\Unit\04_Wizard\Wizard.cs" />
+    <Compile Include="Assets\02_Script\Play\Beast.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Spine\version.txt" />
     <None Include="Assets\Parse\Plugins\Unity.Compat.dll" />
     <None Include="Assets\Firebase\Plugins\Firebase.Analytics.dll" />
+    <None Include="Assets\Firebase\Plugins\x86_64\FirebaseCppDatabase.dll" />
+    <None Include="Assets\03_Resauce\Spine\WARRIOR.atlas.txt" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Analytics.dll" />
     <None Include="Assets\Firebase\Plugins\Firebase.App.dll" />
     <None Include="Assets\Parse\Plugins\Unity.Tasks.dll" />
@@ -168,17 +172,21 @@
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-app-unity\maven-metadata.xml" />
     <None Include="Assets\Firebase\Plugins\x86_64\FirebaseCppApp-8_7_0.dll" />
     <None Include="Assets\Firebase\Plugins\Firebase.Auth.dll" />
+    <None Include="Assets\Firebase\Plugins\Firebase.Database.dll" />
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-analytics-unity\maven-metadata.xml" />
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-auth-unity\maven-metadata.xml" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Auth.dll" />
+    <None Include="Assets\Firebase\Plugins\iOS\Firebase.Database.dll" />
     <None Include="Assets\DOTween\DOTween.XML" />
     <None Include="Assets\Parse\Plugins\dotNet45\Unity.Compat.dll" />
     <None Include="Assets\DOTween\readme.txt" />
     <None Include="Assets\Firebase\Plugins\Firebase.Platform.dll" />
     <None Include="Assets\DOTween\DOTween.dll" />
     <None Include="Assets\Parse\Plugins\dotNet45\Unity.Tasks.dll" />
+    <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-database-unity\maven-metadata.xml" />
     <None Include="Assets\Firebase\Plugins\Google.MiniJson.dll" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.App.dll" />
+    <None Include="Assets\03_Resauce\Spine\나태_SD_최종.atlas.txt" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -408,6 +416,9 @@
     </Reference>
     <Reference Include="Firebase.App">
       <HintPath>Assets\Firebase\Plugins\Firebase.App.dll</HintPath>
+    </Reference>
+    <Reference Include="Firebase.Database">
+      <HintPath>Assets\Firebase\Plugins\Firebase.Database.dll</HintPath>
     </Reference>
     <Reference Include="Firebase.TaskExtension">
       <HintPath>Assets\Firebase\Plugins\Firebase.TaskExtension.dll</HintPath>
@@ -877,6 +888,9 @@
     <Reference Include="Unity.2D.PixelPerfect.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.2D.PixelPerfect.Editor.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.Mobile.AndroidLogcat.Editor">
+      <HintPath>Library\ScriptAssemblies\Unity.Mobile.AndroidLogcat.Editor.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>Library\ScriptAssemblies\Unity.Timeline.Editor.dll</HintPath>
     </Reference>
@@ -900,6 +914,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="spine-unity-examples-editor.csproj">
+      <Project>{C6153780-72DD-9407-06B9-A9C4ACBCB8E4}</Project>
+      <Name>spine-unity-examples-editor</Name>
+    </ProjectReference>
+    <ProjectReference Include="spine-unity.csproj">
+      <Project>{37F5D717-51B2-146E-2D9F-3C3BA0C5D773}</Project>
+      <Name>spine-unity</Name>
+    </ProjectReference>
+    <ProjectReference Include="spine-unity-examples.csproj">
+      <Project>{1BF531C8-BCEB-8B4B-A827-AD914FC9515E}</Project>
+      <Name>spine-unity-examples</Name>
+    </ProjectReference>
+    <ProjectReference Include="spine-unity-editor.csproj">
+      <Project>{4006C856-6303-54E7-D3D0-EFE05C3C6763}</Project>
+      <Name>spine-unity-editor</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "981230126114",
+    "firebase_url": "https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/",
+    "project_id": "acrobatgames-f9ba6",
+    "storage_bucket": "acrobatgames-f9ba6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981230126114:android:add73da4f2e1bc4120767b",
+        "android_client_info": {
+          "package_name": "com.paladog.acrobatgames"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "981230126114-0p1vkchuf37vuqeaa8kf1d0tafa5pkgq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.paladog.acrobatgames",
+            "certificate_hash": "3b20b948b39fa7017dd955caafc5729def34191c"
+          }
+        },
+        {
+          "client_id": "981230126114-g8vsvi9a71u45n4ueaeqjidau581vb8t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.paladog.acrobatgames",
+            "certificate_hash": "4803dfe9f717aab70a14dc7397e42a581529afa9"
+          }
+        },
+        {
+          "client_id": "981230126114-batkdhn9ra3i9hld0uuefacr4qd6vr6k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFq5C93Ad9-QTpdaWx5y6_zVf9gHqC5vk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "981230126114-batkdhn9ra3i9hld0uuefacr4qd6vr6k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
