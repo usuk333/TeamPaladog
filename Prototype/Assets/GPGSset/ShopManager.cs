@@ -147,13 +147,6 @@ public class ShopManager : MonoBehaviour
             }
         });
     }
-    IEnumerator UpdateData()
-    {
-        yield return new WaitUntil(() => isLoad);
-
-
-        isLoad = false;
-    }
     private IEnumerator UIupdate()
     {
         yield return null;
