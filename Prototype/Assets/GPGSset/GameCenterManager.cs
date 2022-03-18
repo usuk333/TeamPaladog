@@ -449,7 +449,7 @@ public class GameCenterManager : MonoBehaviour
 
     public void GoBattle()
     {
-        SceneManager.LoadScene("Stage");
+        SceneManager.LoadScene("StageSection");
     }
 
 
@@ -592,6 +592,11 @@ public class GameCenterManager : MonoBehaviour
     public void GoShop()
     {
         SceneManager.LoadScene("LoadingScene");
+    }
+
+    public void GoSkill()
+    {
+        SceneManager.LoadScene("LoadingScene 1");
     }
 
 

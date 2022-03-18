@@ -55,3 +55,6 @@ TagManager:
   - name: Projectile
     uniqueID: 3142139821
     locked: 0
+  - name: Menu
+    uniqueID: 1310704113
+    locked: 0
