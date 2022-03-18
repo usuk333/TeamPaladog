@@ -108,6 +108,7 @@ public class Player : MonoBehaviour
         {
             if (isCast)
             {
+                //isCastFinish = false;
                 float progress = 0;
                 while (progress < castingTime)
                 {

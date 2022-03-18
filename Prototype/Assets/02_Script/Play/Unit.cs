@@ -38,12 +38,9 @@ public class Unit : MonoBehaviour
     public float penaltyTime { get; set; }
     public bool isIncapable { get; set; }
     [SerializeField] private Transform knockBackPoint;
-
-
    // private SkeletonAnimation spine;
     private CountUnit countUnit;
     private PercentageUnit percentageUnit;
-    
 
     [SerializeField] private Transform pitch;
     [SerializeField] private Vector3 basicEffectOffset;
@@ -52,18 +49,16 @@ public class Unit : MonoBehaviour
     [SerializeField] private ParticleSystem skillEffect;
     [SerializeField] private EUnitValue eUnitValue;
     [SerializeField] private EUnitState eUnitState = EUnitState.Idle;
-    [SerializeField] private Boss boss;
     [SerializeField] private EUnitType eUnitType;
     [SerializeField] private EUnitKind eUnitKind;
     [SerializeField] private CommonStatus commonStatus = new CommonStatus();
+
     public EUnitType UnitType { get => eUnitType; }
-    public Boss Boss { get => boss; }
     public CommonStatus CommonStatus { get => commonStatus; set => commonStatus = value; }
     public bool InitializeUnitStatus()//해당 함수는 InGameManager의 Awake에서 실행될 코루틴에서 호출
     {
         //초기화 필요한 변수들 초기화
        // spine = GetComponent<SkeletonAnimation>();
-        boss = FindObjectOfType<Boss>();
         //maxHp = DB 맥스체력
         //currentHp = maxHp;
         //atackDamage = DB 공격력
@@ -75,7 +70,7 @@ public class Unit : MonoBehaviour
     private void SetProjectile(int i)//투사체 발사하는 유닛만 사용. 투사체 풀에서 꺼내오면서 초기화
     {
         var obj = UnitProjectilePool.GetProjectile(i);
-        obj.GetComponent<Projectile>().Initialze(boss, transform, commonStatus.AttackDamage);
+        obj.GetComponent<Projectile>().Initialze(InGameManager.Instance.Boss, transform, commonStatus.AttackDamage);
     }
     #endregion
     private void Attack() //공격 로직
@@ -87,7 +82,7 @@ public class Unit : MonoBehaviour
         switch (eUnitKind)
         {
             case EUnitKind.Other:
-                boss.CommonStatus.DecreaseHp(commonStatus.AttackDamage); //투사체 발사 유닛이 아닌 경우에는 그냥 타격
+                InGameManager.Instance.Boss.CommonStatus.DecreaseHp(commonStatus.AttackDamage); //투사체 발사 유닛이 아닌 경우에는 그냥 타격
                 break;
             //이 밑으로는 투사체 발사 유닛. 유닛 종류에 맞게 투사체 꺼내오는 함수 호출
             case EUnitKind.Taoist:
@@ -169,7 +164,7 @@ public class Unit : MonoBehaviour
             {
                 while(transform.position != knockBackPoint.position)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, knockBackPoint.position, commonStatus.MoveSpeed * Time.deltaTime);
+                    transform.position = Vector3.MoveTowards(transform.position, knockBackPoint.position, commonStatus.KnockBackSpeed * Time.deltaTime);
                     yield return null;
                 }
                 isKnockBack = false;
@@ -242,7 +237,6 @@ public class Unit : MonoBehaviour
     }
     private void Awake()
     {
-        boss = FindObjectOfType<Boss>();
         commonStatus.CurrentHp = commonStatus.MaxHp;
         commonStatus.CurrentMoveSpeed = commonStatus.MoveSpeed;
         //spine = GetComponent<SkeletonAnimation>();
@@ -254,18 +248,18 @@ public class Unit : MonoBehaviour
         {
             percentageUnit = GetComponent<PercentageUnit>();
         }
-        if (transform.childCount > 0)
-        {
-            basicEffect = transform.GetChild(0).GetComponent<ParticleSystem>();
-            skillEffect = transform.GetChild(1).GetComponent<ParticleSystem>();
-            basicEffect.transform.position = boss.transform.position + basicEffectOffset;
-            skillEffect.transform.position = boss.transform.position + skillEffectOffset;
-        }
     }
     private void Start()
     {
         StartCoroutine(Co_UpdateState());
         StartCoroutine(Co_OutOfStateCondition());
+        if (transform.childCount > 0)
+        {
+            basicEffect = transform.GetChild(0).GetComponent<ParticleSystem>();
+            skillEffect = transform.GetChild(1).GetComponent<ParticleSystem>();
+            basicEffect.transform.position = InGameManager.Instance.Boss.transform.position + basicEffectOffset;
+            skillEffect.transform.position = InGameManager.Instance.Boss.transform.position + skillEffectOffset;
+        }
     }
     private void Update()
     {

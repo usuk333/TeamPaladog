@@ -7,7 +7,6 @@ public class Beast : MonoBehaviour
 {
     private bool isCrush;
     private bool isShout;
-    private Boss boss;
     [SerializeField] private BossUtility bossUtility;
     [SerializeField] private float[] crushDamages;
     [SerializeField] private GameObject[] crushs;
@@ -24,7 +23,7 @@ public class Beast : MonoBehaviour
         {
             if (isCrush)
             {
-                boss.isPattern = true;
+                InGameManager.Instance.Boss.isPattern = true;
                 /* float rand = Random.Range(x, y); 패턴 반복 시간 (x~y 사이의 랜덤한 값마다 반복, 랜덤 값은 반복 할 때마다 변경됨)
                 yield return new WaitForSeconds(rand);*/
                 yield return new WaitForSeconds(1f);
@@ -32,9 +31,9 @@ public class Beast : MonoBehaviour
                 yield return new WaitForSeconds(2f);
                 Crush();
                 crushs[1].SetActive(false);
-                boss.PatternCollisions.Clear();
+                InGameManager.Instance.Boss.CollisionsArray[1].Clear();
                 isCrush = false;
-                boss.isPattern = false;
+                InGameManager.Instance.Boss.isPattern = false;
             }
             yield return null;
         }
@@ -45,14 +44,14 @@ public class Beast : MonoBehaviour
         {
             if (isShout)
             {
-                boss.isPattern = true;
+                InGameManager.Instance.Boss.isPattern = true;
                 crushs[0].SetActive(true);
                 yield return new WaitForSeconds(4f);
                 KnockBackCrush();
                 crushs[0].SetActive(false);
-                boss.PatternCollisions.Clear();
+                InGameManager.Instance.Boss.CollisionsArray[0].Clear();
                 isShout = false;
-                boss.isPattern = false;
+                InGameManager.Instance.Boss.isPattern = false;
             }
             yield return null;
         }      
@@ -61,42 +60,38 @@ public class Beast : MonoBehaviour
     {
         for (int i = 0; i < conditionHp.Length; i++)
         {
-            yield return new WaitUntil(() => boss.CommonStatus.CurrentHp <= conditionHp[i]);
-            boss.CommonStatus.AttackDamage = boss.CommonStatus.AttackDamage * 1.2f;
-            boss.CommonStatus.AttackSpeed = boss.CommonStatus.AttackSpeed / 1.1f;
+            yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= conditionHp[i]);
+            InGameManager.Instance.Boss.CommonStatus.AttackDamage = InGameManager.Instance.Boss.CommonStatus.AttackDamage * 1.2f;
+            InGameManager.Instance.Boss.CommonStatus.AttackSpeed = InGameManager.Instance.Boss.CommonStatus.AttackSpeed / 1.1f;
         }
     }
     private void Crush()
     {
         foreach (var item in InGameManager.Instance.Units)
         {
-            if (boss.PatternCollisions.Contains(item.gameObject))
+            if (InGameManager.Instance.Boss.CollisionsArray[1].Contains(item.gameObject))
             {
                 item.CommonStatus.DecreaseHp(crushDamages[1]);
             }
         }
-        if (boss.PatternCollisions.Contains(boss.Player.gameObject))
+        if (InGameManager.Instance.Boss.CollisionsArray[1].Contains(InGameManager.Instance.Player.gameObject))
         {
-            boss.Player.DecreaseHp(crushDamages[1]);
+            InGameManager.Instance.Player.DecreaseHp(crushDamages[1]);
         }
     }
     private void KnockBackCrush()
     {
         foreach (var item in InGameManager.Instance.Units)
         {
-            if (boss.PatternCollisions.Contains(item.gameObject))
+            if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(item.gameObject))
             {
                 item.CommonStatus.DecreaseHp(crushDamages[0]);
             }
         }
-        if (boss.PatternCollisions.Contains(boss.Player.gameObject))
+        if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(InGameManager.Instance.Player.gameObject))
         {
-            boss.Player.DecreaseHp(crushDamages[0]);
+            InGameManager.Instance.Player.DecreaseHp(crushDamages[0]);
         }
-    }
-    private void Awake()
-    {
-        boss = GetComponent<Boss>();
     }
     private void Start()
     {

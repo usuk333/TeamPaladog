@@ -11,9 +11,12 @@ public class InGameManager : MonoBehaviour
     private int timerMinute;
     [SerializeField] private Text timer;
     [SerializeField] private Unit[] units;
-
+    private Player player;
+    private Boss boss;
     public static InGameManager Instance { get => instance; }
     public Unit[] Units { get => units; }
+    public Player Player { get => player; }
+    public Boss Boss { get => boss; }
 
     //생각해보니 델리게이트로 하는게 더 나을듯?
     private IEnumerator Co_InitializeInGameData() //초기화가 필요한 모든 인게임 데이터 초기화. 완료되면 true 반환 후 로딩 완료.
@@ -70,6 +73,8 @@ public class InGameManager : MonoBehaviour
                     break;
             }
         }
+        player = FindObjectOfType<Player>();
+        boss = FindObjectOfType<Boss>();
     }
     private void Start()
     {

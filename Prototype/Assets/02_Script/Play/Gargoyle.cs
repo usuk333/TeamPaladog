@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class Gargoyle : MonoBehaviour
 {
     private bool isShout;
-    private Boss boss;
     [SerializeField] private GameObject veneer;
     [SerializeField] private float veneerDuration;
     [SerializeField] private float dotInterval;
@@ -38,21 +37,21 @@ public class Gargoyle : MonoBehaviour
         foreach (var item in InGameManager.Instance.Units)
         {
             item.CommonStatus.SlowDown(true);
-            boss.Player.SlowDown(true);
+            InGameManager.Instance.Player.SlowDown(true);
         }
     }
     private void AttackVeneer()
     {
-        if (boss.CollisionsArray[0].Contains(boss.Player.gameObject))
+        if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(InGameManager.Instance.Player.gameObject))
         {
-            boss.Player.DecreaseHp(dotDamage);
-            boss.Player.SlowDown(false, slowDownValue);
+            InGameManager.Instance.Player.DecreaseHp(dotDamage);
+            InGameManager.Instance.Player.SlowDown(false, slowDownValue);
             return;
         }
-        boss.Player.SlowDown(true);
+        InGameManager.Instance.Player.SlowDown(true);
         foreach (var item in InGameManager.Instance.Units)
         {
-            if (boss.CollisionsArray[0].Contains(item.gameObject))
+            if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(item.gameObject))
             {
                 item.CommonStatus.DecreaseHp(dotDamage);
                 item.CommonStatus.SlowDown(false, slowDownValue);
@@ -71,9 +70,9 @@ public class Gargoyle : MonoBehaviour
     }
     private bool AttackPlayer(int index, float damage)
     {
-        if (boss.CollisionsArray[index].Contains(boss.Player.gameObject))
+        if (InGameManager.Instance.Boss.CollisionsArray[index].Contains(InGameManager.Instance.Player.gameObject))
         {
-            boss.Player.DecreaseHp(damage);
+            InGameManager.Instance.Player.DecreaseHp(damage);
             return true;
         }
         return false;
@@ -86,7 +85,7 @@ public class Gargoyle : MonoBehaviour
         while (true)
         {
             yield return null;
-            trackingObj.position = boss.Player.transform.position + trackingOffset;
+            trackingObj.position = InGameManager.Instance.Player.transform.position + trackingOffset;
             timer += Time.deltaTime;
             if(timer >= trackingInterval)
             {
@@ -111,9 +110,9 @@ public class Gargoyle : MonoBehaviour
             yield return null;
             if (isShout)
             {
-                boss.isPattern = true;
+                InGameManager.Instance.Boss.isPattern = true;
                 yield return new WaitForSeconds(2f);
-                boss.isPattern = false;
+                InGameManager.Instance.Boss.isPattern = false;
                 veneer.SetActive(true);
                 while (veneer.activeSelf)
                 {
@@ -130,17 +129,17 @@ public class Gargoyle : MonoBehaviour
         {
             if (veneer.activeSelf)
             {
-                if (boss.CollisionsArray[0].Contains(boss.Player.gameObject) && !isCast)
+                if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(InGameManager.Instance.Player.gameObject) && !isCast)
                 {
-                    boss.Player.Casting(veneerDuration);
+                    InGameManager.Instance.Player.Casting(veneerDuration);
                     isCast = true;
                 }
-                else if (!boss.CollisionsArray[0].Contains(boss.Player.gameObject))
+                else if (!InGameManager.Instance.Boss.CollisionsArray[0].Contains(InGameManager.Instance.Player.gameObject))
                 {
-                    boss.Player.isCast = false;
+                    InGameManager.Instance.Player.isCast = false;
                     isCast = false;
                 }
-                if (boss.Player.isCastFinish)
+                if (InGameManager.Instance.Player.isCastFinish)
                 {
                     ResetVeneer();
                 }
@@ -153,29 +152,29 @@ public class Gargoyle : MonoBehaviour
         Text text = shieldObj.GetComponentInChildren<Text>();
         Image image = shieldObj.transform.GetChild(0).GetComponent<Image>();
         float timer = shieldDuration;
-        yield return new WaitUntil(() => boss.CommonStatus.CurrentHp <= boss.CommonStatus.MaxHp * 90 / 100);
+        yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.MaxHp * 90 / 100);
         shieldObj.SetActive(true);
-        boss.CommonStatus.Shield = shieldValue;
+        InGameManager.Instance.Boss.CommonStatus.Shield = shieldValue;
         while (timer > 0)
         {
             timer -= Time.deltaTime;
             text.text = string.Format("실드 제한 시간 : {0:0}초", System.Math.Ceiling(timer));
-            image.fillAmount = 1 / shieldValue * boss.CommonStatus.Shield;
-            if (boss.CommonStatus.Shield <= 0)
+            image.fillAmount = 1 / shieldValue * InGameManager.Instance.Boss.CommonStatus.Shield;
+            if (InGameManager.Instance.Boss.CommonStatus.Shield <= 0)
             {
-                boss.CommonStatus.Shield = 0;
+                InGameManager.Instance.Boss.CommonStatus.Shield = 0;
                 break;
             }
             yield return null;
         }
         shieldObj.SetActive(false);
-        if (boss.CommonStatus.Shield > 0)
+        if (InGameManager.Instance.Boss.CommonStatus.Shield > 0)
         {
             foreach (var item in InGameManager.Instance.Units)
             {
                 item.CommonStatus.DecreaseHp(item.CommonStatus.MaxHp);
             }
-            boss.Player.DecreaseHp(boss.Player.MaxHp);
+            InGameManager.Instance.Player.DecreaseHp(InGameManager.Instance.Player.MaxHp);
         }
     }
     private IEnumerator Co_Laser()
@@ -184,7 +183,7 @@ public class Gargoyle : MonoBehaviour
         {
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Q));
             laserObj.gameObject.SetActive(true);
-            Vector3 target = new Vector3(boss.Player.transform.position.x, laserObj.position.y);
+            Vector3 target = new Vector3(InGameManager.Instance.Player.transform.position.x, laserObj.position.y);
             laserObj.position = target;
             yield return new WaitForSeconds(laserDelay);
             bool isAvoid = AttackPlayer(2, laserDamage);
@@ -205,10 +204,6 @@ public class Gargoyle : MonoBehaviour
             secondLaserObj.gameObject.SetActive(false);
             secondLaserObj.DOScaleX(0, 0);
         }
-    }
-    private void Awake()
-    {
-        boss = GetComponent<Boss>();
     }
     private void Start()
     {
