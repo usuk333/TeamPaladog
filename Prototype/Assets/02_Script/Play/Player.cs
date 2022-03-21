@@ -69,6 +69,10 @@ public class Player : MonoBehaviour
         }
         currentHp -= damage;
     }
+    public void DecreaseMp(float value)
+    {
+        currentMp -= value;
+    }
     public void Casting(float time)
     {
         castingTime = time;

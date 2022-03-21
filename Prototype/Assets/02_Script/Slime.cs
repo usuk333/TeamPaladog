@@ -43,11 +43,19 @@ public class Slime : MonoBehaviour
                     dotCount = 0;
                     mushroom.SummonSlime(transform.localPosition);
                     mushroom.SummonSlime(transform.localPosition);
-                    mushroom.ReturnSlime(this);
+                    ReturnThis();
                 }
             }
             yield return null;
         }        
+    }
+    private void ReturnThis()
+    {
+        if (mushroom.isCounting)
+        {
+            return;
+        }
+        mushroom.ReturnSlime(this);
     }
     private void ExplosionSlime() // 슬라임의 폭발 데미지 함수
     {
@@ -68,6 +76,7 @@ public class Slime : MonoBehaviour
     private void Awake()
     {
         mushroom = GetComponentInParent<Mushroom>();
+        mushroom.dReturnAllSlime += new Mushroom.ReturnAllSlime(ReturnThis);
     }
     private void OnEnable() //풀로 돌아간 슬라임을 다시 꺼내오면 코루틴이 멈춰버린다. 때문에 슬라임 객체가 활성화 될 때마다 코루틴을 실행해줬다.
     {

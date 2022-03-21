@@ -9,12 +9,20 @@ public class Mushroom : MonoBehaviour
     //for test
     private bool isButtonDown;
     private Vector3 summonPos = new Vector3(0, -0.33f);
-    private int currentSlimeCount;
     private int requiredSlimeCount;
     private bool isActiveBuff;
+    public bool isCounting { get; set; }
+    public delegate void ReturnAllSlime();
+    public ReturnAllSlime dReturnAllSlime;
+    [SerializeField] private GameObject altar;
+    [SerializeField] private float sporeCount;
+    [SerializeField] private float sporeInterval;
+    [SerializeField] private float sporeDamage;
     [SerializeField] private float buffDuration;
     [SerializeField] private int maxSlimeCount;
+    [SerializeField] private float sporeTimerMaxValue;
     [SerializeField] private Text slimeCountText;
+    [SerializeField] private Text sporeTimerText;
     [SerializeField] private Transform slimePool;
     [SerializeField] private GameObject slimePrefab;
     [SerializeField] private Transform typhoon;// 태풍 오브젝트 레퍼런스
@@ -38,12 +46,15 @@ public class Mushroom : MonoBehaviour
     }
     public void SummonSlime(Vector3 summonPos)
     {
-        Slime slime = GetSlime();
-        slime.gameObject.SetActive(true);
-        slime.transform.localPosition = summonPos;
-        if (isActiveBuff)
+        if(slimeList.Count <= maxSlimeCount)
         {
-            slime.isInvincible = false;
+            Slime slime = GetSlime();
+            slime.gameObject.SetActive(true);
+            slime.transform.localPosition = summonPos;
+            if (isActiveBuff)
+            {
+                slime.isInvincible = false;
+            }
         }
     }
     public void ReturnSlime(Slime slime)
@@ -53,8 +64,49 @@ public class Mushroom : MonoBehaviour
         slime.transform.SetParent(slimePool);
         slimeQueue.Enqueue(slime);
         slimeList.Remove(slime);
-        currentSlimeCount--;
-        slimeCountText.text = currentSlimeCount.ToString();
+        slimeCountText.text = slimeList.Count.ToString();
+    }
+    private void Spore()
+    {
+        InGameManager.Instance.Player.DecreaseHp(sporeDamage);
+        foreach (var item in InGameManager.Instance.Units)
+        {
+            item.CommonStatus.DecreaseHp(sporeDamage);
+        }
+    }
+    private IEnumerator Co_SporeTimer()
+    {
+        float time;
+        while (true)
+        {
+            time = sporeTimerMaxValue;
+           // maxSlimeCount = Random.Range(15, 25);
+            yield return new WaitUntil(() => slimeList.Count >= maxSlimeCount);
+            isCounting = true;
+            sporeTimerText.transform.parent.gameObject.SetActive(true);
+            altar.SetActive(true);
+            while (time > 0f)
+            {
+                time -= Time.deltaTime;
+                sporeTimerText.text = string.Format("슬라임 제거 남은 시간 : {0:0}초", System.Math.Ceiling(time));
+                yield return null;
+            }
+            isCounting = false;
+            sporeTimerText.transform.parent.gameObject.SetActive(false);
+            altar.SetActive(false);
+            if (slimeList.Count <= 0)
+            {
+                continue;
+            }
+            slimeList.Clear();
+            dReturnAllSlime();
+            for (int i = 0; i < sporeCount; i++)
+            {
+                Spore();
+                yield return new WaitForSeconds(sporeInterval);
+            }
+            yield return null;
+        }
     }
     private IEnumerator Co_SetSlimeInvincible()
     {
@@ -87,8 +139,7 @@ public class Mushroom : MonoBehaviour
         Slime slime;
         slime = slimeQueue.Count > 0 ? slimeQueue.Dequeue() : CreateNewSlime();
         slimeList.Add(slime);
-        currentSlimeCount++;
-        slimeCountText.text = currentSlimeCount.ToString();        
+        slimeCountText.text = slimeList.Count.ToString();
         return slime;
     }
     private IEnumerator Co_Typhoon()
@@ -122,5 +173,6 @@ public class Mushroom : MonoBehaviour
         StartCoroutine(Co_Typhoon());
         StartCoroutine(Co_SummonSlime());
         StartCoroutine(Co_SetSlimeInvincible());
+        StartCoroutine(Co_SporeTimer());
     }
 }
