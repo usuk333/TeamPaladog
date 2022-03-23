@@ -121,6 +121,11 @@ public class GameCenterManager : MonoBehaviour
     {
         yield return null;
 
+        if(snapshot == null)
+        {
+            Start();
+        }
+
         ULVs = snapshot.Child("Level").Value.ToString();
         UEXPs = snapshot.Child("EXP").Value.ToString();
 
