@@ -69,6 +69,10 @@ public class Player : MonoBehaviour
         }
         currentHp -= damage;
     }
+    public void DecreaseMp(float value)
+    {
+        currentMp -= value;
+    }
     public void Casting(float time)
     {
         castingTime = time;
@@ -108,6 +112,7 @@ public class Player : MonoBehaviour
         {
             if (isCast)
             {
+                //isCastFinish = false;
                 float progress = 0;
                 while (progress < castingTime)
                 {

@@ -7,6 +7,13 @@ public class FallingObjectPool : MonoBehaviour
     [SerializeField] private GameObject fallingObject;
     [SerializeField] private float spawnCount;
     private Queue<GameObject> fallingQueue = new Queue<GameObject>();
+    public void ReturnFallingObj(GameObject obj)
+    {
+        obj.SetActive(false);
+        obj.transform.position = transform.position;
+        obj.transform.SetParent(transform);
+        fallingQueue.Enqueue(obj);
+    }
     private void InitializeObject() //투사체 초기화. 각 투사체 큐에 생성된 투사체를 인큐. 맨 처음에 호출
     {
         for (int i = 0; i < 5; i++)
@@ -21,13 +28,6 @@ public class FallingObjectPool : MonoBehaviour
         obj.transform.position = transform.position;
         obj.transform.SetParent(transform);
         return obj;
-    }
-    public void ReturnFallingObj(GameObject obj)
-    {
-        obj.SetActive(false);
-        obj.transform.position = transform.position;
-        obj.transform.SetParent(transform);
-        fallingQueue.Enqueue(obj);
     }
     private GameObject GetFallingObj()
     {
