@@ -24,4 +24,8 @@ public class BossHpBar : MonoBehaviour
     {
         StartCoroutine(Co_UpdateBossHpBar());
     }
+    private void OnEnable()
+    {
+        StartCoroutine(Co_UpdateBossHpBar());
+    }
 }

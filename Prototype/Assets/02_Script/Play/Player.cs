@@ -177,6 +177,21 @@ public class Player : MonoBehaviour
         {
             isLeft = false;
         }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            foreach (var item in InGameManager.Instance.Units)
+            {
+                item.gameObject.SetActive(false);
+            }       
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            foreach (var item in InGameManager.Instance.Units)
+            {
+                item.gameObject.SetActive(true);
+            }
+        }
+
     }
     private void FixedUpdate()
     {
