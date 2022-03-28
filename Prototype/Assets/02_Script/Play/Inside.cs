@@ -5,14 +5,19 @@ using UnityEngine.UI;
 
 public class Inside : MonoBehaviour
 {
+    [SerializeField] private List<GameObject> fallingObjectDummys = new List<GameObject>();
+    [SerializeField] private List<GameObject> fallingObjects = new List<GameObject>();
+    private Transform fallingObjectDummysParent;
     private bool isInsideReady;
     private bool isInside;
     private int explosionCount = 0;
     private Boss dummyBoss;
     private Vector3 insidePlayerPos = new Vector3(-5.6f,-9.17f);
     private Vector3 originPlayerPos = new Vector3(-5.6f, 0f);
-    private Vector3 insideCameraPos = new Vector3(0, -9.17f, -10f);
+    private Vector3 insideCameraPos = new Vector3(0, -10.17f, -10f);
     private Vector3 originCameraPos = new Vector3(0, 0, -10f);
+    [SerializeField] private Vector3[] insideFallingObjectsPos;
+    [SerializeField] private Vector3[] fallingObjectPos;
     [SerializeField] private Transform originHpBar;
     [SerializeField] private Transform insideHpBar;
     [SerializeField] private Transform insideInstance;
@@ -24,7 +29,7 @@ public class Inside : MonoBehaviour
     [SerializeField] private float manaExplosionDuration;
     [SerializeField] private float decreaseMpPercent;
     [SerializeField] private Image sceneMoveImg;
-    private int[] insidePercentage = { 80, 40 };
+    private int[] insidePercentage = { 95, 40 };
     private Color originColor;
     public void MoveToInside()
     {
@@ -39,6 +44,55 @@ public class Inside : MonoBehaviour
         isInside = false;
         InGameManager.Instance.Player.transform.position = originPlayerPos;
         Camera.main.transform.position = originCameraPos;
+    }
+    private void SuffleArray()
+    {
+        int randX;
+        int randY;
+        Vector3 pos;
+        for (int i = 0; i < fallingObjectPos.Length; ++i)
+        {
+            randX = Random.Range(0, fallingObjectPos.Length);
+            randY = Random.Range(0, fallingObjectPos.Length);
+
+            pos = fallingObjectPos[randX];
+            fallingObjectPos[randX] = fallingObjectPos[randY];
+            fallingObjectPos[randY] = pos;
+        }
+    }
+    private void SuffleOrder(int x, int y, List<GameObject> list, GameObject obj)
+    {
+        obj = list[x];
+        list[x] = list[y];
+        list[y] = obj;
+    }
+    private void SuffleFallingObjects()
+    {
+        int randX;
+        int randY;
+        GameObject obj = null;
+        GameObject dummy = null;
+        for (int i = 0; i < fallingObjects.Count; i++)
+        {
+            randX = Random.Range(0, fallingObjects.Count);
+            randY = Random.Range(0, fallingObjects.Count);
+            SuffleOrder(randX, randY, fallingObjects, obj);
+            SuffleOrder(randX, randY, fallingObjectDummys, dummy);
+        }
+        for (int i = 0; i < fallingObjectDummys.Count; i++)
+        {
+            fallingObjectDummys[i].transform.position = insideFallingObjectsPos[i];
+        }
+    }
+    private void SetFallingObjects()
+    {
+        SuffleArray();
+        for (int i = 0; i < fallingObjects.Count; i++)
+        {
+            fallingObjects[i].transform.position = -insideFallingObjectsPos[i];
+           // fallingObjects[i].transform.position = -fallingObjects[i].transform.position;
+        }
+        fallingObjects[0].transform.parent.gameObject.SetActive(true);
     }
     private void ManaExplosion()
     {
@@ -62,11 +116,13 @@ public class Inside : MonoBehaviour
         float insideTimer = insideDuration;
         float moveInsideTimer = moveToInsideDuration;
         int index = 0;
+        float mpRegenerative = InGameManager.Instance.Player.MpRegenerative;
         while (true)
         {
             yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.MaxHp * insidePercentage[index] / 100);
             GetComponent<SpriteRenderer>().color = Color.clear;
             isInsideReady = true;
+            InGameManager.Instance.Boss.isPattern = true;
             InGameManager.Instance.StopAllUnitCoroutines();
             originHpBar.gameObject.SetActive(false);
             insidePortal.gameObject.SetActive(true);
@@ -90,22 +146,35 @@ public class Inside : MonoBehaviour
             }
             if (!isInside)
             {
+                InGameManager.Instance.Player.DecreaseHp(InGameManager.Instance.Player.MaxHp);
                 Debug.Log("플레이어 사망");
                 yield break;
             }
-            //InGameManager.Instance.StartAllUnitCoroutines();
+            InGameManager.Instance.Player.MpRegenerative = mpRegenerative * 5;
+            fallingObjectDummysParent.gameObject.SetActive(true);
+            //마나 재생량 5배 증가
+            //InGameManager.Instance.StartAllUnitCoroutines();          
             yield return new WaitUntil(() => dummyBoss.CommonStatus.CurrentHp <= 0);
             Debug.Log("현실로 돌아갑니다");
-            index++;
+            if(++index > 1)
+            {
+                yield break;
+            }
+            Debug.Log(index);
             sceneMoveImg.gameObject.SetActive(true);
             MoveToOrigin();
+            insidePortal.gameObject.SetActive(false);
             GetComponent<SpriteRenderer>().color = originColor;
             InGameManager.Instance.StartAllUnitCoroutines();
             originHpBar.gameObject.SetActive(true);
             insideInstance.gameObject.SetActive(false);
+            fallingObjectDummysParent.gameObject.SetActive(false);
             yield return new WaitForSeconds(2f);
-            sceneMoveImg.gameObject.SetActive(false);       
-            //Debug.Log("내면으로 들어왔다.");
+            sceneMoveImg.gameObject.SetActive(false);
+            dummyBoss.CommonStatus.CurrentHp = dummyBoss.CommonStatus.MaxHp;
+            yield return new WaitForSeconds(3f);
+            InGameManager.Instance.Boss.isPattern = false;
+            SetFallingObjects();
         }      
     }
     private IEnumerator Co_ManaExplosion()
@@ -149,6 +218,9 @@ public class Inside : MonoBehaviour
     {
         originColor = GetComponent<SpriteRenderer>().color;
         dummyBoss = transform.Find("InsideInstance").GetComponentInChildren<Boss>();
+        SuffleFallingObjects();
+        fallingObjectDummysParent = fallingObjectDummys[0].transform.parent;
+        //SetFallingObjects();
     }
     private void Start()
     {

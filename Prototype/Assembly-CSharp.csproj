@@ -83,6 +83,7 @@
     <Compile Include="Assets\02_Script\Play\InGameUIManager.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\PlayGamesClientConfiguration.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark04.cs" />
+    <Compile Include="Assets\02_Script\Play\InsidePortal.cs" />
     <Compile Include="Assets\GooglePlayGames\OurUtils\Logger.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\AdvertisingResult.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Video\VideoCaptureState.cs" />
@@ -201,7 +202,6 @@
     <Compile Include="Assets\02_Script\Play\Beast.cs" />
     <Compile Include="Assets\GPGSset\LoadingthrManager.cs" />
     <Compile Include="Assets\02_Script\Play\Inside.cs" />
-    <Compile Include="Assets\02_Script\Play\InsidePortal.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
@@ -225,6 +225,7 @@
     <None Include="Assets\Generic Backgrounds\Indoor-Background-Pack\readme.txt" />
     <None Include="Assets\GUI PRO Kit - Fantasy RPG\Extensions\UIParticle\hidden particle.shader" />
     <None Include="Assets\Firebase\Plugins\Firebase.TaskExtension.dll" />
+    <None Include="Assets\03_Resauce\Spine\basilisk\바실리스크3.atlas.txt" />
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-app-unity\maven-metadata.xml" />
     <None Include="Assets\Firebase\Plugins\x86_64\FirebaseCppApp-8_7_0.dll" />
     <None Include="Assets\Firebase\Plugins\Firebase.Auth.dll" />
