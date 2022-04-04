@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float maxMp;
     [SerializeField] private float currentMp;
     [SerializeField] private float mpRegenerative;
-    [SerializeField] private float mpRegenerationTime;
+    [SerializeField] private float mpRegenerationInterval;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float currentMoveSpeed; //이동 속도
     private float castingTime;
@@ -47,6 +47,8 @@ public class Player : MonoBehaviour
         }
     }
     public float CurrentMp { get => currentMp; }
+    public float MpRegenerative { get => mpRegenerative; set => mpRegenerative = value; }
+
     public void KnockBack(Vector3 pos)
     {
         isInpacable = true;
@@ -72,6 +74,10 @@ public class Player : MonoBehaviour
     public void DecreaseMp(float value)
     {
         currentMp -= value;
+        if(currentMp < 0)
+        {
+            currentMp = 0;
+        }
     }
     public void Casting(float time)
     {
@@ -141,7 +147,11 @@ public class Player : MonoBehaviour
             if(currentMp < maxMp)
             {
                 currentMp += mpRegenerative;
-                yield return new WaitForSeconds(mpRegenerationTime);
+                if(currentMp > maxMp)
+                {
+                    currentMp = maxMp;
+                }
+                yield return new WaitForSeconds(mpRegenerationInterval);
             }
             yield return null;
         }
@@ -177,6 +187,21 @@ public class Player : MonoBehaviour
         {
             isLeft = false;
         }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            foreach (var item in InGameManager.Instance.Units)
+            {
+                item.gameObject.SetActive(false);
+            }       
+        }
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            foreach (var item in InGameManager.Instance.Units)
+            {
+                item.gameObject.SetActive(true);
+            }
+        }
+
     }
     private void FixedUpdate()
     {

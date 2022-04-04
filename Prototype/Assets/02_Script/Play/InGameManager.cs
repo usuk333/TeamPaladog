@@ -17,6 +17,20 @@ public class InGameManager : MonoBehaviour
     public Unit[] Units { get => units; }
     public Player Player { get => player; }
     public Boss Boss { get => boss; }
+    public void StopAllUnitCoroutines()
+    {
+        foreach (var item in units)
+        {
+            item.StopAllCoroutines();
+        }
+    }
+    public void StartAllUnitCoroutines()
+    {
+        foreach (var item in units)
+        {
+            item.StartAllCoroutines();
+        }
+    }
 
     //생각해보니 델리게이트로 하는게 더 나을듯?
     private IEnumerator Co_InitializeInGameData() //초기화가 필요한 모든 인게임 데이터 초기화. 완료되면 true 반환 후 로딩 완료.
@@ -40,7 +54,15 @@ public class InGameManager : MonoBehaviour
     }
     private void Awake()
     {
-        instance = this;
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+        DontDestroyOnLoad(instance);
         StartCoroutine(Co_InitializeInGameData());
         units = FindObjectsOfType<Unit>();
         Unit unit;

@@ -1,0 +1,97 @@
+
+바실리스크3.png
+size: 1945,890
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+L- arm-up
+  rotate: true
+  xy: 2, 8
+  size: 244, 386
+  orig: 564, 386
+  offset: 80, 0
+  index: -1
+L-arm-down
+  rotate: false
+  xy: 1212, 317
+  size: 457, 571
+  orig: 457, 571
+  offset: 0, 0
+  index: -1
+L-leg
+  rotate: true
+  xy: 1212, 17
+  size: 298, 539
+  orig: 298, 539
+  offset: 0, 0
+  index: -1
+R-arm
+  rotate: false
+  xy: 1773, 35
+  size: 170, 356
+  orig: 386, 476
+  offset: 216, 0
+  index: -1
+R-leg
+  rotate: false
+  xy: 1671, 616
+  size: 270, 272
+  orig: 270, 272
+  offset: 0, 0
+  index: -1
+body
+  rotate: false
+  xy: 2, 254
+  size: 1208, 634
+  orig: 1651, 733
+  offset: 412, 99
+  index: -1
+chest
+  rotate: true
+  xy: 1671, 393
+  size: 221, 256
+  orig: 252, 265
+  offset: 0, 9
+  index: -1
+chest grind-1
+  rotate: true
+  xy: 598, 91
+  size: 161, 176
+  orig: 161, 176
+  offset: 0, 0
+  index: -1
+chest grind-2
+  rotate: false
+  xy: 972, 2
+  size: 123, 250
+  orig: 134, 270
+  offset: 11, 20
+  index: -1
+chest grind-3
+  rotate: true
+  xy: 776, 120
+  size: 132, 194
+  orig: 132, 194
+  offset: 0, 0
+  index: -1
+chest grind-4
+  rotate: true
+  xy: 1097, 15
+  size: 237, 87
+  orig: 237, 98
+  offset: 0, 11
+  index: -1
+head
+  rotate: false
+  xy: 390, 88
+  size: 206, 164
+  orig: 206, 206
+  offset: 0, 42
+  index: -1
+lower jaw
+  rotate: false
+  xy: 1671, 323
+  size: 100, 68
+  orig: 106, 72
+  offset: 6, 4
+  index: -1

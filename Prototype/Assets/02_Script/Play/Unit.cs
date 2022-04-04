@@ -66,6 +66,11 @@ public class Unit : MonoBehaviour
         //이동속도도?
         return true;
     }
+    public void StartAllCoroutines()
+    {
+        StartCoroutine(Co_UpdateState());
+        StartCoroutine(Co_OutOfStateCondition());
+    }
     #region -투사체 발사 함수-
     private void SetProjectile(int i)//투사체 발사하는 유닛만 사용. 투사체 풀에서 꺼내오면서 초기화
     {
