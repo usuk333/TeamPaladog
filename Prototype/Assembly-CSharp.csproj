@@ -208,6 +208,7 @@
     <None Include="Assets\Spine\version.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
     <None Include="Assets\Parse\Plugins\Unity.Compat.dll" />
+    <None Include="Assets\03_Resauce\Spine\NINJA\NINJA\닌자_SD_최종.atlas.txt" />
     <None Include="Assets\Firebase\Plugins\Firebase.Analytics.dll" />
     <None Include="Assets\Firebase\Plugins\x86_64\FirebaseCppDatabase.dll" />
     <None Include="Assets\03_Resauce\Spine\WARRIOR.atlas.txt" />
@@ -236,6 +237,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\Firebase\Plugins\Firebase.Database.dll" />
+    <None Include="Assets\03_Resauce\Spine\WARRIOR\WARRIOR\WARRIOR.atlas.txt" />
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-analytics-unity\maven-metadata.xml" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-auth-unity\maven-metadata.xml" />

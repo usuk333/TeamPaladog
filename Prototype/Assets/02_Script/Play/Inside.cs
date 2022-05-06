@@ -175,6 +175,7 @@ public class Inside : MonoBehaviour
             yield return new WaitForSeconds(3f);
             InGameManager.Instance.Boss.isPattern = false;
             SetFallingObjects();
+            isInsideReady = false;
         }      
     }
     private IEnumerator Co_ManaExplosion()
