@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
-public class StartManager : MonoBehaviour
+public class Tower : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -15,10 +15,5 @@ public class StartManager : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public void LinkStart()
-    {
-        SceneManager.LoadScene("LoadingScene 2");
     }
 }
