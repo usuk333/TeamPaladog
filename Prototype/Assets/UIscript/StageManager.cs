@@ -17,6 +17,7 @@ using System.IO;
 using System.Threading.Tasks;
 
 using DG.Tweening;
+using TMPro;
 
 public class StageManager : MonoBehaviour
 {
@@ -25,13 +26,14 @@ public class StageManager : MonoBehaviour
     FirebaseApp firebaseApp;
     private DatabaseReference reference;
     DataSnapshot snapshot;
+    DataSnapshot snapshots;
     [SerializeField] private string Userid;
 
     private bool panelonoff;
 
     //½ºÅ×ÀÌÁö ÆÐ³Î °ü·Ã
     [SerializeField] private GameObject StagePanel;
-    [SerializeField] private string[] StageTopText = new string[3];
+    [SerializeField] private string[] StageTopText = new string[6];
 
     private bool[] panelsonoff = new bool[6];
 
@@ -51,6 +53,16 @@ public class StageManager : MonoBehaviour
     [SerializeField] private Sprite ADIcon;
     [SerializeField] private Sprite MageIcon;
 
+    //°è¿­ Æ÷ÀÎÆ®
+    private string TankerPoints = string.Empty;
+    [SerializeField] private TextMeshProUGUI tTankerPoints;
+    private string WarriorPoints = string.Empty;
+    [SerializeField] private TextMeshProUGUI tWarriorPoints;
+    private string ADPoints = string.Empty;
+    [SerializeField] private TextMeshProUGUI tADPoints;
+    private string MagePoints = string.Empty;
+    [SerializeField] private TextMeshProUGUI tMagePoints;
+
     [SerializeField] private Sprite[] SkillIcon = new Sprite[7];
 
     //Ãþ ¼³¸í°ú, º¸»ó °³Ã¼ ¼±¾ð
@@ -65,6 +77,7 @@ public class StageManager : MonoBehaviour
 
     [SerializeField] private GameObject[] Skilllist = new GameObject[7];
     [SerializeField] private string[] tSkilllist = new string[7];
+
 
     void Awake()
     {
@@ -92,6 +105,9 @@ public class StageManager : MonoBehaviour
         StageTopText[0] = "1Ãþ ºÎ½¤Áø °©¿Ê \n ºÎ½¤Áø °©¿Ê ¾îÂ¼°íÀúÂ¼°í";
         StageTopText[1] = "2Ãþ ÀúÂ¼°íº¸½º\n (½ºÅä¸® ¼³¸í)";
         StageTopText[2] = "3Ãþ ¾îÂ¼°í º¸½º\n (½ºÅä¸® ¼³¸í)";
+        StageTopText[3] = "4Ãþ ¾îÂ¼°í º¸½º\n (½ºÅä¸® ¼³¸í)";
+        StageTopText[4] = "5Ãþ ¾îÂ¼°í º¸½º\n (½ºÅä¸® ¼³¸í)";
+        StageTopText[5] = "6Ãþ ¾îÂ¼°í º¸½º\n (½ºÅä¸® ¼³¸í)";
 
         panelonoff = false;
     }
@@ -113,6 +129,21 @@ public class StageManager : MonoBehaviour
                 StartCoroutine(UIupdate());
             }
         });
+
+        reference.Child("users").Child(Userid).Child("Unit").GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.LogError("failed reading...");
+            }
+            else if (task.IsCompleted)
+            {
+                Debug.Log("ÄÄÇÃ¸´¶¸À½");
+                snapshots = task.Result;
+
+                
+            }
+        });
     }
 
     private IEnumerator UIupdate()
@@ -125,6 +156,16 @@ public class StageManager : MonoBehaviour
         {
             Start();
         }
+
+        TankerPoints = snapshot.Child("Points").Child("TankerPoints").Value.ToString();
+        WarriorPoints = snapshot.Child("Points").Child("WarriorPoints").Value.ToString();
+        ADPoints = snapshot.Child("Points").Child("ADPoints").Value.ToString();
+        MagePoints = snapshot.Child("Points").Child("MagePoints").Value.ToString();
+
+        tTankerPoints.text = TankerPoints;
+        tWarriorPoints.text = WarriorPoints;
+        tADPoints.text = ADPoints;
+        tMagePoints.text = MagePoints;
 
         SkillSetting[0] = snapshot.Child("LastPick").Child("Skill").Child("Skill1").Value.ToString();
         SkillSetting[1] = snapshot.Child("LastPick").Child("Skill").Child("Skill2").Value.ToString();
@@ -202,11 +243,11 @@ public class StageManager : MonoBehaviour
         update.Add("Skill4", SkillSetting[3]);
         reference.Child("users").Child(Userid).Child("Stage").Child("LastPick").Child("Skill").UpdateChildrenAsync(update);
 
-        SceneManager.LoadScene("LoadingBattle");
+        LoadingSceneController.LoadScene("Stage");
     }
 
     public void Return()
     {
-        SceneManager.LoadScene("StartScene");
+        LoadingSceneController.LoadScene("StartScene");
     }
 }

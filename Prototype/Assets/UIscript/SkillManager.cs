@@ -15,6 +15,7 @@ using GooglePlayGames.BasicApi;
 using UnityEngine.SceneManagement;
 using System.IO;
 using System.Threading.Tasks;
+using TMPro;
 
 public class SkillManager : MonoBehaviour
 {
@@ -30,7 +31,7 @@ public class SkillManager : MonoBehaviour
     [SerializeField] private GameObject NotEnough;
 
     private string Gold = string.Empty;
-    [SerializeField] private Text tGold;
+    [SerializeField] private TextMeshProUGUI tGold;
 
     private string SkillPoint = string.Empty;
     [SerializeField] private Text tSkillPoint;
@@ -49,6 +50,16 @@ public class SkillManager : MonoBehaviour
     [SerializeField] private Text tSkill6_Level;
     private string Skill7_Level = string.Empty;
     [SerializeField] private Text tSkill7_Level;
+
+    //계열 포인트
+    private string TankerPoints = string.Empty;
+    [SerializeField] private TextMeshProUGUI tTankerPoints;
+    private string WarriorPoints = string.Empty;
+    [SerializeField] private TextMeshProUGUI tWarriorPoints;
+    private string ADPoints = string.Empty;
+    [SerializeField] private TextMeshProUGUI tADPoints;
+    private string MagePoints = string.Empty;
+    [SerializeField] private TextMeshProUGUI tMagePoints;
 
     [SerializeField] private GameObject[] Skillpanel = new GameObject[7];
     [SerializeField] private Text[] tSkillPoints = new Text[7];
@@ -107,6 +118,11 @@ public class SkillManager : MonoBehaviour
     {
         yield return null;
 
+        if (snapshot == null)
+        {
+            Start();
+        }
+
         Debug.Log("UI업데이트시작");
 
         Skill1_Level = snapshot.Child("Skill1").Child("Skill1_Level").Value.ToString();
@@ -138,7 +154,7 @@ public class SkillManager : MonoBehaviour
 
     public void SkillGoMain()
     {
-        SceneManager.LoadScene("StartScene");
+        LoadingSceneController.LoadScene("StartScene");
     }
 
     public void SCloseNotEnough()

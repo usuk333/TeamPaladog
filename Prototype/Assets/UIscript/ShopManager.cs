@@ -15,6 +15,7 @@ using GooglePlayGames.BasicApi;
 using UnityEngine.SceneManagement;
 using System.IO;
 using System.Threading.Tasks;
+using TMPro;
 
 
 public class ShopManager : MonoBehaviour
@@ -54,13 +55,13 @@ public class ShopManager : MonoBehaviour
 
     //계열 포인트
     private string TankerPoints = string.Empty;
-    [SerializeField] private Text tTankerPoints;
+    [SerializeField] private TextMeshProUGUI tTankerPoints;
     private string WarriorPoints = string.Empty;
-    [SerializeField] private Text tWarriorPoints;
+    [SerializeField] private TextMeshProUGUI tWarriorPoints;
     private string ADPoints = string.Empty;
-    [SerializeField] private Text tADPoints;
+    [SerializeField] private TextMeshProUGUI tADPoints;
     private string MagePoints = string.Empty;
-    [SerializeField] private Text tMagePoints;
+    [SerializeField] private TextMeshProUGUI tMagePoints;
 
     private string ShielderHP = string.Empty;
     [SerializeField] private Text tShielderHP;
@@ -83,7 +84,7 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Text tMagicianATK;
 
 
-    [SerializeField] private Text tGold;
+    [SerializeField] private TextMeshProUGUI tGold;
 
     [SerializeField] private GameObject NotEnough;
 
@@ -93,6 +94,7 @@ public class ShopManager : MonoBehaviour
     public bool panelonoff = false;
 
     DataSnapshot snapshot;
+    DataSnapshot snapshots;
 
     FirebaseDatabase firebaseDatabase;
 
@@ -141,7 +143,7 @@ public class ShopManager : MonoBehaviour
             else if (task.IsCompleted)
             {
                 Debug.Log("컴플릿떳음");
-                DataSnapshot snapshot = task.Result;
+                snapshots = task.Result;
 
                 Gold = snapshot.Child("Gold").Value.ToString();
             }
@@ -151,15 +153,19 @@ public class ShopManager : MonoBehaviour
     {
         yield return null;
 
+        if (snapshot == null)
+        {
+            Start();
+        }
         Debug.Log("UI업데이트시작");
 
         //Unitpoints = snapshot.Child("UnitPoints").Value.ToString();
 
         //계열포인트
-        TankerPoints = snapshot.Child("TankerPoints").Value.ToString();
-        WarriorPoints = snapshot.Child("WarriorPoints").Value.ToString();
-        ADPoints = snapshot.Child("ADPoints").Value.ToString();
-        MagePoints = snapshot.Child("MagePoints").Value.ToString();
+        TankerPoints = snapshot.Child("Points").Child("TankerPoints").Value.ToString();
+        WarriorPoints = snapshot.Child("Points").Child("WarriorPoints").Value.ToString();
+        ADPoints = snapshot.Child("Points").Child("ADPoints").Value.ToString();
+        MagePoints = snapshot.Child("Points").Child("MagePoints").Value.ToString();
 
         //유닛 레벨
         Shielder_level = snapshot.Child("Shielder").Child("Shielder_Level").Value.ToString();
@@ -217,7 +223,7 @@ public class ShopManager : MonoBehaviour
     //메인으로 버튼
     public void ShopGoMain()
     {
-        SceneManager.LoadScene("StartScene");
+        LoadingSceneController.LoadScene("StartScene");
     }
 
     public void CloseNotEnough()
@@ -270,7 +276,7 @@ public class ShopManager : MonoBehaviour
                 updatet.Add("TankerPoints", TP);
                 updatee.Add("Shielder_EXP", UE);
                 reference.Child("users").Child(Userid).Child("Unit").Child("Shielder").UpdateChildrenAsync(update);
-                reference.Child("users").Child(Userid).Child("Unit").UpdateChildrenAsync(updatet);
+                reference.Child("users").Child(Userid).Child("Info").Child("Points").UpdateChildrenAsync(updatet);
                 reference.Child("users").Child(Userid).Child("Unit").Child("Shielder").UpdateChildrenAsync(updatee);
 
                 Shielder_level = UL.ToString();
@@ -399,7 +405,7 @@ public class ShopManager : MonoBehaviour
                 updatet.Add("WarriorPoints", WP);
                 updatee.Add("Warrior_EXP", UE);
                 reference.Child("users").Child(Userid).Child("Unit").Child("Warrior").UpdateChildrenAsync(update);
-                reference.Child("users").Child(Userid).Child("Unit").UpdateChildrenAsync(updatet);
+                reference.Child("users").Child(Userid).Child("Info").Child("Points").UpdateChildrenAsync(updatet);
                 reference.Child("users").Child(Userid).Child("Unit").Child("Warrior").UpdateChildrenAsync(updatee);
 
                 Warrior_level = UL.ToString();
@@ -528,7 +534,7 @@ public class ShopManager : MonoBehaviour
                 updatet.Add("ADPoints", AP);
                 updatee.Add("Archor_EXP", UE);
                 reference.Child("users").Child(Userid).Child("Unit").Child("Archor").UpdateChildrenAsync(update);
-                reference.Child("users").Child(Userid).Child("Unit").UpdateChildrenAsync(updatet);
+                reference.Child("users").Child(Userid).Child("Info").Child("Points").UpdateChildrenAsync(updatet);
                 reference.Child("users").Child(Userid).Child("Unit").Child("Archor").UpdateChildrenAsync(updatee);
 
                 Archor_level = UL.ToString();
@@ -562,7 +568,7 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    //탱커 공격력 증가
+    //아처 공격력 증가
     public void ArchorATKUp()
     {
         if (int.Parse(Gold) >= 200)
@@ -599,7 +605,7 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    //탱커 HP 증가
+    //아처 HP 증가
     public void ArchorHPUp()
     {
         if (int.Parse(Gold) >= 200)
@@ -657,7 +663,7 @@ public class ShopManager : MonoBehaviour
                 updatet.Add("MagePoints", MP);
                 updatee.Add("Magician_EXP", UE);
                 reference.Child("users").Child(Userid).Child("Unit").Child("Magician").UpdateChildrenAsync(update);
-                reference.Child("users").Child(Userid).Child("Unit").UpdateChildrenAsync(updatet);
+                reference.Child("users").Child(Userid).Child("Info").Child("Points").UpdateChildrenAsync(updatet);
                 reference.Child("users").Child(Userid).Child("Unit").Child("Magician").UpdateChildrenAsync(updatee);
 
                 Magician_level = UL.ToString();

@@ -12,9 +12,9 @@ using Google;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 
-using UnityEngine.SceneManagement;
 using System.IO;
 using System.Threading.Tasks;
+using TMPro;
 
 
 public class GameCenterManager : MonoBehaviour
@@ -56,13 +56,31 @@ public class GameCenterManager : MonoBehaviour
 
     public PlayerData playerdata;
 
-    [SerializeField] private Text ULV;
-    [SerializeField] private Text UEXP;
+    private string TankerPoints = string.Empty;
+    [SerializeField] private TextMeshProUGUI tTankerPoints;
+    private string WarriorPoints = string.Empty;
+    [SerializeField] private TextMeshProUGUI tWarriorPoints;
+    private string ADPoints = string.Empty;
+    [SerializeField] private TextMeshProUGUI tADPoints;
+    private string MagePoints = string.Empty;
+    [SerializeField] private TextMeshProUGUI tMagePoints;
 
-    private string UEXPs = string.Empty;
-    private string ULVs = string.Empty;
+    private string Gold = string.Empty;
+    [SerializeField] private TextMeshProUGUI tGold;
+
+    [SerializeField] private Text tLv;
+    [SerializeField] private TextMeshProUGUI tEXP;
+    private string EXP = string.Empty;
+    private string Lv = string.Empty;
+
+    [SerializeField] private Image EXPbar;
+
+    [SerializeField] private GameObject UserInfoPanel;
 
     DataSnapshot snapshot;
+
+    [SerializeField] private GameObject SettingPanel;
+
     private void Awake()
     {
         //초기화 auth
@@ -126,11 +144,37 @@ public class GameCenterManager : MonoBehaviour
             Start();
         }
 
-        ULVs = snapshot.Child("Level").Value.ToString();
-        UEXPs = snapshot.Child("EXP").Value.ToString();
+        Lv = snapshot.Child("Level").Value.ToString();
+        EXP = snapshot.Child("EXP").Value.ToString();
 
-        ULV.text = "Level : " + ULVs;
-        UEXP.text = "Exp : " + UEXPs;
+        tLv.text = "Lv: " + Lv;
+        tEXP.text = EXP + "/500";
+
+        Gold = snapshot.Child("Gold").Value.ToString();
+        TankerPoints = snapshot.Child("Points").Child("TankerPoints").Value.ToString();
+        WarriorPoints = snapshot.Child("Points").Child("WarriorPoints").Value.ToString();
+        ADPoints = snapshot.Child("Points").Child("ADPoints").Value.ToString();
+        MagePoints = snapshot.Child("Points").Child("MagePoints").Value.ToString();
+
+        tGold.text = Gold;
+        tTankerPoints.text = TankerPoints;
+        tWarriorPoints.text = WarriorPoints;
+        tADPoints.text = ADPoints;
+        tMagePoints.text = MagePoints;
+
+        float EXPs = float.Parse(EXP);
+        EXPbar.fillAmount = EXPs / 100f;
+
+    }
+
+    public void InfoOpen()
+    {
+        UserInfoPanel.SetActive(true);
+    }
+
+    public void InfoClose()
+    {
+        UserInfoPanel.SetActive(false);
     }
 
 
@@ -169,15 +213,6 @@ public class GameCenterManager : MonoBehaviour
         {
             //StartCoroutine(CurrentUserDataGet());
         }
-    }
-
-
-    //게임 씬으로 넘어가기
-    public void NextScene()
-    {
-        Debug.Log("GameScene����");
-
-        SceneManager.LoadSceneAsync(1);
     }
 
     private void Update()
@@ -454,7 +489,7 @@ public class GameCenterManager : MonoBehaviour
 
     public void GoBattle()
     {
-        SceneManager.LoadScene("StageSection");
+        LoadingSceneController.LoadScene("StageSection");
     }
 
 
@@ -596,12 +631,22 @@ public class GameCenterManager : MonoBehaviour
     //Shop������ �̵�
     public void GoShop()
     {
-        SceneManager.LoadScene("LoadingScene");
+        LoadingSceneController.LoadScene("Shop");
     }
 
     public void GoSkill()
     {
-        SceneManager.LoadScene("LoadingScene 1");
+        LoadingSceneController.LoadScene("Skill");
+    }
+
+    public void GoSetting()
+    {
+        SettingPanel.SetActive(true);
+    }
+
+    public void SettingClose()
+    {
+        SettingPanel.SetActive(false);
     }
 
 
