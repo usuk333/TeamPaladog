@@ -1,0 +1,13 @@
+
+버섯_완성.png
+size: 909,462
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Slime_2
+  rotate: false
+  xy: 2, 2
+  size: 905, 458
+  orig: 905, 458
+  offset: 0, 0
+  index: -1

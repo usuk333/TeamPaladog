@@ -1,0 +1,47 @@
+
+젠야타_완성.png
+size: 2586,2384
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+head
+  rotate: false
+  xy: 2, 1062
+  size: 1293, 679
+  orig: 1293, 679
+  offset: 0, 0
+  index: -1
+left arm
+  rotate: true
+  xy: 1297, 1056
+  size: 685, 1287
+  orig: 685, 1287
+  offset: 0, 0
+  index: -1
+right arm
+  rotate: true
+  xy: 2, 1743
+  size: 639, 2505
+  orig: 639, 2505
+  offset: 0, 0
+  index: -1
+underskirt
+  rotate: true
+  xy: 2, 2
+  size: 1052, 1345
+  orig: 1052, 1345
+  offset: 0, 0
+  index: -1
+
+젠야타_완성2.png
+size: 1217,1967
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+body
+  rotate: false
+  xy: 2, 2
+  size: 1213, 1963
+  orig: 1213, 1963
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,173 @@
+
+사자_완성.png
+size: 2032,1960
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+L-S
+  rotate: false
+  xy: 2, 218
+  size: 489, 519
+  orig: 900, 519
+  offset: 411, 0
+  index: -1
+L-thigh shield
+  rotate: true
+  xy: 365, 1105
+  size: 354, 368
+  orig: 354, 368
+  offset: 0, 0
+  index: -1
+L_calf
+  rotate: true
+  xy: 2, 1517
+  size: 262, 532
+  orig: 262, 532
+  offset: 0, 0
+  index: -1
+L_femur
+  rotate: true
+  xy: 518, 705
+  size: 384, 558
+  orig: 384, 558
+  offset: 0, 0
+  index: -1
+L_forearm
+  rotate: true
+  xy: 1288, 1385
+  size: 282, 423
+  orig: 282, 437
+  offset: 0, 0
+  index: -1
+L_hand
+  rotate: true
+  xy: 1653, 1669
+  size: 289, 320
+  orig: 289, 320
+  offset: 0, 0
+  index: -1
+L_shoulder
+  rotate: true
+  xy: 834, 1428
+  size: 279, 452
+  orig: 279, 452
+  offset: 0, 0
+  index: -1
+Pigtail
+  rotate: true
+  xy: 169, 1781
+  size: 177, 477
+  orig: 177, 477
+  offset: 0, 0
+  index: -1
+R-S-1
+  rotate: false
+  xy: 735, 1091
+  size: 546, 335
+  orig: 546, 353
+  offset: 0, 18
+  index: -1
+R-S-2
+  rotate: true
+  xy: 1078, 623
+  size: 398, 447
+  orig: 777, 447
+  offset: 0, 0
+  index: -1
+R-S-3
+  rotate: true
+  xy: 648, 1753
+  size: 205, 218
+  orig: 664, 372
+  offset: 35, 0
+  index: -1
+R-hand-2
+  rotate: true
+  xy: 868, 1719
+  size: 239, 343
+  orig: 915, 442
+  offset: 0, 0
+  index: -1
+R-thight shield
+  rotate: true
+  xy: 1648, 1012
+  size: 371, 382
+  orig: 425, 382
+  offset: 54, 0
+  index: -1
+R_calf
+  rotate: true
+  xy: 2, 739
+  size: 364, 514
+  orig: 514, 514
+  offset: 150, 0
+  index: -1
+R_femur
+  rotate: false
+  xy: 1527, 532
+  size: 494, 478
+  orig: 494, 478
+  offset: 0, 0
+  index: -1
+R_forearm
+  rotate: true
+  xy: 2, 1162
+  size: 353, 361
+  orig: 353, 1016
+  offset: 0, 655
+  index: -1
+R_hand-1
+  rotate: true
+  xy: 536, 1461
+  size: 290, 296
+  orig: 1131, 308
+  offset: 0, 0
+  index: -1
+R_shoulder
+  rotate: true
+  xy: 1213, 1709
+  size: 249, 438
+  orig: 765, 438
+  offset: 0, 0
+  index: -1
+body
+  rotate: true
+  xy: 493, 99
+  size: 522, 808
+  orig: 522, 808
+  offset: 0, 0
+  index: -1
+face
+  rotate: false
+  xy: 1283, 1023
+  size: 363, 360
+  orig: 693, 664
+  offset: 0, 241
+  index: -1
+faw
+  rotate: false
+  xy: 2, 1797
+  size: 165, 161
+  orig: 183, 281
+  offset: 18, 7
+  index: -1
+hair grind
+  rotate: true
+  xy: 1303, 2
+  size: 528, 609
+  orig: 528, 609
+  offset: 0, 0
+  index: -1
+
+사자_완성2.png
+size: 590,799
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Waist armor
+  rotate: false
+  xy: 2, 2
+  size: 586, 795
+  orig: 586, 795
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,33 @@
+
+버섯_완성.png
+size: 1909,2363
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+mucus_back
+  rotate: false
+  xy: 2, 1390
+  size: 1862, 971
+  orig: 1862, 971
+  offset: 0, 0
+  index: -1
+mucus_front
+  rotate: false
+  xy: 2, 2
+  size: 1905, 1386
+  orig: 1905, 1386
+  offset: 0, 0
+  index: -1
+
+버섯_완성2.png
+size: 2080,2284
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+mushroom
+  rotate: false
+  xy: 2, 2
+  size: 2076, 2280
+  orig: 2076, 2280
+  offset: 0, 0
+  index: -1
