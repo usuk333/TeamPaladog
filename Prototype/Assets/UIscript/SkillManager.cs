@@ -27,6 +27,7 @@ public class SkillManager : MonoBehaviour
 
 
     DataSnapshot snapshot;
+    DataSnapshot snapshots;
 
     [SerializeField] private GameObject NotEnough;
 
@@ -107,9 +108,7 @@ public class SkillManager : MonoBehaviour
             else if (task.IsCompleted)
             {
                 Debug.Log("인포 로딩 완료 2 / 2");
-                DataSnapshot snapshot = task.Result;
-
-                Gold = snapshot.Child("Gold").Value.ToString();
+                snapshots = task.Result;
             }
         });
     }
@@ -125,6 +124,12 @@ public class SkillManager : MonoBehaviour
 
         Debug.Log("UI업데이트시작");
 
+        Gold = snapshots.Child("Gold").Value.ToString();
+        TankerPoints = snapshots.Child("Points").Child("TankerPoints").Value.ToString();
+        WarriorPoints = snapshots.Child("Points").Child("WarriorPoints").Value.ToString();
+        ADPoints = snapshots.Child("Points").Child("ADPoints").Value.ToString();
+        MagePoints = snapshots.Child("Points").Child("MagePoints").Value.ToString();
+
         Skill1_Level = snapshot.Child("Skill1").Child("Skill1_Level").Value.ToString();
         Skill2_Level = snapshot.Child("Skill2").Child("Skill2_Level").Value.ToString();
         Skill3_Level = snapshot.Child("Skill3").Child("Skill3_Level").Value.ToString();
@@ -133,6 +138,12 @@ public class SkillManager : MonoBehaviour
         Skill6_Level = snapshot.Child("Skill6").Child("Skill6_Level").Value.ToString();
         Skill7_Level = snapshot.Child("Skill7").Child("Skill7_Level").Value.ToString();
         SkillPoint = snapshot.Child("SkillPoints").Value.ToString();
+
+        tGold.text = "Gold : " + Gold;
+        tTankerPoints.text = "x " + TankerPoints;
+        tWarriorPoints.text = "x " + WarriorPoints;
+        tADPoints.text = "x " + ADPoints;
+        tMagePoints.text = "x " + MagePoints;
 
         tSkill1_Level.text = "lv. " + Skill1_Level;
         tSkill2_Level.text = "lv. " + Skill2_Level;

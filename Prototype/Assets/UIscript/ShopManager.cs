@@ -144,8 +144,7 @@ public class ShopManager : MonoBehaviour
             {
                 Debug.Log("ÄÄÇÃ¸´¶¸À½");
                 snapshots = task.Result;
-
-                Gold = snapshot.Child("Gold").Value.ToString();
+                
             }
         });
     }
@@ -161,11 +160,13 @@ public class ShopManager : MonoBehaviour
 
         //Unitpoints = snapshot.Child("UnitPoints").Value.ToString();
 
+        Gold = snapshots.Child("Gold").Value.ToString();
+
         //°è¿­Æ÷ÀÎÆ®
-        TankerPoints = snapshot.Child("Points").Child("TankerPoints").Value.ToString();
-        WarriorPoints = snapshot.Child("Points").Child("WarriorPoints").Value.ToString();
-        ADPoints = snapshot.Child("Points").Child("ADPoints").Value.ToString();
-        MagePoints = snapshot.Child("Points").Child("MagePoints").Value.ToString();
+        TankerPoints = snapshots.Child("Points").Child("TankerPoints").Value.ToString();
+        WarriorPoints = snapshots.Child("Points").Child("WarriorPoints").Value.ToString();
+        ADPoints = snapshots.Child("Points").Child("ADPoints").Value.ToString();
+        MagePoints = snapshots.Child("Points").Child("MagePoints").Value.ToString();
 
         //À¯´Ö ·¹º§
         Shielder_level = snapshot.Child("Shielder").Child("Shielder_Level").Value.ToString();

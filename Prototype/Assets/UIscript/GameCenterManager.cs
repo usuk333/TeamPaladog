@@ -56,6 +56,8 @@ public class GameCenterManager : MonoBehaviour
 
     public PlayerData playerdata;
 
+    private static string Nickname;
+    [SerializeField] private TextMeshProUGUI tNickname;
     private string TankerPoints = string.Empty;
     [SerializeField] private TextMeshProUGUI tTankerPoints;
     private string WarriorPoints = string.Empty;
@@ -144,11 +146,15 @@ public class GameCenterManager : MonoBehaviour
             Start();
         }
 
+        Nickname = snapshot.Child("Nickname").Value.ToString();
         Lv = snapshot.Child("Level").Value.ToString();
         EXP = snapshot.Child("EXP").Value.ToString();
 
+        Debug.Log(Nickname);
+
+        tNickname.text = Nickname;
         tLv.text = "Lv: " + Lv;
-        tEXP.text = EXP + "/500";
+        tEXP.text = EXP + "/" + (800 + (int.Parse(Lv) / 5) * 100);
 
         Gold = snapshot.Child("Gold").Value.ToString();
         TankerPoints = snapshot.Child("Points").Child("TankerPoints").Value.ToString();
@@ -156,11 +162,11 @@ public class GameCenterManager : MonoBehaviour
         ADPoints = snapshot.Child("Points").Child("ADPoints").Value.ToString();
         MagePoints = snapshot.Child("Points").Child("MagePoints").Value.ToString();
 
-        tGold.text = Gold;
-        tTankerPoints.text = TankerPoints;
-        tWarriorPoints.text = WarriorPoints;
-        tADPoints.text = ADPoints;
-        tMagePoints.text = MagePoints;
+        tGold.text = "Gold : " + Gold;
+        tTankerPoints.text = "x " + TankerPoints;
+        tWarriorPoints.text = "x " + WarriorPoints;
+        tADPoints.text = "x " + ADPoints;
+        tMagePoints.text = "x " + MagePoints;
 
         float EXPs = float.Parse(EXP);
         EXPbar.fillAmount = EXPs / 100f;
