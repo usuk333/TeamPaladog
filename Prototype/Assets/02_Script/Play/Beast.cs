@@ -61,7 +61,7 @@ public class Beast : MonoBehaviour
         for (int i = 0; i < conditionHp.Length; i++)
         {
             yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= conditionHp[i]);
-            InGameManager.Instance.Boss.CommonStatus.AttackDamage = InGameManager.Instance.Boss.CommonStatus.AttackDamage * 1.2f;
+            InGameManager.Instance.Boss.CommonStatus.CurrentAttackDamage = InGameManager.Instance.Boss.CommonStatus.CurrentAttackDamage * 1.2f;
             InGameManager.Instance.Boss.CommonStatus.AttackSpeed = InGameManager.Instance.Boss.CommonStatus.AttackSpeed / 1.1f;
         }
     }

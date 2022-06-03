@@ -26,10 +26,10 @@ public class Boss : MonoBehaviour
     {
         if(currentUnit == null) //유닛 다 죽으면 플레이어 공격
         {
-            InGameManager.Instance.Player.DecreaseHp(commonStatus.AttackDamage);
+            InGameManager.Instance.Player.DecreaseHp(commonStatus.CurrentAttackDamage);
             return;
         }
-        currentUnit.CommonStatus.DecreaseHp(commonStatus.AttackDamage);
+        currentUnit.CommonStatus.DecreaseHp(commonStatus.CurrentAttackDamage);
     }
     private IEnumerator Co_UpdateUnitReference()
     {

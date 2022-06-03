@@ -75,7 +75,7 @@ public class Unit : MonoBehaviour
     private void SetProjectile(int i)//투사체 발사하는 유닛만 사용. 투사체 풀에서 꺼내오면서 초기화
     {
         var obj = UnitProjectilePool.GetProjectile(i);
-        obj.GetComponent<Projectile>().Initialze(InGameManager.Instance.Boss, transform, commonStatus.AttackDamage);
+        obj.GetComponent<Projectile>().Initialze(InGameManager.Instance.Boss, transform, commonStatus.CurrentAttackDamage);
     }
     #endregion
     private void Attack() //공격 로직
@@ -87,7 +87,7 @@ public class Unit : MonoBehaviour
         switch (eUnitKind)
         {
             case EUnitKind.Other:
-                InGameManager.Instance.Boss.CommonStatus.DecreaseHp(commonStatus.AttackDamage); //투사체 발사 유닛이 아닌 경우에는 그냥 타격
+                InGameManager.Instance.Boss.CommonStatus.DecreaseHp(commonStatus.CurrentAttackDamage); //투사체 발사 유닛이 아닌 경우에는 그냥 타격
                 break;
             //이 밑으로는 투사체 발사 유닛. 유닛 종류에 맞게 투사체 꺼내오는 함수 호출
             case EUnitKind.Taoist:

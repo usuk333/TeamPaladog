@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class Inside : MonoBehaviour
 {
     [SerializeField] private List<GameObject> fallingObjectDummys = new List<GameObject>();
     [SerializeField] private List<GameObject> fallingObjects = new List<GameObject>();
+    [SerializeField] private List<InsideFallingObj> castedFallingObjList = new List<InsideFallingObj>();
     private Transform fallingObjectDummysParent;
     private bool isInsideReady;
     private bool isInside;
@@ -29,8 +31,12 @@ public class Inside : MonoBehaviour
     [SerializeField] private float manaExplosionDuration;
     [SerializeField] private float decreaseMpPercent;
     [SerializeField] private Image sceneMoveImg;
+    [SerializeField] private Image explosionImg;
     private int[] insidePercentage = { 95, 40 };
     private Color originColor;
+
+    public List<InsideFallingObj> CastedFallingObjList { get => castedFallingObjList; set => castedFallingObjList = value; }
+
     public void MoveToInside()
     {
         Debug.Log("내면으로 이동");
@@ -84,15 +90,19 @@ public class Inside : MonoBehaviour
             fallingObjectDummys[i].transform.position = insideFallingObjectsPos[i];
         }
     }
-    private void SetFallingObjects()
+    private void SetFallingObjects(bool isActive)
     {
-        SuffleArray();
-        for (int i = 0; i < fallingObjects.Count; i++)
+        if (isActive)
         {
-            fallingObjects[i].transform.position = -insideFallingObjectsPos[i];
-           // fallingObjects[i].transform.position = -fallingObjects[i].transform.position;
+            SuffleArray();
+            for (int i = 0; i < fallingObjects.Count; i++)
+            {
+                fallingObjects[i].transform.position = fallingObjectPos[i];
+                Debug.Log(fallingObjects[i].name + fallingObjects[i].transform.position + -insideFallingObjectsPos[i]);
+                // fallingObjects[i].transform.position = -fallingObjects[i].transform.position;
+            }
         }
-        fallingObjects[0].transform.parent.gameObject.SetActive(true);
+        fallingObjects[0].transform.parent.gameObject.SetActive(isActive);
     }
     private void ManaExplosion()
     {
@@ -110,16 +120,28 @@ public class Inside : MonoBehaviour
             }
         }
     }
+    private void KillAllUnitAndPlayer()
+    {
+        foreach (var item in InGameManager.Instance.Units)
+        {
+            item.CommonStatus.DecreaseHp(item.CommonStatus.MaxHp);
+        }
+        InGameManager.Instance.Player.DecreaseHp(InGameManager.Instance.Player.MaxHp);
+    }
     private IEnumerator Co_InsidePattern()
     {
         Text moveInsideTimertext = insideMoveObj.GetComponentInChildren<Text>();
         float insideTimer = insideDuration;
         float moveInsideTimer = moveToInsideDuration;
-        int index = 0;
+        int patternCount = 0;
         float mpRegenerative = InGameManager.Instance.Player.MpRegenerative;
         while (true)
         {
-            yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.MaxHp * insidePercentage[index] / 100);
+            if(patternCount > 1)
+            {
+                yield break;
+            }
+            yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.MaxHp * insidePercentage[patternCount] / 100);
             GetComponent<SpriteRenderer>().color = Color.clear;
             isInsideReady = true;
             InGameManager.Instance.Boss.isPattern = true;
@@ -128,6 +150,7 @@ public class Inside : MonoBehaviour
             insidePortal.gameObject.SetActive(true);
             insideMoveObj.gameObject.SetActive(true);
             insideInstance.gameObject.SetActive(true);
+            InGameManager.Instance.Boss.CommonStatus.IsInvincibility = true;
             while (moveInsideTimer > 0)
             {
                 moveInsideTimer -= Time.deltaTime;
@@ -156,11 +179,12 @@ public class Inside : MonoBehaviour
             //InGameManager.Instance.StartAllUnitCoroutines();          
             yield return new WaitUntil(() => dummyBoss.CommonStatus.CurrentHp <= 0);
             Debug.Log("현실로 돌아갑니다");
-            if(++index > 1)
+            InGameManager.Instance.Player.MpRegenerative = mpRegenerative;
+            if (patternCount++ > 1)
             {
                 yield break;
             }
-            Debug.Log(index);
+            Debug.Log(patternCount);
             sceneMoveImg.gameObject.SetActive(true);
             MoveToOrigin();
             insidePortal.gameObject.SetActive(false);
@@ -174,8 +198,39 @@ public class Inside : MonoBehaviour
             dummyBoss.CommonStatus.CurrentHp = dummyBoss.CommonStatus.MaxHp;
             yield return new WaitForSeconds(3f);
             InGameManager.Instance.Boss.isPattern = false;
-            SetFallingObjects();
+            InGameManager.Instance.Boss.CommonStatus.SetAttackDamage(InGameManager.Instance.Boss.CommonStatus.AttackDamage * 1.5f);
+            SetFallingObjects(true);
             isInsideReady = false;
+            yield return new WaitUntil(() => castedFallingObjList.Count >= 4);
+            Debug.Log("cast finish");
+            bool isCastSucess = true;
+            for (int i = 0; i < castedFallingObjList.Count; i++)
+            {
+                if(castedFallingObjList[i].gameObject != fallingObjects[i])
+                {
+                    explosionImg.DOColor(Color.white, 2f);
+                    yield return new WaitForSeconds(2f);
+                    explosionImg.color = Color.clear;
+                    KillAllUnitAndPlayer();
+                    isCastSucess = false;
+                    break;
+                }
+            }
+            SetFallingObjects(false);
+            foreach (var item in castedFallingObjList)
+            {
+                item.SetDefault();
+            }
+            castedFallingObjList.Clear();
+            SuffleFallingObjects();
+            InGameManager.Instance.Boss.CommonStatus.IsInvincibility = false;
+            InGameManager.Instance.Boss.CommonStatus.SetAttackDamage(InGameManager.Instance.Boss.CommonStatus.AttackDamage);
+            if (isCastSucess)
+            {
+                InGameManager.Instance.Boss.isPattern = true;
+                yield return new WaitForSeconds(5f);
+                InGameManager.Instance.Boss.isPattern = false;
+            }          
         }      
     }
     private IEnumerator Co_ManaExplosion()
@@ -192,6 +247,11 @@ public class Inside : MonoBehaviour
             {
                 int rand = Random.Range(5, 10);
                 yield return new WaitForSeconds(rand);
+                if (isInsideReady)
+                {
+                    Debug.Log("Pattern Stop Cause inside");
+                    continue;
+                }
                 manaExplosion.gameObject.SetActive(true);
                 int index;
                 while (true)

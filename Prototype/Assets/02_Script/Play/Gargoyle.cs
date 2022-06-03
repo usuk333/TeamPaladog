@@ -45,7 +45,7 @@ public class Gargoyle : MonoBehaviour
         if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(InGameManager.Instance.Player.gameObject))
         {
             InGameManager.Instance.Player.DecreaseHp(dotDamage);
-            InGameManager.Instance.Player.SlowDown(false, slowDownValue);
+           // InGameManager.Instance.Player.SlowDown(false, slowDownValue);
             return;
         }
         InGameManager.Instance.Player.SlowDown(true);
@@ -68,8 +68,27 @@ public class Gargoyle : MonoBehaviour
             }
         }
     }
-    private bool AttackPlayer(int index, float damage)
+    private void AttackTracking(int index, float damage)
     {
+        foreach (var item in InGameManager.Instance.Units)
+        {
+            if (InGameManager.Instance.Boss.CollisionsArray[index].Contains(item.gameObject))
+            {
+                item.CommonStatus.DecreaseHp(damage);
+            }
+        }
+        if (InGameManager.Instance.Boss.CollisionsArray[index].Contains(InGameManager.Instance.Player.gameObject))
+        {
+            InGameManager.Instance.Player.DecreaseHp(damage);
+        }
+    }
+    private bool AttackPlayer(int index, float damage, bool laser)
+    {
+        if (laser)
+        {
+            print(InGameManager.Instance.Boss.CollisionsArray[index].Contains(gameObject));
+            return InGameManager.Instance.Boss.CollisionsArray[index].Contains(gameObject);
+        }
         if (InGameManager.Instance.Boss.CollisionsArray[index].Contains(InGameManager.Instance.Player.gameObject))
         {
             InGameManager.Instance.Player.DecreaseHp(damage);
@@ -91,7 +110,8 @@ public class Gargoyle : MonoBehaviour
             {
                 UpdateObjToDG(obj, true, -1.5f, 2, trackingDelay);
                 yield return new WaitForSeconds(trackingDelay);
-                AttackPlayer(1,trackingDamage);
+                AttackTracking(1, trackingDamage);
+                //AttackPlayer(1,trackingDamage, false);
                 UpdateObjToDG(obj, false, -0.5f, 0);
                 timer = 0f;
             }
@@ -183,26 +203,24 @@ public class Gargoyle : MonoBehaviour
         {
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Q));
             laserObj.gameObject.SetActive(true);
-            Vector3 target = new Vector3(InGameManager.Instance.Player.transform.position.x, laserObj.position.y);
-            laserObj.position = target;
             yield return new WaitForSeconds(laserDelay);
-            bool isAvoid = AttackPlayer(2, laserDamage);
-            float reinforceLaser = 0;
+            bool isAvoid = AttackPlayer(2, laserDamage, true);
+            laserObj.gameObject.SetActive(false);
             if (isAvoid)
             {
-                reinforceLaser = Mathf.Pow(laserDamage, 2);
+                print("보스 스턴");
+                InGameManager.Instance.Boss.isPattern = true;
+                yield return new WaitForSeconds(2f);
+                InGameManager.Instance.Boss.isPattern = false;
             }
             else
             {
-                reinforceLaser = laserDamage;
+                print("레이저");
+                secondLaserObj.gameObject.SetActive(true);
+                yield return new WaitForSeconds(laserDelay);
+                AttackUnit(laserDamage);
+                secondLaserObj.gameObject.SetActive(false);
             }
-            laserObj.gameObject.SetActive(false);
-            secondLaserObj.gameObject.SetActive(true);
-            secondLaserObj.DOScaleX(1.6f, laserDelay);
-            yield return new WaitForSeconds(laserDelay);
-            AttackUnit(reinforceLaser);
-            secondLaserObj.gameObject.SetActive(false);
-            secondLaserObj.DOScaleX(0, 0);
         }
     }
     private void Start()
@@ -212,6 +230,14 @@ public class Gargoyle : MonoBehaviour
         StartCoroutine(Co_Tracking());
         StartCoroutine(Co_Shield());
         StartCoroutine(Co_Laser());
+        laserObj.SetParent(null);
+    }
+    private void LateUpdate()
+    {
+        if (laserObj.gameObject.activeSelf)
+        {
+            laserObj.position = new Vector3(InGameManager.Instance.Player.transform.position.x, laserObj.position.y);
+        }
     }
     private void Update()
     {
@@ -221,8 +247,8 @@ public class Gargoyle : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.G))
         {
-            secondLaserObj.DOScaleX(1.6f, 3f);
+            secondLaserObj.gameObject.SetActive(!secondLaserObj.gameObject.activeSelf);
         }
-
+        
     }
 }

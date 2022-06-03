@@ -5,12 +5,11 @@ using UnityEngine;
 
 public class PatternCollisionChecker : MonoBehaviour
 {
-    private Boss boss;
     private BoxCollider2D boxCollider2D;
     [SerializeField] private int arrayCount;
+    public bool isGargoyle;
     private void Awake()
     {
-        boss = GetComponentInParent<Boss>();
         boxCollider2D = GetComponent<BoxCollider2D>();
         boxCollider2D.enabled = false;
     }
@@ -32,13 +31,25 @@ public class PatternCollisionChecker : MonoBehaviour
               }
               boss.PatternCollisions.Add(collision.gameObject);
          }*/
+        if (isGargoyle)
+        {
+            if(collision.tag == "BOSS")
+            {
+                if (InGameManager.Instance.Boss.CollisionsArray[arrayCount].Contains(collision.gameObject))
+                {
+                    return;
+                }
+                InGameManager.Instance.Boss.CollisionsArray[arrayCount].Add(collision.gameObject);
+            }
+            return;
+        }
         if (collision.tag == "PLAYER" || collision.tag == "UNIT")
         {
-            if (boss.CollisionsArray[arrayCount].Contains(collision.gameObject))
+            if (InGameManager.Instance.Boss.CollisionsArray[arrayCount].Contains(collision.gameObject))
             {
                 return;
             }
-            boss.CollisionsArray[arrayCount].Add(collision.gameObject);
+            InGameManager.Instance.Boss.CollisionsArray[arrayCount].Add(collision.gameObject);
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
@@ -51,13 +62,25 @@ public class PatternCollisionChecker : MonoBehaviour
             }
             boss.PatternCollisions.Add(collision.gameObject);
         }*/
+        if (isGargoyle)
+        {
+            if (collision.tag == "BOSS")
+            {
+                if (InGameManager.Instance.Boss.CollisionsArray[arrayCount].Contains(collision.gameObject))
+                {
+                    return;
+                }
+                InGameManager.Instance.Boss.CollisionsArray[arrayCount].Add(collision.gameObject);
+            }
+            return;
+        }
         if (collision.tag == "PLAYER" || collision.tag == "UNIT")
         {
-            if (boss.CollisionsArray[arrayCount].Contains(collision.gameObject))
+            if (InGameManager.Instance.Boss.CollisionsArray[arrayCount].Contains(collision.gameObject))
             {
                 return;
             }
-            boss.CollisionsArray[arrayCount].Add(collision.gameObject);
+            InGameManager.Instance.Boss.CollisionsArray[arrayCount].Add(collision.gameObject);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -70,13 +93,25 @@ public class PatternCollisionChecker : MonoBehaviour
             }
             boss.PatternCollisions.Remove(collision.gameObject);
         }*/
+        if (isGargoyle)
+        {
+            if (collision.tag == "BOSS")
+            {
+                if (!InGameManager.Instance.Boss.CollisionsArray[arrayCount].Contains(collision.gameObject))
+                {
+                    return;
+                }
+                InGameManager.Instance.Boss.CollisionsArray[arrayCount].Remove(collision.gameObject);
+            }
+            return;
+        }
         if (collision.tag == "PLAYER" || collision.tag == "UNIT")
         {
-            if (!boss.CollisionsArray[arrayCount].Contains(collision.gameObject))
+            if (!InGameManager.Instance.Boss.CollisionsArray[arrayCount].Contains(collision.gameObject))
             {
                 return;
             }
-            boss.CollisionsArray[arrayCount].Remove(collision.gameObject);
+            InGameManager.Instance.Boss.CollisionsArray[arrayCount].Remove(collision.gameObject);
         }
     }
 }
