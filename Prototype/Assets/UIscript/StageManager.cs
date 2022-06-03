@@ -27,6 +27,7 @@ public class StageManager : MonoBehaviour
     private DatabaseReference reference;
     DataSnapshot snapshot;
     DataSnapshot snapshots;
+    DataSnapshot snapshotss;
     [SerializeField] private string Userid;
 
     private bool panelonoff;
@@ -52,6 +53,9 @@ public class StageManager : MonoBehaviour
     [SerializeField] private Sprite MeleeIcon;
     [SerializeField] private Sprite ADIcon;
     [SerializeField] private Sprite MageIcon;
+
+    private string Gold = string.Empty;
+    [SerializeField] private TextMeshProUGUI tGold;
 
     //계열 포인트
     private string TankerPoints = string.Empty;
@@ -115,7 +119,48 @@ public class StageManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        reference.Child("users").Child(Userid).Child("Stage").GetValueAsync().ContinueWithOnMainThread(task =>
+        reference.Child("users").Child(Userid).Child("Info").GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.IsFaulted)
+            {
+                Debug.LogError("failed reading...");
+            }
+            else if (task.IsCompleted)
+            {
+                snapshot = task.Result;
+                Debug.Log("데이터 접속");
+
+                reference.Child("users").Child(Userid).Child("Stage").GetValueAsync().ContinueWithOnMainThread(task =>
+                {
+                    if (task.IsFaulted)
+                    {
+                        Debug.LogError("failed reading...");
+                    }
+                    else if (task.IsCompleted)
+                    {
+                        Debug.Log("컴플릿떳음");
+                        snapshots = task.Result;
+
+                        reference.Child("users").Child(Userid).Child("Unit").GetValueAsync().ContinueWithOnMainThread(task =>
+                        {
+                            if (task.IsFaulted)
+                            {
+                                Debug.LogError("failed reading...");
+                            }
+                            else if (task.IsCompleted)
+                            {
+                                Debug.Log("컴플릿떳음");
+                                snapshotss = task.Result;
+
+                                StartCoroutine(UIupdate());
+                            }
+                        });
+                    }
+                });
+            }
+        });
+
+        /*reference.Child("users").Child(Userid).Child("Stage").GetValueAsync().ContinueWithOnMainThread(task =>
         {
             if (task.IsFaulted)
             {
@@ -143,7 +188,7 @@ public class StageManager : MonoBehaviour
 
                 
             }
-        });
+        });*/
     }
 
     private IEnumerator UIupdate()
@@ -152,25 +197,26 @@ public class StageManager : MonoBehaviour
 
         Debug.Log("UI업데이트시작");
 
-        if(snapshot == null)
+        if(snapshot == null && snapshots == null && snapshotss == null)
         {
             Start();
         }
-
+        Gold = snapshot.Child("Gold").Value.ToString();
         TankerPoints = snapshot.Child("Points").Child("TankerPoints").Value.ToString();
         WarriorPoints = snapshot.Child("Points").Child("WarriorPoints").Value.ToString();
         ADPoints = snapshot.Child("Points").Child("ADPoints").Value.ToString();
         MagePoints = snapshot.Child("Points").Child("MagePoints").Value.ToString();
 
+        tGold.text = Gold;
         tTankerPoints.text = TankerPoints;
         tWarriorPoints.text = WarriorPoints;
         tADPoints.text = ADPoints;
         tMagePoints.text = MagePoints;
 
-        SkillSetting[0] = snapshot.Child("LastPick").Child("Skill").Child("Skill1").Value.ToString();
-        SkillSetting[1] = snapshot.Child("LastPick").Child("Skill").Child("Skill2").Value.ToString();
-        SkillSetting[2] = snapshot.Child("LastPick").Child("Skill").Child("Skill3").Value.ToString();
-        SkillSetting[3] = snapshot.Child("LastPick").Child("Skill").Child("Skill4").Value.ToString();
+        SkillSetting[0] = snapshots.Child("LastPick").Child("Skill").Child("Skill1").Value.ToString();
+        SkillSetting[1] = snapshots.Child("LastPick").Child("Skill").Child("Skill2").Value.ToString();
+        SkillSetting[2] = snapshots.Child("LastPick").Child("Skill").Child("Skill3").Value.ToString();
+        SkillSetting[3] = snapshots.Child("LastPick").Child("Skill").Child("Skill4").Value.ToString();
 
         for(int i = 0; i < SkillSetting.Length; i++)
         {
@@ -183,10 +229,10 @@ public class StageManager : MonoBehaviour
             }
         }
 
-        UnitSetting[0] = snapshot.Child("LastPick").Child("Unit").Child("Tanker").Value.ToString();
-        UnitSetting[1] = snapshot.Child("LastPick").Child("Unit").Child("Melee").Value.ToString();
-        UnitSetting[2] = snapshot.Child("LastPick").Child("Unit").Child("AD").Value.ToString();
-        UnitSetting[3] = snapshot.Child("LastPick").Child("Unit").Child("Mage").Value.ToString();
+        UnitSetting[0] = snapshots.Child("LastPick").Child("Unit").Child("Tanker").Value.ToString();
+        UnitSetting[1] = snapshots.Child("LastPick").Child("Unit").Child("Melee").Value.ToString();
+        UnitSetting[2] = snapshots.Child("LastPick").Child("Unit").Child("AD").Value.ToString();
+        UnitSetting[3] = snapshots.Child("LastPick").Child("Unit").Child("Mage").Value.ToString();
     }
 
     // Update is called once per frame
