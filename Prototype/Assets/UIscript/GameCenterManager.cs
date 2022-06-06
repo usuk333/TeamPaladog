@@ -46,7 +46,7 @@ public class GameCenterManager : MonoBehaviour
     //User user;
 
     // 임시저장클래스
-    private User.userLoginData.LoginType tempLoginType = User.userLoginData.LoginType.None;
+    //private User.userLoginData.LoginType tempLoginType = User.userLoginData.LoginType.None;
     private string tempemail = string.Empty;
     private string temppw = string.Empty;
 
@@ -152,7 +152,7 @@ public class GameCenterManager : MonoBehaviour
 
         Debug.Log(Nickname);
 
-        tNickname.text = Nickname;
+        //tNickname.text = Nickname;
         tLv.text = "Lv: " + Lv;
         tEXP.text = EXP + "/" + (800 + (int.Parse(Lv) / 5) * 100);
 
@@ -324,13 +324,13 @@ public class GameCenterManager : MonoBehaviour
 
         //신규 유저 데이터 임시 저장 함수
         userDataInit();
-        userDataTempSave(User.userLoginData.LoginType.anony);
+        //userDataTempSave(User.userLoginData.LoginType.anony);
 
         //LoadingPanel.SetActive(false);
     }
 
     //구글 로그인
-    public void GoogleLogin()
+    /*public void GoogleLogin()
     {
         //LoadingPanel.SetActive(true);
 
@@ -361,7 +361,7 @@ public class GameCenterManager : MonoBehaviour
             Debug.LogError(err);
             LoadingPanel.SetActive(false);
         }
-    }
+    }*/
 
 
     //구글 로그인 구동
@@ -422,18 +422,18 @@ public class GameCenterManager : MonoBehaviour
     //유저데이터 임시 초기화
     private void userDataInit()
     {
-        tempLoginType = User.userLoginData.LoginType.None;
+        //tempLoginType = User.userLoginData.LoginType.None;
         tempemail = string.Empty;
         temppw = string.Empty;
     }
 
     // 유저데이터 임시 저장
-    private void userDataTempSave(User.userLoginData.LoginType loginType, string email = null, string pw = null)
+    /*private void userDataTempSave(User.userLoginData.LoginType loginType, string email = null, string pw = null)
     {
         tempLoginType = loginType;
         tempemail = email;
         temppw = pw;
-    }
+    }*/
 
     //신규 유저 데이터 입력
     /*private void loginDataSave(User.userLoginData.LoginType loginType, string nickname = null,
