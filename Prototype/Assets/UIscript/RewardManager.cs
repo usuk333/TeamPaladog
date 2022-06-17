@@ -532,8 +532,8 @@ public class RewardManager : MonoBehaviour
                 rewardtext.text = "¼®»ó\n³ë¸»\nEXP : 700 È¹µæ\nÇöÀç Gold : " + NGold + "\n°è¿­ Æ÷ÀÎÆ® : ÅÊÄ¿ 2, ±Ã¼ö 2";
                 break;
             case 12:
-                 NEXP = int.Parse(EXP) + 1200;
-                 NGold = int.Parse(Gold) + Random.Range(900, 1100);
+                NEXP = int.Parse(EXP) + 1200;
+                NGold = int.Parse(Gold) + Random.Range(900, 1100);
                 NTP = int.Parse(TankerPoints) + 3;
                 NWP = int.Parse(WarriorPoints) + 1;
                 NMP = int.Parse(MagePoints) + 1;
