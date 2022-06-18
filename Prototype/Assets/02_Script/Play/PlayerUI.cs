@@ -8,6 +8,7 @@ public class PlayerUI : MonoBehaviour
     private Player player;
     [SerializeField] private Image hpBar; //플레이어 Hp바 이미지
     [SerializeField] private Image mpBar; //플레이어 Mp바 이미지
+    [SerializeField] private Image shield;
     [SerializeField] private Image castingBar;
     public void DisableCastingBar()
     {
@@ -28,6 +29,7 @@ public class PlayerUI : MonoBehaviour
         {
             hpBar.fillAmount = 1 / player.MaxHp * player.CurrentHp;
             mpBar.fillAmount = 1 / player.MaxMp * player.CurrentMp;
+            shield.fillAmount = 1 / player.Shield * player.CurrentShield;
             yield return null;
         }
     }

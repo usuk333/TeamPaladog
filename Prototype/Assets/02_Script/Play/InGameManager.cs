@@ -12,16 +12,20 @@ public class InGameManager : MonoBehaviour
     [SerializeField] private Text timer;
     [SerializeField] private Unit[] units;
     private Player player;
-    private Boss boss;
+    [SerializeField] private Boss boss;
+    [SerializeField] private SkillData[] skillDataArray;
     public static InGameManager Instance { get => instance; }
     public Unit[] Units { get => units; }
     public Player Player { get => player; }
-    public Boss Boss { get => boss; }
+    public Boss Boss { get => boss; set => boss = value; }
+    public SkillData[] SkillDataArray { get => skillDataArray; set => skillDataArray = value; }
+
     public void StopAllUnitCoroutines()
     {
         foreach (var item in units)
         {
             item.StopAllCoroutines();
+
         }
     }
     public void StartAllUnitCoroutines()
@@ -101,5 +105,12 @@ public class InGameManager : MonoBehaviour
     private void Start()
     {
         StartCoroutine(Co_Timer());
+    }
+    private void InitSkillData()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            skillDataArray[i] = new SkillData(SkillData.SkillType.Active, 5, 5, 5);
+        }
     }
 }

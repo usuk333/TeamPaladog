@@ -20,7 +20,14 @@ public class Player : MonoBehaviour
     [SerializeField] private float mpRegenerationInterval;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float currentMoveSpeed; //이동 속도
+    private float shield;
+    private float currentShield;
     private float castingTime;
+    private bool[] skillCoolTime = { false, false, false, false };
+    [SerializeField] private List<Unit> barrierList = new List<Unit>();
+    [SerializeField] private List<Unit> healList = new List<Unit>();
+    [SerializeField] private GameObject[] skillRangeArray;
+    public bool CoolTimeLimit { get; set; }
     public float MaxHp
     { 
         get
@@ -48,6 +55,24 @@ public class Player : MonoBehaviour
     }
     public float CurrentMp { get => currentMp; }
     public float MpRegenerative { get => mpRegenerative; set => mpRegenerative = value; }
+    public bool IsRight { get => isRight; set => isRight = value; }
+    public bool IsLeft { get => isLeft; set => isLeft = value; }
+    public List<Unit> BarrierList { get => barrierList; set => barrierList = value; }
+    public List<Unit> HealList { get => healList; set => healList = value; }
+    public float Shield
+    {
+        get
+        {
+            return shield;
+        }
+        set
+        {
+            shield = value;
+            currentShield = shield;
+        }
+    }
+    public float CurrentShield { get => currentShield; }
+    public bool[] SkillCoolTime { get => skillCoolTime; set => skillCoolTime = value; }
 
     public void KnockBack(Vector3 pos)
     {
@@ -68,6 +93,15 @@ public class Player : MonoBehaviour
         if (isInvincibility)
         {
             return;
+        }
+        if(currentShield > 0)
+        {
+            currentShield -= damage;
+            return;
+        }
+        else
+        {
+            shield = 0;
         }
         currentHp -= damage;
     }
@@ -171,14 +205,14 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKey(KeyCode.RightArrow))
+        /*if (Input.GetKey(KeyCode.RightArrow))
         {
             isRight = true;
         }
         else if (Input.GetKeyUp(KeyCode.RightArrow))
         {
             isRight = false;
-        }
+        }*/
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             isLeft = true;
@@ -187,7 +221,7 @@ public class Player : MonoBehaviour
         {
             isLeft = false;
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        /*if (Input.GetKeyDown(KeyCode.S))
         {
             foreach (var item in InGameManager.Instance.Units)
             {
@@ -200,7 +234,7 @@ public class Player : MonoBehaviour
             {
                 item.gameObject.SetActive(true);
             }
-        }
+        }*/
 
     }
     private void FixedUpdate()
@@ -218,5 +252,157 @@ public class Player : MonoBehaviour
             Move(Vector3.left);
         }
     }
-
+    public void UseSkill(int index)
+    {
+        SkillTransition(index);
+    }
+    private void SkillTransition(int index)
+    {
+        if (skillCoolTime[index])
+        {
+            Debug.Log("스킬 쿨타임입니다!");
+            return;
+        }
+        if(InGameManager.Instance.Boss == null)
+        {
+            Debug.Log("보스가 현재 필드에 존재하지 않습니다.");
+            return;
+        }
+        switch (index)
+        {
+            case 0:
+                if(currentMp < 5)
+                {
+                    Debug.Log("마나가 부족합니다!");
+                    break;
+                }
+                DecreaseMp(5);
+                StartCoroutine(Co_Skill_Barrier());
+                StartCoroutine(Co_SkillCoolTime(0, 15));
+                break;
+            case 1:
+                if (currentMp < 2)
+                {
+                    Debug.Log("마나가 부족합니다!");
+                    break;
+                }
+                DecreaseMp(2);
+                Skill_Heal(10);
+                StartCoroutine(Co_SkillCoolTime(1, 10));
+                break;
+            case 2:
+                skillRangeArray[2].SetActive(!skillRangeArray[2].activeSelf);
+                if (skillRangeArray[2].activeSelf)
+                {
+                    if (currentMp < 3)
+                    {
+                        Debug.Log("마나가 부족합니다!");
+                        skillRangeArray[2].SetActive(false);
+                        break;
+                    }
+                    DecreaseMp(3);
+                    StartCoroutine(Co_Skill_Rage());
+                }
+                StartCoroutine(Co_SkillCoolTime(2, 1));
+                break;
+            case 3:
+                if (currentMp < 5)
+                {
+                    Debug.Log("마나가 부족합니다!");
+                    break;
+                }
+                DecreaseMp(1);
+                Skill_Attack();
+                if (CoolTimeLimit)
+                {
+                    break;
+                }
+                StartCoroutine(Co_SkillCoolTime(3, 5));
+                break;
+            default:
+                break;
+        }
+    }
+    private IEnumerator Co_SkillCoolTime(int index, float value)
+    {
+        skillCoolTime[index] = true;
+        yield return new WaitForSeconds(value);
+        skillCoolTime[index] = false;
+    }
+    private IEnumerator Co_Skill_Barrier()
+    {
+        foreach (var item in barrierList)
+        {
+            item.CommonStatus.Shield = 10;
+        }
+        Shield = 10;
+        yield return new WaitForSeconds(3f);
+        foreach (var item in barrierList)
+        {
+            item.CommonStatus.Shield = 0;
+        }
+        Shield = 0;
+        barrierList.Clear();
+    }
+    private void Skill_Heal(float value)
+    {
+        foreach (var item in healList)
+        {
+            item.CommonStatus.IncreaseHp(item.CommonStatus.MaxHp * value / 100);
+        }
+        currentHp += maxHp * value / 100;
+        if(currentHp > maxHp)
+        {
+            currentHp = maxHp;
+        }
+    }
+    private IEnumerator Co_Skill_Rage()
+    {
+        while (skillRangeArray[2].activeSelf)
+        {
+            yield return new WaitForSeconds(2f);
+            DecreaseMp(2);
+            if(currentMp <= 0)
+            {
+                Debug.Log("마나가 부족하여 스킬이 비활성화 됩니다.");
+                skillRangeArray[2].SetActive(false);
+            }
+        }
+    }
+    public void Skill_Rage(Unit unit, bool isIn)
+    {
+        if (isIn)
+        {
+            unit.CommonStatus.CurrentAttackDamage += unit.CommonStatus.AttackDamage * 10 / 100;
+        }
+        else
+        {
+            unit.CommonStatus.CurrentAttackDamage = unit.CommonStatus.AttackDamage;
+        }
+    }
+    private void Skill_Attack()
+    {
+        float rand = Random.Range(0f, 100f);
+        string thing;
+        if(rand <= 30)
+        {
+            InGameManager.Instance.Boss.CommonStatus.DecreaseHp(1);
+            thing = "30% 확률로 사과를 뽑았다";
+        }
+        else if(rand > 30 && rand <= 70)
+        {
+            InGameManager.Instance.Boss.CommonStatus.DecreaseHp(2);
+            thing = "40% 확률로 돌맹이를 뽑았다.";
+        }
+        else if(rand > 70)
+        {
+            InGameManager.Instance.Boss.CommonStatus.DecreaseHp(3);
+            thing = "30% 확률로 폭탄을 뽑았다.";
+        }
+        else
+        {
+            thing = "버그";
+        }
+        Debug.Log(thing);
+    }
 }
