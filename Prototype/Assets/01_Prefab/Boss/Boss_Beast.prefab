@@ -123,6 +123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d409c69aa71f1646a5c5df13bb78466, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  arrayCount: 0
+  isGargoyle: 0
 --- !u!1 &6568550939902597793
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,6 +248,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d409c69aa71f1646a5c5df13bb78466, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  arrayCount: 0
+  isGargoyle: 0
 --- !u!1 &8806304560414860505
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,7 +534,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1347644399153341531
 Transform:
   m_ObjectHideFlags: 0
@@ -660,16 +664,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f620562fc2402c409121e7f6a462d12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patternCollisions: []
+  arrayCount: 0
   currentUnit: {fileID: 0}
   eBossState: 0
   commonStatus:
     maxHp: 100
     currentHp: 0
     attackDamage: 1
+    currentAttackDamage: 0
     attackSpeed: 1
     moveSpeed: 2
+    currentMoveSpeed: 0
     isInvincibility: 0
+    shield: 0
+    knockBackSpeed: 0
+    currentShield: 0
 --- !u!114 &9018319128210387876
 MonoBehaviour:
   m_ObjectHideFlags: 0

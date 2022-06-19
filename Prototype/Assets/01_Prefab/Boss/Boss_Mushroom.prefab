@@ -954,15 +954,17 @@ MonoBehaviour:
   currentUnit: {fileID: 0}
   eBossState: 0
   commonStatus:
-    maxHp: 0
+    maxHp: 100
     currentHp: 0
-    attackDamage: 0
-    attackSpeed: 0
+    attackDamage: 1
+    currentAttackDamage: 0
+    attackSpeed: 1
     moveSpeed: 0
     currentMoveSpeed: 0
     isInvincibility: 0
     shield: 0
     knockBackSpeed: 0
+    currentShield: 0
 --- !u!114 &5408945210595284071
 MonoBehaviour:
   m_ObjectHideFlags: 0

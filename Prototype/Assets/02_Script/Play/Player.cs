@@ -361,6 +361,10 @@ public class Player : MonoBehaviour
         while (skillRangeArray[2].activeSelf)
         {
             yield return new WaitForSeconds(2f);
+            if (!skillRangeArray[2].activeSelf)
+            {
+                break;
+            }
             DecreaseMp(2);
             if(currentMp <= 0)
             {
