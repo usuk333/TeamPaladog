@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UnitHpBar : MonoBehaviour
 {
     private Image hpBar; //보스 Hp바 이미지
+    private Image shield;
     private Unit unit; //보스 클래스 레퍼런스
     [SerializeField] private int unitIndex;
 
@@ -14,12 +15,14 @@ public class UnitHpBar : MonoBehaviour
         while (true)
         {
             hpBar.fillAmount = 1 / unit.CommonStatus.MaxHp * unit.CommonStatus.CurrentHp;
+            shield.fillAmount = 1 / unit.CommonStatus.Shield * unit.CommonStatus.CurrentShield;
             yield return null;
         }
     }
     private void Awake() //해당 부분도 이니셜라이징 함수로 빼야할까?
     {
         hpBar = GetComponent<Image>();
+        shield = transform.GetChild(0).GetComponent<Image>();
        // unit = InGameManager.Instance.Units[unitIndex];
     }
     private void Start()

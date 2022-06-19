@@ -15,6 +15,7 @@ public class CommonStatus
     [SerializeField] private bool isInvincibility;
     [SerializeField] private float shield;
     [SerializeField] private float knockBackSpeed;
+    [SerializeField] private float currentShield;
 
     public float MaxHp { get => maxHp; set => maxHp = value; }
     public float CurrentHp { get => currentHp; set => currentHp = value; }
@@ -23,9 +24,21 @@ public class CommonStatus
     public float MoveSpeed { get => moveSpeed; set => moveSpeed = value; }
     public bool IsInvincibility { get => isInvincibility; set => isInvincibility = value; }
     public float CurrentMoveSpeed { get => currentMoveSpeed; set => currentMoveSpeed = value; }
-    public float Shield { get => shield; set => shield = value; }
+    public float Shield
+    {
+        get
+        {
+            return shield;
+        }
+        set
+        {
+            shield = value;
+            currentShield = shield;
+        }
+    }
     public float KnockBackSpeed { get => knockBackSpeed; set => knockBackSpeed = value; }
     public float AttackDamage { get => attackDamage; set => attackDamage = value; }
+    public float CurrentShield { get => currentShield; }
 
     public void DecreaseHp(float damage)
     {
@@ -33,14 +46,26 @@ public class CommonStatus
         {
             return;
         }
-        if(shield > 0)
+        if(currentShield > 0)
         {
-            shield -= damage;
+            currentShield -= damage;
             return;
+        }
+        else
+        {
+            shield = 0;
         }
         if ((CurrentHp -= damage) <= 0)
         {
             //사망 애니메이션
+        }
+    }
+    public void IncreaseHp(float value)
+    {
+        currentHp += value;
+        if(currentHp > maxHp)
+        {
+            currentHp = maxHp;
         }
     }
     public void SlowDown(bool isReturn, float percentage = 0)

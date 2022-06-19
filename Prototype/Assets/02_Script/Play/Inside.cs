@@ -151,6 +151,7 @@ public class Inside : MonoBehaviour
             insideMoveObj.gameObject.SetActive(true);
             insideInstance.gameObject.SetActive(true);
             InGameManager.Instance.Boss.CommonStatus.IsInvincibility = true;
+            InGameManager.Instance.Boss = null;
             while (moveInsideTimer > 0)
             {
                 moveInsideTimer -= Time.deltaTime;
@@ -158,11 +159,14 @@ public class Inside : MonoBehaviour
                 if (isInside)
                 {
                     moveInsideTimer = moveToInsideDuration;
+                    InGameManager.Instance.Boss = dummyBoss.GetComponent<Boss>();
+                    InGameManager.Instance.Player.CoolTimeLimit = true;
                     insideMoveObj.gameObject.SetActive(false);
                     insideHpBar.gameObject.SetActive(true);
                     sceneMoveImg.gameObject.SetActive(true);
                     yield return new WaitForSeconds(2f);
                     sceneMoveImg.gameObject.SetActive(false);
+
                     break;
                 }
                 yield return null;
@@ -180,6 +184,8 @@ public class Inside : MonoBehaviour
             yield return new WaitUntil(() => dummyBoss.CommonStatus.CurrentHp <= 0);
             Debug.Log("현실로 돌아갑니다");
             InGameManager.Instance.Player.MpRegenerative = mpRegenerative;
+            InGameManager.Instance.Boss = GetComponent<Boss>();
+            InGameManager.Instance.Player.CoolTimeLimit = false;
             if (patternCount++ > 1)
             {
                 yield break;
@@ -287,12 +293,5 @@ public class Inside : MonoBehaviour
     {
         StartCoroutine(Co_ManaExplosion());
         StartCoroutine(Co_InsidePattern());
-    }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            dummyBoss.CommonStatus.DecreaseHp(10);
-        }
     }
 }
