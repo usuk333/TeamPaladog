@@ -12,7 +12,7 @@ public class CountUnit : MonoBehaviour
         Mechanic
     }
     private int currentAttackCount;
-    private Boss boss;
+    //private Boss boss;
     private Unit unit;
     [SerializeField] private float skillValue;
     [SerializeField] private int attackCount;
@@ -42,7 +42,7 @@ public class CountUnit : MonoBehaviour
     }
     private void Skill_Warrior() //전사 스킬
     {
-        boss.CommonStatus.DecreaseHp(skillValue);
+        InGameManager.Instance.Boss.CommonStatus.DecreaseHp(skillValue);
     }
     private void Skill_Shielder() // 방패병 스킬
     {
@@ -55,16 +55,16 @@ public class CountUnit : MonoBehaviour
     private void Skill_Taoist()
     {
         //연출을 트페 w 카드 뽑듯이 머리 위에 스킬 부적 뜨게 한다음 보스 밑에서 불기둥 일어나게 하는건 어떤지
-        boss.CommonStatus.DecreaseHp(skillValue);
+        InGameManager.Instance.Boss.CommonStatus.DecreaseHp(skillValue);
     }
     private void Skill_Mechanic()
     {
         //보스 머리위에서 폭탄 투하? 아니면 사선으로 투하?
-        boss.CommonStatus.DecreaseHp(skillValue);
+        InGameManager.Instance.Boss.CommonStatus.DecreaseHp(skillValue);
     }
     private void Awake()
     {
         unit = GetComponent<Unit>();
-        boss = FindObjectOfType<Boss>();
+        //InGameManager.Instance.Boss = FindObjectOfType<Boss>();
     }
 }

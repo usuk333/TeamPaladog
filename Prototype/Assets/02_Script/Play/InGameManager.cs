@@ -68,6 +68,7 @@ public class InGameManager : MonoBehaviour
         }
         DontDestroyOnLoad(instance);
         StartCoroutine(Co_InitializeInGameData());
+        Instantiate(BossManager.BossSection);
         units = FindObjectsOfType<Unit>();
         Unit unit;
         for (int i = 0; i < units.Length; i++) //이 부분 추후에 함수로 빼기 (유닛리스트 탱커 ~ 원거리 순으로 정렬)
@@ -101,6 +102,7 @@ public class InGameManager : MonoBehaviour
         }
         player = FindObjectOfType<Player>();
         boss = FindObjectOfType<Boss>();
+
     }
     private void Start()
     {

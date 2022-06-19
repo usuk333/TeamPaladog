@@ -9,4 +9,9 @@ public class InGameUIManager : MonoBehaviour
     {
         InGameManager.Instance.Player.UseSkill(index);
     }
+
+    public void BtnGoMain()
+    {
+        LoadingSceneController.LoadScene("StageSection");
+    }    
 }
