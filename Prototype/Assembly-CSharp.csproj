@@ -224,6 +224,7 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Analytics.dll" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Oswald-Bold - OFL.txt" />
+    <None Include="Assets\03_Resauce\CharacterSpine\나태\나태_SD_최종.atlas.txt" />
     <None Include="Assets\03_Resauce\Spine\Boss\Mushroom\버섯_완성.atlas.txt" />
     <None Include="Assets\Firebase\Plugins\Firebase.App.dll" />
     <None Include="Assets\TextMesh Pro\Examples &amp; Extras\Fonts\Anton OFL.txt" />
@@ -233,6 +234,7 @@
     <None Include="Assets\03_Resauce\Spine\Unit\Magician\마법사_SD_최종.atlas.txt" />
     <None Include="Assets\Firebase\Plugins\x86_64\FirebaseCppAnalytics.dll" />
     <None Include="Assets\03_Resauce\Spine\Boss\monk\젠야타\젠야타_완성.atlas.txt" />
+    <None Include="Assets\03_Resauce\CharacterSpine\닌자\닌자_SD_최종.atlas.txt" />
     <None Include="Assets\Firebase\Plugins\x86_64\FirebaseCppAuth.dll" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\Generic Backgrounds\Indoor-Background-Pack\readme.txt" />
@@ -250,13 +252,16 @@
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile SSD.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
     <None Include="Assets\Firebase\Plugins\Firebase.Database.dll" />
+    <None Include="Assets\03_Resauce\CharacterSpine\플레이어\주인공_SD_최종.atlas.txt" />
     <None Include="Assets\03_Resauce\Spine\Unit\WARRIOR\WARRIOR\WARRIOR.atlas.txt" />
+    <None Include="Assets\03_Resauce\CharacterSpine\전사\WARRIOR.atlas.txt" />
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-analytics-unity\maven-metadata.xml" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-auth-unity\maven-metadata.xml" />
     <None Include="Assets\03_Resauce\Spine\Unit\Sloth\나태_SD_최종.atlas.txt" />
     <None Include="Assets\TextMesh Pro\Shaders\TMPro_Surface.cginc" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Auth.dll" />
+    <None Include="Assets\03_Resauce\CharacterSpine\마법사\마법사_SD_최종.atlas.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Database.dll" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />

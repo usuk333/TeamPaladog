@@ -1,0 +1,265 @@
+
+닌자_SD_최종.png
+size: 1723,1535
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Back_hair
+  rotate: false
+  xy: 2, 534
+  size: 718, 999
+  orig: 718, 999
+  offset: 0, 0
+  index: -1
+Back_ribbon
+  rotate: false
+  xy: 789, 313
+  size: 245, 309
+  orig: 245, 309
+  offset: 0, 0
+  index: -1
+L_calf
+  rotate: false
+  xy: 1036, 308
+  size: 123, 314
+  orig: 123, 314
+  offset: 0, 0
+  index: -1
+L_closed eyes
+  rotate: false
+  xy: 623, 14
+  size: 138, 58
+  orig: 138, 58
+  offset: 0, 0
+  index: -1
+L_eight
+  rotate: true
+  xy: 1256, 194
+  size: 95, 193
+  orig: 95, 241
+  offset: 0, 48
+  index: -1
+L_eyebrow
+  rotate: true
+  xy: 1562, 428
+  size: 105, 33
+  orig: 105, 33
+  offset: 0, 0
+  index: -1
+L_hand_01
+  rotate: true
+  xy: 789, 2
+  size: 78, 115
+  orig: 78, 198
+  offset: 0, 0
+  index: -1
+L_hand_02
+  rotate: true
+  xy: 472, 74
+  size: 458, 315
+  orig: 458, 315
+  offset: 0, 0
+  index: -1
+L_lower lashes
+  rotate: true
+  xy: 1702, 1439
+  size: 94, 19
+  orig: 94, 19
+  offset: 0, 0
+  index: -1
+L_pupil
+  rotate: true
+  xy: 1395, 8
+  size: 81, 78
+  orig: 81, 78
+  offset: 0, 0
+  index: -1
+L_sclera
+  rotate: true
+  xy: 1181, 31
+  size: 115, 71
+  orig: 115, 71
+  offset: 0, 0
+  index: -1
+L_shoulder
+  rotate: false
+  xy: 1177, 148
+  size: 77, 197
+  orig: 84, 197
+  offset: 7, 0
+  index: -1
+L_thigh
+  rotate: false
+  xy: 1606, 524
+  size: 110, 265
+  orig: 110, 265
+  offset: 0, 0
+  index: -1
+L_upper eyelashes
+  rotate: false
+  xy: 1017, 50
+  size: 162, 82
+  orig: 162, 82
+  offset: 0, 0
+  index: -1
+R_calf
+  rotate: true
+  xy: 1256, 420
+  size: 113, 304
+  orig: 113, 304
+  offset: 0, 0
+  index: -1
+R_closed eyes
+  rotate: true
+  xy: 1451, 160
+  size: 129, 53
+  orig: 129, 53
+  offset: 0, 0
+  index: -1
+R_eight
+  rotate: false
+  xy: 1506, 237
+  size: 103, 181
+  orig: 119, 224
+  offset: 16, 0
+  index: -1
+R_eyebrow
+  rotate: true
+  xy: 722, 535
+  size: 87, 26
+  orig: 87, 26
+  offset: 0, 0
+  index: -1
+R_hand_01
+  rotate: true
+  xy: 1506, 82
+  size: 77, 112
+  orig: 134, 333
+  offset: 57, 0
+  index: -1
+R_hand_02
+  rotate: false
+  xy: 1272, 791
+  size: 422, 357
+  orig: 422, 357
+  offset: 0, 0
+  index: -1
+R_lower lashes
+  rotate: true
+  xy: 1694, 269
+  size: 79, 20
+  orig: 79, 20
+  offset: 0, 0
+  index: -1
+R_pupil
+  rotate: true
+  xy: 906, 2
+  size: 78, 71
+  orig: 91, 71
+  offset: 13, 0
+  index: -1
+R_sclera
+  rotate: false
+  xy: 1506, 161
+  size: 100, 74
+  orig: 100, 74
+  offset: 0, 0
+  index: -1
+R_shoulder
+  rotate: false
+  xy: 1611, 172
+  size: 81, 176
+  orig: 97, 312
+  offset: 0, 136
+  index: -1
+R_thigh
+  rotate: false
+  xy: 1161, 347
+  size: 93, 275
+  orig: 93, 275
+  offset: 0, 0
+  index: -1
+R_upper eyelashes
+  rotate: false
+  xy: 1254, 8
+  size: 139, 81
+  orig: 139, 81
+  offset: 0, 0
+  index: -1
+chest strap
+  rotate: true
+  xy: 1611, 350
+  size: 172, 110
+  orig: 172, 110
+  offset: 0, 0
+  index: -1
+chest01
+  rotate: true
+  xy: 1017, 134
+  size: 172, 158
+  orig: 172, 158
+  offset: 0, 0
+  index: -1
+chest02
+  rotate: false
+  xy: 1256, 91
+  size: 186, 101
+  orig: 189, 153
+  offset: 3, 1
+  index: -1
+hair
+  rotate: false
+  xy: 722, 624
+  size: 548, 909
+  orig: 548, 909
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 1272, 1150
+  size: 428, 383
+  orig: 428, 383
+  offset: 0, 0
+  index: -1
+jeogori
+  rotate: false
+  xy: 1256, 291
+  size: 248, 127
+  orig: 248, 127
+  offset: 0, 0
+  index: -1
+neck
+  rotate: false
+  xy: 789, 82
+  size: 152, 229
+  orig: 152, 308
+  offset: 0, 79
+  index: -1
+ribbon
+  rotate: false
+  xy: 943, 85
+  size: 72, 226
+  orig: 72, 226
+  offset: 0, 0
+  index: -1
+skirt
+  rotate: false
+  xy: 1272, 535
+  size: 332, 254
+  orig: 332, 254
+  offset: 0, 0
+  index: -1
+tail
+  rotate: false
+  xy: 2, 12
+  size: 468, 520
+  orig: 468, 520
+  offset: 0, 0
+  index: -1
+waist
+  rotate: false
+  xy: 472, 10
+  size: 149, 62
+  orig: 149, 62
+  offset: 0, 0
+  index: -1
