@@ -21,6 +21,8 @@ using TMPro;
 
 public class StageManager : MonoBehaviour
 {
+
+
     //파이어베이스
     FirebaseDatabase firebaseDatabase;
     FirebaseApp firebaseApp;
@@ -78,9 +80,11 @@ public class StageManager : MonoBehaviour
     [SerializeField] private GameObject UnitSelectPanel;
 
     private int nowsetting;
+    private int nowStage;
 
     [SerializeField] private GameObject[] Skilllist = new GameObject[7];
     [SerializeField] private string[] tSkilllist = new string[7];
+    public GameObject[] BossSection = new GameObject[4];
 
 
     void Awake()
@@ -247,6 +251,7 @@ public class StageManager : MonoBehaviour
 
         StageIntroduction.text = StageTopText[i];
 
+        nowStage = i;
         StagePanel.SetActive(true);
     }
 
@@ -282,12 +287,7 @@ public class StageManager : MonoBehaviour
 
     public void GoBattleScene()
     {
-        Dictionary<string, object> update = new Dictionary<string, object>();
-        update.Add("Skill1", SkillSetting[0]);
-        update.Add("Skill2", SkillSetting[1]);
-        update.Add("Skill3", SkillSetting[2]);
-        update.Add("Skill4", SkillSetting[3]);
-        reference.Child("users").Child(Userid).Child("Stage").Child("LastPick").Child("Skill").UpdateChildrenAsync(update);
+        BossManager.BossSection = BossSection[nowStage];
 
         LoadingSceneController.LoadScene("Stage");
     }

@@ -11,7 +11,7 @@ public class PercentageUnit : MonoBehaviour
         mage,
         Elementalist
     }
-    private Boss boss;
+    //private Boss boss;
     private Unit unit;
     [SerializeField] private float skillValue;
     [SerializeField] private float skillPercentage;
@@ -41,7 +41,7 @@ public class PercentageUnit : MonoBehaviour
     }
     private void Skill_Assasin() //암살자 스킬
     {
-        boss.CommonStatus.DecreaseHp(unit.CommonStatus.CurrentAttackDamage + skillValue); //추후 곱절 or 퍼센트 연산으로 적용
+        InGameManager.Instance.Boss.CommonStatus.DecreaseHp(unit.CommonStatus.CurrentAttackDamage + skillValue); //추후 곱절 or 퍼센트 연산으로 적용
     }
     private void Skill_Druid() //드루이드 스킬
     {
@@ -49,15 +49,15 @@ public class PercentageUnit : MonoBehaviour
     }
     private void Skill_Mage()
     {
-        boss.CommonStatus.DecreaseHp(unit.CommonStatus.CurrentAttackDamage + skillValue); //추후 곱절 or 퍼센트 연산으로 적용
+        InGameManager.Instance.Boss.CommonStatus.DecreaseHp(unit.CommonStatus.CurrentAttackDamage + skillValue); //추후 곱절 or 퍼센트 연산으로 적용
     }
     private void Skill_Elementalist()
     {
-        boss.CommonStatus.DecreaseHp(unit.CommonStatus.CurrentAttackDamage + skillValue); //추후 곱절 or 퍼센트 연산으로 적용
+        InGameManager.Instance.Boss.CommonStatus.DecreaseHp(unit.CommonStatus.CurrentAttackDamage + skillValue); //추후 곱절 or 퍼센트 연산으로 적용
     }
     private void Awake()
     {
         unit = GetComponent<Unit>();
-        boss = FindObjectOfType<Boss>();
+        //InGameManager.Instance.Boss = FindObjectOfType<Boss>();
     }
 }
