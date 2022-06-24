@@ -2,55 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GamePlayData : MonoBehaviour
+public static class GamePlayData
 {
-    // �����忡 ������ �̱��� ����
-    private static bool shuttingDown = false;
-    private static object Lock = new object();
-    private static GamePlayData instance;
+    private static Dictionary<string, object>[] unitData = new Dictionary<string, object>[4];
+    private static Dictionary<string, object> playerData = new Dictionary<string, object>();
 
-    public static GamePlayData Instance
-    {
-        get
-        {
-            if (shuttingDown)
-            {
-                Debug.LogWarning("User Instance already destroyed. return null");
-                return null;
-            }
+    public static Dictionary<string, object>[] UnitData { get => unitData; set => unitData = value; }
+    public static Dictionary<string, object> PlayerData { get => playerData; set => playerData = value; }
 
-            lock (Lock)
-            {
-                if (instance == null)
-                {
-                    instance = (GamePlayData)FindObjectOfType(typeof(GamePlayData));
+    public static string UserID;
 
-                    if (instance == null)
-                    {
-                        var userObject = new GameObject();
-                        instance = userObject.AddComponent<GamePlayData>();
-                        userObject.name = "ServerManager";
-
-                        DontDestroyOnLoad(userObject);
-                    }
-                }
-
-                return instance;
-            }
-        }
-    }
-
-    private void Awake()
-    {
-        DontDestroyOnLoad(this);
-    }
-
-    // ���ӿ��� ������ ���� ������ �����صδ� ��
-    public userLoginData mainUser;
-    // ������ �κ��丮
-    public userGoodsData mainInventory;
-
-    // ���� ���� Ŭ����
     [System.Serializable]
     public class userLoginData
     {
