@@ -35,6 +35,20 @@ public class SkillRange : MonoBehaviour
             }
         }
     }
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("UNIT"))
+        {
+            if(skillKind == SkillKind.Barrier)
+            {
+                if(InGameManager.Instance.Player.SkillCoolTime[0] || InGameManager.Instance.Player.BarrierList.Contains(collision.GetComponent<Unit>()))
+                {
+                    return;
+                }
+                InGameManager.Instance.Player.BarrierList.Add(collision.GetComponent<Unit>());
+            }
+        }
+    }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("UNIT"))
