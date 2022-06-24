@@ -671,7 +671,7 @@ MonoBehaviour:
     maxHp: 100
     currentHp: 0
     attackDamage: 1
-    currentAttackDamage: 0
+    currentAttackDamage: 1
     attackSpeed: 1
     moveSpeed: 2
     currentMoveSpeed: 0
