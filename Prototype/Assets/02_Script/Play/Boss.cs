@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine.Unity;
 
 public class Boss : MonoBehaviour
 { 
@@ -9,12 +10,22 @@ public class Boss : MonoBehaviour
         Idle,
         Attack
     }
+    private enum EBossKind
+    {
+        Mushroom,
+        other
+    }
+    [SerializeField]
+    private EBossKind eBossKind;
     public bool isPattern { get; set; }
     [SerializeField] private int arrayCount;
     [SerializeField] private List<List<GameObject>> collisionsArray = new List<List<GameObject>>();
     [SerializeField] private Unit currentUnit;
     [SerializeField] private EBossState eBossState;
     [SerializeField] private CommonStatus commonStatus = new CommonStatus();
+    [SerializeField] private float damageDelay;
+    [SerializeField] private float attackAnimDelay;
+    public SkeletonAnimation skeletonAnimation;
     public CommonStatus CommonStatus { get => commonStatus; set => commonStatus = value; }
     public List<List<GameObject>> CollisionsArray { get => collisionsArray; set => collisionsArray = value; }
 
@@ -66,6 +77,16 @@ public class Boss : MonoBehaviour
                     eBossState = EBossState.Attack;
                     break;
                 case EBossState.Attack:
+                    skeletonAnimation.AnimationState.SetAnimation(0, "Attack", false);
+                    if (eBossKind == EBossKind.other)
+                    {
+                        skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, attackAnimDelay);
+                    }
+                    else
+                    {
+                        skeletonAnimation.AnimationState.AddAnimation(0, "idle", true, attackAnimDelay);
+                    }
+                    yield return new WaitForSeconds(damageDelay);
                     Attack();
                     eBossState = EBossState.Idle;
                     break;
@@ -80,6 +101,15 @@ public class Boss : MonoBehaviour
         for (int i = 0; i < arrayCount; i++)
         {
             collisionsArray.Add(new List<GameObject>());
+        }
+        skeletonAnimation = GetComponent<SkeletonAnimation>();
+        if(eBossKind == EBossKind.other)
+        {
+            skeletonAnimation.AnimationState.SetAnimation(0, "Idle", true);
+        }
+        else
+        {
+            skeletonAnimation.AnimationState.SetAnimation(0, "idle", true);
         }
     }
     private void Start()

@@ -53,11 +53,13 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         {
             InGameManager.Instance.Player.IsLeft = false;
             InGameManager.Instance.Player.IsRight = true;
+            InGameManager.Instance.Player.Flip(false);
         }
         else if(vecNormal.x < 0)
         {
             InGameManager.Instance.Player.IsRight = false;
             InGameManager.Instance.Player.IsLeft = true;
+            InGameManager.Instance.Player.Flip(true);
         }
     }
 
@@ -68,6 +70,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     public void OnPointerDown(PointerEventData eventData)
     {
+        InGameManager.Instance.Player.PlayerAnimation(0);
         OnTouch(eventData.position);
     }
 

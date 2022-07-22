@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine.Unity;
 
 public class Player : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class Player : MonoBehaviour
     private bool isRight; //¿À¸¥ÂÊ ÀÌµ¿ Ã¼Å©
     private bool isLeft; // ¿ÞÂÊ ÀÌµ¿ Ã¼Å©
     private Boss boss;
+    private SkeletonAnimation skeletonAnimation;
     public bool isCast { get; set; } = false;
     public bool isCastFinish { get; set; } = false;
     private PlayerUI playerUI;
@@ -24,6 +26,7 @@ public class Player : MonoBehaviour
     private float currentShield;
     private float castingTime;
     private bool[] skillCoolTime = { false, false, false, false };
+    private Vector3 flip;
     [SerializeField] private List<Unit> barrierList = new List<Unit>();
     [SerializeField] private List<Unit> healList = new List<Unit>();
     [SerializeField] private GameObject[] skillRangeArray;
@@ -104,6 +107,11 @@ public class Player : MonoBehaviour
             shield = 0;
         }
         currentHp -= damage;
+        if(currentHp <= 0)
+        {
+            skeletonAnimation.AnimationState.SetAnimation(0, "Dead", false);
+            InGameManager.Instance.GameOver();
+        }
     }
     public void DecreaseMp(float value)
     {
@@ -131,6 +139,26 @@ public class Player : MonoBehaviour
     private void Invoke_UnInvincibility()
     {
         isInvincibility = false;
+    }
+    public void PlayerAnimation(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                skeletonAnimation.AnimationState.TimeScale = 2.5f;
+                skeletonAnimation.AnimationState.SetAnimation(0, "walk", true);
+                break;
+            case 1:
+                skeletonAnimation.AnimationState.TimeScale = 2f;
+                skeletonAnimation.AnimationState.SetAnimation(0, "skill", false);
+                break;
+            case 2:
+                skeletonAnimation.AnimationState.TimeScale = 1f;
+                skeletonAnimation.AnimationState.SetAnimation(0, "Dead", false);
+                break;
+            default:
+                break;
+        }
     }
     private IEnumerator Co_KnockBack(Vector3 pos)
     {
@@ -197,6 +225,8 @@ public class Player : MonoBehaviour
         currentHp = maxHp;
         currentMp = maxMp;
         currentMoveSpeed = moveSpeed;
+        skeletonAnimation = GetComponent<SkeletonAnimation>();
+        flip = transform.localScale;
     }
     private void Start()
     {
@@ -252,6 +282,15 @@ public class Player : MonoBehaviour
             Move(Vector3.left);
         }
     }
+    public void Flip(bool isLeft)
+    {
+        Vector3 scale = flip;
+        if (isLeft)
+        {
+            scale.x *= -1;
+        }
+        transform.localScale = scale;
+    }
     public void UseSkill(int index)
     {
         SkillTransition(index);
@@ -287,7 +326,7 @@ public class Player : MonoBehaviour
                     break;
                 }
                 DecreaseMp(2);
-                Skill_Heal(10);
+                StartCoroutine(Co_Skill_Heal(10));
                 StartCoroutine(Co_SkillCoolTime(1, 10));
                 break;
             case 2:
@@ -312,7 +351,7 @@ public class Player : MonoBehaviour
                     break;
                 }
                 DecreaseMp(1);
-                Skill_Attack();
+                StartCoroutine(Co_Skill_Attack());
                 if (CoolTimeLimit)
                 {
                     break;
@@ -331,6 +370,8 @@ public class Player : MonoBehaviour
     }
     private IEnumerator Co_Skill_Barrier()
     {
+        PlayerAnimation(1);
+        yield return new WaitForSeconds(1f);
         foreach (var item in barrierList)
         {
             item.CommonStatus.Shield = 10;
@@ -344,10 +385,16 @@ public class Player : MonoBehaviour
         Shield = 0;
         barrierList.Clear();
     }
-    private void Skill_Heal(float value)
+    private IEnumerator Co_Skill_Heal(float value)
     {
+        PlayerAnimation(1);
+        yield return new WaitForSeconds(1f);
         foreach (var item in healList)
         {
+            if(item.GetUnitState == Unit.EUnitState.Die)
+            {
+                continue;
+            }
             item.CommonStatus.IncreaseHp(item.CommonStatus.MaxHp * value / 100);
         }
         currentHp += maxHp * value / 100;
@@ -358,6 +405,8 @@ public class Player : MonoBehaviour
     }
     private IEnumerator Co_Skill_Rage()
     {
+        PlayerAnimation(1);
+        yield return new WaitForSeconds(1f);
         while (skillRangeArray[2].activeSelf)
         {
             yield return new WaitForSeconds(2f);
@@ -384,22 +433,31 @@ public class Player : MonoBehaviour
             unit.CommonStatus.CurrentAttackDamage = unit.CommonStatus.AttackDamage;
         }
     }
-    private void Skill_Attack()
+    private IEnumerator Co_Skill_Attack()
     {
         float rand = Random.Range(0f, 100f);
         string thing;
         if(rand <= 30)
         {
+            skeletonAnimation.AnimationState.TimeScale = 1f;
+            skeletonAnimation.AnimationState.SetAnimation(0, "Attack-apple", false);
+            yield return new WaitForSeconds(1.167f);
             InGameManager.Instance.Boss.CommonStatus.DecreaseHp(1);
             thing = "30% È®·ü·Î »ç°ú¸¦ »Ì¾Ò´Ù";
         }
         else if(rand > 30 && rand <= 70)
         {
+            skeletonAnimation.AnimationState.TimeScale = 1f;
+            skeletonAnimation.AnimationState.SetAnimation(0, "Attack-stone", false);
+            yield return new WaitForSeconds(1.167f);
             InGameManager.Instance.Boss.CommonStatus.DecreaseHp(2);
             thing = "40% È®·ü·Î µ¹¸ÍÀÌ¸¦ »Ì¾Ò´Ù.";
         }
         else if(rand > 70)
         {
+            skeletonAnimation.AnimationState.TimeScale = 1f;
+            skeletonAnimation.AnimationState.SetAnimation(0, "Attack-bomb", false);
+            yield return new WaitForSeconds(1.167f);
             InGameManager.Instance.Boss.CommonStatus.DecreaseHp(3);
             thing = "30% È®·ü·Î ÆøÅºÀ» »Ì¾Ò´Ù.";
         }

@@ -2,13 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class GamePlayData
+public static class GamePlayData // class GamePlayData
 {
     private static Dictionary<string, object>[] unitData = new Dictionary<string, object>[4];
     private static Dictionary<string, object> playerData = new Dictionary<string, object>();
 
     public static Dictionary<string, object>[] UnitData { get => unitData; set => unitData = value; }
     public static Dictionary<string, object> PlayerData { get => playerData; set => playerData = value; }
+
+    /*private Dictionary<string, object>[] unitData = new Dictionary<string, object>[4];
+    private Dictionary<string, object> playerData = new Dictionary<string, object>();
+
+    public Dictionary<string, object>[] UnitData { get => unitData; set => unitData = value; }
+    public Dictionary<string, object> PlayerData { get => playerData; set => playerData = value; }*/
 
     public static string UserID;
 

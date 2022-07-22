@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Spine.Unity;
-using Spine.Unity.AnimationTools;
 
 public class Unit : MonoBehaviour
 {
@@ -13,12 +11,13 @@ public class Unit : MonoBehaviour
         Wizard,
         RemoteDealer
     }
-    private enum EUnitState
+    public enum EUnitState
     {
         Idle,
         Move,
         Attack,
         Skill,
+        Die
     }
     private enum EUnitKind
     {
@@ -52,9 +51,14 @@ public class Unit : MonoBehaviour
     [SerializeField] private EUnitType eUnitType;
     [SerializeField] private EUnitKind eUnitKind;
     [SerializeField] private CommonStatus commonStatus = new CommonStatus();
+    [SerializeField] private float attackAnimDelay;
+    [SerializeField] private float skillAnimDelay;
 
+    private SkeletonAnimation skeletonAnimation;
     public EUnitType UnitType { get => eUnitType; }
     public CommonStatus CommonStatus { get => commonStatus; set => commonStatus = value; }
+    public EUnitState GetUnitState { get => eUnitState; }
+
     public bool InitializeUnitStatus()//해당 함수는 InGameManager의 Awake에서 실행될 코루틴에서 호출
     {
         //초기화 필요한 변수들 초기화
@@ -149,16 +153,11 @@ public class Unit : MonoBehaviour
     }
     private IEnumerator Co_Dead() //유닛 죽는 애니메이션 연출 코루틴
     {
-        yield return null;
-        /*var material = GetComponent<MeshRenderer>().material;
-        float alpha = 1;
-        while(material.color.a > 0)
-        {
-            material.color = new Color(material.color.r, material.color.g, material.color.b, alpha);
-            alpha -= 0.01f;
-            yield return new WaitForSeconds(0.01f);
-        }
-        transform.gameObject.SetActive(false);*/
+        yield return new WaitUntil(() => commonStatus.CurrentHp <= 0);
+        eUnitState = EUnitState.Die;
+        skeletonAnimation.AnimationState.SetAnimation(0, "Die", false);
+        yield return new WaitForSeconds(2f);
+        gameObject.SetActive(false);
     }
     private IEnumerator Co_OutOfStateCondition() //행동 불가 상태 정의
     {
@@ -167,9 +166,9 @@ public class Unit : MonoBehaviour
             yield return null;
             if (isKnockBack)
             {
-                while(transform.position != knockBackPoint.position)
+                while(transform.position.x != knockBackPoint.position.x)
                 {
-                    transform.position = Vector3.MoveTowards(transform.position, knockBackPoint.position, commonStatus.KnockBackSpeed * Time.deltaTime);
+                    transform.position = Vector3.MoveTowards(transform.position, new Vector3(knockBackPoint.position.x,transform.position.y), commonStatus.KnockBackSpeed * Time.deltaTime);
                     yield return null;
                 }
                 isKnockBack = false;
@@ -179,14 +178,19 @@ public class Unit : MonoBehaviour
             {
                 yield return new WaitForSeconds(penaltyTime);
                 isIncapable = false;
-                eUnitState = EUnitState.Move;
+                if(eUnitState != EUnitState.Die)
+                {
+                    eUnitState = EUnitState.Move;
+                    skeletonAnimation.AnimationState.SetAnimation(0, "Move", true);
+                }
             }
         }
     }
     private IEnumerator Co_UpdateState() //유닛 유한상태기계(사실상 무한임)
     {
         yield return new WaitForSeconds(2f);
-        while (true)
+        StartCoroutine(Co_Dead());
+        while (eUnitState != EUnitState.Die)
         {
             yield return null;
             if (isKnockBack || isIncapable)
@@ -196,7 +200,7 @@ public class Unit : MonoBehaviour
             switch (eUnitState)
             {
                 case EUnitState.Idle:
-                   // Debug.Log("코루틴 도는중");
+                    // Debug.Log("코루틴 도는중");
                     yield return new WaitForSeconds(commonStatus.AttackSpeed);
                     if(commonStatus.CurrentHp > 0)
                     {
@@ -216,24 +220,37 @@ public class Unit : MonoBehaviour
                     yield return null;
                     break;
                 case EUnitState.Move:
-                    transform.position = Vector3.MoveTowards(transform.position, pitch.position,commonStatus.CurrentMoveSpeed*Time.deltaTime);
-                    if (transform.position == pitch.position)
+                    transform.position = Vector3.MoveTowards(transform.position, new Vector3(pitch.position.x,transform.position.y),commonStatus.CurrentMoveSpeed*Time.deltaTime);
+                    if (transform.position.x == pitch.position.x)
                     {
                         eUnitState = EUnitState.Idle;
+                        skeletonAnimation.AnimationState.SetAnimation(0, "Idle", true);
                     }
                     break;
                 case EUnitState.Attack:
+                    if(skeletonAnimation != null)
+                    {
+                        skeletonAnimation.AnimationState.SetAnimation(0, "Attack", false);
+                        skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, attackAnimDelay);
+                    }
                     Attack();
                     yield return null;
                     //공격 애니메이션 재생 시간만큼 코루틴에 지연시간 주기
                     eUnitState = EUnitState.Idle;
                     break;
                 case EUnitState.Skill:
+                    if (skeletonAnimation != null)
+                    {
+                        skeletonAnimation.AnimationState.SetAnimation(0, "Skill", false);
+                        skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, skillAnimDelay);
+                    }
                     AttackSkill();
                     yield return null;
                     //스킬 애니메이션 재생 시간만큼 코루틴에 지연시간 주기
                     eUnitState = EUnitState.Idle;
                     break;
+                case EUnitState.Die:
+                    yield break;
                 default:
                     Debug.Assert(false);
                     break;
@@ -253,6 +270,11 @@ public class Unit : MonoBehaviour
         {
             percentageUnit = GetComponent<PercentageUnit>();
         }
+        skeletonAnimation = GetComponent<SkeletonAnimation>();
+        if(skeletonAnimation != null)
+        {
+            skeletonAnimation.AnimationState.SetAnimation(0, "Idle", true);
+        }   
     }
     private void Start()
     {

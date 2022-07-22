@@ -55,10 +55,7 @@ public class CommonStatus
         {
             shield = 0;
         }
-        if ((CurrentHp -= damage) <= 0)
-        {
-            //사망 애니메이션
-        }
+        currentHp -= damage;
     }
     public void IncreaseHp(float value)
     {

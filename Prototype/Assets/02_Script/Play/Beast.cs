@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 //패턴 충돌처리 로직 수정해야함 (기존 PatternCollision -> CollisionArray[n] 으로)
@@ -16,6 +15,8 @@ public class Beast : MonoBehaviour
     {
         bossUtility.KnockBack();
         isShout = true;
+        InGameManager.Instance.Boss.skeletonAnimation.AnimationState.SetAnimation(0, "Backattack", false);
+        InGameManager.Instance.Boss.skeletonAnimation.AnimationState.AddAnimation(0, "Idle", false, 6.6f);
     }
     private IEnumerator Co_Crush()
     {
@@ -23,15 +24,18 @@ public class Beast : MonoBehaviour
         {
             if (isCrush)
             {
+                InGameManager.Instance.Boss.skeletonAnimation.AnimationState.SetAnimation(0, "FrontAttack", false);
+                InGameManager.Instance.Boss.skeletonAnimation.AnimationState.AddAnimation(0, "Idle", false, 4);
                 InGameManager.Instance.Boss.isPattern = true;
                 /* float rand = Random.Range(x, y); 패턴 반복 시간 (x~y 사이의 랜덤한 값마다 반복, 랜덤 값은 반복 할 때마다 변경됨)
                 yield return new WaitForSeconds(rand);*/
-                yield return new WaitForSeconds(1f);
-                crushs[1].SetActive(true);
                 yield return new WaitForSeconds(2f);
+                crushs[1].SetActive(true);
+                yield return new WaitForSeconds(1f);
                 Crush();
                 crushs[1].SetActive(false);
                 InGameManager.Instance.Boss.CollisionsArray[1].Clear();
+                yield return new WaitForSeconds(1f);
                 isCrush = false;
                 InGameManager.Instance.Boss.isPattern = false;
             }
@@ -46,10 +50,11 @@ public class Beast : MonoBehaviour
             {
                 InGameManager.Instance.Boss.isPattern = true;
                 crushs[0].SetActive(true);
-                yield return new WaitForSeconds(4f);
+                yield return new WaitForSeconds(5.6f);
                 KnockBackCrush();
                 crushs[0].SetActive(false);
                 InGameManager.Instance.Boss.CollisionsArray[0].Clear();
+                yield return new WaitForSeconds(1f);
                 isShout = false;
                 InGameManager.Instance.Boss.isPattern = false;
             }
@@ -93,6 +98,7 @@ public class Beast : MonoBehaviour
             InGameManager.Instance.Player.DecreaseHp(crushDamages[0]);
         }
     }
+
     private void Start()
     {
         StartCoroutine(Co_KnockBackCrush());

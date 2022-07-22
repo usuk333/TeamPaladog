@@ -8,7 +8,7 @@ public class Mushroom : MonoBehaviour
 {
     //for test
     private bool isButtonDown;
-    private Vector3 summonPos = new Vector3(0, -0.33f);
+    private Vector3 summonPos = new Vector3(0, -0.5f);
     private int requiredSlimeCount;
     private bool isActiveBuff;
     public bool isCounting { get; set; }
@@ -145,7 +145,7 @@ public class Mushroom : MonoBehaviour
     private IEnumerator Co_Typhoon()
     {
         float typhoonSpeed = 4f;
-        Vector3 typhoonDefalutPos = new Vector3(3f, 0);
+        Vector3 typhoonDefalutPos = new Vector3(30f, 5.14f);
         while (true)
         {
             typhoon.localPosition = typhoonDefalutPos;

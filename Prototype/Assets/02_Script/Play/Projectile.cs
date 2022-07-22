@@ -18,7 +18,7 @@ public class Projectile : MonoBehaviour
     {
         boss = target;
         attackDamage = damage;
-        transform.position = parent.position;
+        transform.position = parent.position + Vector3.up;
         transform.gameObject.SetActive(true);
     }
     private void FixedUpdate()

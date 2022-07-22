@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine.Unity;
 
 public class Slime : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class Slime : MonoBehaviour
     [SerializeField] private int dotCount;
     private Mushroom mushroom;
     private float moveInterval;
+    private Vector3 flip;
+    private SkeletonAnimation skeletonAnimation;
     [SerializeField] public bool isInvincible = true; //슬라임의 무적 상태 변수. true면 무적임. 제단 캐스팅을 통해 n초간 false가 됨
     private IEnumerator Co_ExplosionSlime() // 슬라임이 폭발한 후 도트피해를 입히고 분혈하는 기능 함수
     {
@@ -57,6 +60,15 @@ public class Slime : MonoBehaviour
         }
         mushroom.ReturnSlime(this);
     }
+    private void Flip(bool isLeft)
+    {
+        Vector3 scale = flip;
+        if (isLeft)
+        {
+            scale.x *= -1;
+        }
+        transform.localScale = scale;
+    }
     private void ExplosionSlime() // 슬라임의 폭발 데미지 함수
     {
         if (collisionObjects.Contains(InGameManager.Instance.Player.gameObject))
@@ -77,11 +89,14 @@ public class Slime : MonoBehaviour
     {
         mushroom = GetComponentInParent<Mushroom>();
         mushroom.dReturnAllSlime += new Mushroom.ReturnAllSlime(ReturnThis);
+        skeletonAnimation = GetComponent<SkeletonAnimation>();
+        flip = transform.localScale;
     }
     private void OnEnable() //풀로 돌아간 슬라임을 다시 꺼내오면 코루틴이 멈춰버린다. 때문에 슬라임 객체가 활성화 될 때마다 코루틴을 실행해줬다.
     {
         StartCoroutine(MoveAI());
         StartCoroutine(Co_ExplosionSlime());
+        skeletonAnimation.AnimationState.SetAnimation(0, "Moving", true);
     }
     private void FixedUpdate()
     {
@@ -123,6 +138,7 @@ public class Slime : MonoBehaviour
                     case 0:
                         direction = Vector3.left;
                         Debug.Log("왼쪽 이동");
+                        Flip(false);
                         break;
                     case 1:
                         direction = Vector3.zero;
@@ -131,6 +147,7 @@ public class Slime : MonoBehaviour
                     case 2:
                         direction = Vector3.right;
                         Debug.Log("오른쪽 이동");
+                        Flip(true);
                         break;
                     case 3:
                         direction = Vector3.zero;
@@ -159,6 +176,9 @@ public class Slime : MonoBehaviour
         if(collision.tag == "WALL")
         {
             direction = direction * (-1);
+            Vector3 scale = transform.localScale;
+            scale.x *= -1;
+            transform.localScale = scale;
         }
         if (!isInvincible)
         {
