@@ -134,9 +134,6 @@ public class SkillManager : MonoBehaviour
         Skill2_Level = snapshot.Child("Skill2").Child("Skill2_Level").Value.ToString();
         Skill3_Level = snapshot.Child("Skill3").Child("Skill3_Level").Value.ToString();
         Skill4_Level = snapshot.Child("Skill4").Child("Skill4_Level").Value.ToString();
-        Skill5_Level = snapshot.Child("Skill5").Child("Skill5_Level").Value.ToString();
-        Skill6_Level = snapshot.Child("Skill6").Child("Skill6_Level").Value.ToString();
-        Skill7_Level = snapshot.Child("Skill7").Child("Skill7_Level").Value.ToString();
         SkillPoint = snapshot.Child("SkillPoints").Value.ToString();
 
         tGold.text = "Gold : " + Gold;
@@ -149,12 +146,9 @@ public class SkillManager : MonoBehaviour
         tSkill2_Level.text = "lv. " + Skill2_Level;
         tSkill3_Level.text = "lv. " + Skill3_Level;
         tSkill4_Level.text = "lv. " + Skill4_Level;
-        tSkill5_Level.text = "lv. " + Skill5_Level;
-        tSkill6_Level.text = "lv. " + Skill6_Level;
-        tSkill7_Level.text = "lv. " + Skill7_Level;
         tGold.text = "Gold : " + Gold;
 
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < 4; i++)
         {
             tSkillPoints[i].text = "x " + SkillPoint;
         } 
@@ -233,7 +227,7 @@ public class SkillManager : MonoBehaviour
 
             SkillPoint = SP.ToString();
             Skill2_Level = SL.ToString();
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 4; i++)
             {
                 tSkillPoints[i].text = "x " + SkillPoint;
             }

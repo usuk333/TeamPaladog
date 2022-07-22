@@ -69,7 +69,7 @@ public class StageManager : MonoBehaviour
     private string MagePoints = string.Empty;
     [SerializeField] private TextMeshProUGUI tMagePoints;
 
-    [SerializeField] private Sprite[] SkillIcon = new Sprite[7];
+    [SerializeField] private Sprite[] SkillIcon = new Sprite[4];
 
     //층 설명과, 보상 개체 선언
     [SerializeField] private Text StageIntroduction;
