@@ -261,7 +261,7 @@ public class ShopManager : MonoBehaviour
     {
         if (int.Parse(TankerPoints) > 0)
         {
-            int UE = int.Parse(Shielder_EXP) + 100; //경험치   
+            int UE = int.Parse(Shielder_EXP) + 100; //경험치
             int TP = int.Parse(TankerPoints) - 1;   //탱커 계열 포인트 - 1
 
 

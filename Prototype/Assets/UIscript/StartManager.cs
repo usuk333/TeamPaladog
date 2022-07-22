@@ -82,7 +82,7 @@ public class StartManager : MonoBehaviour
         
     }
 
-    //구글 로그인
+    //구글 로그인 버튼
     public void GoogleLoginBtn()
     {
         //연동 상태가 아니라면
@@ -173,9 +173,32 @@ public class StartManager : MonoBehaviour
 
 
             Usersid = user.UserId;
-
+            DataManager.UserID = Usersid;
+            PlayerDataSet(Usersid);
             //UIDRigister(user.UserId, "Google");
             //InitializeFirebase();
+        });
+    }
+
+    private void PlayerDataSet(string uid)
+    {
+        reference.Child("users").Child(uid).GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted)   //기존 데이터 확인
+            {
+                LoadingSceneController.LoadScene("StartScene");
+                /*DataSnapshot snapshot = task.Result;
+                Debug.Log("InitializeFirebase ���ٿϷ�");
+
+                foreach (DataSnapshot data in snapshot.Children)
+                {
+                    Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
+                }*/
+            }
+            else                    //기존 데이터가 없고, 기초 데이터 설치
+            {
+                //데이터 빌딩 (합작)
+            }
         });
     }
 
