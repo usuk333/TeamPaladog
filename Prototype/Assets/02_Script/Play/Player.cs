@@ -151,10 +151,15 @@ public class Player : MonoBehaviour
             case 1:
                 skeletonAnimation.AnimationState.TimeScale = 2f;
                 skeletonAnimation.AnimationState.SetAnimation(0, "skill", false);
+                skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 1.5f);
                 break;
             case 2:
                 skeletonAnimation.AnimationState.TimeScale = 1f;
                 skeletonAnimation.AnimationState.SetAnimation(0, "Dead", false);
+                break;
+            case 3:
+                skeletonAnimation.AnimationState.TimeScale = 1f;
+                skeletonAnimation.AnimationState.SetAnimation(0, "Idle", false);
                 break;
             default:
                 break;
@@ -227,6 +232,7 @@ public class Player : MonoBehaviour
         currentMoveSpeed = moveSpeed;
         skeletonAnimation = GetComponent<SkeletonAnimation>();
         flip = transform.localScale;
+        skeletonAnimation.AnimationState.SetAnimation(0, "Idle", true);
     }
     private void Start()
     {
@@ -441,6 +447,7 @@ public class Player : MonoBehaviour
         {
             skeletonAnimation.AnimationState.TimeScale = 1f;
             skeletonAnimation.AnimationState.SetAnimation(0, "Attack-apple", false);
+            skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 1.167f);
             yield return new WaitForSeconds(1.167f);
             InGameManager.Instance.Boss.CommonStatus.DecreaseHp(1);
             thing = "30% È®·ü·Î »ç°ú¸¦ »Ì¾Ò´Ù";
@@ -449,6 +456,7 @@ public class Player : MonoBehaviour
         {
             skeletonAnimation.AnimationState.TimeScale = 1f;
             skeletonAnimation.AnimationState.SetAnimation(0, "Attack-stone", false);
+            skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 1.167f);
             yield return new WaitForSeconds(1.167f);
             InGameManager.Instance.Boss.CommonStatus.DecreaseHp(2);
             thing = "40% È®·ü·Î µ¹¸ÍÀÌ¸¦ »Ì¾Ò´Ù.";
@@ -457,6 +465,7 @@ public class Player : MonoBehaviour
         {
             skeletonAnimation.AnimationState.TimeScale = 1f;
             skeletonAnimation.AnimationState.SetAnimation(0, "Attack-bomb", false);
+            skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 1.167f);
             yield return new WaitForSeconds(1.167f);
             InGameManager.Instance.Boss.CommonStatus.DecreaseHp(3);
             thing = "30% È®·ü·Î ÆøÅºÀ» »Ì¾Ò´Ù.";

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using Spine.Unity;
 
 public class Gargoyle : MonoBehaviour
 {
     private bool isShout;
+    private bool isLaser;
     [SerializeField] private GameObject veneer;
     [SerializeField] private float veneerDuration;
     [SerializeField] private float dotInterval;
@@ -24,9 +26,10 @@ public class Gargoyle : MonoBehaviour
     [SerializeField] private float laserDamage;
     [SerializeField] private Transform laserObj;
     [SerializeField] private Transform secondLaserObj;
-
+    private SkeletonAnimation skeletonAnimation;
     private void Shouting()
     {
+        skeletonAnimation.AnimationState.SetAnimation(0, "earthquake", false);
         bossUtility.KnockBack();
         isShout = true;
     }
@@ -131,7 +134,7 @@ public class Gargoyle : MonoBehaviour
             if (isShout)
             {
                 InGameManager.Instance.Boss.isPattern = true;
-                yield return new WaitForSeconds(2f);
+                yield return new WaitForSeconds(4f);
                 InGameManager.Instance.Boss.isPattern = false;
                 veneer.SetActive(true);
                 while (veneer.activeSelf)
@@ -173,6 +176,13 @@ public class Gargoyle : MonoBehaviour
         Image image = shieldObj.transform.GetChild(0).GetComponent<Image>();
         float timer = shieldDuration;
         yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.MaxHp * 90 / 100);
+        InGameManager.Instance.Boss.isPattern = true;
+        skeletonAnimation.AnimationState.SetAnimation(1, "shield", false);
+        yield return new WaitForSeconds(1.333f);
+        if (!isLaser)
+        {
+            InGameManager.Instance.Boss.isPattern = false;
+        }
         shieldObj.SetActive(true);
         InGameManager.Instance.Boss.CommonStatus.Shield = shieldValue;
         while (timer > 0)
@@ -202,6 +212,9 @@ public class Gargoyle : MonoBehaviour
         while (true)
         {
             yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Q));
+            isLaser = true;
+            InGameManager.Instance.Boss.isPattern = true;
+            skeletonAnimation.AnimationState.SetAnimation(0, "Idle-2", false);
             laserObj.gameObject.SetActive(true);
             yield return new WaitForSeconds(laserDelay);
             bool isAvoid = AttackPlayer(2, laserDamage, true);
@@ -209,19 +222,31 @@ public class Gargoyle : MonoBehaviour
             if (isAvoid)
             {
                 print("보스 스턴");
-                InGameManager.Instance.Boss.isPattern = true;
+                skeletonAnimation.AnimationState.SetAnimation(0, "Idle", true);
                 yield return new WaitForSeconds(2f);
                 InGameManager.Instance.Boss.isPattern = false;
             }
             else
             {
                 print("레이저");
+                skeletonAnimation.AnimationState.SetAnimation(0, "breath", false);
                 secondLaserObj.gameObject.SetActive(true);
-                yield return new WaitForSeconds(laserDelay);
-                AttackUnit(laserDamage);
+                yield return new WaitForSeconds(1f);
+                for (int i = 0; i < 3; i++)
+                {
+                    AttackUnit(laserDamage / 4);
+                    yield return new WaitForSeconds(1f);
+                }
+                yield return new WaitForSeconds(1f);
                 secondLaserObj.gameObject.SetActive(false);
+                InGameManager.Instance.Boss.isPattern = false;
             }
+            isLaser = false;
         }
+    }
+    private void Awake()
+    {
+        skeletonAnimation = GetComponent<SkeletonAnimation>();
     }
     private void Start()
     {

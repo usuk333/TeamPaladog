@@ -13,7 +13,9 @@ public class Boss : MonoBehaviour
     private enum EBossKind
     {
         Mushroom,
-        other
+        Gargoyle,
+        Dummy,
+        Other
     }
     [SerializeField]
     private EBossKind eBossKind;
@@ -47,6 +49,7 @@ public class Boss : MonoBehaviour
         //인게임매니저의 유닛 리스트 인덱스를 각각 할당시켜주면 될 듯 (0,1,2,3 순서로 탱커, 근딜, 마법사, 원거리 딜러)
         int i = 0;
         currentUnit = InGameManager.Instance.Units[i];
+        
         while (true)
         {
             if(currentUnit.CommonStatus.CurrentHp <= 0)
@@ -63,7 +66,7 @@ public class Boss : MonoBehaviour
     }
     private IEnumerator Co_UpdateState() // 보스 유한상태기계
     {
-        while (true)
+        while (eBossKind != EBossKind.Dummy)
         {
             yield return null;
             if (isPattern)
@@ -77,8 +80,15 @@ public class Boss : MonoBehaviour
                     eBossState = EBossState.Attack;
                     break;
                 case EBossState.Attack:
-                    skeletonAnimation.AnimationState.SetAnimation(0, "Attack", false);
-                    if (eBossKind == EBossKind.other)
+                    if(eBossKind == EBossKind.Gargoyle)
+                    {
+                        skeletonAnimation.AnimationState.SetAnimation(0, "grondpunch", false);
+                    }
+                    else
+                    {
+                        skeletonAnimation.AnimationState.SetAnimation(0, "Attack", false);
+                    }
+                    if (eBossKind != EBossKind.Mushroom)
                     {
                         skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, attackAnimDelay);
                     }
@@ -103,7 +113,7 @@ public class Boss : MonoBehaviour
             collisionsArray.Add(new List<GameObject>());
         }
         skeletonAnimation = GetComponent<SkeletonAnimation>();
-        if(eBossKind == EBossKind.other)
+        if(eBossKind != EBossKind.Mushroom)
         {
             skeletonAnimation.AnimationState.SetAnimation(0, "Idle", true);
         }

@@ -123,7 +123,10 @@ public class InGameManager : MonoBehaviour
     }
     public void GameOver()
     {
-        boss.StopAllCoroutines();
+        if(boss != null)
+        {
+            boss.StopAllCoroutines();
+        }
         Debug.Log("Game Over!");
     }
    /* private void ClearStage()

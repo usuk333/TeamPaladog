@@ -269,6 +269,7 @@
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Auth.dll" />
     <None Include="Assets\03_Resauce\CharacterSpine\마법사\마법사_SD_최종.atlas.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
+    <None Include="Assets\03_Resauce\CharacterSpine\ae8b4bb56bd68f53\캐릭터 통합 스파인 파일\플레이어\917495c43b42ed8b\주인공_SD_최종.atlas.txt" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.Database.dll" />
     <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Masking.shader" />
     <None Include="Assets\DOTween\DOTween.XML" />

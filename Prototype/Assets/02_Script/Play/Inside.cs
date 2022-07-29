@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Spine.Unity;
 
 public class Inside : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class Inside : MonoBehaviour
     [SerializeField] private Image explosionImg;
     private int[] insidePercentage = { 95, 40 };
     private Color originColor;
-
+    private SkeletonAnimation skeletonAnimation;
     public List<InsideFallingObj> CastedFallingObjList { get => castedFallingObjList; set => castedFallingObjList = value; }
 
     public void MoveToInside()
@@ -142,7 +143,7 @@ public class Inside : MonoBehaviour
                 yield break;
             }
             yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.MaxHp * insidePercentage[patternCount] / 100);
-            GetComponent<SpriteRenderer>().color = Color.clear;
+            skeletonAnimation.Skeleton.SetColor(Color.clear);
             isInsideReady = true;
             InGameManager.Instance.Boss.isPattern = true;
             InGameManager.Instance.StopAllUnitCoroutines();
@@ -151,7 +152,7 @@ public class Inside : MonoBehaviour
             insideMoveObj.gameObject.SetActive(true);
             insideInstance.gameObject.SetActive(true);
             InGameManager.Instance.Boss.CommonStatus.IsInvincibility = true;
-            InGameManager.Instance.Boss = null;
+            //InGameManager.Instance.Boss = null;
             while (moveInsideTimer > 0)
             {
                 moveInsideTimer -= Time.deltaTime;
@@ -194,7 +195,7 @@ public class Inside : MonoBehaviour
             sceneMoveImg.gameObject.SetActive(true);
             MoveToOrigin();
             insidePortal.gameObject.SetActive(false);
-            GetComponent<SpriteRenderer>().color = originColor;
+            skeletonAnimation.Skeleton.SetColor(originColor); 
             InGameManager.Instance.StartAllUnitCoroutines();
             originHpBar.gameObject.SetActive(true);
             insideInstance.gameObject.SetActive(false);
@@ -253,6 +254,8 @@ public class Inside : MonoBehaviour
             {
                 int rand = Random.Range(5, 10);
                 yield return new WaitForSeconds(rand);
+                InGameManager.Instance.Boss.isPattern = true;
+                skeletonAnimation.AnimationState.SetAnimation(0, "Skill", false);
                 if (isInsideReady)
                 {
                     Debug.Log("Pattern Stop Cause inside");
@@ -271,19 +274,22 @@ public class Inside : MonoBehaviour
                 }
                 manaExplosion.position = InGameManager.Instance.Units[index].transform.position;
                 yield return new WaitForSeconds(manaExplosionDuration);
+                InGameManager.Instance.Boss.isPattern = false;
                 ManaExplosion();
             }
             else
             {
                 manaExplosion.position = InGameManager.Instance.Player.transform.position;
                 yield return new WaitForSeconds(manaExplosionDuration);
+                InGameManager.Instance.Boss.isPattern = false;
                 ManaExplosion();
             }
         }
     }
     private void Awake()
     {
-        originColor = GetComponent<SpriteRenderer>().color;
+        skeletonAnimation = GetComponent<SkeletonAnimation>();
+        originColor = skeletonAnimation.Skeleton.GetColor();
         dummyBoss = transform.Find("InsideInstance").GetComponentInChildren<Boss>();
         SuffleFallingObjects();
         fallingObjectDummysParent = fallingObjectDummys[0].transform.parent;
