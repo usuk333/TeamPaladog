@@ -211,7 +211,7 @@ public class Gargoyle : MonoBehaviour
     {
         while (true)
         {
-            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Q));
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Alpha2));
             isLaser = true;
             InGameManager.Instance.Boss.isPattern = true;
             skeletonAnimation.AnimationState.SetAnimation(0, "Idle-2", false);
@@ -266,14 +266,9 @@ public class Gargoyle : MonoBehaviour
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             Shouting();
         }
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            secondLaserObj.gameObject.SetActive(!secondLaserObj.gameObject.activeSelf);
-        }
-        
     }
 }
