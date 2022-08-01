@@ -80,5 +80,6 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         m_rectJoystick.localPosition = Vector2.zero;
         InGameManager.Instance.Player.IsLeft = false;
         InGameManager.Instance.Player.IsRight = false;
+        InGameManager.Instance.Player.PlayerAnimation(3);
     }
 }
