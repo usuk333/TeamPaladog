@@ -30,6 +30,9 @@ public class Player : MonoBehaviour
     [SerializeField] private List<Unit> barrierList = new List<Unit>();
     [SerializeField] private List<Unit> healList = new List<Unit>();
     [SerializeField] private GameObject[] skillRangeArray;
+    [SerializeField] private ParticleSystem healEffect;
+    [SerializeField] private ParticleSystem shieldEffect;
+    [SerializeField] private ParticleSystem rageEffect;
     public bool CoolTimeLimit { get; set; }
     public float MaxHp
     { 
@@ -343,10 +346,15 @@ public class Player : MonoBehaviour
                     {
                         Debug.Log("마나가 부족합니다!");
                         skillRangeArray[2].SetActive(false);
+                        rageEffect.Pause();
                         break;
                     }
                     DecreaseMp(3);
                     StartCoroutine(Co_Skill_Rage());
+                }
+                else
+                {
+                    rageEffect.Pause();
                 }
                 StartCoroutine(Co_SkillCoolTime(2, 1));
                 break;
@@ -381,8 +389,10 @@ public class Player : MonoBehaviour
         foreach (var item in barrierList)
         {
             item.CommonStatus.Shield = 10;
+            item.ShieldEffect.Play();
         }
         Shield = 10;
+        shieldEffect.Play();
         yield return new WaitForSeconds(3f);
         foreach (var item in barrierList)
         {
@@ -402,8 +412,10 @@ public class Player : MonoBehaviour
                 continue;
             }
             item.CommonStatus.IncreaseHp(item.CommonStatus.MaxHp * value / 100);
+            item.HealEffect.Play();
         }
         currentHp += maxHp * value / 100;
+        healEffect.Play();
         if(currentHp > maxHp)
         {
             currentHp = maxHp;
@@ -412,6 +424,7 @@ public class Player : MonoBehaviour
     private IEnumerator Co_Skill_Rage()
     {
         PlayerAnimation(1);
+        rageEffect.Play();
         yield return new WaitForSeconds(1f);
         while (skillRangeArray[2].activeSelf)
         {
@@ -425,6 +438,7 @@ public class Player : MonoBehaviour
             {
                 Debug.Log("마나가 부족하여 스킬이 비활성화 됩니다.");
                 skillRangeArray[2].SetActive(false);
+                rageEffect.Pause();
             }
         }
     }

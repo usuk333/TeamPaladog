@@ -145,12 +145,12 @@ public class Mushroom : MonoBehaviour
     private IEnumerator Co_Typhoon()
     {
         float typhoonSpeed = 4f;
-        Vector3 typhoonDefalutPos = new Vector3(30f, 5.14f);
+        Vector3 typhoonDefaultPos = new Vector3(32f, 5.14f);
         while (true)
         {
-            typhoon.localPosition = typhoonDefalutPos;
+            typhoon.localPosition = typhoonDefaultPos;
             yield return new WaitForSeconds(typhoonInterval);
-            typhoon.DOMoveX(-9f, typhoonSpeed);
+            typhoon.DOMoveX(-12f, typhoonSpeed);
             yield return new WaitForSeconds(typhoonSpeed);
         }
     }

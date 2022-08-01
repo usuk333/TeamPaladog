@@ -53,11 +53,15 @@ public class Unit : MonoBehaviour
     [SerializeField] private CommonStatus commonStatus = new CommonStatus();
     [SerializeField] private float attackAnimDelay;
     [SerializeField] private float skillAnimDelay;
+    [SerializeField] private ParticleSystem healEffect;
+    [SerializeField] private ParticleSystem shieldEffect;
 
     private SkeletonAnimation skeletonAnimation;
     public EUnitType UnitType { get => eUnitType; }
     public CommonStatus CommonStatus { get => commonStatus; set => commonStatus = value; }
     public EUnitState GetUnitState { get => eUnitState; }
+    public ParticleSystem HealEffect { get => healEffect; set => healEffect = value; }
+    public ParticleSystem ShieldEffect { get => shieldEffect; set => shieldEffect = value; }
 
     public bool InitializeUnitStatus()//해당 함수는 InGameManager의 Awake에서 실행될 코루틴에서 호출
     {
@@ -282,10 +286,10 @@ public class Unit : MonoBehaviour
         StartCoroutine(Co_OutOfStateCondition());
         if (transform.childCount > 0)
         {
-            basicEffect = transform.GetChild(0).GetComponent<ParticleSystem>();
-            skillEffect = transform.GetChild(1).GetComponent<ParticleSystem>();
-            basicEffect.transform.position = InGameManager.Instance.Boss.transform.position + basicEffectOffset;
-            skillEffect.transform.position = InGameManager.Instance.Boss.transform.position + skillEffectOffset;
+           // basicEffect = transform.GetChild(0).GetComponent<ParticleSystem>();
+          //  skillEffect = transform.GetChild(1).GetComponent<ParticleSystem>();
+           // basicEffect.transform.position = InGameManager.Instance.Boss.transform.position + basicEffectOffset;
+           // skillEffect.transform.position = InGameManager.Instance.Boss.transform.position + skillEffectOffset;
         }
     }
     private void Update()
