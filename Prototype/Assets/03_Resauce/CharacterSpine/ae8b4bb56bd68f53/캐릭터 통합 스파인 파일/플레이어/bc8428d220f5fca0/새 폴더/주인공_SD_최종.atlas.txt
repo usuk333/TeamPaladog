@@ -1,0 +1,237 @@
+
+주인공_SD_최종.png
+size: 1564,779
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Babk_hair
+  rotate: true
+  xy: 497, 351
+  size: 426, 583
+  orig: 426, 583
+  offset: 0, 0
+  index: -1
+L_calf
+  rotate: false
+  xy: 767, 23
+  size: 139, 326
+  orig: 139, 391
+  offset: 0, 4
+  index: -1
+L_closed eyes
+  rotate: false
+  xy: 133, 23
+  size: 142, 27
+  orig: 142, 27
+  offset: 0, 0
+  index: -1
+L_eight
+  rotate: true
+  xy: 2, 105
+  size: 92, 148
+  orig: 92, 148
+  offset: 0, 0
+  index: -1
+L_hand_01
+  rotate: true
+  xy: 1446, 45
+  size: 71, 113
+  orig: 71, 119
+  offset: 0, 6
+  index: -1
+L_hand_02
+  rotate: false
+  xy: 1489, 671
+  size: 73, 106
+  orig: 73, 119
+  offset: 0, 13
+  index: -1
+L_lower lashes
+  rotate: true
+  xy: 1283, 10
+  size: 98, 20
+  orig: 98, 20
+  offset: 0, 0
+  index: -1
+L_pupil
+  rotate: true
+  xy: 241, 123
+  size: 74, 63
+  orig: 74, 63
+  offset: 0, 0
+  index: -1
+L_sclera
+  rotate: false
+  xy: 306, 85
+  size: 124, 79
+  orig: 124, 79
+  offset: 0, 0
+  index: -1
+L_shoulder
+  rotate: false
+  xy: 307, 166
+  size: 94, 180
+  orig: 382, 180
+  offset: 0, 0
+  index: -1
+L_thigh
+  rotate: false
+  xy: 908, 66
+  size: 165, 283
+  orig: 165, 283
+  offset: 0, 0
+  index: -1
+L_upper eyelashes
+  rotate: false
+  xy: 908, 2
+  size: 161, 62
+  orig: 161, 62
+  offset: 0, 0
+  index: -1
+R_calf
+  rotate: false
+  xy: 1317, 10
+  size: 127, 322
+  orig: 128, 341
+  offset: 0, 0
+  index: -1
+R_closed eyes
+  rotate: true
+  xy: 432, 121
+  size: 126, 30
+  orig: 126, 30
+  offset: 0, 0
+  index: -1
+R_eight
+  rotate: false
+  xy: 152, 52
+  size: 87, 145
+  orig: 87, 170
+  offset: 0, 0
+  index: -1
+R_hand_01
+  rotate: true
+  xy: 303, 2
+  size: 81, 121
+  orig: 81, 121
+  offset: 0, 0
+  index: -1
+R_hand_02
+  rotate: true
+  xy: 524, 36
+  size: 79, 94
+  orig: 79, 94
+  offset: 0, 0
+  index: -1
+R_lower lashes
+  rotate: false
+  xy: 1446, 24
+  size: 76, 19
+  orig: 76, 19
+  offset: 0, 0
+  index: -1
+R_pupil
+  rotate: true
+  xy: 241, 52
+  size: 69, 60
+  orig: 69, 60
+  offset: 0, 0
+  index: -1
+R_sclera
+  rotate: false
+  xy: 620, 47
+  size: 101, 68
+  orig: 101, 68
+  offset: 0, 0
+  index: -1
+R_shoulder
+  rotate: false
+  xy: 1489, 477
+  size: 71, 192
+  orig: 77, 192
+  offset: 0, 0
+  index: -1
+R_thigh
+  rotate: true
+  xy: 2, 199
+  size: 147, 303
+  orig: 147, 342
+  offset: 0, 39
+  index: -1
+R_upper eyelashes
+  rotate: true
+  xy: 1489, 334
+  size: 141, 65
+  orig: 141, 65
+  offset: 0, 0
+  index: -1
+apple
+  rotate: false
+  xy: 432, 26
+  size: 90, 89
+  orig: 90, 89
+  offset: 0, 0
+  index: -1
+body
+  rotate: true
+  xy: 1075, 110
+  size: 222, 240
+  orig: 222, 240
+  offset: 0, 0
+  index: -1
+bomb
+  rotate: true
+  xy: 2, 13
+  size: 90, 129
+  orig: 90, 129
+  offset: 0, 0
+  index: -1
+equip_potion_green_2
+  rotate: false
+  xy: 1179, 8
+  size: 102, 100
+  orig: 102, 100
+  offset: 0, 0
+  index: -1
+equip_potion_yellow_2
+  rotate: false
+  xy: 1075, 8
+  size: 102, 100
+  orig: 102, 100
+  offset: 0, 0
+  index: -1
+hair
+  rotate: true
+  xy: 2, 348
+  size: 429, 493
+  orig: 429, 493
+  offset: 0, 0
+  index: -1
+head
+  rotate: true
+  xy: 1082, 334
+  size: 443, 405
+  orig: 443, 405
+  offset: 0, 0
+  index: -1
+neck
+  rotate: false
+  xy: 1446, 118
+  size: 114, 214
+  orig: 114, 214
+  offset: 0, 0
+  index: -1
+stone
+  rotate: true
+  xy: 403, 249
+  size: 97, 89
+  orig: 97, 89
+  offset: 0, 0
+  index: -1
+waist
+  rotate: false
+  xy: 497, 117
+  size: 268, 232
+  orig: 268, 232
+  offset: 0, 0
+  index: -1

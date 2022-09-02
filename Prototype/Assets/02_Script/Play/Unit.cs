@@ -53,8 +53,11 @@ public class Unit : MonoBehaviour
     [SerializeField] private CommonStatus commonStatus = new CommonStatus();
     [SerializeField] private float attackAnimDelay;
     [SerializeField] private float skillAnimDelay;
+    [SerializeField] private float attackEffectDelay;
+    [SerializeField] private float skillEffectDelay;
     [SerializeField] private ParticleSystem healEffect;
     [SerializeField] private ParticleSystem shieldEffect;
+    [SerializeField] private ParticleSystem rageEffect;
 
     private SkeletonAnimation skeletonAnimation;
     public EUnitType UnitType { get => eUnitType; }
@@ -62,6 +65,7 @@ public class Unit : MonoBehaviour
     public EUnitState GetUnitState { get => eUnitState; }
     public ParticleSystem HealEffect { get => healEffect; set => healEffect = value; }
     public ParticleSystem ShieldEffect { get => shieldEffect; set => shieldEffect = value; }
+    public ParticleSystem RageEffect { get => rageEffect; set => rageEffect = value; }
 
     public bool InitializeUnitStatus()//해당 함수는 InGameManager의 Awake에서 실행될 코루틴에서 호출
     {
@@ -92,25 +96,26 @@ public class Unit : MonoBehaviour
         {
             basicEffect.Play();
         }
-        switch (eUnitKind)
-        {
-            case EUnitKind.Other:
-                InGameManager.Instance.Boss.CommonStatus.DecreaseHp(commonStatus.CurrentAttackDamage); //투사체 발사 유닛이 아닌 경우에는 그냥 타격
-                break;
-            //이 밑으로는 투사체 발사 유닛. 유닛 종류에 맞게 투사체 꺼내오는 함수 호출
-            case EUnitKind.Taoist:
-                SetProjectile(0);
-                break;
-            case EUnitKind.Mechanic:
-                SetProjectile(1);
-                break;
-            case EUnitKind.Mage:
-                SetProjectile(2);
-                break;
-            default:
-                Debug.Assert(false);
-                break;
-        }
+        InGameManager.Instance.Boss.CommonStatus.DecreaseHp(commonStatus.CurrentAttackDamage);
+        /* switch (eUnitKind)
+         {
+             case EUnitKind.Other:
+                 InGameManager.Instance.Boss.CommonStatus.DecreaseHp(commonStatus.CurrentAttackDamage); //투사체 발사 유닛이 아닌 경우에는 그냥 타격
+                 break;
+             //이 밑으로는 투사체 발사 유닛. 유닛 종류에 맞게 투사체 꺼내오는 함수 호출
+             case EUnitKind.Taoist:
+                 SetProjectile(0);
+                 break;
+             case EUnitKind.Mechanic:
+                 SetProjectile(1);
+                 break;
+             case EUnitKind.Mage:
+                 SetProjectile(2);
+                 break;
+             default:
+                 Debug.Assert(false);
+                 break;
+         }*/
         if (countUnit) //카운트 유닛 공격횟수 증가
         {
             countUnit.CurrentAttackCount++;
@@ -158,9 +163,11 @@ public class Unit : MonoBehaviour
     private IEnumerator Co_Dead() //유닛 죽는 애니메이션 연출 코루틴
     {
         yield return new WaitUntil(() => commonStatus.CurrentHp <= 0);
+        GetComponent<BoxCollider2D>().enabled = false;
         eUnitState = EUnitState.Die;
+        skeletonAnimation.AnimationState.TimeScale = 0.8f;
         skeletonAnimation.AnimationState.SetAnimation(0, "Die", false);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(2.3f);
         gameObject.SetActive(false);
     }
     private IEnumerator Co_OutOfStateCondition() //행동 불가 상태 정의
@@ -237,6 +244,7 @@ public class Unit : MonoBehaviour
                         skeletonAnimation.AnimationState.SetAnimation(0, "Attack", false);
                         skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, attackAnimDelay);
                     }
+                    yield return new WaitForSeconds(attackEffectDelay);
                     Attack();
                     yield return null;
                     //공격 애니메이션 재생 시간만큼 코루틴에 지연시간 주기
@@ -248,6 +256,7 @@ public class Unit : MonoBehaviour
                         skeletonAnimation.AnimationState.SetAnimation(0, "Skill", false);
                         skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, skillAnimDelay);
                     }
+                    yield return new WaitForSeconds(skillEffectDelay);
                     AttackSkill();
                     yield return null;
                     //스킬 애니메이션 재생 시간만큼 코루틴에 지연시간 주기
@@ -284,12 +293,13 @@ public class Unit : MonoBehaviour
     {
         StartCoroutine(Co_UpdateState());
         StartCoroutine(Co_OutOfStateCondition());
-        if (transform.childCount > 0)
+        if (basicEffect != null)
         {
-           // basicEffect = transform.GetChild(0).GetComponent<ParticleSystem>();
-          //  skillEffect = transform.GetChild(1).GetComponent<ParticleSystem>();
-           // basicEffect.transform.position = InGameManager.Instance.Boss.transform.position + basicEffectOffset;
-           // skillEffect.transform.position = InGameManager.Instance.Boss.transform.position + skillEffectOffset;
+            basicEffect.transform.position = InGameManager.Instance.Boss.transform.position + basicEffectOffset;
+        }
+        if(skillEffect != null)
+        {
+            skillEffect.transform.position = InGameManager.Instance.Boss.transform.position + skillEffectOffset;
         }
     }
     private void Update()
@@ -299,5 +309,16 @@ public class Unit : MonoBehaviour
             isKnockBack = true;
             penaltyTime = 5f;
         }*/
+    }
+    private void LateUpdate()
+    {
+        if(basicEffect != null)
+        {
+            basicEffect.transform.position = InGameManager.Instance.Boss.transform.position + basicEffectOffset;
+        }
+        if(skillEffect != null)
+        {
+            skillEffect.transform.position = InGameManager.Instance.Boss.transform.position + skillEffectOffset;
+        }
     }
 }

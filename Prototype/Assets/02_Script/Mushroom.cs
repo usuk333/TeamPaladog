@@ -29,6 +29,7 @@ public class Mushroom : MonoBehaviour
     [SerializeField] private float typhoonInterval;// 태풍 패턴 간격
     [SerializeField] private float slimeSummonInterval;
     [SerializeField] private List<Slime> slimeList = new List<Slime>(); // 필드에 존재하는 슬라임 리스트
+    [SerializeField] private ParticleSystem sporeEffect;
     private Queue<Slime> slimeQueue = new Queue<Slime>();
     //for test
     public void BtnEvt_SummonSlime()
@@ -62,6 +63,7 @@ public class Mushroom : MonoBehaviour
         slime.gameObject.SetActive(false);
         slime.transform.position = transform.position;
         slime.transform.SetParent(slimePool);
+        slime.isInvincible = true;
         slimeQueue.Enqueue(slime);
         slimeList.Remove(slime);
         slimeCountText.text = slimeList.Count.ToString();
@@ -80,6 +82,7 @@ public class Mushroom : MonoBehaviour
         while (true)
         {
             time = sporeTimerMaxValue;
+            isActiveBuff = false;
            // maxSlimeCount = Random.Range(15, 25);
             yield return new WaitUntil(() => slimeList.Count >= maxSlimeCount);
             isCounting = true;
@@ -96,10 +99,13 @@ public class Mushroom : MonoBehaviour
             altar.SetActive(false);
             if (slimeList.Count <= 0)
             {
+                slimeList.Clear();
+                dReturnAllSlime();
                 continue;
             }
             slimeList.Clear();
             dReturnAllSlime();
+            sporeEffect.Play();
             for (int i = 0; i < sporeCount; i++)
             {
                 Spore();
@@ -145,7 +151,7 @@ public class Mushroom : MonoBehaviour
     private IEnumerator Co_Typhoon()
     {
         float typhoonSpeed = 4f;
-        Vector3 typhoonDefaultPos = new Vector3(32f, 5.14f);
+        Vector3 typhoonDefaultPos = new Vector3(35f, 5.14f);
         while (true)
         {
             typhoon.localPosition = typhoonDefaultPos;

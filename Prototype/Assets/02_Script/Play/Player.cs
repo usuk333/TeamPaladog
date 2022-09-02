@@ -33,6 +33,12 @@ public class Player : MonoBehaviour
     [SerializeField] private ParticleSystem healEffect;
     [SerializeField] private ParticleSystem shieldEffect;
     [SerializeField] private ParticleSystem rageEffect;
+    [SerializeField] private ParticleSystem attackEffect;
+    [SerializeField] private Vector3 attackEffectOffset;
+    [SerializeField] private float[] skillValueArray;
+    [SerializeField] private float[] skillCoolTimeArray;
+    [SerializeField] private float[] skillManaArray;
+    [SerializeField] private float shieldDuration;
     public bool CoolTimeLimit { get; set; }
     public float MaxHp
     { 
@@ -236,6 +242,7 @@ public class Player : MonoBehaviour
         skeletonAnimation = GetComponent<SkeletonAnimation>();
         flip = transform.localScale;
         skeletonAnimation.AnimationState.SetAnimation(0, "Idle", true);
+        attackEffect.transform.position = boss.transform.position + attackEffectOffset;
     }
     private void Start()
     {
@@ -278,6 +285,7 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        attackEffect.transform.position = boss.transform.position + attackEffectOffset;
         if (isInvincibility || isInpacable)
         {
             return;
@@ -324,9 +332,9 @@ public class Player : MonoBehaviour
                     Debug.Log("마나가 부족합니다!");
                     break;
                 }
-                DecreaseMp(5);
+                DecreaseMp(skillManaArray[0]);
                 StartCoroutine(Co_Skill_Barrier());
-                StartCoroutine(Co_SkillCoolTime(0, 15));
+                StartCoroutine(Co_SkillCoolTime(0, skillCoolTimeArray[0]));
                 break;
             case 1:
                 if (currentMp < 2)
@@ -334,9 +342,9 @@ public class Player : MonoBehaviour
                     Debug.Log("마나가 부족합니다!");
                     break;
                 }
-                DecreaseMp(2);
-                StartCoroutine(Co_Skill_Heal(10));
-                StartCoroutine(Co_SkillCoolTime(1, 10));
+                DecreaseMp(skillManaArray[1]);
+                StartCoroutine(Co_Skill_Heal(skillValueArray[1]));
+                StartCoroutine(Co_SkillCoolTime(1, skillCoolTimeArray[1]));
                 break;
             case 2:
                 skillRangeArray[2].SetActive(!skillRangeArray[2].activeSelf);
@@ -346,17 +354,17 @@ public class Player : MonoBehaviour
                     {
                         Debug.Log("마나가 부족합니다!");
                         skillRangeArray[2].SetActive(false);
-                        rageEffect.Pause();
+                        rageEffect.Stop();
                         break;
                     }
-                    DecreaseMp(3);
+                    DecreaseMp(skillManaArray[2]);
                     StartCoroutine(Co_Skill_Rage());
                 }
                 else
                 {
-                    rageEffect.Pause();
+                    rageEffect.Stop();
                 }
-                StartCoroutine(Co_SkillCoolTime(2, 1));
+                StartCoroutine(Co_SkillCoolTime(2, skillCoolTimeArray[2]));
                 break;
             case 3:
                 if (currentMp < 5)
@@ -364,13 +372,13 @@ public class Player : MonoBehaviour
                     Debug.Log("마나가 부족합니다!");
                     break;
                 }
-                DecreaseMp(1);
+                DecreaseMp(skillManaArray[3]);
                 StartCoroutine(Co_Skill_Attack());
                 if (CoolTimeLimit)
                 {
                     break;
                 }
-                StartCoroutine(Co_SkillCoolTime(3, 5));
+                StartCoroutine(Co_SkillCoolTime(3, skillCoolTimeArray[3]));
                 break;
             default:
                 break;
@@ -384,16 +392,17 @@ public class Player : MonoBehaviour
     }
     private IEnumerator Co_Skill_Barrier()
     {
-        PlayerAnimation(1);
+        skeletonAnimation.AnimationState.SetAnimation(0, "skill-Y", false);
+        skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 2f);
         yield return new WaitForSeconds(1f);
         foreach (var item in barrierList)
         {
-            item.CommonStatus.Shield = 10;
+            item.CommonStatus.Shield = item.CommonStatus.MaxHp * skillValueArray[0] / 100;
             item.ShieldEffect.Play();
         }
-        Shield = 10;
+        Shield = maxHp * skillValueArray[0] / 100;
         shieldEffect.Play();
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(shieldDuration);
         foreach (var item in barrierList)
         {
             item.CommonStatus.Shield = 0;
@@ -403,7 +412,8 @@ public class Player : MonoBehaviour
     }
     private IEnumerator Co_Skill_Heal(float value)
     {
-        PlayerAnimation(1);
+        skeletonAnimation.AnimationState.SetAnimation(0, "skill-G", false);
+        skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 2f);
         yield return new WaitForSeconds(1f);
         foreach (var item in healList)
         {
@@ -423,7 +433,8 @@ public class Player : MonoBehaviour
     }
     private IEnumerator Co_Skill_Rage()
     {
-        PlayerAnimation(1);
+        skeletonAnimation.AnimationState.SetAnimation(0, "skill-R", false);
+        skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 2f);
         rageEffect.Play();
         yield return new WaitForSeconds(1f);
         while (skillRangeArray[2].activeSelf)
@@ -433,12 +444,12 @@ public class Player : MonoBehaviour
             {
                 break;
             }
-            DecreaseMp(2);
+            DecreaseMp(skillManaArray[2]);
             if(currentMp <= 0)
             {
                 Debug.Log("마나가 부족하여 스킬이 비활성화 됩니다.");
                 skillRangeArray[2].SetActive(false);
-                rageEffect.Pause();
+                rageEffect.Stop();
             }
         }
     }
@@ -446,11 +457,17 @@ public class Player : MonoBehaviour
     {
         if (isIn)
         {
-            unit.CommonStatus.CurrentAttackDamage += unit.CommonStatus.AttackDamage * 10 / 100;
+            unit.CommonStatus.CurrentAttackDamage += unit.CommonStatus.AttackDamage * skillValueArray[2] / 100;
+            if (unit.RageEffect.isPlaying)
+            {
+                return;
+            }
+            unit.RageEffect.Play();
         }
         else
         {
             unit.CommonStatus.CurrentAttackDamage = unit.CommonStatus.AttackDamage;
+            unit.RageEffect.Stop();
         }
     }
     private IEnumerator Co_Skill_Attack()
@@ -463,7 +480,7 @@ public class Player : MonoBehaviour
             skeletonAnimation.AnimationState.SetAnimation(0, "Attack-apple", false);
             skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 1.167f);
             yield return new WaitForSeconds(1.167f);
-            InGameManager.Instance.Boss.CommonStatus.DecreaseHp(1);
+            InGameManager.Instance.Boss.CommonStatus.DecreaseHp(skillValueArray[3]);
             thing = "30% 확률로 사과를 뽑았다";
         }
         else if(rand > 30 && rand <= 70)
@@ -472,7 +489,7 @@ public class Player : MonoBehaviour
             skeletonAnimation.AnimationState.SetAnimation(0, "Attack-stone", false);
             skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 1.167f);
             yield return new WaitForSeconds(1.167f);
-            InGameManager.Instance.Boss.CommonStatus.DecreaseHp(2);
+            InGameManager.Instance.Boss.CommonStatus.DecreaseHp(skillValueArray[4]);
             thing = "40% 확률로 돌맹이를 뽑았다.";
         }
         else if(rand > 70)
@@ -481,7 +498,8 @@ public class Player : MonoBehaviour
             skeletonAnimation.AnimationState.SetAnimation(0, "Attack-bomb", false);
             skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 1.167f);
             yield return new WaitForSeconds(1.167f);
-            InGameManager.Instance.Boss.CommonStatus.DecreaseHp(3);
+            attackEffect.Play();
+            InGameManager.Instance.Boss.CommonStatus.DecreaseHp(skillValueArray[5]);
             thing = "30% 확률로 폭탄을 뽑았다.";
         }
         else

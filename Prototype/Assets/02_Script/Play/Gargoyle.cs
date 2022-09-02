@@ -9,6 +9,7 @@ public class Gargoyle : MonoBehaviour
 {
     private bool isShout;
     private bool isLaser;
+    private bool laserOn;
     [SerializeField] private GameObject veneer;
     [SerializeField] private float veneerDuration;
     [SerializeField] private float dotInterval;
@@ -34,6 +35,8 @@ public class Gargoyle : MonoBehaviour
     [SerializeField] private ParticleSystem[] veneerEffect;
     [SerializeField] private ParticleSystem earthquakeEffect;
     private bool isLaserOn = false;
+    private bool isTracking = false;
+    Vector3 trackingOffset = new Vector3(0, 2.5f, 0);
     private void Shouting()
     {
         skeletonAnimation.AnimationState.SetAnimation(0, "earthquake", false);
@@ -48,7 +51,6 @@ public class Gargoyle : MonoBehaviour
         foreach (var item in InGameManager.Instance.Units)
         {
             item.CommonStatus.SlowDown(true);
-            InGameManager.Instance.Player.SlowDown(true);
         }
     }
     private void AttackVeneer()
@@ -56,7 +58,10 @@ public class Gargoyle : MonoBehaviour
         if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(InGameManager.Instance.Player.gameObject))
         {
             InGameManager.Instance.Player.DecreaseHp(dotDamage);
-           // InGameManager.Instance.Player.SlowDown(false, slowDownValue);
+            foreach (var item in InGameManager.Instance.Units)
+            {
+                item.CommonStatus.SlowDown(true);
+            }
             return;
         }
         InGameManager.Instance.Player.SlowDown(true);
@@ -110,23 +115,31 @@ public class Gargoyle : MonoBehaviour
     private IEnumerator Co_Tracking()
     {
         // -6.144 7.316544
-        Vector3 trackingOffset = new Vector3(0,2.5f,0);
         float timer = 0f;
         SpriteRenderer obj = trackingObj.GetChild(0).GetComponent<SpriteRenderer>();
+        SpriteRenderer sprite = trackingObj.GetComponent<SpriteRenderer>();
         while (true)
         {
             yield return null;
-            trackingObj.position = InGameManager.Instance.Player.transform.position + trackingOffset;
             timer += Time.deltaTime;
             if(timer >= trackingInterval)
             {
+                sprite.DOColor(new Color(1, 0.55f, 0.55f), 2f);
+                yield return new WaitForSeconds(2f);
                 obj.enabled = true;
-                yield return new WaitForSeconds(trackingDelay);
+                isTracking = true;
+                obj.transform.DOScaleY(7.2598f, 2f);
+                obj.transform.DOLocalMoveY(-6.03f, 2f);
+                yield return new WaitForSeconds(2f);
                 obj.enabled = false;
+                obj.transform.DOScaleY(0.2f, 0f);
+                obj.transform.DOLocalMoveY(-2.5f, 0f);
                 trackingEffect.Play();
                 AttackTracking(1, trackingDamage);
                 yield return new WaitForSeconds(0.7f);
+                sprite.color = Color.white;
                 timer = 0f;
+                isTracking = false;
             }
         }
     }
@@ -194,6 +207,7 @@ public class Gargoyle : MonoBehaviour
     {
         Text text = shieldObj.GetComponentInChildren<Text>();
         Image image = shieldObj.transform.GetChild(0).GetComponent<Image>();
+        print(image.gameObject.name);
         float timer = shieldDuration;
         yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.MaxHp * 90 / 100);
         InGameManager.Instance.Boss.isPattern = true;
@@ -213,7 +227,8 @@ public class Gargoyle : MonoBehaviour
         {
             timer -= Time.deltaTime;
             text.text = string.Format("실드 제한 시간 : {0:0}초", System.Math.Ceiling(timer));
-            image.fillAmount = 1 / shieldValue * InGameManager.Instance.Boss.CommonStatus.Shield;
+            image.fillAmount = 1 / shieldValue * InGameManager.Instance.Boss.CommonStatus.CurrentShield;
+            print(1 / shieldValue * InGameManager.Instance.Boss.CommonStatus.CurrentShield);
             if (InGameManager.Instance.Boss.CommonStatus.Shield <= 0)
             {
                 InGameManager.Instance.Boss.CommonStatus.Shield = 0;
@@ -237,9 +252,11 @@ public class Gargoyle : MonoBehaviour
     }
     private IEnumerator Co_Laser()
     {
+        var sprite = laserObj.GetComponent<SpriteRenderer>();
         while (true)
         {
-            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Alpha2));
+            //yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Alpha2));
+            yield return new WaitUntil(() => laserOn);
             isLaser = true;
             InGameManager.Instance.Boss.isPattern = true;
             skeletonAnimation.AnimationState.SetAnimation(0, "Idle-2", false);
@@ -247,9 +264,11 @@ public class Gargoyle : MonoBehaviour
             isLaserOn = true;
             stone.enabled = true;
             yield return new WaitForSeconds(laserDelay);
+            sprite.enabled = false;
             isLaserOn = false;
-            stone.transform.DOLocalMoveY(2.5f, 0.5f);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
+            stone.transform.DOLocalMoveY(2.5f, 0.3f);
+            yield return new WaitForSeconds(0.8f);
             stone.DOColor(Color.clear, 0.3f);
             yield return new WaitForSeconds(0.3f);
             stone.enabled = false;
@@ -257,6 +276,7 @@ public class Gargoyle : MonoBehaviour
             stone.transform.localPosition = new Vector3(0, 13); 
             bool isAvoid = AttackPlayer(2, laserDamage, true);
             laserObj.gameObject.SetActive(false);
+            sprite.enabled = true;
             if (isAvoid)
             {
                 print("보스 스턴");
@@ -278,6 +298,7 @@ public class Gargoyle : MonoBehaviour
                 InGameManager.Instance.Boss.isPattern = false;
             }
             isLaser = false;
+            laserOn = false;
         }
     }
     private void Awake()
@@ -300,6 +321,10 @@ public class Gargoyle : MonoBehaviour
             laserObj.position = new Vector3(InGameManager.Instance.Player.transform.position.x, laserObj.position.y);
             stone.transform.position = new Vector3(laserObj.position.x, stone.transform.position.y);
         }
+        if (!isTracking)
+        {
+            trackingObj.position = InGameManager.Instance.Player.transform.position + trackingOffset;
+        }
     }
     private void Update()
     {
@@ -307,5 +332,13 @@ public class Gargoyle : MonoBehaviour
         {
             Shouting();
         }
+    }
+    public void Test_BtnEvt_Shout()
+    {
+        Shouting();
+    }
+    public void Test_BtnEvt_Laser()
+    {
+        laserOn = true;
     }
 }

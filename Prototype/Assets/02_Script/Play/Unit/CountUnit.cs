@@ -9,7 +9,8 @@ public class CountUnit : MonoBehaviour
         Warrior,
         Shielder,
         Taoist,
-        Mechanic
+        Mechanic,
+        Elementalist
     }
     private int currentAttackCount;
     //private Boss boss;
@@ -36,10 +37,13 @@ public class CountUnit : MonoBehaviour
             case EUnitKind.Mechanic:
                 Skill_Mechanic();
                 break;
+            case EUnitKind.Elementalist:
+                Skill_Warrior();
+                break;
             default:
                 break;
         }
-    }
+    }       
     private void Skill_Warrior() //전사 스킬
     {
         InGameManager.Instance.Boss.CommonStatus.DecreaseHp(skillValue);

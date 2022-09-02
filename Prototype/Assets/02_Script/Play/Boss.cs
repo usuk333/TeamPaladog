@@ -112,7 +112,6 @@ public class Boss : MonoBehaviour
     }
     private void Awake()//임시로 초기화
     {
-        commonStatus.CurrentHp = commonStatus.MaxHp;
         for (int i = 0; i < arrayCount; i++)
         {
             collisionsArray.Add(new List<GameObject>());
@@ -129,6 +128,8 @@ public class Boss : MonoBehaviour
     }
     private void Start()
     {
+        commonStatus.CurrentHp = commonStatus.MaxHp;
+        commonStatus.CurrentAttackDamage = commonStatus.AttackDamage;
         StartCoroutine(Co_UpdateUnitReference());
         StartCoroutine(Co_UpdateState());
     }

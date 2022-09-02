@@ -136,7 +136,7 @@ public class Slime : MonoBehaviour
                         break;
                     case 3:
                         direction = Vector3.zero;
-                        skeletonAnimation.Skeleton.SetColor(Color.red);
+                        StartCoroutine(Co_WarningExplosion());
                         yield return new WaitForSeconds(2f);
                         ExplosionSlime();
                         Debug.Log("Æø¹ß");
@@ -150,6 +150,33 @@ public class Slime : MonoBehaviour
             }
             yield return null;
         }      
+    }
+    private IEnumerator Co_WarningExplosion()
+    {
+        int count = 0;
+        float duration = 0.5f;
+        float smoothness = 0.02f;
+        float timer = 0;
+        float increment = smoothness / duration;
+        while(count < 2)
+        {
+            while (timer < 0.5f)
+            {
+                skeletonAnimation.Skeleton.SetColor(Color.Lerp(Color.white, new Color(1, 0.45f, 0.45f), timer));
+                timer += increment;
+                yield return new WaitForSeconds(smoothness);
+            }
+            timer = 0;
+            while (timer < 0.5f)
+            {
+                skeletonAnimation.Skeleton.SetColor(Color.Lerp(new Color(1, 0.45f, 0.45f), Color.white, timer));
+                timer += increment;
+                yield return new WaitForSeconds(smoothness);
+            }
+            timer = 0;
+            count++;
+            yield return null;
+        }
     }
     
     private void OnTriggerEnter2D(Collider2D collision)

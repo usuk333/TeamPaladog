@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class FallingObjectPool : MonoBehaviour
 {
+    [SerializeField] private float spawnInterval;
     [SerializeField] private GameObject fallingObject;
     [SerializeField] private float spawnCount;
+    public float spawnIntervalMin;
+    public float spawnIntervalMax;
+    public float damage;
     private Queue<GameObject> fallingQueue = new Queue<GameObject>();
     public void ReturnFallingObj(GameObject obj)
     {
@@ -27,6 +31,7 @@ public class FallingObjectPool : MonoBehaviour
         obj.gameObject.SetActive(false);
         obj.transform.position = transform.position;
         obj.transform.SetParent(transform);
+        obj.GetComponent<FallingObject>().Damage = damage;
         return obj;
     }
     private GameObject GetFallingObj()
@@ -53,16 +58,12 @@ public class FallingObjectPool : MonoBehaviour
                 var obj = GetFallingObj();
                 obj.SetActive(true);
             }
-            float interval = Random.Range(0, 5);
-            yield return new WaitForSeconds(interval);
+            yield return new WaitForSeconds(Random.Range(spawnIntervalMin,spawnIntervalMax));
         }
-    }
-    private void Awake()
-    {
-        InitializeObject();
     }
     private void Start()
     {
+        InitializeObject();
         StartCoroutine(Co_Falling());
     }
 
