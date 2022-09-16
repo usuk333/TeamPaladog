@@ -12,6 +12,6 @@ public class InGameUIManager : MonoBehaviour
 
     public void BtnGoMain()
     {
-        LoadingSceneController.LoadScene("StageSection");
+        LoadingSceneController.LoadScene("Test_StageSelect");
     }    
 }

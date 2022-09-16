@@ -48,8 +48,16 @@ public class CommonStatus
         }
         if(currentShield > 0)
         {
-            currentShield -= damage;
-            return;
+            if(damage > currentShield)
+            {
+                damage = damage - currentShield;
+                currentShield -= currentShield;
+            }
+            else
+            {
+                currentShield -= damage;
+                return;
+            }
         }
         else
         {

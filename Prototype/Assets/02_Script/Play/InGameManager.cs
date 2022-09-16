@@ -3,10 +3,54 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public struct BossStatus
+{
+    public float damage;
+    public float hp;
+    public float attackSpeed;
+
+    public BossStatus(float damage, float hp, float attackSpeed)
+    {
+        this.damage = damage;
+        this.hp = hp;
+        this.attackSpeed = attackSpeed;
+    }
+}
+public struct BeastStatus
+{
+    public float firstPatternDamage;
+    public float firstPatternMinTime;
+    public float firstPatternMaxTime;
+    public float secondPatternDamage;
+    public float secondPatternMinTime;
+    public float secondPatternMaxTime;
+    public float thirdPatternDamage;
+    public float thirdPatternMinTime;
+    public float thirdPatternMaxTime;
+    public float forthPatternPercentage;
+    public float forthPatternAtkValue;
+    public float forthPatternAtksValue;
+
+    public BeastStatus(float firstPatternDamage, float firstPatternMinTime, float firstPatternMaxTime, float secondPatternDamage, float secondPatternMinTime, float secondPatternMaxTime, float thirdPatternDamage, float thirdPatternMinTime, float thirdPatternMaxTime, float forthPatternPercentage, float forthPatternAtkValue, float forthPatternAtksValue)
+    {
+        this.firstPatternDamage = firstPatternDamage;
+        this.firstPatternMinTime = firstPatternMinTime;
+        this.firstPatternMaxTime = firstPatternMaxTime;
+        this.secondPatternDamage = secondPatternDamage;
+        this.secondPatternMinTime = secondPatternMinTime;
+        this.secondPatternMaxTime = secondPatternMaxTime;
+        this.thirdPatternDamage = thirdPatternDamage;
+        this.thirdPatternMinTime = thirdPatternMinTime;
+        this.thirdPatternMaxTime = thirdPatternMaxTime;
+        this.forthPatternPercentage = forthPatternPercentage;
+        this.forthPatternAtkValue = forthPatternAtkValue;
+        this.forthPatternAtksValue = forthPatternAtksValue;
+    }
+}
 public class InGameManager : MonoBehaviour
 {
     private static InGameManager instance; //인게임씬 클래스들이 접근 용이하도록 스태틱으로 사용
-
+    private int difficulty;
     private float timerSecond;
     private int timerMinute;
     [SerializeField] private Text timer;
@@ -65,16 +109,8 @@ public class InGameManager : MonoBehaviour
     }
     private void Awake()
     {
-        if(instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-        DontDestroyOnLoad(instance);
-       // Instantiate(BossManager.BossSection);
+        instance = this;
+        InitBossStatus();
         units = FindObjectsOfType<Unit>();
         Unit unit;
         for (int i = 0; i < units.Length; i++) //이 부분 추후에 함수로 빼기 (유닛리스트 탱커 ~ 원거리 순으로 정렬)
@@ -109,6 +145,75 @@ public class InGameManager : MonoBehaviour
         player = FindObjectOfType<Player>();
         StartCoroutine(Co_InitializeInGameData());
         boss = FindObjectOfType<Boss>();
+    }
+    private void InitBossStatus()
+    {
+        Instantiate(BossManager.BossSection);
+        difficulty = (int)BossManager.difficulty;
+        boss = FindObjectOfType<Boss>();
+        if (boss.GetComponent<Beast>())
+        {
+            InitBeast();
+        }
+        else if (boss.GetComponent<Gargoyle>())
+        {
+
+        }
+        else if (boss.GetComponent<Mushroom>())
+        {
+
+        }
+        else if (boss.GetComponent<Inside>())
+        {
+
+        }
+    }
+    private void InitBossUsualStatus(BossStatus bs)
+    {
+        boss.CommonStatus.AttackDamage = bs.damage;
+        boss.CommonStatus.MaxHp = bs.hp;
+        boss.CommonStatus.AttackSpeed = bs.attackSpeed;
+    }
+    private void InitBeast()
+    {
+        var beast = boss.GetComponent<Beast>();
+        BossStatus bossStatus;
+        BeastStatus beastStatus;
+        switch (difficulty)
+        {
+            case 0:
+                bossStatus = new BossStatus(100, 100000, 2);
+                beastStatus = new BeastStatus(800, 25, 30, 500, 13, 23, 50, 5, 10, 10, 1.2f, 1.1f);
+                InitBossUsualStatus(bossStatus);
+                beast.InitStatus(beastStatus);
+                break; 
+            case 1:
+                bossStatus = new BossStatus(210, 130000, 2);
+                beastStatus = new BeastStatus(1200, 25, 30, 500, 12, 22, 70, 5, 10, 15, 20 , 1.1f);
+                InitBossUsualStatus(bossStatus);
+                beast.InitStatus(beastStatus);
+                break;
+            case 2:
+                bossStatus = new BossStatus(300, 175000, 2);
+                beastStatus = new BeastStatus(1600, 25, 30, 800, 11, 21, 90, 5, 10, 20, 30, 0.2f);
+                InitBossUsualStatus(bossStatus);
+                beast.InitStatus(beastStatus);
+                break;
+            default:
+                break;
+        }
+    }
+    private void InitGargoyle()
+    {
+
+    }
+    private void InitMushroom()
+    {
+
+    }
+    private void InitInside()
+    {
+
     }
     private void Start()
     {

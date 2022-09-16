@@ -33,9 +33,13 @@ public class Inside : MonoBehaviour
     [SerializeField] private float decreaseMpPercent;
     [SerializeField] private Image sceneMoveImg;
     [SerializeField] private Image explosionImg;
-    private int[] insidePercentage = { 95, 40 };
+    [SerializeField] private int minExplosionTime;
+    [SerializeField] private int maxExplosionTime;
+    [SerializeField] private float manaRegen;
+    [SerializeField] private int[] insidePercentage = { 95, 40 };
     private Color originColor;
     private SkeletonAnimation skeletonAnimation;
+    [SerializeField] private ParticleSystem manaExplosionEffect;
     public List<InsideFallingObj> CastedFallingObjList { get => castedFallingObjList; set => castedFallingObjList = value; }
 
     public void MoveToInside()
@@ -138,7 +142,7 @@ public class Inside : MonoBehaviour
         float mpRegenerative = InGameManager.Instance.Player.MpRegenerative;
         while (true)
         {
-            if(patternCount > 1)
+            if(patternCount > insidePercentage.Length - 1)
             {
                 yield break;
             }
@@ -165,8 +169,10 @@ public class Inside : MonoBehaviour
                     insideMoveObj.gameObject.SetActive(false);
                     insideHpBar.gameObject.SetActive(true);
                     sceneMoveImg.gameObject.SetActive(true);
+                    sceneMoveImg.DOColor(Color.clear, 2f);
                     yield return new WaitForSeconds(2f);
                     sceneMoveImg.gameObject.SetActive(false);
+                    sceneMoveImg.color = Color.black;
 
                     break;
                 }
@@ -178,7 +184,7 @@ public class Inside : MonoBehaviour
                 Debug.Log("플레이어 사망");
                 yield break;
             }
-            InGameManager.Instance.Player.MpRegenerative = mpRegenerative * 5;
+            InGameManager.Instance.Player.MpRegenerative = mpRegenerative * manaRegen;
             fallingObjectDummysParent.gameObject.SetActive(true);
             //마나 재생량 5배 증가
             //InGameManager.Instance.StartAllUnitCoroutines();          
@@ -187,12 +193,10 @@ public class Inside : MonoBehaviour
             InGameManager.Instance.Player.MpRegenerative = mpRegenerative;
             InGameManager.Instance.Boss = GetComponent<Boss>();
             InGameManager.Instance.Player.CoolTimeLimit = false;
-            if (patternCount++ > 1)
-            {
-                yield break;
-            }
+            patternCount++;
             Debug.Log(patternCount);
             sceneMoveImg.gameObject.SetActive(true);
+            sceneMoveImg.DOColor(Color.clear, 2f);
             MoveToOrigin();
             insidePortal.gameObject.SetActive(false);
             skeletonAnimation.Skeleton.SetColor(originColor); 
@@ -202,6 +206,7 @@ public class Inside : MonoBehaviour
             fallingObjectDummysParent.gameObject.SetActive(false);
             yield return new WaitForSeconds(2f);
             sceneMoveImg.gameObject.SetActive(false);
+            sceneMoveImg.color = Color.black;
             dummyBoss.CommonStatus.CurrentHp = dummyBoss.CommonStatus.MaxHp;
             yield return new WaitForSeconds(3f);
             InGameManager.Instance.Boss.isPattern = false;
@@ -215,8 +220,8 @@ public class Inside : MonoBehaviour
             {
                 if(castedFallingObjList[i].gameObject != fallingObjects[i])
                 {
-                    explosionImg.DOColor(Color.white, 2f);
-                    yield return new WaitForSeconds(2f);
+                    explosionImg.DOColor(Color.white, 0.8f);
+                    yield return new WaitForSeconds(0.8f);
                     explosionImg.color = Color.clear;
                     KillAllUnitAndPlayer();
                     isCastSucess = false;
@@ -252,7 +257,7 @@ public class Inside : MonoBehaviour
             }
             if (explosionCount < 4)
             {
-                int rand = Random.Range(5, 10);
+                int rand = Random.Range(minExplosionTime, maxExplosionTime);
                 yield return new WaitForSeconds(rand);
                 InGameManager.Instance.Boss.isPattern = true;
                 skeletonAnimation.AnimationState.SetAnimation(0, "Skill", false);
@@ -272,15 +277,19 @@ public class Inside : MonoBehaviour
                     }
                     yield return null;
                 }
-                manaExplosion.position = InGameManager.Instance.Units[index].transform.position;
+                manaExplosion.position = new Vector3(InGameManager.Instance.Units[index].transform.position.x,manaExplosion.position.y);
                 yield return new WaitForSeconds(manaExplosionDuration);
+                manaExplosionEffect.Play();
+                yield return new WaitForSeconds(0.4f);
                 InGameManager.Instance.Boss.isPattern = false;
                 ManaExplosion();
             }
             else
             {
-                manaExplosion.position = InGameManager.Instance.Player.transform.position;
+                manaExplosion.position = new Vector3(InGameManager.Instance.Player.transform.position.x, manaExplosion.position.y);
                 yield return new WaitForSeconds(manaExplosionDuration);
+                manaExplosionEffect.Play();
+                yield return new WaitForSeconds(0.25f);
                 InGameManager.Instance.Boss.isPattern = false;
                 ManaExplosion();
             }

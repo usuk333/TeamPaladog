@@ -27,6 +27,7 @@ public class Boss : MonoBehaviour
     [SerializeField] private CommonStatus commonStatus = new CommonStatus();
     [SerializeField] private float damageDelay;
     [SerializeField] private float attackAnimDelay;
+    [SerializeField] private ParticleSystem attackEffect;
     public SkeletonAnimation skeletonAnimation;
     public CommonStatus CommonStatus { get => commonStatus; set => commonStatus = value; }
     public List<List<GameObject>> CollisionsArray { get => collisionsArray; set => collisionsArray = value; }
@@ -96,6 +97,10 @@ public class Boss : MonoBehaviour
                     {
                         skeletonAnimation.AnimationState.AddAnimation(0, "idle", true, attackAnimDelay);
                     }
+                    if (attackEffect != null)
+                    {
+                        attackEffect.Play();
+                    }
                     yield return new WaitForSeconds(damageDelay);
                     Attack();
                     eBossState = EBossState.Idle;
@@ -107,7 +112,6 @@ public class Boss : MonoBehaviour
     }
     private void Awake()//임시로 초기화
     {
-        commonStatus.CurrentHp = commonStatus.MaxHp;
         for (int i = 0; i < arrayCount; i++)
         {
             collisionsArray.Add(new List<GameObject>());
@@ -124,7 +128,16 @@ public class Boss : MonoBehaviour
     }
     private void Start()
     {
+        commonStatus.CurrentHp = commonStatus.MaxHp;
+        commonStatus.CurrentAttackDamage = commonStatus.AttackDamage;
         StartCoroutine(Co_UpdateUnitReference());
         StartCoroutine(Co_UpdateState());
+    }
+    private void LateUpdate()
+    {
+        if(attackEffect != null)
+        {
+            attackEffect.transform.position = currentUnit.transform.position;
+        }
     }
 }

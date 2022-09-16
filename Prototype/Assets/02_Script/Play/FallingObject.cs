@@ -7,10 +7,17 @@ public class FallingObject : MonoBehaviour
     [SerializeField] private FallingObjectPool fallingObjectPool;
     [SerializeField] private float fallingSpeed;
     [SerializeField] private float damage;
+    [SerializeField] private SpriteRenderer sprite;
+    [SerializeField] private Sprite[] spriteArray;
+
+    public float Damage { get => damage; set => damage = value; }
+
     private void OnEnable()
     {
         fallingObjectPool = GetComponentInParent<FallingObjectPool>();
         transform.SetParent(null);
+        int rand = Random.Range(0, spriteArray.Length);
+        sprite.sprite = spriteArray[rand];
     }
     private void Update()
     {
