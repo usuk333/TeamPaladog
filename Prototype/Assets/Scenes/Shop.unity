@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 28603896}
   - component: {fileID: 28603895}
   m_Layer: 5
-  m_Name: TLvup
+  m_Name: WLvup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -778,7 +778,7 @@ GameObject:
   - component: {fileID: 65509550}
   - component: {fileID: 65509549}
   m_Layer: 5
-  m_Name: TankerPanel
+  m_Name: WarriorPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1074,7 +1074,7 @@ GameObject:
   - component: {fileID: 175465920}
   - component: {fileID: 175465919}
   m_Layer: 5
-  m_Name: TATKup
+  m_Name: WATKup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1875,13 +1875,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 1441519391}
+        m_TargetAssemblyTypeName: SettingBtn, Assembly-CSharp
+        m_MethodName: settingbtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3158,7 +3158,7 @@ GameObject:
   - component: {fileID: 494765454}
   - component: {fileID: 494765453}
   m_Layer: 5
-  m_Name: Status_TankerPoint
+  m_Name: Status_WarriorPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3183,7 +3183,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 578.66003, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 68}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &494765453
@@ -3675,7 +3675,7 @@ GameObject:
   - component: {fileID: 512617362}
   - component: {fileID: 512617361}
   m_Layer: 5
-  m_Name: FLvup
+  m_Name: ALvup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4023,7 +4023,7 @@ GameObject:
   - component: {fileID: 540743075}
   - component: {fileID: 540743074}
   m_Layer: 5
-  m_Name: TLv
+  m_Name: WLv
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4131,7 +4131,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1113.3201, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 68}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &558680365
@@ -5035,7 +5035,7 @@ GameObject:
   - component: {fileID: 685481174}
   - component: {fileID: 685481173}
   m_Layer: 5
-  m_Name: TI
+  m_Name: WI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5203,22 +5203,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Userid: NaIxowYCsaSqdaYaWtWbIYErkqM2
-  tShielder_level: {fileID: 540743074}
-  tWarrior_level: {fileID: 980766169}
+  tAssassin_level: {fileID: 980766169}
+  tWarrior_level: {fileID: 540743074}
   tArchor_level: {fileID: 1049882642}
   tMagician_level: {fileID: 1705587490}
-  tShielder_EXP: {fileID: 1311206047}
-  tWarrior_EXP: {fileID: 929567586}
+  tAssassin_EXP: {fileID: 929567586}
+  tWarrior_EXP: {fileID: 1311206047}
   tArchor_EXP: {fileID: 1854377192}
   tMagician_EXP: {fileID: 629596646}
-  tTankerPoints: {fileID: 1604236552}
-  tWarriorPoints: {fileID: 775268213}
+  tWarriorPoints: {fileID: 1604236552}
+  tAssassinPoints: {fileID: 775268213}
   tADPoints: {fileID: 998994020}
   tMagePoints: {fileID: 1769540598}
-  tShielderHP: {fileID: 879244361}
-  tShielderATK: {fileID: 1511178872}
-  tWarriorHP: {fileID: 821290536}
-  tWarriorATK: {fileID: 1175149720}
+  tAssassinHP: {fileID: 821290536}
+  tAssassinATK: {fileID: 1175149720}
+  tWarriorHP: {fileID: 879244361}
+  tWarriorATK: {fileID: 1511178872}
   tArchorHP: {fileID: 658813830}
   tArchorATK: {fileID: 516842703}
   tMagicianHP: {fileID: 1810157970}
@@ -5360,7 +5360,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1380.9801, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 68}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &771564398
@@ -5683,7 +5683,7 @@ GameObject:
   - component: {fileID: 819129392}
   - component: {fileID: 819129391}
   m_Layer: 5
-  m_Name: FI
+  m_Name: AI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5758,7 +5758,7 @@ GameObject:
   - component: {fileID: 821290535}
   - component: {fileID: 821290536}
   m_Layer: 5
-  m_Name: FHp
+  m_Name: AHp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5992,7 +5992,7 @@ GameObject:
   - component: {fileID: 879244362}
   - component: {fileID: 879244361}
   m_Layer: 5
-  m_Name: THp
+  m_Name: WHp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6790,7 +6790,7 @@ GameObject:
   - component: {fileID: 980766168}
   - component: {fileID: 980766169}
   m_Layer: 5
-  m_Name: FLv
+  m_Name: ALv
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7184,7 +7184,7 @@ GameObject:
   - component: {fileID: 1018261879}
   - component: {fileID: 1018261878}
   m_Layer: 5
-  m_Name: FName
+  m_Name: AName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7695,7 +7695,7 @@ GameObject:
   - component: {fileID: 1130148395}
   - component: {fileID: 1130148394}
   m_Layer: 5
-  m_Name: FighterPanel
+  m_Name: AssassinPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7778,7 +7778,7 @@ GameObject:
   - component: {fileID: 1175149721}
   - component: {fileID: 1175149720}
   m_Layer: 5
-  m_Name: FATK
+  m_Name: AATK
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10122,7 +10122,7 @@ GameObject:
   - component: {fileID: 1425404181}
   - component: {fileID: 1425404180}
   m_Layer: 5
-  m_Name: FATKup
+  m_Name: AATKup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10439,6 +10439,49 @@ RectTransform:
   m_AnchoredPosition: {x: -209.52, y: 79}
   m_SizeDelta: {x: 181, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1441519390
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1441519392}
+  - component: {fileID: 1441519391}
+  m_Layer: 0
+  m_Name: SettingBtn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1441519391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441519390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48afae57b4ba0c6469d48c100fc5eea7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1441519392
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441519390}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1101.4746, y: 927.07294, z: 532.5097}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1458850068
 GameObject:
   m_ObjectHideFlags: 0
@@ -10488,7 +10531,7 @@ GameObject:
   - component: {fileID: 1511178873}
   - component: {fileID: 1511178872}
   m_Layer: 5
-  m_Name: TATK
+  m_Name: WATK
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10570,7 +10613,7 @@ GameObject:
   - component: {fileID: 1537216984}
   - component: {fileID: 1537216983}
   m_Layer: 5
-  m_Name: Status_WarriorPoint
+  m_Name: Status_AssassinPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10595,7 +10638,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 845.66003, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 68}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1537216983
@@ -11132,7 +11175,7 @@ GameObject:
   - component: {fileID: 1614440921}
   - component: {fileID: 1614440920}
   m_Layer: 5
-  m_Name: THPup
+  m_Name: WHPup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11549,7 +11592,7 @@ GameObject:
   - component: {fileID: 1656450132}
   - component: {fileID: 1656450131}
   m_Layer: 5
-  m_Name: TName
+  m_Name: WName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11702,7 +11745,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1673150643}
   m_Layer: 5
-  m_Name: Tanker
+  m_Name: Warrior
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12792,7 +12835,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 311, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 68}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1794509625
@@ -13097,7 +13140,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1840876916}
   m_Layer: 5
-  m_Name: Fighter
+  m_Name: Assassin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13635,7 +13678,7 @@ GameObject:
   - component: {fileID: 1919504075}
   - component: {fileID: 1919504074}
   m_Layer: 5
-  m_Name: FHPup
+  m_Name: AHPup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14158,13 +14201,21 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5017467332373750118, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1441519390}
+    - target: {fileID: 5017467332373750118, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5017467333559114353, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
       propertyPath: m_Name
       value: SettingPanel
       objectReference: {fileID: 0}
     - target: {fileID: 5017467333559114353, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5017467333559114358, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
       propertyPath: m_Pivot.x

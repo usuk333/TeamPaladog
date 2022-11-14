@@ -6,6 +6,10 @@ public class SettingBtn : MonoBehaviour
 {
     private GameObject settingpanel;
 
+    private void Awake()
+    {
+        settingpanel = GameObject.Find("Canvas").transform.Find("SettingPanel").gameObject;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -23,5 +27,10 @@ public class SettingBtn : MonoBehaviour
         settingpanel.SetActive(true);
 
 
+    }
+
+    public void settingclosebtn()
+    {
+        settingpanel.SetActive(false);
     }
 }

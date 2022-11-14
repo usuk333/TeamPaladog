@@ -9,6 +9,7 @@ TagManager:
   - PLAYER
   - UNIT
   - WALL
+  - Setting
   layers:
   - Default
   - TransparentFX

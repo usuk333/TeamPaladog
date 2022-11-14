@@ -34,8 +34,8 @@ public class ShopManager : MonoBehaviour
     private string Gold = string.Empty;
 
     //유닛 레벨
-    private string Shielder_level = string.Empty;
-    [SerializeField] private Text tShielder_level;
+    private string Assassin_level = string.Empty;
+    [SerializeField] private Text tAssassin_level;
     private string Warrior_level = string.Empty;
     [SerializeField] private Text tWarrior_level;
     private string Archor_level = string.Empty;
@@ -44,8 +44,8 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Text tMagician_level;
 
     //유닛 경험치
-    private string Shielder_EXP = string.Empty;
-    [SerializeField] private Text tShielder_EXP;
+    private string Assassin_EXP = string.Empty;
+    [SerializeField] private Text tAssassin_EXP;
     private string Warrior_EXP = string.Empty;
     [SerializeField] private Text tWarrior_EXP;
     private string Archor_EXP = string.Empty;
@@ -54,19 +54,19 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Text tMagician_EXP;
 
     //계열 포인트
-    private string TankerPoints = string.Empty;
-    [SerializeField] private TextMeshProUGUI tTankerPoints;
     private string WarriorPoints = string.Empty;
     [SerializeField] private TextMeshProUGUI tWarriorPoints;
+    private string AssassinPoints = string.Empty;
+    [SerializeField] private TextMeshProUGUI tAssassinPoints;
     private string ADPoints = string.Empty;
     [SerializeField] private TextMeshProUGUI tADPoints;
     private string MagePoints = string.Empty;
     [SerializeField] private TextMeshProUGUI tMagePoints;
 
-    private string ShielderHP = string.Empty;
-    [SerializeField] private Text tShielderHP;
-    private string ShielderATK = string.Empty;
-    [SerializeField] private Text tShielderATK;
+    private string AssassinHP = string.Empty;
+    [SerializeField] private Text tAssassinHP;
+    private string AssassinATK = string.Empty;
+    [SerializeField] private Text tAssassinATK;
 
     private string WarriorHP = string.Empty;
     [SerializeField] private Text tWarriorHP;
@@ -142,7 +142,7 @@ public class ShopManager : MonoBehaviour
             }
             else if (task.IsCompleted)
             {
-                Debug.Log("컴플릿떳음");
+                Debug.Log("INFO 컴플릿떳음");
                 snapshots = task.Result;
                 
             }
@@ -163,56 +163,56 @@ public class ShopManager : MonoBehaviour
         Gold = snapshots.Child("Gold").Value.ToString();
 
         //계열포인트
-        TankerPoints = snapshots.Child("Points").Child("TankerPoints").Value.ToString();
         WarriorPoints = snapshots.Child("Points").Child("WarriorPoints").Value.ToString();
+        AssassinPoints = snapshots.Child("Points").Child("AssassinPoints").Value.ToString();
         ADPoints = snapshots.Child("Points").Child("ADPoints").Value.ToString();
         MagePoints = snapshots.Child("Points").Child("MagePoints").Value.ToString();
 
         //유닛 레벨
-        Shielder_level = snapshot.Child("Shielder").Child("Shielder_Level").Value.ToString();
-        Warrior_level = snapshot.Child("Warrior").Child("Warrior_Level").Value.ToString();
-        Archor_level = snapshot.Child("Archor").Child("Archor_Level").Value.ToString();
-        Magician_level = snapshot.Child("Magician").Child("Magician_Level").Value.ToString();
+        Warrior_level = snapshot.Child("Warrior").Child("Level").Value.ToString();
+        Assassin_level = snapshot.Child("Assassin").Child("Level").Value.ToString();
+        Archor_level = snapshot.Child("Archor").Child("Level").Value.ToString();
+        Magician_level = snapshot.Child("Magician").Child("Level").Value.ToString();
 
         //유닛 경험치
-        Shielder_EXP = snapshot.Child("Shielder").Child("Shielder_EXP").Value.ToString();
-        Warrior_EXP = snapshot.Child("Warrior").Child("Warrior_EXP").Value.ToString();
-        Archor_EXP = snapshot.Child("Archor").Child("Archor_EXP").Value.ToString();
-        Magician_EXP = snapshot.Child("Magician").Child("Magician_EXP").Value.ToString();
+        Warrior_EXP = snapshot.Child("Warrior").Child("EXP").Value.ToString();
+        Assassin_EXP = snapshot.Child("Assassin").Child("EXP").Value.ToString();
+        Archor_EXP = snapshot.Child("Archor").Child("EXP").Value.ToString();
+        Magician_EXP = snapshot.Child("Magician").Child("EXP").Value.ToString();
 
         //HP, ATK
-        ShielderHP = snapshot.Child("Shielder").Child("Shielder_HP").Value.ToString();
-        ShielderATK = snapshot.Child("Shielder").Child("Shielder_ATK").Value.ToString();
-        WarriorHP = snapshot.Child("Warrior").Child("Warrior_HP").Value.ToString();
-        WarriorATK = snapshot.Child("Warrior").Child("Warrior_ATK").Value.ToString();
-        ArchorHP = snapshot.Child("Archor").Child("Archor_HP").Value.ToString();
-        ArchorATK = snapshot.Child("Archor").Child("Archor_ATK").Value.ToString();
-        MagicianHP = snapshot.Child("Magician").Child("Magician_HP").Value.ToString();
-        MagicianATK = snapshot.Child("Magician").Child("Magician_ATK").Value.ToString();
+        WarriorHP = snapshot.Child("Warrior").Child("HP").Value.ToString();
+        WarriorATK = snapshot.Child("Warrior").Child("ATK").Value.ToString();
+        AssassinHP = snapshot.Child("Assassin").Child("HP").Value.ToString();
+        AssassinATK = snapshot.Child("Assassin").Child("ATK").Value.ToString();
+        ArchorHP = snapshot.Child("Archor").Child("HP").Value.ToString();
+        ArchorATK = snapshot.Child("Archor").Child("ATK").Value.ToString();
+        MagicianHP = snapshot.Child("Magician").Child("HP").Value.ToString();
+        MagicianATK = snapshot.Child("Magician").Child("ATK").Value.ToString();
 
         Debug.Log("스냅샷 자식 수는 " + snapshot.ChildrenCount);
 
         //UI에 표시
-        tTankerPoints.text = "x " + TankerPoints;
         tWarriorPoints.text = "x " + WarriorPoints;
+        tAssassinPoints.text = "x " + AssassinPoints;
         tADPoints.text = "x " + ADPoints;
         tMagePoints.text = "x " + MagePoints;
 
-        tShielder_EXP.text = Shielder_EXP + " / 500";
         tWarrior_EXP.text = Warrior_EXP + " / 500";
+        tAssassin_EXP.text = Assassin_EXP + " / 500";
         tArchor_EXP.text = Archor_EXP + " / 500";
         tMagician_EXP.text = Magician_EXP + " / 500";
 
         tGold.text = "Gold : " + Gold;
-        tShielder_level.text = "LV : " + Shielder_level;
         tWarrior_level.text = "LV : " + Warrior_level;
+        tAssassin_level.text = "LV : " + Assassin_level;
         tArchor_level.text = "LV : " + Archor_level;
         tMagician_level.text = "LV : " + Magician_level;
 
-        tShielderHP.text = "체력 : " + ShielderHP;
-        tShielderATK.text = "공격력 : " + ShielderATK;
         tWarriorHP.text = "체력 : " + WarriorHP;
         tWarriorATK.text = "공격력 : " + WarriorATK;
+        tAssassinHP.text = "체력 : " + AssassinHP;
+        tAssassinATK.text = "공격력 : " + AssassinATK;
         tArchorHP.text = "체력 : " + ArchorHP;
         tArchorATK.text = "공격력 : " + ArchorATK;
         tMagicianHP.text = "체력 : " + MagicianHP;
@@ -257,141 +257,12 @@ public class ShopManager : MonoBehaviour
     }
 
     //탱커 경험치 증가
-    public void TankerEXPUp()
-    {
-        if (int.Parse(TankerPoints) > 0)
-        {
-            int UE = int.Parse(Shielder_EXP) + 100; //경험치
-            int TP = int.Parse(TankerPoints) - 1;   //탱커 계열 포인트 - 1
-
-
-            if (UE >= 500)       //EXP를 다 채워서 레벨업 루트
-            {
-                UE -= 500;
-                int UL = int.Parse(Shielder_level) + 1;
-
-                Dictionary<string, object> update = new Dictionary<string, object>();
-                Dictionary<string, object> updatet = new Dictionary<string, object>();
-                Dictionary<string, object> updatee = new Dictionary<string, object>();
-                update.Add("Shielder_Level", UL);
-                updatet.Add("TankerPoints", TP);
-                updatee.Add("Shielder_EXP", UE);
-                reference.Child("users").Child(Userid).Child("Unit").Child("Shielder").UpdateChildrenAsync(update);
-                reference.Child("users").Child(Userid).Child("Info").Child("Points").UpdateChildrenAsync(updatet);
-                reference.Child("users").Child(Userid).Child("Unit").Child("Shielder").UpdateChildrenAsync(updatee);
-
-                Shielder_level = UL.ToString();
-                tShielder_level.text = "LV : " + Shielder_level;
-                Shielder_EXP = UE.ToString();
-                tShielder_EXP.text = Shielder_EXP + " / 500";
-                TankerPoints = TP.ToString();
-                tTankerPoints.text = "x " + TankerPoints;
-            }
-            else if (UE < 500)      //EXP가 다 안찬 루트
-            {
-                Shielder_EXP = UE.ToString();
-
-                Dictionary<string, object> update = new Dictionary<string, object>();
-                update.Add("Shielder_EXP", UE);
-                reference.Child("users").Child(Userid).Child("Unit").Child("Shielder").UpdateChildrenAsync(update);
-
-                Shielder_EXP = UE.ToString();
-                tShielder_EXP.text = Shielder_EXP + " / 500";
-                TankerPoints = TP.ToString();
-                tTankerPoints.text = "x " + TankerPoints;
-            }
-        }
-        else if (int.Parse(Gold) < 100)
-        {
-            NotEnough.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("오류 발생");
-        }
-    }
-
-    //탱커 공격력 증가
-    public void ShielderATKUp()
-    {
-        if(int.Parse(Gold) >= 200)
-        {
-            if(int.Parse(ShielderATK) < int.Parse(Shielder_level) * 10)        //레벨 한계에 도달X & 공격력 증가
-            {
-                int Golds = int.Parse(Gold) - 200;
-                int SATK = int.Parse(ShielderATK) + 2;
-
-                Dictionary<string, object> update = new Dictionary<string, object>();
-                Dictionary<string, object> updatet = new Dictionary<string, object>();
-                update.Add("Shielder_ATK", SATK);
-                updatet.Add("Gold", Golds);
-                reference.Child("users").Child(Userid).Child("Unit").Child("Shielder").UpdateChildrenAsync(update);
-                reference.Child("users").Child(Userid).Child("Info").UpdateChildrenAsync(updatet);
-
-                Gold = Golds.ToString();
-                tGold.text = "Gold : " + Gold;
-                ShielderATK = SATK.ToString();
-                tShielderATK.text = "공격력 : " + ShielderATK;
-            }
-            else if (int.Parse(ShielderATK) >= int.Parse(Shielder_level) * 10)
-            {
-                Debug.LogError("한계치 입니다");
-            }
-        }
-        else if (int.Parse(Gold) < 200)
-        {
-            NotEnough.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("오류 발생");
-        }
-    }
-
-    //탱커 HP 증가
-    public void ShielderHPUp()
-    {
-        if (int.Parse(Gold) >= 200)
-        {
-            if (int.Parse(ShielderHP) < int.Parse(Shielder_level) * 100)        //레벨 한계에 도달X & 공격력 증가
-            {
-                int Golds = int.Parse(Gold) - 200;
-                int SHP = int.Parse(ShielderHP) + 20;
-
-                Dictionary<string, object> update = new Dictionary<string, object>();
-                Dictionary<string, object> updatet = new Dictionary<string, object>();
-                update.Add("Shielder_HP", SHP);
-                updatet.Add("Gold", Golds);
-                reference.Child("users").Child(Userid).Child("Unit").Child("Shielder").UpdateChildrenAsync(update);
-                reference.Child("users").Child(Userid).Child("Info").UpdateChildrenAsync(updatet);
-
-                Gold = Golds.ToString();
-                tGold.text = "Gold : " + Gold;
-                ShielderHP = SHP.ToString();
-                tShielderHP.text = "체력 : " + ShielderHP;
-            }
-            else if (int.Parse(ShielderHP) >= int.Parse(Shielder_level) * 100)
-            {
-                Debug.LogError("한계치 입니다");
-            }
-        }
-        else if (int.Parse(Gold) < 200)
-        {
-            NotEnough.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("오류 발생");
-        }
-    }
-
-    //전사 레벨 업
-    public void FighterEXPUp()
+    public void WarriorEXPUp()
     {
         if (int.Parse(WarriorPoints) > 0)
         {
-            int UE = int.Parse(Warrior_EXP) + 100; //경험치   
-            int WP = int.Parse(WarriorPoints) - 1;   //전사 계열 포인트 - 1
+            int UE = int.Parse(Warrior_EXP) + 100; //경험치
+            int WP = int.Parse(WarriorPoints) - 1;   //탱커 계열 포인트 - 1
 
 
             if (UE >= 500)       //EXP를 다 채워서 레벨업 루트
@@ -402,9 +273,9 @@ public class ShopManager : MonoBehaviour
                 Dictionary<string, object> update = new Dictionary<string, object>();
                 Dictionary<string, object> updatet = new Dictionary<string, object>();
                 Dictionary<string, object> updatee = new Dictionary<string, object>();
-                update.Add("Warrior_Level", UL);
+                update.Add("Level", UL);
                 updatet.Add("WarriorPoints", WP);
-                updatee.Add("Warrior_EXP", UE);
+                updatee.Add("EXP", UE);
                 reference.Child("users").Child(Userid).Child("Unit").Child("Warrior").UpdateChildrenAsync(update);
                 reference.Child("users").Child(Userid).Child("Info").Child("Points").UpdateChildrenAsync(updatet);
                 reference.Child("users").Child(Userid).Child("Unit").Child("Warrior").UpdateChildrenAsync(updatee);
@@ -421,13 +292,13 @@ public class ShopManager : MonoBehaviour
                 Warrior_EXP = UE.ToString();
 
                 Dictionary<string, object> update = new Dictionary<string, object>();
-                update.Add("Warrior_EXP", UE);
+                update.Add("EXP", UE);
                 reference.Child("users").Child(Userid).Child("Unit").Child("Warrior").UpdateChildrenAsync(update);
 
                 Warrior_EXP = UE.ToString();
                 tWarrior_EXP.text = Warrior_EXP + " / 500";
                 WarriorPoints = WP.ToString();
-                tTankerPoints.text = "x " + WarriorPoints;
+                tWarriorPoints.text = "x " + WarriorPoints;
             }
         }
         else if (int.Parse(Gold) < 100)
@@ -440,26 +311,26 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    //전사 공격력 증가
+    //탱커 공격력 증가
     public void WarriorATKUp()
     {
-        if (int.Parse(Gold) >= 200)
+        if(int.Parse(Gold) >= 200)
         {
-            if (int.Parse(WarriorATK) < int.Parse(Warrior_level) * 10)        //레벨 한계에 도달X & 공격력 증가
+            if(int.Parse(WarriorATK) < int.Parse(Warrior_level) * 10)        //레벨 한계에 도달X & 공격력 증가
             {
                 int Golds = int.Parse(Gold) - 200;
-                int WATK = int.Parse(WarriorATK) + 2;
+                int SATK = int.Parse(WarriorATK) + 2;
 
                 Dictionary<string, object> update = new Dictionary<string, object>();
                 Dictionary<string, object> updatet = new Dictionary<string, object>();
-                update.Add("Warrior_ATK", WATK);
+                update.Add("ATK", SATK);
                 updatet.Add("Gold", Golds);
                 reference.Child("users").Child(Userid).Child("Unit").Child("Warrior").UpdateChildrenAsync(update);
                 reference.Child("users").Child(Userid).Child("Info").UpdateChildrenAsync(updatet);
 
                 Gold = Golds.ToString();
                 tGold.text = "Gold : " + Gold;
-                WarriorATK = WATK.ToString();
+                WarriorATK = SATK.ToString();
                 tWarriorATK.text = "공격력 : " + WarriorATK;
             }
             else if (int.Parse(WarriorATK) >= int.Parse(Warrior_level) * 10)
@@ -477,7 +348,7 @@ public class ShopManager : MonoBehaviour
         }
     }
 
-    //전사 HP 증가
+    //탱커 HP 증가
     public void WarriorHPUp()
     {
         if (int.Parse(Gold) >= 200)
@@ -485,21 +356,150 @@ public class ShopManager : MonoBehaviour
             if (int.Parse(WarriorHP) < int.Parse(Warrior_level) * 100)        //레벨 한계에 도달X & 공격력 증가
             {
                 int Golds = int.Parse(Gold) - 200;
-                int WHP = int.Parse(WarriorHP) + 20;
+                int SHP = int.Parse(WarriorHP) + 20;
 
                 Dictionary<string, object> update = new Dictionary<string, object>();
                 Dictionary<string, object> updatet = new Dictionary<string, object>();
-                update.Add("Warrior_HP", WHP);
+                update.Add("Warrior_HP", SHP);
                 updatet.Add("Gold", Golds);
                 reference.Child("users").Child(Userid).Child("Unit").Child("Warrior").UpdateChildrenAsync(update);
                 reference.Child("users").Child(Userid).Child("Info").UpdateChildrenAsync(updatet);
 
                 Gold = Golds.ToString();
                 tGold.text = "Gold : " + Gold;
-                WarriorHP = WHP.ToString();
+                WarriorHP = SHP.ToString();
                 tWarriorHP.text = "체력 : " + WarriorHP;
             }
             else if (int.Parse(WarriorHP) >= int.Parse(Warrior_level) * 100)
+            {
+                Debug.LogError("한계치 입니다");
+            }
+        }
+        else if (int.Parse(Gold) < 200)
+        {
+            NotEnough.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("오류 발생");
+        }
+    }
+
+    //전사 레벨 업
+    public void AssassinEXPUp()
+    {
+        if (int.Parse(AssassinPoints) > 0)
+        {
+            int UE = int.Parse(Assassin_EXP) + 100; //경험치   
+            int AP = int.Parse(AssassinPoints) - 1;   //전사 계열 포인트 - 1
+
+
+            if (UE >= 500)       //EXP를 다 채워서 레벨업 루트
+            {
+                UE -= 500;
+                int UL = int.Parse(Assassin_level) + 1;
+
+                Dictionary<string, object> update = new Dictionary<string, object>();
+                Dictionary<string, object> updatet = new Dictionary<string, object>();
+                Dictionary<string, object> updatee = new Dictionary<string, object>();
+                update.Add("Level", UL);
+                updatet.Add("WarriorPoints", AP);
+                updatee.Add("EXP", UE);
+                reference.Child("users").Child(Userid).Child("Unit").Child("Assassin").UpdateChildrenAsync(update);
+                reference.Child("users").Child(Userid).Child("Info").Child("Points").UpdateChildrenAsync(updatet);
+                reference.Child("users").Child(Userid).Child("Unit").Child("Assassin").UpdateChildrenAsync(updatee);
+
+                Assassin_level = UL.ToString();
+                tAssassin_level.text = "LV : " + Assassin_level;
+                Assassin_EXP = UE.ToString();
+                tAssassin_EXP.text = Assassin_EXP + " / 500";
+                AssassinPoints = AP.ToString();
+                tAssassinPoints.text = "x " + AssassinPoints;
+            }
+            else if (UE < 500)      //EXP가 다 안찬 루트
+            {
+                Assassin_EXP = UE.ToString();
+
+                Dictionary<string, object> update = new Dictionary<string, object>();
+                update.Add("EXP", UE);
+                reference.Child("users").Child(Userid).Child("Unit").Child("Assassin").UpdateChildrenAsync(update);
+
+                Assassin_EXP = UE.ToString();
+                tAssassin_EXP.text = Assassin_EXP + " / 500";
+                AssassinPoints = AP.ToString();
+                tAssassinPoints.text = "x " + AssassinPoints;
+            }
+        }
+        else if (int.Parse(Gold) < 100)
+        {
+            NotEnough.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("오류 발생");
+        }
+    }
+
+    //암살자 공격력 증가
+    public void AssassinATKUp()
+    {
+        if (int.Parse(Gold) >= 200)
+        {
+            if (int.Parse(AssassinATK) < int.Parse(Assassin_level) * 10)        //레벨 한계에 도달X & 공격력 증가
+            {
+                int Golds = int.Parse(Gold) - 200;
+                int AATK = int.Parse(AssassinATK) + 2;
+
+                Dictionary<string, object> update = new Dictionary<string, object>();
+                Dictionary<string, object> updatet = new Dictionary<string, object>();
+                update.Add("ATK", AATK);
+                updatet.Add("Gold", Golds);
+                reference.Child("users").Child(Userid).Child("Unit").Child("Assassin").UpdateChildrenAsync(update);
+                reference.Child("users").Child(Userid).Child("Info").UpdateChildrenAsync(updatet);
+
+                Gold = Golds.ToString();
+                tGold.text = "Gold : " + Gold;
+                AssassinATK = AATK.ToString();
+                tAssassinATK.text = "공격력 : " + AssassinATK;
+            }
+            else if (int.Parse(AssassinATK) >= int.Parse(Assassin_level) * 10)
+            {
+                Debug.LogError("한계치 입니다");
+            }
+        }
+        else if (int.Parse(Gold) < 200)
+        {
+            NotEnough.SetActive(true);
+        }
+        else
+        {
+            Debug.LogError("오류 발생");
+        }
+    }
+
+    //전사 HP 증가
+    public void AssassinHPUp()
+    {
+        if (int.Parse(Gold) >= 200)
+        {
+            if (int.Parse(AssassinHP) < int.Parse(Assassin_level) * 100)        //레벨 한계에 도달X & 공격력 증가
+            {
+                int Golds = int.Parse(Gold) - 200;
+                int AHP = int.Parse(AssassinHP) + 20;
+
+                Dictionary<string, object> update = new Dictionary<string, object>();
+                Dictionary<string, object> updatet = new Dictionary<string, object>();
+                update.Add("HP", AHP);
+                updatet.Add("Gold", Golds);
+                reference.Child("users").Child(Userid).Child("Unit").Child("Assassin").UpdateChildrenAsync(update);
+                reference.Child("users").Child(Userid).Child("Info").UpdateChildrenAsync(updatet);
+
+                Gold = Golds.ToString();
+                tGold.text = "Gold : " + Gold;
+                AssassinHP = AHP.ToString();
+                tAssassinHP.text = "체력 : " + AssassinHP;
+            }
+            else if (int.Parse(AssassinHP) >= int.Parse(Assassin_level) * 100)
             {
                 Debug.LogError("한계치 입니다");
             }
