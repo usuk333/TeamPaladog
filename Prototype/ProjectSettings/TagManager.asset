@@ -9,7 +9,7 @@ TagManager:
   - PLAYER
   - UNIT
   - WALL
-  - CastingObject
+  - Setting
   layers:
   - Default
   - TransparentFX
