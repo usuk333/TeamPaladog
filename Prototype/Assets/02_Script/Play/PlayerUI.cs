@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -10,6 +11,14 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] private Image mpBar; //플레이어 Mp바 이미지
     [SerializeField] private Image shield;
     [SerializeField] private Image castingBar;
+
+    [SerializeField] private Image[] skillImageAray;
+    public void ShowSkillCoolTime(int index, float value)
+    {
+        Debug.Log("스킬쿨타임 함수 호출");
+        skillImageAray[index].fillAmount = 1;
+        skillImageAray[index].DOFillAmount(0, value);
+    }
     public void DisableCastingBar()
     {
         castingBar.transform.parent.gameObject.SetActive(false);

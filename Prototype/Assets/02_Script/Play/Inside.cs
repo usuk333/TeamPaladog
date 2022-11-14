@@ -7,9 +7,13 @@ using Spine.Unity;
 
 public class Inside : MonoBehaviour
 {
+    [SerializeField] private Image warningImage;
+    [SerializeField] private Text warningText;
+
     [SerializeField] private List<GameObject> fallingObjectDummys = new List<GameObject>();
     [SerializeField] private List<GameObject> fallingObjects = new List<GameObject>();
-    [SerializeField] private List<InsideFallingObj> castedFallingObjList = new List<InsideFallingObj>();
+    [SerializeField] private List<GameObject> castedFallingObjList = new List<GameObject>();
+    [SerializeField] private List<CastingObject> castingObjects = new List<CastingObject>();
     private Transform fallingObjectDummysParent;
     private bool isInsideReady;
     private bool isInside;
@@ -28,6 +32,7 @@ public class Inside : MonoBehaviour
     [SerializeField] private float insideDuration;
     [SerializeField] private float moveToInsideDuration;
     [SerializeField] private Transform insideMoveObj;
+    [SerializeField] private Transform insideLimitTimerObj;
     [SerializeField] private Transform manaExplosion;
     [SerializeField] private float manaExplosionDuration;
     [SerializeField] private float decreaseMpPercent;
@@ -39,15 +44,24 @@ public class Inside : MonoBehaviour
     [SerializeField] private int[] insidePercentage = { 95, 40 };
     private Color originColor;
     private SkeletonAnimation skeletonAnimation;
-    [SerializeField] private ParticleSystem manaExplosionEffect;
-    public List<InsideFallingObj> CastedFallingObjList { get => castedFallingObjList; set => castedFallingObjList = value; }
+    public bool difficulty { get; set; }
 
-    public void MoveToInside()
+    [SerializeField] private ParticleSystem manaExplosionEffect;
+
+    public InsideStatus insideStatus;
+
+    private IEnumerator Co_MoveToInside()
     {
-        Debug.Log("내면으로 이동");
-        isInside = true;
-        InGameManager.Instance.Player.transform.position = insidePlayerPos;
-        Camera.main.transform.position = insideCameraPos;
+        CastingObject castingObject = insidePortal.GetComponent<CastingObject>();
+        while (true)
+        {
+            yield return new WaitUntil(() => castingObject.CastFinish);
+            Debug.Log("내면으로 이동");
+            isInside = true;
+            InGameManager.Instance.Player.transform.position = insidePlayerPos;
+            Camera.main.transform.position = insideCameraPos;
+            castingObject.CastFinish = false;
+        }
     }
     private void MoveToOrigin()
     {
@@ -94,6 +108,7 @@ public class Inside : MonoBehaviour
         {
             fallingObjectDummys[i].transform.position = insideFallingObjectsPos[i];
         }
+
     }
     private void SetFallingObjects(bool isActive)
     {
@@ -113,15 +128,30 @@ public class Inside : MonoBehaviour
     {
         if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(InGameManager.Instance.Player.gameObject))
         {
-            InGameManager.Instance.Player.DecreaseMp(InGameManager.Instance.Player.MaxMp * decreaseMpPercent / 100);
-            return;
-        }
-        foreach (var item in InGameManager.Instance.Units)
-        {
-            if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(item.gameObject))
+            InGameManager.Instance.Player.DecreaseHp(insideStatus.firstPatternDamage);
+            InGameManager.Instance.Player.DecreaseMp(InGameManager.Instance.Player.MaxMp * insideStatus.firstPatternMana / 100);
+            foreach (var item in InGameManager.Instance.Units)
             {
-                item.CommonStatus.DecreaseHp(item.CommonStatus.MaxHp);
-                explosionCount++;
+                if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(item.gameObject))
+                {
+                    item.CommonStatus.DecreaseHp(insideStatus.firstPatternDamage);
+                    explosionCount++;
+                }
+            }
+        }
+        else
+        {
+            foreach (var item in InGameManager.Instance.Units)
+            {
+                if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(item.gameObject))
+                {
+                    item.CommonStatus.DecreaseHp(insideStatus.firstPatternTrueDamage);
+                    if(item.CommonStatus.CurrentHp <= 0)
+                    {
+                        explosionCount++;
+                    }
+                    return;
+                }
             }
         }
     }
@@ -135,21 +165,37 @@ public class Inside : MonoBehaviour
     }
     private IEnumerator Co_InsidePattern()
     {
-        Text moveInsideTimertext = insideMoveObj.GetComponentInChildren<Text>();
+        Text moveInsideTimertext = insideMoveObj.GetChild(1).GetComponent<Text>();
+        Text insideLimitTimerText = insideLimitTimerObj.GetChild(1).GetComponent<Text>();
         float insideTimer = insideDuration;
-        float moveInsideTimer = moveToInsideDuration;
+        float moveInsideTimer = insideStatus.secondPatternPortalDuration;
+        float insideLimitTimer = insideStatus.secondPatternPortalDuration;
         int patternCount = 0;
         float mpRegenerative = InGameManager.Instance.Player.MpRegenerative;
         while (true)
         {
-            if(patternCount > insidePercentage.Length - 1)
+            if(patternCount > insideStatus.secondPatternPercentage.Length - 1)
             {
                 yield break;
             }
-            yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.MaxHp * insidePercentage[patternCount] / 100);
-            skeletonAnimation.Skeleton.SetColor(Color.clear);
+            yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.MaxHp * insideStatus.secondPatternPercentage[patternCount] / 100);
+            warningImage.gameObject.SetActive(true);
+            warningImage.DOFade(1, 2f);
+            warningText.DOFade(1, 2f);
+            yield return new WaitForSeconds(2f);
+            float progress = 1;
+            while(progress > 0)
+            {
+                skeletonAnimation.skeleton.A = progress;
+                progress -= Time.deltaTime;
+                yield return null;
+            }
+            warningImage.DOFade(0, 1f);
+            warningText.DOFade(0, 1f);
+            yield return new WaitForSeconds(1f);
+            warningImage.gameObject.SetActive(false);
             isInsideReady = true;
-            InGameManager.Instance.Boss.isPattern = true;
+            InGameManager.Instance.Boss.IsPattern = true;
             InGameManager.Instance.StopAllUnitCoroutines();
             originHpBar.gameObject.SetActive(false);
             insidePortal.gameObject.SetActive(true);
@@ -160,11 +206,13 @@ public class Inside : MonoBehaviour
             while (moveInsideTimer > 0)
             {
                 moveInsideTimer -= Time.deltaTime;
-                moveInsideTimertext.text = string.Format("보스의 내면으로 이동해야 합니다! 남은 시간 : {0:0}초", System.Math.Ceiling(moveInsideTimer));
+                moveInsideTimertext.text = string.Format("남은 시간 : {0:0}초", System.Math.Ceiling(moveInsideTimer));
                 if (isInside)
                 {
-                    moveInsideTimer = moveToInsideDuration;
+                    moveInsideTimer = insideStatus.secondPatternPortalDuration;
                     InGameManager.Instance.Boss = dummyBoss.GetComponent<Boss>();
+                    InGameManager.Instance.Boss.CommonStatus.MaxHp = insideStatus.secondPatternDummyHp;
+                    InGameManager.Instance.Boss.CommonStatus.CurrentHp = insideStatus.secondPatternDummyHp;
                     InGameManager.Instance.Player.CoolTimeLimit = true;
                     insideMoveObj.gameObject.SetActive(false);
                     insideHpBar.gameObject.SetActive(true);
@@ -184,11 +232,26 @@ public class Inside : MonoBehaviour
                 Debug.Log("플레이어 사망");
                 yield break;
             }
-            InGameManager.Instance.Player.MpRegenerative = mpRegenerative * manaRegen;
+            
+            InGameManager.Instance.Player.MpRegenerative = mpRegenerative + insideStatus.secondPatternManaRegen;
             fallingObjectDummysParent.gameObject.SetActive(true);
-            //마나 재생량 5배 증가
-            //InGameManager.Instance.StartAllUnitCoroutines();          
-            yield return new WaitUntil(() => dummyBoss.CommonStatus.CurrentHp <= 0);
+            insideLimitTimerObj.gameObject.SetActive(true);
+            while(insideLimitTimer > 0)
+            {
+                insideLimitTimer -= Time.deltaTime;
+                insideLimitTimerText.text = string.Format("남은 시간 : {0:0}초", System.Math.Ceiling(insideLimitTimer));
+                yield return null;
+                if (dummyBoss.CommonStatus.CurrentHp <= 0) break;
+            }
+            insideLimitTimerObj.gameObject.SetActive(false);
+            if (insideLimitTimer <= 0)
+            {
+                InGameManager.Instance.Player.DecreaseHp(InGameManager.Instance.Player.MaxHp);
+                Debug.Log("플레이어 사망");
+                yield break;
+            }        
+            insideLimitTimer = insideStatus.secondPatternPortalDuration;
+            yield return new WaitForSeconds(1f);
             Debug.Log("현실로 돌아갑니다");
             InGameManager.Instance.Player.MpRegenerative = mpRegenerative;
             InGameManager.Instance.Boss = GetComponent<Boss>();
@@ -209,9 +272,10 @@ public class Inside : MonoBehaviour
             sceneMoveImg.color = Color.black;
             dummyBoss.CommonStatus.CurrentHp = dummyBoss.CommonStatus.MaxHp;
             yield return new WaitForSeconds(3f);
-            InGameManager.Instance.Boss.isPattern = false;
+            InGameManager.Instance.Boss.IsPattern = false;
             InGameManager.Instance.Boss.CommonStatus.SetAttackDamage(InGameManager.Instance.Boss.CommonStatus.AttackDamage * 1.5f);
             SetFallingObjects(true);
+            StartCoroutine(Co_CheckCastedFallingObj());
             isInsideReady = false;
             yield return new WaitUntil(() => castedFallingObjList.Count >= 4);
             Debug.Log("cast finish");
@@ -229,21 +293,58 @@ public class Inside : MonoBehaviour
                 }
             }
             SetFallingObjects(false);
-            foreach (var item in castedFallingObjList)
-            {
-                item.SetDefault();
-            }
+            SetDefaultFalliingObjects();
             castedFallingObjList.Clear();
             SuffleFallingObjects();
             InGameManager.Instance.Boss.CommonStatus.IsInvincibility = false;
             InGameManager.Instance.Boss.CommonStatus.SetAttackDamage(InGameManager.Instance.Boss.CommonStatus.AttackDamage);
             if (isCastSucess)
             {
-                InGameManager.Instance.Boss.isPattern = true;
+                InGameManager.Instance.Boss.IsPattern = true;
                 yield return new WaitForSeconds(5f);
-                InGameManager.Instance.Boss.isPattern = false;
+                InGameManager.Instance.Boss.IsPattern = false;
             }          
         }      
+    }
+    private IEnumerator Co_CheckCastedFallingObj()
+    {
+        while (castedFallingObjList.Count < 4)
+        {
+            yield return null;
+            foreach (var item in castingObjects)
+            {
+                if (castedFallingObjList.Contains(item.gameObject))
+                {
+                    continue;
+                }
+                if (item.CastFinish)
+                {
+                    castedFallingObjList.Add(item.gameObject);
+                }
+            }
+        }
+    }
+    private void SetDefaultFalliingObjects()
+    {
+        foreach (var item in castingObjects)
+        {
+            item.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+            item.GetComponent<BoxCollider2D>().isTrigger = false;
+            item.CastFinish = false;
+            item.transform.gameObject.layer = 8;
+        }
+    }
+    private IEnumerator Co_DifficultyPattern()
+    {
+        while (true)
+        {
+            InGameManager.Instance.Player.DecreaseHp(55);
+            foreach (var item in InGameManager.Instance.Units)
+            {
+                item.CommonStatus.DecreaseHp(55);
+            }
+            yield return new WaitForSeconds(1f);
+        }
     }
     private IEnumerator Co_ManaExplosion()
     {
@@ -257,9 +358,9 @@ public class Inside : MonoBehaviour
             }
             if (explosionCount < 4)
             {
-                int rand = Random.Range(minExplosionTime, maxExplosionTime);
+                int rand = (int)Random.Range(insideStatus.firstPatternMinTime, insideStatus.firstPatternMaxTime);
                 yield return new WaitForSeconds(rand);
-                InGameManager.Instance.Boss.isPattern = true;
+                InGameManager.Instance.Boss.IsPattern = true;
                 skeletonAnimation.AnimationState.SetAnimation(0, "Skill", false);
                 if (isInsideReady)
                 {
@@ -270,7 +371,7 @@ public class Inside : MonoBehaviour
                 int index;
                 while (true)
                 {
-                    index = Random.Range(0, InGameManager.Instance.Units.Length);
+                    index = Random.Range(0, InGameManager.Instance.Units.Count);
                     if (InGameManager.Instance.Units[index].CommonStatus.CurrentHp > 0)
                     {
                         break;
@@ -281,7 +382,10 @@ public class Inside : MonoBehaviour
                 yield return new WaitForSeconds(manaExplosionDuration);
                 manaExplosionEffect.Play();
                 yield return new WaitForSeconds(0.4f);
-                InGameManager.Instance.Boss.isPattern = false;
+                if (!isInsideReady)
+                {
+                    InGameManager.Instance.Boss.IsPattern = false;
+                }
                 ManaExplosion();
             }
             else
@@ -290,7 +394,10 @@ public class Inside : MonoBehaviour
                 yield return new WaitForSeconds(manaExplosionDuration);
                 manaExplosionEffect.Play();
                 yield return new WaitForSeconds(0.25f);
-                InGameManager.Instance.Boss.isPattern = false;
+                if (!isInsideReady)
+                {
+                    InGameManager.Instance.Boss.IsPattern = false;
+                }
                 ManaExplosion();
             }
         }
@@ -308,5 +415,10 @@ public class Inside : MonoBehaviour
     {
         StartCoroutine(Co_ManaExplosion());
         StartCoroutine(Co_InsidePattern());
+        StartCoroutine(Co_MoveToInside());
+        if (difficulty)
+        {
+            StartCoroutine(Co_DifficultyPattern());
+        }
     }
 }

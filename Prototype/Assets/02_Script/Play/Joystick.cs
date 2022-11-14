@@ -70,7 +70,6 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        InGameManager.Instance.Player.PlayerAnimation(0);
         OnTouch(eventData.position);
     }
 
@@ -80,6 +79,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         m_rectJoystick.localPosition = Vector2.zero;
         InGameManager.Instance.Player.IsLeft = false;
         InGameManager.Instance.Player.IsRight = false;
+        InGameManager.Instance.Player.move = false;
         InGameManager.Instance.Player.PlayerAnimation(3);
     }
 }

@@ -12,8 +12,8 @@ public struct UnitStatus
     public float currentHp;
     public float maxHp;
     public float attackSpeed;
-    public float skill; //스킬 계수
     public float skillCondition; // 현재 스킬 발동 조건
+
 
     public float damageUpValue;
     public float damageMaxUpValue;
@@ -30,7 +30,13 @@ public struct UnitStatus
         set
         {
             level = value;
-            if(level % 10 == 0)
+            if (level == 1)
+            {
+                return;
+            }
+            maxDamage += damageMaxUpValue;
+            maxHp += hpMaxUpValue;
+            if (level % 10 == 0)
             {
                 skillCondition += skillUpValue;
             }
@@ -61,7 +67,10 @@ public struct Passive
                 return;
             }
             max += maxUpValue;
-            regen += regenUpValue;
+            if(level % 5 == 0)
+            {
+                regen += regenUpValue;
+            }
         }
     }
 }
@@ -96,6 +105,7 @@ public struct Barrior
             if (level > maxLevel)
             {
                 level = maxLevel;
+                Debug.Log("최대치입니다");
                 return;
             }
             size += sizeUpValue;
@@ -133,6 +143,7 @@ public struct Heal
             if (level > maxLevel)
             {
                 level = maxLevel;
+                Debug.Log("최대치입니다");
                 return;
             }
             size += sizeUpValue;
@@ -168,6 +179,7 @@ public struct PowerUp
             if (level > maxLevel)
             {
                 level = maxLevel;
+                Debug.Log("최대치입니다");
                 return;
             }
             size += sizeUpValue;
@@ -202,6 +214,7 @@ public struct Attack
             if (level > maxLevel)
             {
                 level = maxLevel;
+                Debug.Log("최대치입니다");
                 return;
             }
             for (int i = 0; i < attackDamage.Length; i++)
@@ -264,15 +277,33 @@ public class StageTest : MonoBehaviour
     public void BtnEvt_ChooseDifficulty(int index)
     {
         BossManager.difficulty = (BossManager.Difficulty)index;
+        UpdateUnitData();
+        UpdateSkillData();
         LoadingSceneController.LoadScene("Stage");
+    }
+    private void UpdateUnitData()
+    {
+        BossManager.tanker = tanker;
+        BossManager.warrior = warrior;
+        BossManager.mage = mage;
+        BossManager.archer = archer;
+    }
+    private void UpdateSkillData()
+    {
+        BossManager.hp = HP;
+        BossManager.mp = MP;
+        BossManager.barrior = Barrior;
+        BossManager.heal = Heal;
+        BossManager.powerUp = PowerUp;
+        BossManager.attack = Attack;
     }
     public void BtnEvt_ReinforceDamage(int index)
     {
-        ReinforceDamage(index);
+        ReinforceUnitStatus(index, false);
     }
     public void BtnEvt_ReinforceHp(int index)
     {
-        ReinforceHp(index);
+        ReinforceUnitStatus(index, true);
     }
     public void BtnEvt_ReinforceLevel(int index)
     {
@@ -282,45 +313,89 @@ public class StageTest : MonoBehaviour
     {
         SkillLevelUp(index);
     }
-    private void ReinforceDamage(int index)
+    private void ReinforceUnitStatus(int index, bool isHp)
     {
-        switch (index)
+        if (isHp)
         {
-            case 0:
-                if(tanker.currentDamage >= tanker.maxDamage)
-                {
-                    print("최대치입니다");
-                    return;
-                }
-                tanker.currentDamage += tanker.damageUpValue;
-                break;
-            case 1:
-                if (warrior.currentDamage >= warrior.maxDamage)
-                {
-                    print("최대치입니다");
-                    return;
-                }
-                warrior.currentDamage += warrior.damageUpValue;
-                break;
-            case 2:
-                if (mage.currentDamage >= mage.maxDamage)
-                {
-                    print("최대치입니다");
-                    return;
-                }
-                mage.currentDamage += mage.damageUpValue;
-                break;
-            case 3:
-                if (archer.currentDamage >= archer.maxDamage)
-                {
-                    print("최대치입니다");
-                    return;
-                }
-                archer.currentDamage += archer.damageUpValue;
-                break;
-            default:
-                Debug.Assert(false);
-                break;
+            switch (index)
+            {
+                case 0:
+                    if (tanker.currentHp >= tanker.maxHp)
+                    {
+                        print("최대치입니다");
+                        return;
+                    }
+                    tanker.currentHp += tanker.hpUpValue;
+                    break;
+                case 1:
+                    if (warrior.currentHp >= warrior.maxHp)
+                    {
+                        print("최대치입니다");
+                        return;
+                    }
+                    warrior.currentHp += warrior.hpUpValue;
+                    break;
+                case 2:
+                    if (mage.currentHp >= mage.maxHp)
+                    {
+                        print("최대치입니다");
+                        return;
+                    }
+                    mage.currentHp += mage.hpUpValue;
+                    break;
+                case 3:
+                    if (archer.currentHp >= archer.maxHp)
+                    {
+                        print("최대치입니다");
+                        return;
+                    }
+                    archer.currentHp += archer.hpUpValue;
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
+        }
+        else
+        {
+            switch (index)
+            {
+                case 0:
+                    if (tanker.currentDamage >= tanker.maxDamage)
+                    {
+                        print("최대치입니다");
+                        return;
+                    }
+                    tanker.currentDamage += tanker.damageUpValue;
+                    break;
+                case 1:
+                    if (warrior.currentDamage >= warrior.maxDamage)
+                    {
+                        print("최대치입니다");
+                        return;
+                    }
+                    warrior.currentDamage += warrior.damageUpValue;
+                    break;
+                case 2:
+                    if (mage.currentDamage >= mage.maxDamage)
+                    {
+                        print("최대치입니다");
+                        return;
+                    }
+                    mage.currentDamage += mage.damageUpValue;
+                    break;
+                case 3:
+                    if (archer.currentDamage >= archer.maxDamage)
+                    {
+                        print("최대치입니다");
+                        return;
+                    }
+                    archer.currentDamage += archer.damageUpValue;
+                    break;
+                default:
+                    Debug.Assert(false);
+                    break;
+            }
         }
         UpdateText(index);
     }
@@ -330,65 +405,15 @@ public class StageTest : MonoBehaviour
         {
             case 0:
                 tanker.Level += 1;
-                tanker.maxDamage += tanker.damageMaxUpValue;
-                tanker.maxHp += tanker.hpMaxUpValue;
                 break;
             case 1:
                 warrior.Level += 1;
-                warrior.maxDamage += warrior.damageMaxUpValue;
-                warrior.maxHp += warrior.hpMaxUpValue;
                 break;
             case 2:
                 mage.Level += 1;
-                mage.maxDamage += mage.damageMaxUpValue;
-                mage.maxHp += mage.hpMaxUpValue;
                 break;
             case 3:
                 archer.Level += 1;
-                archer.maxDamage += archer.damageMaxUpValue;
-                archer.maxHp += archer.hpMaxUpValue;
-                break;
-            default:
-                Debug.Assert(false);
-                break;
-        }
-        UpdateText(index);
-    }
-    private void ReinforceHp(int index)
-    {
-        switch (index)
-        {
-            case 0:
-                if (tanker.currentHp >= tanker.maxHp)
-                {
-                    print("최대치입니다");
-                    return;
-                }
-                tanker.currentHp += tanker.hpUpValue;
-                break;
-            case 1:
-                if (warrior.currentHp >= warrior.maxHp)
-                {
-                    print("최대치입니다");
-                    return;
-                }
-                warrior.currentHp += warrior.hpUpValue;
-                break;
-            case 2:
-                if (mage.currentHp >= mage.maxHp)
-                {
-                    print("최대치입니다");
-                    return;
-                }
-                mage.currentHp += mage.hpUpValue;
-                break;
-            case 3:
-                if (archer.currentHp >= archer.maxHp)
-                {
-                    print("최대치입니다");
-                    return;
-                }
-                archer.currentHp += archer.hpUpValue;
                 break;
             default:
                 Debug.Assert(false);
@@ -507,7 +532,7 @@ public class StageTest : MonoBehaviour
                 break;
             case 4:
                 PowerUpInfo[0].text = "계수 : " + PowerUp.size;
-                PowerUpInfo[1].text = "마나 : " + PowerUp.cost;
+                PowerUpInfo[1].text = "마나 : " + PowerUp.cost.ToString("F1");
                 PowerUpInfo[2].text = "레벨 : " + PowerUp.Level;
                 break;
             case 5:

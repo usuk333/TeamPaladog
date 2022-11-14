@@ -4,73 +4,18 @@ using UnityEngine;
 
 public class SkillRange : MonoBehaviour
 {
-    private enum SkillKind
-    {
-        Barrier,
-        Heal,
-        Rage
-    }
-    [SerializeField] private SkillKind skillKind;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("UNIT"))
         {
-            switch (skillKind)
-            {
-                case SkillKind.Barrier:
-                    if (InGameManager.Instance.Player.SkillCoolTime[0])
-                    {
-                        return;
-                    }
-                    InGameManager.Instance.Player.BarrierList.Add(collision.GetComponent<Unit>());                     
-                    break;
-                case SkillKind.Heal:
-                    InGameManager.Instance.Player.HealList.Add(collision.GetComponent<Unit>());
-                    break;
-                case SkillKind.Rage:
-                    InGameManager.Instance.Player.Skill_Rage(collision.GetComponent<Unit>(), true);
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.CompareTag("UNIT"))
-        {
-            if(skillKind == SkillKind.Barrier)
-            {
-                if(InGameManager.Instance.Player.SkillCoolTime[0] || InGameManager.Instance.Player.BarrierList.Contains(collision.GetComponent<Unit>()))
-                {
-                    return;
-                }
-                InGameManager.Instance.Player.BarrierList.Add(collision.GetComponent<Unit>());
-            }
+            InGameManager.Instance.Player.Skill_Rage(collision.GetComponent<Unit>(), true);
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("UNIT"))
         {
-            switch (skillKind)
-            {
-                case SkillKind.Barrier:
-                    if (InGameManager.Instance.Player.SkillCoolTime[0])
-                    {
-                        return;
-                    }
-                    InGameManager.Instance.Player.BarrierList.Remove(collision.GetComponent<Unit>());
-                    break;
-                case SkillKind.Heal:
-                    InGameManager.Instance.Player.HealList.Remove(collision.GetComponent<Unit>());
-                    break;
-                case SkillKind.Rage:
-                    InGameManager.Instance.Player.Skill_Rage(collision.GetComponent<Unit>(), false);
-                    break;
-                default:
-                    break;
-            }
+            InGameManager.Instance.Player.Skill_Rage(collision.GetComponent<Unit>(), false);
         }
     }
 }

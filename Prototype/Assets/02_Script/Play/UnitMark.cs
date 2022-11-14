@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UnitMark : MonoBehaviour
 {
-    [SerializeField] private Unit.EUnitType eUnitType;
+   /* [SerializeField] private Unit.EUnitType eUnitType;
     private Player player;
     [SerializeField] private CastingObject castingObject;
     private bool isMoveMark = false;
@@ -58,7 +58,7 @@ public class UnitMark : MonoBehaviour
             {
                 return;
             }
-            player.Casting(castingObject.CastTime);
+            player.Casting(false, castingObject.CastTime);
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
@@ -84,7 +84,7 @@ public class UnitMark : MonoBehaviour
             {
                 return;
             }
-            player.isCast = false;
+            player.Casting(true);
         }
-    }
+    }*/
 }

@@ -101,14 +101,14 @@ public class Boss_TimeJudge : MonoBehaviour
         list[index] = list[rand];
         list[rand] = temp;
     }
-    private void MarkJudgement(int i)
+   /* private void MarkJudgement(int i)
     {
         if(unitMarks[i] && unitMarks[i].MarkType == units[i].UnitType)
         {
             return;
         }
         units[i].CommonStatus.DecreaseHp(judgementDamage);
-    }
+    }*/
     private void Awake()
     {
         canvas = GetComponentInChildren<Canvas>();
@@ -123,7 +123,7 @@ public class Boss_TimeJudge : MonoBehaviour
     }
     private IEnumerator Start()
     {
-        units = InGameManager.Instance.Units;
+        //units = InGameManager.Instance.Units;
         yield return new WaitForSeconds(5f);
        // StartCoroutine(timeBombCoroutine);
        // StartCoroutine(Co_TimeLaser());
@@ -172,14 +172,14 @@ public class Boss_TimeJudge : MonoBehaviour
         }
         for (int i = 0; i < units.Length; i++)
         {
-            MarkJudgement(i);
+          //  MarkJudgement(i);
             yield return new WaitForSeconds(1f);
             if(unitMarks[i] == null)
             {
                 continue;
             }
             unitMarks[i].gameObject.SetActive(false);
-            unitMarks[i].InitMark();
+         //   unitMarks[i].InitMark();
         }
         StartCoroutine(markingCoroutine = Co_Marking());
 

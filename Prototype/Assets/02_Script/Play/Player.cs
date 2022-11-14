@@ -5,36 +5,44 @@ using Spine.Unity;
 
 public class Player : MonoBehaviour
 {
+    //캐스팅 관련 변수
+    [SerializeField] private CastingObject castingTarget; //캐스팅 타겟이 될 캐스팅 오브젝트
+    public GameObject castingButton;
+    public GameObject attackButton;
+    private bool isCasting; //플레이어가 캐스팅 중인지를 판단. 캐스팅 중일 땐 다른 행동 불가능
+    public bool castingButtonDown { get; set; }
+
+    public bool move;
+    public bool useSkill;
     private bool isInvincibility;
     private bool isInpacable;
     private bool isRight; //오른쪽 이동 체크
     private bool isLeft; // 왼쪽 이동 체크
     private Boss boss;
     private SkeletonAnimation skeletonAnimation;
-    public bool isCast { get; set; } = false;
-    public bool isCastFinish { get; set; } = false;
+
     private PlayerUI playerUI;
     [SerializeField] private float maxHp;
     [SerializeField] private float currentHp;
     [SerializeField] private float maxMp;
     [SerializeField] private float currentMp;
     [SerializeField] private float mpRegenerative;
+    [SerializeField] private float hpRegenerative;
     [SerializeField] private float mpRegenerationInterval;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float currentMoveSpeed; //이동 속도
     private float shield;
     private float currentShield;
-    private float castingTime;
     private bool[] skillCoolTime = { false, false, false, false };
     private Vector3 flip;
-    [SerializeField] private List<Unit> barrierList = new List<Unit>();
-    [SerializeField] private List<Unit> healList = new List<Unit>();
-    [SerializeField] private GameObject[] skillRangeArray;
+    [SerializeField] private GameObject rageArray;
     [SerializeField] private ParticleSystem healEffect;
     [SerializeField] private ParticleSystem shieldEffect;
     [SerializeField] private ParticleSystem rageEffect;
     [SerializeField] private ParticleSystem attackEffect;
     [SerializeField] private Vector3 attackEffectOffset;
+
+    private bool die;
     [SerializeField] private float[] skillValueArray;
     [SerializeField] private float[] skillCoolTimeArray;
     [SerializeField] private float[] skillManaArray;
@@ -69,8 +77,6 @@ public class Player : MonoBehaviour
     public float MpRegenerative { get => mpRegenerative; set => mpRegenerative = value; }
     public bool IsRight { get => isRight; set => isRight = value; }
     public bool IsLeft { get => isLeft; set => isLeft = value; }
-    public List<Unit> BarrierList { get => barrierList; set => barrierList = value; }
-    public List<Unit> HealList { get => healList; set => healList = value; }
     public float Shield
     {
         get
@@ -85,6 +91,11 @@ public class Player : MonoBehaviour
     }
     public float CurrentShield { get => currentShield; }
     public bool[] SkillCoolTime { get => skillCoolTime; set => skillCoolTime = value; }
+    public float[] SkillValueArray { get => skillValueArray; set => skillValueArray = value; }
+    public float[] SkillCoolTimeArray { get => skillCoolTimeArray; set => skillCoolTimeArray = value; }
+    public float[] SkillManaArray { get => skillManaArray; set => skillManaArray = value; }
+    public float HpRegenerative { get => hpRegenerative; set => hpRegenerative = value; }
+    public float ShieldDuration { get => shieldDuration; set => shieldDuration = value; }
 
     public void KnockBack(Vector3 pos)
     {
@@ -98,6 +109,9 @@ public class Player : MonoBehaviour
     }
     public void Move(Vector3 direction) // 이동 함수 (매개변수로 이동할 방향 벡터를 받음)
     {
+        if (isCasting || useSkill) return;
+        if (!move) PlayerAnimation(0);
+        move = true;
         transform.position += direction * currentMoveSpeed * Time.deltaTime;
     }
     public void DecreaseHp(float damage) // 체력 감소 함수 (공격하는 쪽에서 호출)
@@ -118,9 +132,17 @@ public class Player : MonoBehaviour
         currentHp -= damage;
         if(currentHp <= 0)
         {
-            skeletonAnimation.AnimationState.SetAnimation(0, "Dead", false);
-            InGameManager.Instance.GameOver();
+            if (die) return;
+            die = true;
+            StartCoroutine(Co_Die());
         }
+    }
+    private IEnumerator Co_Die()
+    {
+        skeletonAnimation.AnimationState.SetAnimation(0, "Dead", false);
+        yield return new WaitForSeconds(1.333f);
+        InGameManager.Instance.SetGameOver();
+        this.enabled = false;
     }
     public void DecreaseMp(float value)
     {
@@ -129,12 +151,6 @@ public class Player : MonoBehaviour
         {
             currentMp = 0;
         }
-    }
-    public void Casting(float time)
-    {
-        castingTime = time;
-        isCast = true;
-        playerUI.ActiveCastingBar();
     }
     public void SlowDown(bool isReturn, float percentage = 0)
     {
@@ -192,31 +208,47 @@ public class Player : MonoBehaviour
     {
         while (true)
         {
-            if (isCast)
+            yield return null;
+            if (castingButtonDown)
             {
-                //isCastFinish = false;
-                float progress = 0;
-                while (progress < castingTime)
+                if(castingTarget == null)
                 {
-                    if (!isCast)
+                    playerUI.DisableCastingBar();
+                    isCasting = false;
+                    castingButtonDown = false;
+                    continue;
+                }
+                isCasting = true;
+                playerUI.ActiveCastingBar();
+                float progress = 0;
+                while (progress < castingTarget.CastTime)
+                {
+                    yield return null;
+                    if (!castingButtonDown)
                     {
-                        playerUI.DisableCastingBar();
                         break;
                     }
-                    playerUI.UpdateCastingBar(castingTime, progress);
                     progress += Time.deltaTime;
-                    yield return null;
+                    if(castingTarget == null)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        playerUI.UpdateCastingBar(castingTarget.CastTime, progress);
+                    }
                 }
-                if(progress >= castingTime)
+                if(castingTarget != null && progress >= castingTarget.CastTime)
                 {
-                    isCastFinish = true;
+                    castingTarget.CastFinish = true;
+                    castingButtonDown = false;
                 }
                 playerUI.DisableCastingBar();
+                isCasting = false;
             }
-            yield return null;
         }
     }
-    private IEnumerator Co_UpdateMp() // 마나 갱신 코루틴
+    private IEnumerator Co_UpdateHpAndMp() // 마나 갱신 코루틴
     {
         while (true)
         {
@@ -227,9 +259,16 @@ public class Player : MonoBehaviour
                 {
                     currentMp = maxMp;
                 }
-                yield return new WaitForSeconds(mpRegenerationInterval);
             }
-            yield return null;
+            if(currentHp < maxHp)
+            {
+                currentHp += hpRegenerative;
+                if(currentHp > maxHp)
+                {
+                    currentHp = maxHp;
+                }
+            }
+            yield return new WaitForSeconds(5f);
         }
     }
     private void Awake() // 이니셜라이징으로 뺄거임 22.02.08
@@ -242,23 +281,23 @@ public class Player : MonoBehaviour
         skeletonAnimation = GetComponent<SkeletonAnimation>();
         flip = transform.localScale;
         skeletonAnimation.AnimationState.SetAnimation(0, "Idle", true);
-        attackEffect.transform.position = boss.transform.position + attackEffectOffset;
     }
     private void Start()
     {
-        StartCoroutine(Co_UpdateMp());
+        StartCoroutine(Co_UpdateHpAndMp());
         StartCoroutine(Co_Casting());
+        UpdateAttackEffectPosition();
     }
     private void Update()
     {
-        /*if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
             isRight = true;
         }
         else if (Input.GetKeyUp(KeyCode.RightArrow))
         {
             isRight = false;
-        }*/
+        }
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             isLeft = true;
@@ -267,6 +306,7 @@ public class Player : MonoBehaviour
         {
             isLeft = false;
         }
+        UpdateAttackEffectPosition();
         /*if (Input.GetKeyDown(KeyCode.S))
         {
             foreach (var item in InGameManager.Instance.Units)
@@ -285,7 +325,7 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        attackEffect.transform.position = boss.transform.position + attackEffectOffset;
+        //attackEffect.transform.position = boss.transform.position + attackEffectOffset;
         if (isInvincibility || isInpacable)
         {
             return;
@@ -299,8 +339,57 @@ public class Player : MonoBehaviour
             Move(Vector3.left);
         }
     }
+    private void UpdateAttackEffectPosition()
+    {
+        attackEffect.transform.position = InGameManager.Instance.Boss.transform.position + attackEffectOffset;
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "CastingObject")
+        {
+            castingTarget = collision.GetComponent<CastingObject>();
+            if (castingTarget.CastFinish) return;
+            castingButton.SetActive(true);
+            attackButton.SetActive(false);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "CastingObject")
+        {
+           // if (castingTarget == collision.GetComponent<CastingObject>())
+          //  {
+            castingTarget = null;
+            castingButton.SetActive(false);
+            attackButton.SetActive(true);
+            // }
+        }
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "CastingObject")
+        {
+            castingTarget = collision.transform.GetComponent<CastingObject>();
+            if (castingTarget.CastFinish) return;
+            castingButton.SetActive(true);
+            attackButton.SetActive(false);
+        }
+    }
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "CastingObject")
+        {
+            // if (castingTarget == collision.GetComponent<CastingObject>())
+            //  {
+            castingTarget = null;
+            castingButton.SetActive(false);
+            attackButton.SetActive(true);
+            // }
+        }
+    }
     public void Flip(bool isLeft)
     {
+        if (useSkill) return;
         Vector3 scale = flip;
         if (isLeft)
         {
@@ -310,6 +399,7 @@ public class Player : MonoBehaviour
     }
     public void UseSkill(int index)
     {
+        if (isCasting) return;
         SkillTransition(index);
     }
     private void SkillTransition(int index)
@@ -324,6 +414,15 @@ public class Player : MonoBehaviour
             Debug.Log("보스가 현재 필드에 존재하지 않습니다.");
             return;
         }
+        if(index != 3 && CoolTimeLimit)
+        {
+            return;
+        }
+        if(useSkill)
+        {
+            return;
+        }
+        useSkill = true;
         switch (index)
         {
             case 0:
@@ -347,13 +446,13 @@ public class Player : MonoBehaviour
                 StartCoroutine(Co_SkillCoolTime(1, skillCoolTimeArray[1]));
                 break;
             case 2:
-                skillRangeArray[2].SetActive(!skillRangeArray[2].activeSelf);
-                if (skillRangeArray[2].activeSelf)
+                rageArray.SetActive(!rageArray.activeSelf);
+                if (rageArray.activeSelf)
                 {
-                    if (currentMp < 3)
+                    if (currentMp < skillManaArray[2])
                     {
                         Debug.Log("마나가 부족합니다!");
-                        skillRangeArray[2].SetActive(false);
+                        rageArray.SetActive(false);
                         rageEffect.Stop();
                         break;
                     }
@@ -363,6 +462,7 @@ public class Player : MonoBehaviour
                 else
                 {
                     rageEffect.Stop();
+                    useSkill = false;
                 }
                 StartCoroutine(Co_SkillCoolTime(2, skillCoolTimeArray[2]));
                 break;
@@ -387,6 +487,7 @@ public class Player : MonoBehaviour
     private IEnumerator Co_SkillCoolTime(int index, float value)
     {
         skillCoolTime[index] = true;
+        playerUI.ShowSkillCoolTime(index, value);
         yield return new WaitForSeconds(value);
         skillCoolTime[index] = false;
     }
@@ -394,8 +495,9 @@ public class Player : MonoBehaviour
     {
         skeletonAnimation.AnimationState.SetAnimation(0, "skill-Y", false);
         skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 2f);
-        yield return new WaitForSeconds(1f);
-        foreach (var item in barrierList)
+        yield return new WaitForSeconds(2f);
+        useSkill = false;
+        foreach (var item in InGameManager.Instance.Units)
         {
             item.CommonStatus.Shield = item.CommonStatus.MaxHp * skillValueArray[0] / 100;
             item.ShieldEffect.Play();
@@ -403,24 +505,20 @@ public class Player : MonoBehaviour
         Shield = maxHp * skillValueArray[0] / 100;
         shieldEffect.Play();
         yield return new WaitForSeconds(shieldDuration);
-        foreach (var item in barrierList)
+        foreach (var item in InGameManager.Instance.Units)
         {
             item.CommonStatus.Shield = 0;
         }
         Shield = 0;
-        barrierList.Clear();
     }
     private IEnumerator Co_Skill_Heal(float value)
     {
         skeletonAnimation.AnimationState.SetAnimation(0, "skill-G", false);
         skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 2f);
-        yield return new WaitForSeconds(1f);
-        foreach (var item in healList)
+        yield return new WaitForSeconds(2f);
+        useSkill = false;
+        foreach (var item in InGameManager.Instance.Units)
         {
-            if(item.GetUnitState == Unit.EUnitState.Die)
-            {
-                continue;
-            }
             item.CommonStatus.IncreaseHp(item.CommonStatus.MaxHp * value / 100);
             item.HealEffect.Play();
         }
@@ -435,12 +533,13 @@ public class Player : MonoBehaviour
     {
         skeletonAnimation.AnimationState.SetAnimation(0, "skill-R", false);
         skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 2f);
+        yield return new WaitForSeconds(2f);
+        useSkill = false;
         rageEffect.Play();
-        yield return new WaitForSeconds(1f);
-        while (skillRangeArray[2].activeSelf)
+        while (rageArray.activeSelf)
         {
-            yield return new WaitForSeconds(2f);
-            if (!skillRangeArray[2].activeSelf)
+            yield return new WaitForSeconds(1f);
+            if (!rageArray.activeSelf)
             {
                 break;
             }
@@ -448,7 +547,7 @@ public class Player : MonoBehaviour
             if(currentMp <= 0)
             {
                 Debug.Log("마나가 부족하여 스킬이 비활성화 됩니다.");
-                skillRangeArray[2].SetActive(false);
+                rageArray.SetActive(false);
                 rageEffect.Stop();
             }
         }
@@ -467,7 +566,8 @@ public class Player : MonoBehaviour
         else
         {
             unit.CommonStatus.CurrentAttackDamage = unit.CommonStatus.AttackDamage;
-            unit.RageEffect.Stop();
+            print(unit.gameObject.name + "은(는) 공격력 증가 범위에서 나갔음");
+            unit.RageEffect.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
         }
     }
     private IEnumerator Co_Skill_Attack()
@@ -506,6 +606,7 @@ public class Player : MonoBehaviour
         {
             thing = "버그";
         }
+        useSkill = false;
         Debug.Log(thing);
     }
 }

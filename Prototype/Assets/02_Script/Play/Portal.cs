@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
-    private Boss_TimeJudge boss_TimeJudge;
+    /*private Boss_TimeJudge boss_TimeJudge;
     private Player player;
     [SerializeField] private Transform oppositePortal;
     [SerializeField] private CastingObject castingObject;
@@ -22,7 +22,7 @@ public class Portal : MonoBehaviour
     {
         if(collision.tag == castingObject.PlayerTag)
         {
-            player.Casting(castingObject.CastTime);
+            player.Casting(false, castingObject.CastTime);
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
@@ -40,7 +40,7 @@ public class Portal : MonoBehaviour
     {
         if(collision.tag == castingObject.PlayerTag)
         {
-            player.isCast = false;
+            player.Casting(true);
         }
-    }
+    }*/
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FuturePlayer : MonoBehaviour
 {
-    private Boss_TimeJudge boss_TimeJudge;
+    /*private Boss_TimeJudge boss_TimeJudge;
     private Player player;
     [SerializeField] private CastingObject castingObject;
     private void Awake()    
@@ -20,7 +20,7 @@ public class FuturePlayer : MonoBehaviour
             {
                 return;
             }
-            player.Casting(castingObject.CastTime);
+            player.Casting(false, castingObject.CastTime);
         }
     }
     private void OnTriggerStay2D(Collider2D collision)
@@ -44,5 +44,5 @@ public class FuturePlayer : MonoBehaviour
             }
             player.isCast = false;
         }
-    }
+    }*/
 }

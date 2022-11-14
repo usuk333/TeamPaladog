@@ -15,6 +15,7 @@ public class Slime : MonoBehaviour
     [SerializeField] private float dotDamage;
     [SerializeField] private float dotInterval;
     [SerializeField] private int dotCount;
+
     private Mushroom mushroom;
     private float moveInterval;
     private Vector3 flip;
@@ -22,43 +23,54 @@ public class Slime : MonoBehaviour
     [SerializeField] public bool isInvincible = true; //슬라임의 무적 상태 변수. true면 무적임. 제단 캐스팅을 통해 n초간 false가 됨
     [SerializeField] private ParticleSystem poisonEffect;
     private MeshRenderer mesh;
-    private IEnumerator Co_ExplosionSlime() // 슬라임이 폭발한 후 도트피해를 입히고 분혈하는 기능 함수
+    private IEnumerator Co_ExplosionSlime() // 슬라임이 폭발한 후 도트피해를 입히고 분열하는 기능 함수
     {
         while (true)
         {
+            yield return null;
             if (isExplosion)
             {
-                Debug.Log("도트 코루틴 들어옴");
-                //mushroom.SummonSlime(transform.position);
+                StartCoroutine(Co_SetColor(2f, Color.white, Color.red));
+                yield return new WaitForSeconds(2f);
+                mesh.enabled = false;
+                poisonEffect.Play();
                 if (collisionObjects.Contains(InGameManager.Instance.Player.gameObject))
                 {
-                    InGameManager.Instance.Player.DecreaseHp(dotDamage);
+                    InGameManager.Instance.Player.DecreaseHp(mushroom.mushroomStatus.thirdPatternDamage);
                 }
                 foreach (var item in InGameManager.Instance.Units)
                 {
                     if (collisionObjects.Contains(item.gameObject))
                     {
-                        item.CommonStatus.DecreaseHp(dotDamage);
+                        item.CommonStatus.DecreaseHp(mushroom.mushroomStatus.thirdPatternDamage);
                     }
                 }
-                dotCount++;
-                yield return new WaitForSeconds(dotInterval);
-                if(dotCount >= 3)
+                yield return new WaitForSeconds(2f);
+                for (int i = 0; i < mushroom.mushroomStatus.thirdPatternCount; i++)
                 {
-                    isExplosion = false;
-                    dotCount = 0;
                     mushroom.SummonSlime(transform.localPosition);
-                    mushroom.SummonSlime(transform.localPosition);
-                    ReturnThis();
                 }
+                ReturnThis();
             }
-            yield return null;
         }        
+    }
+    private IEnumerator Co_SetColor(float time, Color a, Color b)
+    {
+        float progress = 0;
+        while (progress < time)
+        {
+            skeletonAnimation.skeleton.SetColor(Color.Lerp(a, b, 1 / time * progress));
+            progress += Time.deltaTime;
+            yield return null;//new WaitForSeconds(Time.deltaTime);
+        }
     }
     private void ReturnThis()
     {
+        isExplosion = false;
         if (mushroom.isCounting)
         {
+            mesh.enabled = true;
+            StartCoroutine(Co_SetColor(mushroom.progress, Color.white, Color.red));
             return;
         }
         mushroom.ReturnSlime(this);
@@ -72,23 +84,6 @@ public class Slime : MonoBehaviour
         }
         transform.localScale = scale;
     }
-    private void ExplosionSlime() // 슬라임의 폭발 데미지 함수
-    {
-        poisonEffect.Play();
-        if (collisionObjects.Contains(InGameManager.Instance.Player.gameObject))
-        {
-            InGameManager.Instance.Player.DecreaseHp(damage);
-        }
-        foreach (var item in InGameManager.Instance.Units)
-        {
-            if(collisionObjects.Contains(item.gameObject))
-            {
-                item.CommonStatus.DecreaseHp(damage);
-            }
-        }
-        isExplosion = true;
-        //transform.gameObject.SetActive(false);
-    }
     private void Awake()
     {
         mushroom = GetComponentInParent<Mushroom>();
@@ -96,11 +91,10 @@ public class Slime : MonoBehaviour
         skeletonAnimation = GetComponent<SkeletonAnimation>();
         flip = transform.localScale;
         mesh = GetComponent<MeshRenderer>();
-        
     }
     private void OnEnable() //풀로 돌아간 슬라임을 다시 꺼내오면 코루틴이 멈춰버린다. 때문에 슬라임 객체가 활성화 될 때마다 코루틴을 실행해줬다.
     {
-        skeletonAnimation.Skeleton.SetColor(Color.white);
+        StartCoroutine(Co_SetColor(1f, Color.clear, Color.white));
         mesh.enabled = true;
         StartCoroutine(MoveAI());
         StartCoroutine(Co_ExplosionSlime());
@@ -114,71 +108,48 @@ public class Slime : MonoBehaviour
     {
         while (true)
         {
-            if (!isExplosion)
-            {
-                nextBehaviour = Random.Range(0, 4);
-                Debug.Log(nextBehaviour);
-                switch (nextBehaviour)
-                {
-                    case 0:
-                        direction = Vector3.left;
-                        Debug.Log("왼쪽 이동");
-                        Flip(false);
-                        break;
-                    case 1:
-                        direction = Vector3.zero;
-                        Debug.Log("멈춤");
-                        break;
-                    case 2:
-                        direction = Vector3.right;
-                        Debug.Log("오른쪽 이동");
-                        Flip(true);
-                        break;
-                    case 3:
-                        direction = Vector3.zero;
-                        StartCoroutine(Co_WarningExplosion());
-                        yield return new WaitForSeconds(2f);
-                        ExplosionSlime();
-                        Debug.Log("폭발");
-                        mesh.enabled = false;
-                        break;
-                    default:
-                        break;
-                }
-                moveInterval = Random.Range(1f, 4f);//1초에서 3초 사이의 시간이 나옴
-                yield return new WaitForSeconds(moveInterval);
-            }
             yield return null;
-        }      
-    }
-    private IEnumerator Co_WarningExplosion()
-    {
-        int count = 0;
-        float duration = 0.5f;
-        float smoothness = 0.02f;
-        float timer = 0;
-        float increment = smoothness / duration;
-        while(count < 2)
-        {
-            while (timer < 0.5f)
+            if (mushroom.isCounting)
             {
-                skeletonAnimation.Skeleton.SetColor(Color.Lerp(Color.white, new Color(1, 0.45f, 0.45f), timer));
-                timer += increment;
-                yield return new WaitForSeconds(smoothness);
+                direction = Vector3.zero;
+                mesh.enabled = true;
+                StartCoroutine(Co_SetColor(mushroom.SporeTimerMaxValue, Color.white, Color.red));
+                yield break;
             }
-            timer = 0;
-            while (timer < 0.5f)
+            nextBehaviour = Random.Range(0, 4);
+            Debug.Log(nextBehaviour);
+            switch (nextBehaviour)
             {
-                skeletonAnimation.Skeleton.SetColor(Color.Lerp(new Color(1, 0.45f, 0.45f), Color.white, timer));
-                timer += increment;
-                yield return new WaitForSeconds(smoothness);
+                case 0:
+                    direction = Vector3.left;
+                    Debug.Log("왼쪽 이동");
+                    Flip(false);
+                    break;
+                case 1:
+                    direction = Vector3.zero;
+                    Debug.Log("멈춤");
+                    break;
+                case 2:
+                    direction = Vector3.right;
+                    Debug.Log("오른쪽 이동");
+                    Flip(true);
+                    break;
+                case 3:
+                    direction = Vector3.zero;
+                    yield return new WaitForSeconds(2f);
+                    if (mushroom.isCounting)
+                    {
+                        continue;
+                    }
+                    isExplosion = true;
+                    yield break;
+                default:
+                    break;
             }
-            timer = 0;
-            count++;
-            yield return null;
+            moveInterval = Random.Range(1f, 4f);//1초에서 3초 사이의 시간이 나옴
+            yield return new WaitForSeconds(moveInterval);
         }
-    }
-    
+    }  
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "PLAYER" || collision.tag == "UNIT")

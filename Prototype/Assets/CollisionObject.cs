@@ -5,7 +5,9 @@ using UnityEngine;
 public class CollisionObject : MonoBehaviour
 {
     [SerializeField] private float damage;
-    
+
+    public float Damage { get => damage; set => damage = value; }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "PLAYER")
@@ -14,7 +16,7 @@ public class CollisionObject : MonoBehaviour
         }
         if(collision.tag == "UNIT")
         {
-            for (int i = 0; i < InGameManager.Instance.Units.Length; i++)
+            for (int i = 0; i < InGameManager.Instance.Units.Count; i++)
             {
                 if(collision.gameObject == InGameManager.Instance.Units[i].gameObject)
                 {

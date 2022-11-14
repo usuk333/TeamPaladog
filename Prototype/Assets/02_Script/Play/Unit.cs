@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Spine.Unity;
+using System.Linq;
 
 public class Unit : MonoBehaviour
 {
@@ -58,6 +59,8 @@ public class Unit : MonoBehaviour
     [SerializeField] private ParticleSystem healEffect;
     [SerializeField] private ParticleSystem shieldEffect;
     [SerializeField] private ParticleSystem rageEffect;
+
+    public float skillCondition;
 
     private SkeletonAnimation skeletonAnimation;
     public EUnitType UnitType { get => eUnitType; }
@@ -138,7 +141,7 @@ public class Unit : MonoBehaviour
     }
     private void TransitionCount()//카운트 유닛 상태 전이 함수
     {
-        if (countUnit.CurrentAttackCount >= countUnit.AttackCount)
+        if (countUnit.CurrentAttackCount >= skillCondition)
         {
             countUnit.CurrentAttackCount = 0;
             eUnitState = EUnitState.Skill;         
@@ -151,7 +154,7 @@ public class Unit : MonoBehaviour
     private void TransitionPercentage()//퍼센트 유닛 상태 전이 함수
     {
         float rand = Random.value * 100;
-        if (rand <= percentageUnit.SkillPercentage)
+        if (rand <= skillCondition)
         {
             eUnitState = EUnitState.Skill;
         }
@@ -163,6 +166,8 @@ public class Unit : MonoBehaviour
     private IEnumerator Co_Dead() //유닛 죽는 애니메이션 연출 코루틴
     {
         yield return new WaitUntil(() => commonStatus.CurrentHp <= 0);
+        InGameManager.Instance.Units.Remove(this);
+        GetComponent<Rigidbody2D>().gravityScale = 0;
         GetComponent<BoxCollider2D>().enabled = false;
         eUnitState = EUnitState.Die;
         skeletonAnimation.AnimationState.TimeScale = 0.8f;
@@ -199,7 +204,9 @@ public class Unit : MonoBehaviour
     }
     private IEnumerator Co_UpdateState() //유닛 유한상태기계(사실상 무한임)
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
+        eUnitState = EUnitState.Move;
+        skeletonAnimation.AnimationState.SetAnimation(0, "Move", true);
         StartCoroutine(Co_Dead());
         while (eUnitState != EUnitState.Die)
         {
@@ -262,7 +269,7 @@ public class Unit : MonoBehaviour
                     //스킬 애니메이션 재생 시간만큼 코루틴에 지연시간 주기
                     eUnitState = EUnitState.Idle;
                     break;
-                case EUnitState.Die:
+                case EUnitState.Die:                  
                     yield break;
                 default:
                     Debug.Assert(false);
@@ -272,8 +279,6 @@ public class Unit : MonoBehaviour
     }
     private void Awake()
     {
-        commonStatus.CurrentHp = commonStatus.MaxHp;
-        commonStatus.CurrentMoveSpeed = commonStatus.MoveSpeed;
         //spine = GetComponent<SkeletonAnimation>();
         if (eUnitValue == EUnitValue.Count)
         {
@@ -291,6 +296,9 @@ public class Unit : MonoBehaviour
     }
     private void Start()
     {
+        commonStatus.CurrentHp = commonStatus.MaxHp;
+        commonStatus.CurrentMoveSpeed = commonStatus.MoveSpeed;
+        commonStatus.CurrentAttackDamage = commonStatus.AttackDamage;
         StartCoroutine(Co_UpdateState());
         StartCoroutine(Co_OutOfStateCondition());
         if (basicEffect != null)
@@ -309,6 +317,13 @@ public class Unit : MonoBehaviour
             isKnockBack = true;
             penaltyTime = 5f;
         }*/
+        if(eUnitState == EUnitState.Die)
+        {
+            if(commonStatus.CurrentHp != 0)
+            {
+                commonStatus.CurrentHp = 0;
+            }
+        }
     }
     private void LateUpdate()
     {

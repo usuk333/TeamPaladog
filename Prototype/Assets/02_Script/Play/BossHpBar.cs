@@ -15,6 +15,10 @@ public class BossHpBar : MonoBehaviour
             yield return null;
         }
     }
+    public void SetZeroBossHpBar()
+    {
+        hpBar.fillAmount = 0;
+    }
     private void Awake() //해당 부분도 이니셜라이징 함수로 빼야할까?
     {
         hpBar = GetComponent<Image>();

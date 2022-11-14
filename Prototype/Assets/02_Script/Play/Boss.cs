@@ -19,7 +19,8 @@ public class Boss : MonoBehaviour
     }
     [SerializeField]
     private EBossKind eBossKind;
-    public bool isPattern { get; set; }
+    [SerializeField] private bool isPattern = false;
+    public bool IsPattern { get => isPattern; set => isPattern = value; }
     [SerializeField] private int arrayCount;
     [SerializeField] private List<List<GameObject>> collisionsArray = new List<List<GameObject>>();
     [SerializeField] private Unit currentUnit;
@@ -38,40 +39,33 @@ public class Boss : MonoBehaviour
     }
     private void Attack() //보스 평타
     {
-        if(currentUnit == null) //유닛 다 죽으면 플레이어 공격
+        if(InGameManager.Instance.Units.Count > 0)
         {
-            InGameManager.Instance.Player.DecreaseHp(commonStatus.CurrentAttackDamage);
-            return;
-        }
-        currentUnit.CommonStatus.DecreaseHp(commonStatus.CurrentAttackDamage);
-    }
-    private IEnumerator Co_UpdateUnitReference()
-    {
-        //인게임매니저의 유닛 리스트 인덱스를 각각 할당시켜주면 될 듯 (0,1,2,3 순서로 탱커, 근딜, 마법사, 원거리 딜러)
-        int i = 0;
-        currentUnit = InGameManager.Instance.Units[i];
-        
-        while (true)
-        {
-            if(currentUnit.CommonStatus.CurrentHp <= 0)
+            currentUnit = InGameManager.Instance.Units[0];
+            if (attackEffect != null)
             {
-                if(i >= 3)
-                {
-                    currentUnit = null;
-                    yield break;
-                }
-                currentUnit = InGameManager.Instance.Units[++i];
+                attackEffect.transform.position = currentUnit.transform.position;
             }
-            yield return null;
+            currentUnit.CommonStatus.DecreaseHp(commonStatus.CurrentAttackDamage);
+        }
+        else
+        {
+            if (attackEffect != null)
+            {
+                attackEffect.transform.position = InGameManager.Instance.Player.transform.position;
+            }
+            InGameManager.Instance.Player.DecreaseHp(commonStatus.CurrentAttackDamage);
         }
     }
     private IEnumerator Co_UpdateState() // 보스 유한상태기계
     {
+        yield return new WaitForSeconds(3f);
         while (eBossKind != EBossKind.Dummy)
         {
             yield return null;
             if (isPattern)
             {
+                Debug.Log("패턴 중");
                 continue;
             }
             switch (eBossState)
@@ -81,7 +75,7 @@ public class Boss : MonoBehaviour
                     eBossState = EBossState.Attack;
                     break;
                 case EBossState.Attack:
-                    if(eBossKind == EBossKind.Gargoyle)
+                    if (eBossKind == EBossKind.Gargoyle)
                     {
                         skeletonAnimation.AnimationState.SetAnimation(0, "grondpunch", false);
                     }
@@ -130,14 +124,25 @@ public class Boss : MonoBehaviour
     {
         commonStatus.CurrentHp = commonStatus.MaxHp;
         commonStatus.CurrentAttackDamage = commonStatus.AttackDamage;
-        StartCoroutine(Co_UpdateUnitReference());
+        currentUnit = InGameManager.Instance.Units[0];
+        //StartCoroutine(Co_UpdateUnitReference());
         StartCoroutine(Co_UpdateState());
     }
-    private void LateUpdate()
+    private void Update()
     {
-        if(attackEffect != null)
+        if (eBossKind == EBossKind.Dummy) return;
+        if(commonStatus.CurrentHp <= 0)
         {
-            attackEffect.transform.position = currentUnit.transform.position;
-        }
+            if(eBossKind == EBossKind.Gargoyle)
+            {
+                skeletonAnimation.AnimationState.SetAnimation(0, "dead", false);
+            }
+            else
+            {
+                skeletonAnimation.AnimationState.SetAnimation(0, "Death", false);
+            }
+            InGameManager.Instance.SetGameClear();
+            this.enabled = false;
+        }        
     }
 }

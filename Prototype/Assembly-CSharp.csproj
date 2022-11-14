@@ -69,6 +69,7 @@
     <Compile Include="Assets\02_Script\Play\UnitMark.cs" />
     <Compile Include="Assets\Boss_TimeJudge.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\INearbyConnectionClient.cs" />
+    <Compile Include="Assets\02_Script\TestScript\MushroomTest.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\CommonStatusCodes.cs" />
     <Compile Include="Assets\02_Script\Play\BossHpBar.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SignInStatus.cs" />

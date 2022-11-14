@@ -47,6 +47,101 @@ public struct BeastStatus
         this.forthPatternAtksValue = forthPatternAtksValue;
     }
 }
+public struct MushroomStatus
+{
+    public float firstPatternDamage;
+    public float firstPatternMinTime;
+    public float firstPatternMaxTime;
+    public float secondPatternCount;
+    public float thirdPatternDamage;
+    public float thirdPatternCount;
+    public float forthPatternDamage;
+    public float forthPatternDotDamage;
+    public float forthPatternDotDuration;
+    public float forthPatternMinCount;
+    public float forthPatternMaxCount;
+    public float forthPatternMinTime;
+    public float forthPatternMaxTime;
+    public float fifthPatternDuration;
+    public float fifthPatternCastingTime;
+
+    public MushroomStatus(float firstPatternDamage, float firstPatternMinTime, float firstPatternMaxTime, float secondPatternCount, float thirdPatternDamage, float thirdPatternCount, float forthPatternDamage, float forthPatternDotDamage, float forthPatternDotDuration, float forthPatternMinCount, float forthPatternMaxCount, float forthPatternMinTime, float forthPatternMaxTime, float fifthPatternDuration, float fifthPatternCastingTime)
+    {
+        this.firstPatternDamage = firstPatternDamage;
+        this.firstPatternMinTime = firstPatternMinTime;
+        this.firstPatternMaxTime = firstPatternMaxTime;
+        this.secondPatternCount = secondPatternCount;
+        this.thirdPatternDamage = thirdPatternDamage;
+        this.thirdPatternCount = thirdPatternCount;
+        this.forthPatternDamage = forthPatternDamage;
+        this.forthPatternDotDamage = forthPatternDotDamage;
+        this.forthPatternDotDuration = forthPatternDotDuration;
+        this.forthPatternMinCount = forthPatternMinCount;
+        this.forthPatternMaxCount = forthPatternMaxCount;
+        this.forthPatternMinTime = forthPatternMinTime;
+        this.forthPatternMaxTime = forthPatternMaxTime;
+        this.fifthPatternDuration = fifthPatternDuration;
+        this.fifthPatternCastingTime = fifthPatternCastingTime;
+    }
+}
+public struct InsideStatus
+{
+    public float firstPatternDamage;
+    public float firstPatternMana;
+    public float firstPatternTrueDamage;
+    public float firstPatternMinTime;
+    public float firstPatternMaxTime;
+    public float[] secondPatternPercentage;
+    public float secondPatternDummyHp;
+    public float secondPatternManaRegen;
+    public float secondPatternPortalDuration;
+
+    public InsideStatus(float firstPatternDamage, float firstPatternMana, float firstPatternTrueDamage, float firstPatternMinTime, float firstPatternMaxTime, float[] secondPatternPercentage, float secondPatternDummyHp, float secondPatternManaRegen, float secondPatternPortalDuration)
+    {
+        this.firstPatternDamage = firstPatternDamage;
+        this.firstPatternMana = firstPatternMana;
+        this.firstPatternTrueDamage = firstPatternTrueDamage;
+        this.firstPatternMinTime = firstPatternMinTime;
+        this.firstPatternMaxTime = firstPatternMaxTime;
+        this.secondPatternPercentage = secondPatternPercentage;
+        this.secondPatternDummyHp = secondPatternDummyHp;
+        this.secondPatternManaRegen = secondPatternManaRegen;
+        this.secondPatternPortalDuration = secondPatternPortalDuration;
+    }
+}
+public struct GargoyleStatus
+{
+    public float firstPatternDamage;
+    public float firstPatternSlowDown;
+    public float firstPatternMinTime;
+    public float firstPatternMaxTime;
+    public float secondPatternDamage;
+    public float secondPatternMinTime;
+    public float secondPatternMaxTime;
+    public float thirdPatternDamage;
+    public float thirdPatternMinTime;
+    public float thirdPatternMaxTime;
+    public float forthPatternShield;
+    public float[] forthPatternPercentage;
+    public float forthPatternDuration;
+
+    public GargoyleStatus(float firstPatternDamage, float firstPatternSlowDown, float firstPatternMinTime, float firstPatternMaxTime, float secondPatternDamage, float secondPatternMinTime, float secondPatternMaxTime, float thirdPatternDamage, float thirdPatternMinTime, float thirdPatternMaxTime, float forthPatternShield, float[] forthPatternPercentage, float forthPatternDuration)
+    {
+        this.firstPatternDamage = firstPatternDamage;
+        this.firstPatternSlowDown = firstPatternSlowDown;
+        this.firstPatternMinTime = firstPatternMinTime;
+        this.firstPatternMaxTime = firstPatternMaxTime;
+        this.secondPatternDamage = secondPatternDamage;
+        this.secondPatternMinTime = secondPatternMinTime;
+        this.secondPatternMaxTime = secondPatternMaxTime;
+        this.thirdPatternDamage = thirdPatternDamage;
+        this.thirdPatternMinTime = thirdPatternMinTime;
+        this.thirdPatternMaxTime = thirdPatternMaxTime;
+        this.forthPatternShield = forthPatternShield;
+        this.forthPatternPercentage = forthPatternPercentage;
+        this.forthPatternDuration = forthPatternDuration;
+    }
+}
 public class InGameManager : MonoBehaviour
 {
     private static InGameManager instance; //인게임씬 클래스들이 접근 용이하도록 스태틱으로 사용
@@ -54,15 +149,19 @@ public class InGameManager : MonoBehaviour
     private float timerSecond;
     private int timerMinute;
     [SerializeField] private Text timer;
-    [SerializeField] private Unit[] units;
+    [SerializeField] private List<Unit> units = new List<Unit>();
     private Player player;
     [SerializeField] private Boss boss;
     [SerializeField] private SkillData[] skillDataArray;
     public static InGameManager Instance { get => instance; }
-    public Unit[] Units { get => units; }
+    public List<Unit> Units { get => units; set => units = value; }
     public Player Player { get => player; }
     public Boss Boss { get => boss; set => boss = value; }
     public SkillData[] SkillDataArray { get => skillDataArray; set => skillDataArray = value; }
+
+    public bool GameOver { get; set; }
+    
+    public bool GameClear { get; set; }
 
     public void StopAllUnitCoroutines()
     {
@@ -107,13 +206,15 @@ public class InGameManager : MonoBehaviour
             yield return null;
         }
     }
-    private void Awake()
+    private void InitUnitStatus()
     {
-        instance = this;
-        InitBossStatus();
-        units = FindObjectsOfType<Unit>();
+        Unit[] unitArray = FindObjectsOfType<Unit>();
+        for (int i = 0; i < unitArray.Length; i++)
+        {
+            units.Add(unitArray[i]);
+        }
         Unit unit;
-        for (int i = 0; i < units.Length; i++) //이 부분 추후에 함수로 빼기 (유닛리스트 탱커 ~ 원거리 순으로 정렬)
+        for (int i = 0; i < units.Count; i++) //이 부분 추후에 함수로 빼기 (유닛리스트 탱커 ~ 원거리 순으로 정렬)
         {
             switch (units[i].UnitType)
             {
@@ -142,9 +243,107 @@ public class InGameManager : MonoBehaviour
                     break;
             }
         }
+        for (int i = 0; i < units.Count; i++)
+        {
+            switch (i)
+            {
+                case 0:
+                    units[i].CommonStatus.AttackDamage = BossManager.tanker.currentDamage;
+                    units[i].CommonStatus.MaxHp = BossManager.tanker.currentHp;
+                    units[i].CommonStatus.AttackSpeed = BossManager.tanker.attackSpeed;
+                    units[i].skillCondition = BossManager.tanker.skillCondition;
+                    break;
+                case 1:
+                    units[i].CommonStatus.AttackDamage = BossManager.warrior.currentDamage;
+                    units[i].CommonStatus.MaxHp = BossManager.warrior.currentHp;
+                    units[i].CommonStatus.AttackSpeed = BossManager.warrior.attackSpeed;
+                    units[i].skillCondition = BossManager.warrior.skillCondition;
+                    break;
+                case 2:
+                    units[i].CommonStatus.AttackDamage = BossManager.mage.currentDamage;
+                    units[i].CommonStatus.MaxHp = BossManager.mage.currentHp;
+                    units[i].CommonStatus.AttackSpeed = BossManager.mage.attackSpeed;
+                    units[i].skillCondition = BossManager.mage.skillCondition;
+                    break;
+                case 3:
+                    units[i].CommonStatus.AttackDamage = BossManager.archer.currentDamage;
+                    units[i].CommonStatus.MaxHp = BossManager.archer.currentHp;
+                    units[i].CommonStatus.AttackSpeed = BossManager.archer.attackSpeed;
+                    units[i].skillCondition = BossManager.archer.skillCondition;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+    private void InitPlayerStatus()
+    {
         player = FindObjectOfType<Player>();
+        player.MaxHp = BossManager.hp.max;
+        player.MaxMp = BossManager.mp.max;
+        player.HpRegenerative = BossManager.hp.regen;
+        player.MpRegenerative = BossManager.mp.regen;
+        float[] skillValueArray = new float[6];
+        for (int i = 0; i < 6; i++)
+        {
+            switch (i)
+            {
+                case 0:
+                    skillValueArray[0] = BossManager.barrior.size;
+                    break;
+                case 1:
+                    skillValueArray[1] = BossManager.heal.size;
+                    break;
+                case 2:
+                    skillValueArray[2] = BossManager.powerUp.size;
+                    break;
+                case 3:
+                    skillValueArray[3] = BossManager.attack.attackDamage[0];
+                    break;
+                case 4:
+                    skillValueArray[4] = BossManager.attack.attackDamage[1];
+                    break;
+                case 5:
+                    skillValueArray[5] = BossManager.attack.attackDamage[2];
+                    break;
+                default:
+                    break;
+            }
+        }
+        player.SkillValueArray = skillValueArray;
+        for (int i = 0; i < 4; i++)
+        {
+            switch (i)
+            {
+                case 0:
+                    player.SkillCoolTimeArray[0] = BossManager.barrior.coolTime;
+                    player.SkillManaArray[0] = BossManager.barrior.cost;
+                    break;
+                case 1:
+                    player.SkillCoolTimeArray[1] = BossManager.heal.coolTime;
+                    player.SkillManaArray[1] = BossManager.heal.cost;
+                    break;
+                case 2:
+                    player.SkillCoolTimeArray[2] = BossManager.powerUp.coolTime;
+                    player.SkillManaArray[2] = BossManager.powerUp.cost;
+                    break;
+                case 3:
+                    player.SkillCoolTimeArray[3] = BossManager.attack.coolTime;
+                    player.SkillManaArray[3] = BossManager.attack.cost;
+                    break;
+                default:
+                    break;
+            }
+        }
+        player.ShieldDuration = BossManager.barrior.time;
+    }
+    private void Awake()
+    {
+        instance = this;
+        InitBossStatus();
+        InitUnitStatus();
+        InitPlayerStatus();
         StartCoroutine(Co_InitializeInGameData());
-        boss = FindObjectOfType<Boss>();
     }
     private void InitBossStatus()
     {
@@ -157,15 +356,15 @@ public class InGameManager : MonoBehaviour
         }
         else if (boss.GetComponent<Gargoyle>())
         {
-
+            InitGargoyle();
         }
         else if (boss.GetComponent<Mushroom>())
         {
-
+            InitMushroom();
         }
         else if (boss.GetComponent<Inside>())
         {
-
+            InitInside();
         }
     }
     private void InitBossUsualStatus(BossStatus bs)
@@ -185,19 +384,19 @@ public class InGameManager : MonoBehaviour
                 bossStatus = new BossStatus(100, 100000, 2);
                 beastStatus = new BeastStatus(800, 25, 30, 500, 13, 23, 50, 5, 10, 10, 1.2f, 1.1f);
                 InitBossUsualStatus(bossStatus);
-                beast.InitStatus(beastStatus);
+                beast.beastStatus = beastStatus;
                 break; 
             case 1:
                 bossStatus = new BossStatus(210, 130000, 2);
                 beastStatus = new BeastStatus(1200, 25, 30, 500, 12, 22, 70, 5, 10, 15, 20 , 1.1f);
                 InitBossUsualStatus(bossStatus);
-                beast.InitStatus(beastStatus);
+                beast.beastStatus = beastStatus;
                 break;
             case 2:
                 bossStatus = new BossStatus(300, 175000, 2);
                 beastStatus = new BeastStatus(1600, 25, 30, 800, 11, 21, 90, 5, 10, 20, 30, 0.2f);
                 InitBossUsualStatus(bossStatus);
-                beast.InitStatus(beastStatus);
+                beast.beastStatus = beastStatus;
                 break;
             default:
                 break;
@@ -205,15 +404,91 @@ public class InGameManager : MonoBehaviour
     }
     private void InitGargoyle()
     {
-
+        var gargoyle = boss.GetComponent<Gargoyle>();
+        BossStatus bossStatus;
+        GargoyleStatus gargoyleStatus;
+        switch (difficulty)
+        {
+            case 0:
+                bossStatus = new BossStatus(140, 120000, 2);
+                gargoyleStatus = new GargoyleStatus(40, 80, 30, 40, 300, 12, 16, 800, 20, 25, 6000, new float[] { 80, 40 }, 10);
+                InitBossUsualStatus(bossStatus);
+                gargoyle.gargoyleStatus = gargoyleStatus;
+                break;
+            case 1:
+                bossStatus = new BossStatus(180, 140000, 2);
+                gargoyleStatus = new GargoyleStatus(70, 85, 30, 40, 600, 11, 14, 1000000, 18, 25, 10000, new float[] { 70, 50, 20 }, 10);
+                InitBossUsualStatus(bossStatus);
+                gargoyle.gargoyleStatus = gargoyleStatus;
+                break;
+            case 2:
+                bossStatus = new BossStatus(240, 200000, 2);
+                gargoyleStatus = new GargoyleStatus(120, 90, 25, 40, 1000, 8, 13, 1000000, 15, 20, 200000 * 10 / 100, new float[] { 75, 40, 5 }, 10);
+                InitBossUsualStatus(bossStatus);
+                gargoyle.gargoyleStatus = gargoyleStatus;
+                break;
+            default:
+                break;
+        }
     }
     private void InitMushroom()
     {
-
+        var mushroom = boss.GetComponent<Mushroom>();
+        BossStatus bossStatus;
+        MushroomStatus mushroomStatus;
+        switch (difficulty)
+        {
+            case 0:
+                bossStatus = new BossStatus(110, 100000, 2);
+                mushroomStatus = new MushroomStatus(55, 10, 20, 20, 110, 2, 500, 50, 5, 8, 12, 15, 15, 5, 1);
+                InitBossUsualStatus(bossStatus);
+                mushroom.mushroomStatus = mushroomStatus;
+                break;
+            case 1:
+                bossStatus = new BossStatus(150, 125000, 2);
+                mushroomStatus = new MushroomStatus(75, 10, 20, 17, 150, 2, 800, 70, 7, 13, 15, 15, 15, 5, 1);
+                InitBossUsualStatus(bossStatus);
+                mushroom.mushroomStatus = mushroomStatus;
+                break;
+            case 2:
+                bossStatus = new BossStatus(200, 160000, 2);
+                mushroomStatus = new MushroomStatus(100, 10, 20, 13, 200, 2, 1200, 150, 15, 10, 13, 15, 15, 5, 1);
+                InitBossUsualStatus(bossStatus);
+                mushroom.mushroomStatus = mushroomStatus;
+                break;
+            default:
+                break;
+        }
     }
     private void InitInside()
     {
-
+        var inside = boss.GetComponent<Inside>();
+        BossStatus bossStatus;
+        InsideStatus insideStatus;
+        switch (difficulty)
+        {
+            case 0:
+                bossStatus = new BossStatus(120, 105000, 2);
+                insideStatus = new InsideStatus(50, 30, 500, 10, 20, new float[] { 80, 40 }, 1000, 5, 15);
+                InitBossUsualStatus(bossStatus);
+                inside.insideStatus = insideStatus;
+                break;
+            case 1:
+                bossStatus = new BossStatus(160, 130000, 2);
+                insideStatus = new InsideStatus(70, 40, 800, 10, 20, new float[] { 75, 35 }, 1500, 5, 15);
+                InitBossUsualStatus(bossStatus);
+                inside.insideStatus = insideStatus;
+                break;
+            case 2:
+                bossStatus = new BossStatus(220, 170000, 2);
+                insideStatus = new InsideStatus(100, 50, 1500, 10, 20, new float[] { 80, 50, 20 }, 2000, 5, 10);
+                InitBossUsualStatus(bossStatus);
+                inside.insideStatus = insideStatus;
+                inside.difficulty = true;
+                break;
+            default:
+                break;
+        }
     }
     private void Start()
     {
@@ -226,13 +501,28 @@ public class InGameManager : MonoBehaviour
             skillDataArray[i] = new SkillData(SkillData.SkillType.Active, 5, 5, 5);
         }
     }
-    public void GameOver()
+    public void SetGameOver()
     {
-        if(boss != null)
+        GameOver = true;
+        var a = FindObjectsOfType<MonoBehaviour>();
+        foreach (var item in a)
         {
-            boss.StopAllCoroutines();
+            item.StopAllCoroutines();
         }
+        InGameUIManager.instance.ShowGameOverPopUp();
         Debug.Log("Game Over!");
+    }
+    public void SetGameClear()
+    {
+        GameClear = true;
+        var a = FindObjectsOfType<MonoBehaviour>();
+        foreach (var item in a)
+        {
+            item.StopAllCoroutines();
+        }
+        FindObjectOfType<BossHpBar>().SetZeroBossHpBar();
+        Debug.Log("Game Clear!");
+        InGameUIManager.instance.ShowClearPopUp();
     }
    /* private void ClearStage()
     {

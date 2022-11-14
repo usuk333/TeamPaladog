@@ -7,6 +7,7 @@ public class FallingObjectPool : MonoBehaviour
     [SerializeField] private float spawnInterval;
     [SerializeField] private GameObject fallingObject;
     [SerializeField] private float spawnCount;
+    private Beast beast;
     public float spawnIntervalMin;
     public float spawnIntervalMax;
     public float damage;
@@ -61,8 +62,15 @@ public class FallingObjectPool : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(spawnIntervalMin,spawnIntervalMax));
         }
     }
+    private void Awake()
+    {
+        beast = GetComponentInParent<Beast>();
+    }
     private void Start()
     {
+        spawnIntervalMin = beast.beastStatus.thirdPatternMinTime;
+        spawnIntervalMax = beast.beastStatus.thirdPatternMaxTime;
+        damage = beast.beastStatus.thirdPatternDamage;
         InitializeObject();
         StartCoroutine(Co_Falling());
     }

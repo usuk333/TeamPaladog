@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class InsidePortal : MonoBehaviour
 {
-    [SerializeField] private float castTime;
+   /* [SerializeField] private float castTime;
     private Inside inside;
     private BoxCollider2D boxCollider;
+    private bool castFinish;
     private void Awake()
     {
         inside = GetComponentInParent<Inside>();
@@ -15,6 +16,7 @@ public class InsidePortal : MonoBehaviour
     private void OnEnable()
     {
         boxCollider.enabled = true;
+        StartCoroutine(Co_MoveInside());
     }
     private void OnDisable()
     {
@@ -24,25 +26,19 @@ public class InsidePortal : MonoBehaviour
     {
         if (collision.tag == "PLAYER")
         {
-            InGameManager.Instance.Player.Casting(castTime);
+            InGameManager.Instance.Player.Casting(false, castTime);
         }
     }
-    private void OnTriggerStay2D(Collider2D collision)
+    private IEnumerator Co_MoveInside()
     {
-        if (collision.tag == "PLAYER")
-        {
-            if (InGameManager.Instance.Player.isCastFinish)
-            {
-                inside.MoveToInside();
-                InGameManager.Instance.Player.isCastFinish = false;
-            }
-        }
+        yield return new WaitUntil(() => InGameManager.Instance.Player.isCastFinish);
+        inside.MoveToInside();
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.tag == "PLAYER")
         {
-            InGameManager.Instance.Player.isCast = false;
+            InGameManager.Instance.Player.Casting(true);
         }
-    }
+    }*/
 }

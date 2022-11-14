@@ -2,12 +2,9 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class CastingObject
+public class CastingObject : MonoBehaviour
 {
-    private const string UNIT_TAG = "UNIT";
-    [SerializeField] private const string PLAYER_TAG = "PLAYER";
     [SerializeField] private float castTime;
     public float CastTime { get => castTime; }
-    public string PlayerTag { get => PLAYER_TAG; }
-    public string UnitTag { get => UNIT_TAG; }
+    public bool CastFinish { get; set; }
 }

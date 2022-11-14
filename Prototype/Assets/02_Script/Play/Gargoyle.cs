@@ -10,6 +10,9 @@ public class Gargoyle : MonoBehaviour
     private bool isShout;
     private bool isLaser;
     private bool laserOn;
+    [SerializeField] private Image warningImage;
+    [SerializeField] private Text warningText;
+
     [SerializeField] private GameObject veneer;
     [SerializeField] private float veneerDuration;
     [SerializeField] private float dotInterval;
@@ -37,27 +40,14 @@ public class Gargoyle : MonoBehaviour
     private bool isLaserOn = false;
     private bool isTracking = false;
     Vector3 trackingOffset = new Vector3(0, 2.5f, 0);
-    private void Shouting()
-    {
-        skeletonAnimation.AnimationState.SetAnimation(0, "earthquake", false);
-        isShout = true;
-    }
-    private void ResetVeneer()
-    {
-        veneer.SetActive(false);
-        isShout = false;
-        InGameManager.Instance.Player.isCastFinish = false;
-        InGameManager.Instance.Player.isCast = false;
-        foreach (var item in InGameManager.Instance.Units)
-        {
-            item.CommonStatus.SlowDown(true);
-        }
-    }
+
+    public GargoyleStatus gargoyleStatus;
+
     private void AttackVeneer()
     {
         if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(InGameManager.Instance.Player.gameObject))
         {
-            InGameManager.Instance.Player.DecreaseHp(dotDamage);
+            InGameManager.Instance.Player.DecreaseHp(gargoyleStatus.firstPatternDamage);
             foreach (var item in InGameManager.Instance.Units)
             {
                 item.CommonStatus.SlowDown(true);
@@ -69,8 +59,8 @@ public class Gargoyle : MonoBehaviour
         {
             if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(item.gameObject))
             {
-                item.CommonStatus.DecreaseHp(dotDamage);
-                item.CommonStatus.SlowDown(false, slowDownValue);
+                item.CommonStatus.DecreaseHp(gargoyleStatus.firstPatternDamage);
+                item.CommonStatus.SlowDown(false, gargoyleStatus.firstPatternSlowDown);
             }
         }
     }
@@ -116,13 +106,14 @@ public class Gargoyle : MonoBehaviour
     {
         // -6.144 7.316544
         float timer = 0f;
+        float rand = Random.Range(gargoyleStatus.secondPatternMinTime, gargoyleStatus.secondPatternMaxTime);
         SpriteRenderer obj = trackingObj.GetChild(0).GetComponent<SpriteRenderer>();
         SpriteRenderer sprite = trackingObj.GetComponent<SpriteRenderer>();
         while (true)
         {
             yield return null;
             timer += Time.deltaTime;
-            if(timer >= trackingInterval)
+            if(timer >= rand)
             {
                 sprite.DOColor(new Color(1, 0.55f, 0.55f), 2f);
                 yield return new WaitForSeconds(2f);
@@ -135,30 +126,37 @@ public class Gargoyle : MonoBehaviour
                 obj.transform.DOScaleY(0.2f, 0f);
                 obj.transform.DOLocalMoveY(-2.5f, 0f);
                 trackingEffect.Play();
-                AttackTracking(1, trackingDamage);
+                AttackTracking(1, gargoyleStatus.secondPatternDamage);
                 yield return new WaitForSeconds(0.7f);
                 sprite.color = Color.white;
                 timer = 0f;
                 isTracking = false;
+                rand = Random.Range(gargoyleStatus.secondPatternMinTime, gargoyleStatus.secondPatternMaxTime);
             }
         }
     }
     private IEnumerator Co_ActiveVeneer()
     {
+        float rand;
         while (true)
         {
             yield return null;
             if (isShout)
             {
-                InGameManager.Instance.Boss.isPattern = true;
+                rand = Random.Range(gargoyleStatus.firstPatternMinTime, gargoyleStatus.firstPatternMaxTime);
+                yield return new WaitForSeconds(rand);
+                skeletonAnimation.AnimationState.SetAnimation(0, "earthquake", false);
+                InGameManager.Instance.Boss.IsPattern = true;
                 earthquakeEffect.Play();
                 yield return new WaitForSeconds(2.5f);
                 bossUtility.KnockBack();
                 yield return new WaitForSeconds(1.5f);
-                InGameManager.Instance.Boss.isPattern = false;
+                InGameManager.Instance.Boss.IsPattern = false;
+                isShout = false;
+                isLaser = true;
                 veneer.SetActive(true);
                 print(veneer.activeSelf);
-                print(InGameManager.Instance.Player.isCastFinish);
+                //print(InGameManager.Instance.Player.isCastFinish);
                 foreach (var item in veneerEffect)
                 {
                     item.gameObject.SetActive(true);
@@ -169,35 +167,26 @@ public class Gargoyle : MonoBehaviour
                     AttackVeneer();
                     yield return new WaitForSeconds(dotInterval);
                 }
+
             }
         }
     }
     private IEnumerator Co_RemoveVeneer()
     {
-        bool isCast = false;
+        CastingObject cast = veneer.GetComponent<CastingObject>();
         while (true)
         {
             if (veneer.activeSelf)
             {
-                if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(InGameManager.Instance.Player.gameObject) && !isCast)
+                if (cast.CastFinish)
                 {
-                    InGameManager.Instance.Player.Casting(veneerDuration);
-                    isCast = true;
-                }
-                else if (!InGameManager.Instance.Boss.CollisionsArray[0].Contains(InGameManager.Instance.Player.gameObject))
-                {
-                    InGameManager.Instance.Player.isCast = false;
-                    isCast = false;
-                }
-                if (InGameManager.Instance.Player.isCastFinish)
-                {
-                    ResetVeneer();                   
+                    veneer.SetActive(false);
                     foreach (var item in veneerEffect)
                     {
-                        item.Pause();
                         item.gameObject.SetActive(false);
+                        item.Pause();
                     }
-                    isCast = false;
+                    cast.CastFinish = false;
                 }
             }
             yield return null;
@@ -206,99 +195,120 @@ public class Gargoyle : MonoBehaviour
     private IEnumerator Co_Shield()
     {
         Text text = shieldObj.GetComponentInChildren<Text>();
-        Image image = shieldObj.transform.GetChild(0).GetComponent<Image>();
+        Image image = shieldObj.transform.GetChild(1).GetComponent<Image>();
         print(image.gameObject.name);
-        float timer = shieldDuration;
-        yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.MaxHp * 90 / 100);
-        InGameManager.Instance.Boss.isPattern = true;
-        skeletonAnimation.AnimationState.SetAnimation(1, "shield", false);
-        yield return new WaitForSeconds(1.333f);
-        if (!isLaser)
+        float timer = gargoyleStatus.forthPatternDuration;
+        int patternCount = 0;
+        while (true)
         {
-            InGameManager.Instance.Boss.isPattern = false;
-        }
-        shieldObj.SetActive(true);
-        InGameManager.Instance.Boss.CommonStatus.Shield = shieldValue;
-        foreach (var item in shieldSprite)
-        {
-            item.enabled = true;
-        }
-        while (timer > 0)
-        {
-            timer -= Time.deltaTime;
-            text.text = string.Format("실드 제한 시간 : {0:0}초", System.Math.Ceiling(timer));
-            image.fillAmount = 1 / shieldValue * InGameManager.Instance.Boss.CommonStatus.CurrentShield;
-            print(1 / shieldValue * InGameManager.Instance.Boss.CommonStatus.CurrentShield);
-            if (InGameManager.Instance.Boss.CommonStatus.Shield <= 0)
+            if(patternCount > gargoyleStatus.forthPatternPercentage.Length - 1)
             {
-                InGameManager.Instance.Boss.CommonStatus.Shield = 0;
-                break;
+                yield break;
             }
-            yield return null;
-        }
-        shieldObj.SetActive(false);
-        foreach (var item in shieldSprite)
-        {
-            item.enabled = false;
-        }
-        if (InGameManager.Instance.Boss.CommonStatus.Shield > 0)
-        {
-            foreach (var item in InGameManager.Instance.Units)
+            yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.MaxHp * gargoyleStatus.forthPatternPercentage[patternCount] / 100);
+            patternCount++;
+            InGameManager.Instance.Boss.IsPattern = true;
+            skeletonAnimation.AnimationState.SetAnimation(1, "shield", false);
+            yield return new WaitForSeconds(1.333f);
+            if (!isLaser)
             {
-                item.CommonStatus.DecreaseHp(item.CommonStatus.MaxHp);
+                InGameManager.Instance.Boss.IsPattern = false;
             }
-            InGameManager.Instance.Player.DecreaseHp(InGameManager.Instance.Player.MaxHp);
-        }
+            shieldObj.SetActive(true);
+            InGameManager.Instance.Boss.CommonStatus.Shield = gargoyleStatus.forthPatternShield;
+            foreach (var item in shieldSprite)
+            {
+                item.enabled = true;
+            }
+            while (timer > 0)
+            {
+                timer -= Time.deltaTime;
+                text.text = string.Format("실드 제한 시간 : {0:0}초", System.Math.Ceiling(timer));
+                image.fillAmount = 1 / InGameManager.Instance.Boss.CommonStatus.Shield * InGameManager.Instance.Boss.CommonStatus.CurrentShield;
+                print(1 / InGameManager.Instance.Boss.CommonStatus.Shield * InGameManager.Instance.Boss.CommonStatus.CurrentShield);
+                if (InGameManager.Instance.Boss.CommonStatus.Shield <= 0)
+                {
+                    InGameManager.Instance.Boss.CommonStatus.Shield = 0;
+                    break;
+                }
+                yield return null;
+            }
+            shieldObj.SetActive(false);
+            foreach (var item in shieldSprite)
+            {
+                item.enabled = false;
+            }
+            if (InGameManager.Instance.Boss.CommonStatus.Shield > 0)
+            {
+                foreach (var item in InGameManager.Instance.Units)
+                {
+                    item.CommonStatus.DecreaseHp(item.CommonStatus.MaxHp);
+                }
+                InGameManager.Instance.Player.DecreaseHp(InGameManager.Instance.Player.MaxHp);
+            }
+            timer = gargoyleStatus.forthPatternDuration;
+        }    
     }
     private IEnumerator Co_Laser()
     {
         var sprite = laserObj.GetComponent<SpriteRenderer>();
+        float rand;
         while (true)
         {
-            //yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Alpha2));
-            yield return new WaitUntil(() => laserOn);
-            isLaser = true;
-            InGameManager.Instance.Boss.isPattern = true;
-            skeletonAnimation.AnimationState.SetAnimation(0, "Idle-2", false);
-            laserObj.gameObject.SetActive(true);
-            isLaserOn = true;
-            stone.enabled = true;
-            yield return new WaitForSeconds(laserDelay);
-            sprite.enabled = false;
-            isLaserOn = false;
-            yield return new WaitForSeconds(0.2f);
-            stone.transform.DOLocalMoveY(2.5f, 0.3f);
-            yield return new WaitForSeconds(0.8f);
-            stone.DOColor(Color.clear, 0.3f);
-            yield return new WaitForSeconds(0.3f);
-            stone.enabled = false;
-            stone.color = Color.white;
-            stone.transform.localPosition = new Vector3(0, 13); 
-            bool isAvoid = AttackPlayer(2, laserDamage, true);
-            laserObj.gameObject.SetActive(false);
-            sprite.enabled = true;
-            if (isAvoid)
+            yield return null;
+            if (isLaser)
             {
-                print("보스 스턴");
-                skeletonAnimation.AnimationState.SetAnimation(0, "Idle", true);
+                rand = Random.Range(gargoyleStatus.thirdPatternMinTime, gargoyleStatus.thirdPatternMaxTime);
+                yield return new WaitForSeconds(rand);
+                InGameManager.Instance.Boss.IsPattern = true;
+                warningImage.gameObject.SetActive(true);
+                warningImage.DOFade(1, 2f);
+                warningText.DOFade(1, 2f);
                 yield return new WaitForSeconds(2f);
-                InGameManager.Instance.Boss.isPattern = false;
-            }
-            else
-            {
-                print("레이저");
-                skeletonAnimation.AnimationState.SetAnimation(0, "breath", false);
-                laserEffect.Play();
-                secondLaserObj.enabled = true;
-                yield return new WaitForSeconds(1f);
-                secondLaserObj.enabled = false;
-                AttackUnit(laserDamage);
-                yield return new WaitForSeconds(3.5f);
-           
-                InGameManager.Instance.Boss.isPattern = false;
-            }
-            isLaser = false;
-            laserOn = false;
+                warningImage.DOFade(0, 1f);
+                warningText.DOFade(0, 1f);
+                skeletonAnimation.AnimationState.SetAnimation(0, "Idle-2", false);
+                laserObj.gameObject.SetActive(true);
+                isLaserOn = true;
+                stone.enabled = true;
+                yield return new WaitForSeconds(laserDelay);
+                warningImage.gameObject.SetActive(false);
+                sprite.enabled = false;
+                isLaserOn = false;
+                yield return new WaitForSeconds(0.2f);
+                stone.transform.DOLocalMoveY(2.5f, 0.3f);
+                yield return new WaitForSeconds(0.8f);
+                stone.DOColor(Color.clear, 0.3f);
+                yield return new WaitForSeconds(0.3f);
+                stone.enabled = false;
+                stone.color = Color.white;
+                stone.transform.localPosition = new Vector3(0, 13);
+                bool isAvoid = AttackPlayer(2, laserDamage, true);
+                laserObj.gameObject.SetActive(false);
+                sprite.enabled = true;
+                if (isAvoid)
+                {
+                    print("보스 스턴");
+                    skeletonAnimation.AnimationState.SetAnimation(0, "Idle", true);
+                    yield return new WaitForSeconds(2f);
+                    InGameManager.Instance.Boss.IsPattern = false;
+                }
+                else
+                {
+                    print("레이저");
+                    skeletonAnimation.AnimationState.SetAnimation(0, "breath", false);
+                    laserEffect.Play();
+                    secondLaserObj.enabled = true;
+                    yield return new WaitForSeconds(1f);
+                    secondLaserObj.enabled = false;
+                    AttackUnit(gargoyleStatus.thirdPatternDamage);
+                    yield return new WaitForSeconds(3.5f);
+
+                    InGameManager.Instance.Boss.IsPattern = false;
+                }
+                isLaser = false;
+                isShout = true;
+            }     
         }
     }
     private void Awake()
@@ -313,6 +323,19 @@ public class Gargoyle : MonoBehaviour
         StartCoroutine(Co_Shield());
         StartCoroutine(Co_Laser());
         laserObj.SetParent(null);
+        int rand = Random.Range(0, 2);
+        print(rand);
+        switch (rand)
+        {
+            case 0:
+                isShout = true;
+                break;
+            case 1:
+                isLaser = true;
+                break;
+            default:
+                break;
+        }
     }
     private void LateUpdate()
     {
@@ -326,16 +349,9 @@ public class Gargoyle : MonoBehaviour
             trackingObj.position = InGameManager.Instance.Player.transform.position + trackingOffset;
         }
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            Shouting();
-        }
-    }
     public void Test_BtnEvt_Shout()
     {
-        Shouting();
+        //Shouting();
     }
     public void Test_BtnEvt_Laser()
     {

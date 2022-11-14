@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
 using Spine.Unity;
+using UnityEngine.UI;
+using DG.Tweening;
 
 //패턴 충돌처리 로직 수정해야함 (기존 PatternCollision -> CollisionArray[n] 으로)
 public class Beast : MonoBehaviour
@@ -11,20 +13,11 @@ public class Beast : MonoBehaviour
     [SerializeField] private GameObject[] crushs;
     [SerializeField] private ParticleSystem backEffect;
     [SerializeField] private ParticleSystem frontEffect;
+    [SerializeField] private Image warningImage;
+    [SerializeField] private Text warningText;
+    
 
-    public float firstPatternDamage;
-    public float firstPatternMinTime;
-    public float firstPatternMaxTime;
-    public float secondPatternDamage;
-    public float secondPatternMinTime;
-    public float secondPatternMaxTime;
-    public float thirdPatternDamage;
-    public float thirdPatternMinTime;
-    public float thirdPatternMaxTime;
-    public float forthPatternPercentage;
-    public float forthPatternAtkValue;
-    public float forthPatternAtksValue;
-
+    public BeastStatus beastStatus;
     private Color c = new Color(1f, 0.8f, 0.8f);
 
     private void Start()
@@ -46,29 +39,18 @@ public class Beast : MonoBehaviour
                 break;
         }
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            Shouting();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            isCrush = true;
-        }
-    }
     private void FirstPattern()
     {
         foreach (var item in InGameManager.Instance.Units)
         {
             if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(item.gameObject))
             {
-                item.CommonStatus.DecreaseHp(firstPatternDamage);
+                item.CommonStatus.DecreaseHp(beastStatus.firstPatternDamage);
             }
         }
         if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(InGameManager.Instance.Player.gameObject))
         {
-            InGameManager.Instance.Player.DecreaseHp(firstPatternDamage);
+            InGameManager.Instance.Player.DecreaseHp(beastStatus.firstPatternDamage);
         }
     }
     private void SecondPattern()
@@ -77,12 +59,12 @@ public class Beast : MonoBehaviour
         {
             if (InGameManager.Instance.Boss.CollisionsArray[1].Contains(item.gameObject))
             {
-                item.CommonStatus.DecreaseHp(secondPatternDamage);
+                item.CommonStatus.DecreaseHp(beastStatus.secondPatternDamage);
             }
         }
         if (InGameManager.Instance.Boss.CollisionsArray[1].Contains(InGameManager.Instance.Player.gameObject))
         {
-            InGameManager.Instance.Player.DecreaseHp(secondPatternDamage);
+            InGameManager.Instance.Player.DecreaseHp(beastStatus.secondPatternDamage);
         }
     }
     private void Shouting()
@@ -99,11 +81,11 @@ public class Beast : MonoBehaviour
         {
             if (isShout)
             {
-                rand = Random.Range(firstPatternMinTime, firstPatternMaxTime);
+                rand = Random.Range(beastStatus.firstPatternMinTime, beastStatus.firstPatternMaxTime);
                 print(rand);
                 yield return new WaitForSeconds(rand);
                 Shouting();
-                InGameManager.Instance.Boss.isPattern = true;
+                InGameManager.Instance.Boss.IsPattern = true;
                 crushs[0].SetActive(true);
                 yield return new WaitForSeconds(5.6f);
                 FirstPattern();
@@ -111,7 +93,7 @@ public class Beast : MonoBehaviour
                 InGameManager.Instance.Boss.CollisionsArray[0].Clear();
                 yield return new WaitForSeconds(1f);
                 isShout = false;
-                InGameManager.Instance.Boss.isPattern = false;
+                InGameManager.Instance.Boss.IsPattern = false;
                 yield return new WaitForSeconds(5f);
                 isCrush = true;
             }
@@ -125,12 +107,12 @@ public class Beast : MonoBehaviour
         {
             if (isCrush)
             {
-                rand = Random.Range(secondPatternMinTime, secondPatternMaxTime);
+                rand = Random.Range(beastStatus.secondPatternMinTime, beastStatus.secondPatternMaxTime);
                 print(rand);
                 yield return new WaitForSeconds(rand);
                 InGameManager.Instance.Boss.skeletonAnimation.AnimationState.SetAnimation(0, "FrontAttack", false);
                 InGameManager.Instance.Boss.skeletonAnimation.AnimationState.AddAnimation(0, "Idle", false, 4);
-                InGameManager.Instance.Boss.isPattern = true;
+                InGameManager.Instance.Boss.IsPattern = true;
                 frontEffect.Play();
                 yield return new WaitForSeconds(2f);
                 crushs[1].SetActive(true);
@@ -140,7 +122,7 @@ public class Beast : MonoBehaviour
                 InGameManager.Instance.Boss.CollisionsArray[1].Clear();
                 yield return new WaitForSeconds(1f);
                 isCrush = false;
-                InGameManager.Instance.Boss.isPattern = false;
+                InGameManager.Instance.Boss.IsPattern = false;
                 yield return new WaitForSeconds(5f);
                 isShout = true;
             }
@@ -149,38 +131,19 @@ public class Beast : MonoBehaviour
     }
     private IEnumerator Co_ForthPattern()
     {
-        float rand = Random.Range(forthPatternPercentage - 5, forthPatternPercentage + 5);
+        float rand = Random.Range(beastStatus.forthPatternPercentage - 5, beastStatus.forthPatternPercentage + 5);
         print("체력 퍼센트는" + rand + ", 체력 실제 수치는" + InGameManager.Instance.Boss.CommonStatus.CurrentHp * rand / 100);
-        yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.CurrentHp * rand / 100);
-        InGameManager.Instance.Boss.skeletonAnimation.Skeleton.SetColor(c);
-        InGameManager.Instance.Boss.CommonStatus.CurrentAttackDamage = InGameManager.Instance.Boss.CommonStatus.CurrentAttackDamage * forthPatternAtkValue;
-        InGameManager.Instance.Boss.CommonStatus.AttackSpeed = InGameManager.Instance.Boss.CommonStatus.AttackSpeed / forthPatternAtksValue;
-    }
-    public void InitStatus(BeastStatus bs)
-    {
-        firstPatternDamage = bs.firstPatternDamage;
-        firstPatternMinTime = bs.firstPatternMinTime;
-        firstPatternMaxTime = bs.firstPatternMaxTime;
-        secondPatternDamage = bs.secondPatternDamage;
-        secondPatternMinTime = bs.secondPatternMinTime;
-        secondPatternMaxTime = bs.secondPatternMaxTime;
-        thirdPatternDamage = bs.thirdPatternDamage;
-        thirdPatternMinTime = bs.thirdPatternMinTime;
-        thirdPatternMaxTime = bs.thirdPatternMaxTime;
-        forthPatternPercentage = bs.forthPatternPercentage;
-        forthPatternAtkValue = bs.forthPatternAtkValue;
-        forthPatternAtksValue = bs.forthPatternAtksValue;
-        var fallingObj = GetComponentInChildren<FallingObjectPool>();
-        fallingObj.damage = thirdPatternDamage;
-        fallingObj.spawnIntervalMin = thirdPatternMinTime;
-        fallingObj.spawnIntervalMax = thirdPatternMaxTime;
-    }
-    public void Test_BtnEvt_Shout()
-    {
-        Shouting();
-    }
-    public void Test_BtnEvt_Crush()
-    {
-        isCrush = true;
+        yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.MaxHp * rand / 100);
+        warningImage.gameObject.SetActive(true);
+        warningImage.DOFade(1, 2f);
+        warningText.DOFade(1, 2f);
+        yield return new WaitForSeconds(2f);
+        InGameManager.Instance.Boss.skeletonAnimation.Skeleton.SetColor(new Color(1f, 0.8f, 0.8f));
+        warningImage.DOFade(0, 1f);
+        warningText.DOFade(0, 1f);
+        yield return new WaitForSeconds(1f);
+        warningImage.gameObject.SetActive(false);
+        InGameManager.Instance.Boss.CommonStatus.CurrentAttackDamage = InGameManager.Instance.Boss.CommonStatus.CurrentAttackDamage * beastStatus.forthPatternAtkValue;
+        InGameManager.Instance.Boss.CommonStatus.AttackSpeed = InGameManager.Instance.Boss.CommonStatus.AttackSpeed / beastStatus.forthPatternAtksValue;
     }
 }
