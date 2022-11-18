@@ -1025,7 +1025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e42cbbc293df4314b97bf37d58fc1d94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FireBaseId: 
+  FireBaseId: NaIxowYCsaSqdaYaWtWbIYErkqM2
   playerdata:
     Nickname: 
     Gold: 0

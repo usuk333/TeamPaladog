@@ -40,9 +40,11 @@ public class StartManager : MonoBehaviour
     //테스트
     [SerializeField] public string Usersid;
 
+    FirebaseData FirebaseData;
 
     private void Awake()
     {
+        FirebaseData = new FirebaseData(Usersid);
         //초기화 auth
         auth = FirebaseAuth.DefaultInstance;
 
@@ -73,7 +75,6 @@ public class StartManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
