@@ -77,7 +77,7 @@ public class FirebaseDataManager : MonoBehaviour
     {
         yield return null;
 
-        if (snapshot == null)
+        if (Unitsnapshot == null)
         {
             Start();
         }
