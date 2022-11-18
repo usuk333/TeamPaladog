@@ -20,13 +20,6 @@ public class Unit : MonoBehaviour
         Skill,
         Die
     }
-    private enum EUnitKind
-    {
-        Other,
-        Taoist,
-        Mechanic,
-        Mage
-    }
     private enum EUnitValue
     {
         Count,
@@ -50,7 +43,6 @@ public class Unit : MonoBehaviour
     [SerializeField] private EUnitValue eUnitValue;
     [SerializeField] private EUnitState eUnitState = EUnitState.Idle;
     [SerializeField] private EUnitType eUnitType;
-    [SerializeField] private EUnitKind eUnitKind;
     [SerializeField] private CommonStatus commonStatus = new CommonStatus();
     [SerializeField] private float attackAnimDelay;
     [SerializeField] private float skillAnimDelay;
@@ -65,7 +57,6 @@ public class Unit : MonoBehaviour
     private SkeletonAnimation skeletonAnimation;
     public EUnitType UnitType { get => eUnitType; }
     public CommonStatus CommonStatus { get => commonStatus; set => commonStatus = value; }
-    public EUnitState GetUnitState { get => eUnitState; }
     public ParticleSystem HealEffect { get => healEffect; set => healEffect = value; }
     public ParticleSystem ShieldEffect { get => shieldEffect; set => shieldEffect = value; }
     public ParticleSystem RageEffect { get => rageEffect; set => rageEffect = value; }
@@ -86,13 +77,6 @@ public class Unit : MonoBehaviour
         StartCoroutine(Co_UpdateState());
         StartCoroutine(Co_OutOfStateCondition());
     }
-    #region -투사체 발사 함수-
-    private void SetProjectile(int i)//투사체 발사하는 유닛만 사용. 투사체 풀에서 꺼내오면서 초기화
-    {
-        var obj = UnitProjectilePool.GetProjectile(i);
-        obj.GetComponent<Projectile>().Initialze(InGameManager.Instance.Boss, transform, commonStatus.CurrentAttackDamage);
-    }
-    #endregion
     private void Attack() //공격 로직
     {
         if (basicEffect != null)
@@ -100,25 +84,6 @@ public class Unit : MonoBehaviour
             basicEffect.Play();
         }
         InGameManager.Instance.Boss.CommonStatus.DecreaseHp(commonStatus.CurrentAttackDamage);
-        /* switch (eUnitKind)
-         {
-             case EUnitKind.Other:
-                 InGameManager.Instance.Boss.CommonStatus.DecreaseHp(commonStatus.CurrentAttackDamage); //투사체 발사 유닛이 아닌 경우에는 그냥 타격
-                 break;
-             //이 밑으로는 투사체 발사 유닛. 유닛 종류에 맞게 투사체 꺼내오는 함수 호출
-             case EUnitKind.Taoist:
-                 SetProjectile(0);
-                 break;
-             case EUnitKind.Mechanic:
-                 SetProjectile(1);
-                 break;
-             case EUnitKind.Mage:
-                 SetProjectile(2);
-                 break;
-             default:
-                 Debug.Assert(false);
-                 break;
-         }*/
         if (countUnit) //카운트 유닛 공격횟수 증가
         {
             countUnit.CurrentAttackCount++;
@@ -312,11 +277,6 @@ public class Unit : MonoBehaviour
     }
     private void Update()
     {
-       /* if (Input.GetKeyDown(KeyCode.A))
-        {
-            isKnockBack = true;
-            penaltyTime = 5f;
-        }*/
         if(eUnitState == EUnitState.Die)
         {
             if(commonStatus.CurrentHp != 0)

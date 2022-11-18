@@ -23,14 +23,7 @@ public class PatternCollisionChecker : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        /* if(collision.tag == "PLAYER" || collision.tag == "UNIT")
-         {
-              if (boss.PatternCollisions.Contains(collision.gameObject))
-              {
-                  return;
-              }
-              boss.PatternCollisions.Add(collision.gameObject);
-         }*/
+
         if (isGargoyle)
         {
             if(collision.tag == "BOSS")
@@ -54,14 +47,6 @@ public class PatternCollisionChecker : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        /*if (collision.tag == "PLAYER" || collision.tag == "UNIT")
-        {
-            if (boss.PatternCollisions.Contains(collision.gameObject))
-            {
-                return;
-            }
-            boss.PatternCollisions.Add(collision.gameObject);
-        }*/
         if (isGargoyle)
         {
             if (collision.tag == "BOSS")
@@ -85,14 +70,7 @@ public class PatternCollisionChecker : MonoBehaviour
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        /*if (collision.tag == "PLAYER" || collision.tag == "UNIT")
-        {
-            if (!boss.PatternCollisions.Contains(collision.gameObject))
-            {
-                return;
-            }
-            boss.PatternCollisions.Remove(collision.gameObject);
-        }*/
+
         if (isGargoyle)
         {
             if (collision.tag == "BOSS")

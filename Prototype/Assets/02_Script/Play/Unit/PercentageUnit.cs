@@ -37,6 +37,5 @@ public class PercentageUnit : MonoBehaviour
     private void Awake()
     {
         unit = GetComponent<Unit>();
-        //InGameManager.Instance.Boss = FindObjectOfType<Boss>();
     }
 }

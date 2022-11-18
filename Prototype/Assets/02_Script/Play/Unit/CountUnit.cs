@@ -44,6 +44,5 @@ public class CountUnit : MonoBehaviour
     private void Awake()
     {
         unit = GetComponent<Unit>();
-        //InGameManager.Instance.Boss = FindObjectOfType<Boss>();
     }
 }

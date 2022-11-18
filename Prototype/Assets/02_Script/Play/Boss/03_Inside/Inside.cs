@@ -30,18 +30,13 @@ public class Inside : MonoBehaviour
     [SerializeField] private Transform insideInstance;
     [SerializeField] private Transform insidePortal;
     [SerializeField] private float insideDuration;
-    [SerializeField] private float moveToInsideDuration;
     [SerializeField] private Transform insideMoveObj;
     [SerializeField] private Transform insideLimitTimerObj;
     [SerializeField] private Transform manaExplosion;
     [SerializeField] private float manaExplosionDuration;
-    [SerializeField] private float decreaseMpPercent;
     [SerializeField] private Image sceneMoveImg;
     [SerializeField] private Image explosionImg;
-    [SerializeField] private int minExplosionTime;
-    [SerializeField] private int maxExplosionTime;
-    [SerializeField] private float manaRegen;
-    [SerializeField] private int[] insidePercentage = { 95, 40 };
+
     private Color originColor;
     private SkeletonAnimation skeletonAnimation;
     public bool difficulty { get; set; }
@@ -348,9 +343,15 @@ public class Inside : MonoBehaviour
     }
     private IEnumerator Co_ManaExplosion()
     {
+        var sprite = manaExplosion.GetComponent<SpriteRenderer>();
+        Vector3 manaExplosionOriginScale = new Vector3(manaExplosion.localScale.x, 0);
+        Vector3 manaExplosionOriginPos = new Vector3(manaExplosion.position.x, 36.2f);
         while (true)
         {
             manaExplosion.gameObject.SetActive(false);
+            sprite.enabled = true;
+            manaExplosion.localScale = manaExplosionOriginScale;
+            manaExplosion.localPosition = manaExplosionOriginPos;
             if (isInsideReady)
             {
                 yield return null;
@@ -379,7 +380,9 @@ public class Inside : MonoBehaviour
                     yield return null;
                 }
                 manaExplosion.position = new Vector3(InGameManager.Instance.Units[index].transform.position.x,manaExplosion.position.y);
+                PatternTweening();
                 yield return new WaitForSeconds(manaExplosionDuration);
+                sprite.enabled = false;
                 manaExplosionEffect.Play();
                 yield return new WaitForSeconds(0.4f);
                 if (!isInsideReady)
@@ -391,7 +394,9 @@ public class Inside : MonoBehaviour
             else
             {
                 manaExplosion.position = new Vector3(InGameManager.Instance.Player.transform.position.x, manaExplosion.position.y);
+                PatternTweening();
                 yield return new WaitForSeconds(manaExplosionDuration);
+                sprite.enabled = false;
                 manaExplosionEffect.Play();
                 yield return new WaitForSeconds(0.25f);
                 if (!isInsideReady)
@@ -401,6 +406,11 @@ public class Inside : MonoBehaviour
                 ManaExplosion();
             }
         }
+    }
+    private void PatternTweening()
+    {
+        manaExplosion.DOScaleY(37, manaExplosionDuration - 0.5f);
+        manaExplosion.DOLocalMoveY(17.9f, manaExplosionDuration - 0.5f);
     }
     private void Awake()
     {

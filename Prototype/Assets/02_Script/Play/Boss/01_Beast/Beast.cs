@@ -16,9 +16,7 @@ public class Beast : MonoBehaviour
     [SerializeField] private Image warningImage;
     [SerializeField] private Text warningText;
     
-
     public BeastStatus beastStatus;
-    private Color c = new Color(1f, 0.8f, 0.8f);
 
     private void Start()
     {
@@ -26,7 +24,6 @@ public class Beast : MonoBehaviour
         StartCoroutine(Co_SecondPattern());
         StartCoroutine(Co_ForthPattern());
         int rand = Random.Range(0, 2);
-        print(rand);
         switch (rand)
         {
             case 0:
@@ -132,7 +129,6 @@ public class Beast : MonoBehaviour
     private IEnumerator Co_ForthPattern()
     {
         float rand = Random.Range(beastStatus.forthPatternPercentage - 5, beastStatus.forthPatternPercentage + 5);
-        print("체력 퍼센트는" + rand + ", 체력 실제 수치는" + InGameManager.Instance.Boss.CommonStatus.CurrentHp * rand / 100);
         yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.MaxHp * rand / 100);
         warningImage.gameObject.SetActive(true);
         warningImage.DOFade(1, 2f);

@@ -49,7 +49,6 @@ public class PlayerUI : MonoBehaviour
     private void Start()
     {
         StartCoroutine(Co_UpdatePlayerUI());
-        //StartCoroutine(Co_UpdateCastingBar());
     }
 
 

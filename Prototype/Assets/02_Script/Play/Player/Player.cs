@@ -18,7 +18,6 @@ public class Player : MonoBehaviour
     private bool isInpacable;
     private bool isRight; //오른쪽 이동 체크
     private bool isLeft; // 왼쪽 이동 체크
-    private Boss boss;
     private SkeletonAnimation skeletonAnimation;
 
     private PlayerUI playerUI;
@@ -28,7 +27,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float currentMp;
     [SerializeField] private float mpRegenerative;
     [SerializeField] private float hpRegenerative;
-    [SerializeField] private float mpRegenerationInterval;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float currentMoveSpeed; //이동 속도
     private float shield;
@@ -274,7 +272,6 @@ public class Player : MonoBehaviour
     private void Awake() // 이니셜라이징으로 뺄거임 22.02.08
     {
         playerUI = GetComponent<PlayerUI>();
-        boss = FindObjectOfType<Boss>();
         currentHp = maxHp;
         currentMp = maxMp;
         currentMoveSpeed = moveSpeed;
@@ -288,44 +285,8 @@ public class Player : MonoBehaviour
         StartCoroutine(Co_Casting());
         UpdateAttackEffectPosition();
     }
-    private void Update()
-    {
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            isRight = true;
-        }
-        else if (Input.GetKeyUp(KeyCode.RightArrow))
-        {
-            isRight = false;
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            isLeft = true;
-        }
-        else if (Input.GetKeyUp(KeyCode.LeftArrow))
-        {
-            isLeft = false;
-        }
-        UpdateAttackEffectPosition();
-        /*if (Input.GetKeyDown(KeyCode.S))
-        {
-            foreach (var item in InGameManager.Instance.Units)
-            {
-                item.gameObject.SetActive(false);
-            }       
-        }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            foreach (var item in InGameManager.Instance.Units)
-            {
-                item.gameObject.SetActive(true);
-            }
-        }*/
-
-    }
     private void FixedUpdate()
     {
-        //attackEffect.transform.position = boss.transform.position + attackEffectOffset;
         if (isInvincibility || isInpacable)
         {
             return;
@@ -502,6 +463,10 @@ public class Player : MonoBehaviour
             item.CommonStatus.Shield = item.CommonStatus.MaxHp * skillValueArray[0] / 100;
             item.ShieldEffect.Play();
         }
+        if (currentHp <= 0)
+        {
+            yield break;
+        }
         Shield = maxHp * skillValueArray[0] / 100;
         shieldEffect.Play();
         yield return new WaitForSeconds(shieldDuration);
@@ -521,6 +486,10 @@ public class Player : MonoBehaviour
         {
             item.CommonStatus.IncreaseHp(item.CommonStatus.MaxHp * value / 100);
             item.HealEffect.Play();
+        }
+        if(currentHp <= 0)
+        {
+            yield break;
         }
         currentHp += maxHp * value / 100;
         healEffect.Play();

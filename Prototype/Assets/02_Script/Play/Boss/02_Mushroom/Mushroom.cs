@@ -6,9 +6,7 @@ using UnityEngine.UI;
 
 public class Mushroom : MonoBehaviour
 {
-
     private Vector3 summonPos = new Vector3(0, -0.5f);
-    private int requiredSlimeCount;
     private bool isActiveBuff;
     public bool isCounting { get; set; }
     public float SporeTimerMaxValue { get => sporeTimerMaxValue; set => sporeTimerMaxValue = value; }
@@ -17,10 +15,7 @@ public class Mushroom : MonoBehaviour
     public delegate void ReturnAllSlime();
     public ReturnAllSlime dReturnAllSlime;
     [SerializeField] private GameObject altar;
-    [SerializeField] private float sporeCount;
     [SerializeField] private float sporeInterval;
-    [SerializeField] private float sporeDamage;
-    [SerializeField] private float buffDuration;
     [SerializeField] private int maxSlimeCount;
     [SerializeField] private float sporeTimerMaxValue;
     [SerializeField] private Text slimeCountText;
@@ -28,8 +23,6 @@ public class Mushroom : MonoBehaviour
     [SerializeField] private Transform slimePool;
     [SerializeField] private GameObject slimePrefab;
     [SerializeField] private Transform typhoon;// 태풍 오브젝트 레퍼런스
-    [SerializeField] private float typhoonInterval;// 태풍 패턴 간격
-    [SerializeField] private float slimeSummonInterval;
     [SerializeField] private List<Slime> slimeList = new List<Slime>(); // 필드에 존재하는 슬라임 리스트
     [SerializeField] private ParticleSystem sporeEffect;
     private Queue<Slime> slimeQueue = new Queue<Slime>();

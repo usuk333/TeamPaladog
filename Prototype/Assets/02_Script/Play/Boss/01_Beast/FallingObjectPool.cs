@@ -4,13 +4,12 @@ using UnityEngine;
 
 public class FallingObjectPool : MonoBehaviour
 {
-    [SerializeField] private float spawnInterval;
     [SerializeField] private GameObject fallingObject;
     [SerializeField] private float spawnCount;
     private Beast beast;
-    public float spawnIntervalMin;
-    public float spawnIntervalMax;
-    public float damage;
+    private float spawnIntervalMin;
+    private float spawnIntervalMax;
+    private float damage;
     private Queue<GameObject> fallingQueue = new Queue<GameObject>();
     public void ReturnFallingObj(GameObject obj)
     {

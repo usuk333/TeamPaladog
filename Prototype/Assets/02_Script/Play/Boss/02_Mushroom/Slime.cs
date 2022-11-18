@@ -11,10 +11,6 @@ public class Slime : MonoBehaviour
     private float nextBehaviour;
     private Vector3 direction;
     [SerializeField] private float moveSpeed;
-    [SerializeField] private float damage;
-    [SerializeField] private float dotDamage;
-    [SerializeField] private float dotInterval;
-    [SerializeField] private int dotCount;
 
     private Mushroom mushroom;
     private float moveInterval;

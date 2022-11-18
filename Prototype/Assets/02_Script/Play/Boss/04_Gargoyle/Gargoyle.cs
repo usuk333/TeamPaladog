@@ -9,22 +9,14 @@ public class Gargoyle : MonoBehaviour
 {
     private bool isShout;
     private bool isLaser;
-    private bool laserOn;
+
+
     [SerializeField] private Image warningImage;
     [SerializeField] private Text warningText;
-
     [SerializeField] private GameObject veneer;
-    [SerializeField] private float veneerDuration;
     [SerializeField] private float dotInterval;
-    [SerializeField] private float dotDamage;
-    [SerializeField] private float slowDownValue;
     [SerializeField] private BossUtility bossUtility;
     [SerializeField] private Transform trackingObj;
-    [SerializeField] private float trackingInterval;
-    [SerializeField] private float trackingDelay;
-    [SerializeField] private float trackingDamage;
-    [SerializeField] private float shieldValue;
-    [SerializeField] private float shieldDuration;
     [SerializeField] private GameObject shieldObj;
     [SerializeField] private float laserDelay;
     [SerializeField] private float laserDamage;
@@ -252,12 +244,16 @@ public class Gargoyle : MonoBehaviour
     private IEnumerator Co_Laser()
     {
         var sprite = laserObj.GetComponent<SpriteRenderer>();
+        Vector3 laserOriginPos = new Vector3(laserObj.position.x, 3.6f);
+        Vector3 laserOriginScale = new Vector3(1, 0);
         float rand;
         while (true)
         {
             yield return null;
             if (isLaser)
             {
+                laserObj.position = laserOriginPos;
+                laserObj.localScale = laserOriginScale;
                 rand = Random.Range(gargoyleStatus.thirdPatternMinTime, gargoyleStatus.thirdPatternMaxTime);
                 yield return new WaitForSeconds(rand);
                 InGameManager.Instance.Boss.IsPattern = true;
@@ -269,6 +265,8 @@ public class Gargoyle : MonoBehaviour
                 warningText.DOFade(0, 1f);
                 skeletonAnimation.AnimationState.SetAnimation(0, "Idle-2", false);
                 laserObj.gameObject.SetActive(true);
+                laserObj.DOMoveY(0.75f, laserDelay);
+                laserObj.DOScaleY(5.8f, laserDelay);
                 isLaserOn = true;
                 stone.enabled = true;
                 yield return new WaitForSeconds(laserDelay);
@@ -298,9 +296,7 @@ public class Gargoyle : MonoBehaviour
                     print("∑π¿Ã¿˙");
                     skeletonAnimation.AnimationState.SetAnimation(0, "breath", false);
                     laserEffect.Play();
-                    secondLaserObj.enabled = true;
                     yield return new WaitForSeconds(1f);
-                    secondLaserObj.enabled = false;
                     AttackUnit(gargoyleStatus.thirdPatternDamage);
                     yield return new WaitForSeconds(3.5f);
 
@@ -324,7 +320,6 @@ public class Gargoyle : MonoBehaviour
         StartCoroutine(Co_Laser());
         laserObj.SetParent(null);
         int rand = Random.Range(0, 2);
-        print(rand);
         switch (rand)
         {
             case 0:
@@ -348,13 +343,5 @@ public class Gargoyle : MonoBehaviour
         {
             trackingObj.position = InGameManager.Instance.Player.transform.position + trackingOffset;
         }
-    }
-    public void Test_BtnEvt_Shout()
-    {
-        //Shouting();
-    }
-    public void Test_BtnEvt_Laser()
-    {
-        laserOn = true;
     }
 }

@@ -40,13 +40,13 @@ public class FallingObject : MonoBehaviour
         else if(collision.tag == "UNIT")
         {
             collision.GetComponent<Unit>().CommonStatus.DecreaseHp(damage); // GetComponent랑 배열 탐색 중에 뭐가 더 비용이 많이 들지 모르겠음..
-            /*for (int i = 0; i < InGameManager.Instance.Units.Length; i++)
+            for (int i = 0; i < InGameManager.Instance.Units.Count; i++)
             {
                 if(collision.gameObject == InGameManager.Instance.Units[i].gameObject)
                 {
                     InGameManager.Instance.Units[i].CommonStatus.DecreaseHp(damage);
                 }
-            }*/
+            }
             fallingObjectPool.ReturnFallingObj(gameObject);
         }
     }
