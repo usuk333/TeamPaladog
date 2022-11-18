@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>8.0</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -53,6 +53,9 @@
     <UnityVersion>2021.1.20f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Analyzer Include="D:\visual\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleSprite.cs" />
     <Compile Include="Assets\UIscript\StartManager.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Events\Event.cs" />
@@ -68,6 +71,7 @@
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\INearbyConnectionClient.cs" />
     <Compile Include="Assets\02_Script\TestScript\MushroomTest.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\CommonStatusCodes.cs" />
+    <Compile Include="Assets\UIscript\SettingPanelClose.cs" />
     <Compile Include="Assets\02_Script\Play\BossHpBar.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SignInStatus.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Achievement.cs" />
@@ -213,7 +217,7 @@
     <Compile Include="Assets\02_Script\Play\Beast.cs" />
     <Compile Include="Assets\UIscript\LoadingthrManager.cs" />
     <Compile Include="Assets\02_Script\Play\Inside.cs" />
-    <Compile Include="Assets\UIscript\SettingPanelClose.cs" />
+    <Compile Include="Assets\UIscript\FirebaseDataManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
