@@ -2,21 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using UnityEngine.UI;
 using Firebase;
-using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
 
-using Google;
-using GooglePlayGames;
-using GooglePlayGames.BasicApi;
-
-using UnityEngine.SceneManagement;
-using System.IO;
-using System.Threading.Tasks;
-using TMPro;
-
+[System.Serializable]
 public class FirebaseData
 {
     private DatabaseReference reference;
@@ -30,109 +20,77 @@ public class FirebaseData
     }
 
     public string UID;
-    public string Nickname;
 
-    public int PlayerHP;
-    public int PlayerMP;
+    private bool snapshotLoadComplete = false;
+    public bool dataLoadComplete = false;
 
-    public int PlayerLevel;
-    public int PlayerEXP;
+    //플레이어 정보 데이터
+    /// <summary>
+    /// 0 = HP, 1 = MP, 2 = Level, 3 = EXP, 4 = Gold, 5 = WarriorPoint, 6 = AssasinPoint, 7 = MagePoint, 8 = ADPoint, 9 = Nickname
+    /// </summary>
+    private string[] infoPathArray = { "HP", "MP", "Level", "EXP", "Gold", "WarriorPoints", "AssassinPoints", "MagePoints", "ADPoints", "Nickname" };
+    private Dictionary<string, object> infoDictionary = new Dictionary<string, object>();
 
-    public int HealLevel;
-    public int BarriorLevel;
-    public int PowerUpLevel;
-    public int AttackLevel;
+    //스킬 데이터
+    /// <summary>
+    /// 0 = Attack, 1 = Barrior, 2 = Heal, 3 = PowerUp, 4 = SkillPoints
+    /// </summary>
+    private string[] skillPathArray = { "Attack", "Barrior", "Heal", "PowerUp", "SkillPoints" };
+    private Dictionary<string, object> skillDictionary = new Dictionary<string, object>();
 
+    private string[] stagePathArray = { "S1EClear", "S1NClear", "S1HClear", "S1EStar", "S1NStar", "S1HStar",
+        "S2EClear", "S2NClear", "S2HClear", "S2EStar", "S2NStar", "S2HStar",
+        "S3EClear", "S3NClear", "S3HClear", "S3EStar", "S3NStar", "S3HStar",
+        "S4EClear", "S4NClear", "S4HClear", "S4EStar", "S4NStar", "S4HStar" };
+    private Dictionary<string, object> stageDictionary = new Dictionary<string, object>();
 
-    public bool Stage1EasyClear;
-    public bool Stage1NormalClear;
-    public bool Stage1HardClear;
+    //유닛 데이터
+    private string[] unitPathArray = 
+    {  "WarriorATK", "WarriorEXP", "WarriorHP", "WarriorLevel", 
+         "ArchorATK", "ArchorEXP", "ArchorHP", "ArchorLevel", 
+         "MagicianATK", "MagicianEXP", "MagicianHP", "MagicianLevel", 
+         "AssassinATK", "AssassinEXP", "AssassinHP", "AssassinLevel"  };
+    private Dictionary<string, object> unitDictionary = new Dictionary<string, object>();
 
-    public bool Stage2EasyClear;
-    public bool Stage2NormalClear;
-    public bool Stage2HardClear;
+    //모든 딕셔너리를 담은 딕셔너리. 데이터 저장 시 사용
+    private Dictionary<string, Dictionary<string, object>> allDictionarys = new Dictionary<string, Dictionary<string, object>>();
 
-    public bool Stage3EasyClear;
-    public bool Stage3NormalClear;
-    public bool Stage3HardClear;
-
-    public bool Stage4EasyClear;
-    public bool Stage4NormalClear;
-    public bool Stage4HardClear;
-
-
-    public int Stage1EasyStar;
-    public int Stage1NormalStar;
-    public int Stage1HardStar;
-
-    public int Stage2EasyStar;
-    public int Stage2NormalStar;
-    public int Stage2HardStar;
-
-    public int Stage3EasyStar;
-    public int Stage3NormalStar;
-    public int Stage3HardStar;
-
-    public int Stage4EasyStar;
-    public int Stage4NormalStar;
-    public int Stage4HardStar;
-
-    public int Gold;
-    public int WarriorPoints;
-    public int AssassinPoints;
-    public int ArchorPoints;
-    public int MagacianPoints;
-    public int SkillPoints;
-
-    public int WarriorLevel;
-    public int WarriorEXP;
-    public int WarriorHP;
-    public int WarriorATK;
-
-    public int AssassinLevel;
-    public int AssassinEXP;
-    public int AssassinHP;
-    public int AssassinATK;
-
-    public int ArchorLevel;
-    public int ArchorEXP;
-    public int ArchorHP;
-    public int ArchorATK;
-
-    public int MagicianLevel;
-    public int MagicianEXP;
-    public int MagicianHP;
-    public int MagicianATK;
-
-
+    /// <summary>
+    /// 생성자 호출 동시에 DB내부 UID의 데이터 로딩 / 객체의 스냅샷에 데이터 읽어온 후 딕셔너리에 저장
+    /// </summary>
+    /// <param name="UID"></param>
     public FirebaseData(string UID)
     {
         this.UID = UID;
         LoadData();
     }
 
-    DataSnapshot snapshot;
+    private DataSnapshot snapshot;
 
-    DataSnapshot Infosnapshot;
-    DataSnapshot Unitsnapshot;
-    DataSnapshot Skillsnapshot;
-    DataSnapshot Stagesnapshot;
+    private DataSnapshot Infosnapshot;
+    private DataSnapshot Unitsnapshot;
+    private DataSnapshot Skillsnapshot;
+    private DataSnapshot Stagesnapshot;
 
-    public void SaveData()
+    public Dictionary<string, object> InfoDictionary { get => infoDictionary; }
+    public Dictionary<string, object> SkillDictionary { get => skillDictionary; }
+    public Dictionary<string, object> StageDictionary { get => stageDictionary; }
+    public Dictionary<string, object> UnitDictionary { get => unitDictionary; }
+    public IEnumerator InitData()
     {
-
-        //강제종료했을때 불러오는 함수
-        //파이어베이스 저장
-
+        yield return new WaitUntil(() => snapshotLoadComplete);
+        yield return new WaitUntil(() => Recursive_InitData(Infosnapshot, infoDictionary, infoPathArray));
+        yield return new WaitUntil(() => Recursive_InitData(Skillsnapshot, skillDictionary, skillPathArray));
+        yield return new WaitUntil(() => Recursive_InitData(Stagesnapshot, stageDictionary, stagePathArray));
+        yield return new WaitUntil(() => Recursive_InitData(Unitsnapshot, unitDictionary, unitPathArray));
+        dataLoadComplete = true;
     }
-
     private void LoadData()
     {
         firebaseApp = FirebaseApp.DefaultInstance;
         firebaseDatabase = FirebaseDatabase.GetInstance(firebaseApp, "https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
-        reference = FirebaseDatabase.DefaultInstance.RootReference;
-
-        reference.Child("users").Child(UID).GetValueAsync().ContinueWithOnMainThread(task =>
+        reference = FirebaseDatabase.DefaultInstance.RootReference.Child("users").Child(UID);
+        reference.GetValueAsync().ContinueWithOnMainThread(task =>
         {
             if (task.IsFaulted)
             {
@@ -149,16 +107,52 @@ public class FirebaseData
                 Skillsnapshot = snapshot.Child("Skill");
                 Stagesnapshot = snapshot.Child("Stage");
 
-                InitData();
+                snapshotLoadComplete = true;
             }
         });
+ 
+    }
+    /// <summary>
+    /// 매개변수로 받은 dictionary에 snapshot의 값들을 넣어줌
+    /// path는 스냅샷의 key값 배열
+    /// </summary>
+    /// <param name="snapshot"></param>
+    /// <param name="dictionary"></param>
+    /// <param name="path"></param>
+    /// <returns></returns>
+    private bool Recursive_InitData(DataSnapshot snapshot, Dictionary<string, object> dictionary, string[] path)
+    {
+        for (int i = 0; i < path.Length; i++)
+        {
+            if (dictionary.ContainsKey(path[i]))
+            {
+                continue;
+            }
+            dictionary.Add(path[i], snapshot.Child(path[i]).Value);
+            Debug.Log(dictionary[path[i]]);
+            if (dictionary[path[i]] == null)
+            {
+                Debug.Log("데이터 로딩에 실패하여 데이터를 다시 불러옵니다");
+                return Recursive_InitData(snapshot, dictionary, path);
+            }
+        }
+        allDictionarys.Add(snapshot.Key, dictionary);
+        return true;
     }
 
-    public void InitData()
+    /// <summary>
+    /// dictionaryKey = 최상위 경로 (Unit, Skill, Stage, Info)
+    /// dataPath = 자식 경로 (경로명은 FirebaseData 클래스에 있음)
+    /// value = 수정할 값
+    /// </summary>
+    /// <param name="dictionaryKey"></param>
+    /// <param name="dataPath"></param>
+    /// <param name="value"></param>
+    public void SaveData(string dictionaryKey, string dataPath, object value)
     {
-        Nickname = Infosnapshot.Child("Nickname").Value.ToString();
-        PlayerHP = System.Convert.ToInt32(Infosnapshot.Child("HP").Value.ToString());
-        PlayerMP = System.Convert.ToInt32(Infosnapshot.Child("MP").Value.ToString());
-        Debug.Log(PlayerHP);
+        if (!allDictionarys.ContainsKey(dictionaryKey) || !allDictionarys[dictionaryKey].ContainsKey(dataPath)) return;
+
+        allDictionarys[dictionaryKey][dataPath] = value;
+        reference.Child(dictionaryKey).Child(dataPath).SetValueAsync(value);
     }
 }
