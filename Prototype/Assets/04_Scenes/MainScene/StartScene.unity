@@ -751,36 +751,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acc1564ca83196a40a41a28b0c1d1aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LoginPanel: {fileID: 1934255184}
-  LoadingPanel: {fileID: 1995297270}
-  NicknamePanel: {fileID: 2422700626698894269}
-  FireBaseId: 
-  Usersid: NaIxowYCsaSqdaYaWtWbIYErkqM2
-  StartTouch: 0
-  StartText: {fileID: 256006295}
-  playerdata:
-    Nickname: 
-    Gold: 0
-    Level: 0
-    EXP: 0
-    Speed: 0
-    HP: 0
-    MP: 0
-    ATKPower: 0
-    UID: 
-    SkillPoints: 0
-    UnitPoints: 0
-  tNickname: {fileID: 0}
-  tTankerPoints: {fileID: 7663853290725532464}
-  tWarriorPoints: {fileID: 1263552159}
-  tADPoints: {fileID: 2067755858}
-  tMagePoints: {fileID: 100923021}
-  tGold: {fileID: 9017518654846956759}
-  tLv: {fileID: 1311970923}
-  tEXP: {fileID: 2422700626685181120}
-  EXPbar: {fileID: 6544350084915777817}
-  UserInfoPanel: {fileID: 4516601690716864493}
-  SettingPanel: {fileID: 1727415115}
 --- !u!114 &186116604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4118,7 +4088,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1113.3201, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 68}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1521529381
@@ -4629,11 +4599,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1686246037}
   m_CullTransparentMesh: 0
---- !u!1 &1727415115 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5017467333559114353, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
-  m_PrefabInstance: {fileID: 5017467333109389626}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1727415116 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5017467333559114358, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
@@ -4811,7 +4776,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 845.66003, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 68}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1854736673
@@ -4931,7 +4896,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 1380.9801, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 68}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1878757891
@@ -6528,7 +6493,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 311, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 68}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1919231305669196146
@@ -8452,7 +8417,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 578.66003, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 68}
   m_Pivot: {x: 1, y: 1}
 --- !u!1001 &5017467333109389626

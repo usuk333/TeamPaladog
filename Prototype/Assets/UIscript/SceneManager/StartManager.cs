@@ -18,6 +18,10 @@ using TMPro;
 
 public class StartManager : MonoBehaviour
 {
+    private static StartManager instance;
+
+    public static StartManager Instance { get => instance; }
+
     //Auth용 instance
     FirebaseAuth auth = null;
 
@@ -40,10 +44,21 @@ public class StartManager : MonoBehaviour
     //테스트
     [SerializeField] public string Usersid;
 
-    public FirebaseData firebaseData;
+    private FirebaseData firebaseData;
 
+    public FirebaseData FirebaseData { get => firebaseData; }
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+        DontDestroyOnLoad(instance);
+
         firebaseData = new FirebaseData(FireBaseId);
         StartCoroutine(firebaseData.InitData());
         //초기화 auth
@@ -231,7 +246,10 @@ public class StartManager : MonoBehaviour
             }
         }
     }
-
+    public void BtnEvt_LoadStartScene()
+    {
+        NextScene();
+    }
     private void NextScene()
     {
         LoadingSceneController.LoadScene("StartScene");
