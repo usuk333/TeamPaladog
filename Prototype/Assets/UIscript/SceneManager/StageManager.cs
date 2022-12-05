@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 
 using DG.Tweening;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class StageManager : MonoBehaviour
 {
@@ -25,9 +26,9 @@ public class StageManager : MonoBehaviour
     FirebaseDatabase firebaseDatabase;
     FirebaseApp firebaseApp;
     private DatabaseReference reference;
+
     DataSnapshot snapshot;
-    DataSnapshot snapshots;
-    DataSnapshot snapshotss;
+
     [SerializeField] private string Userid;
 
     private bool panelonoff;
@@ -84,7 +85,17 @@ public class StageManager : MonoBehaviour
     [SerializeField] private string[] tSkilllist = new string[7];
     public GameObject[] BossSection = new GameObject[4];
 
-    
+    [SerializeField] private bool[] StageClear = new bool[12];
+    [SerializeField] private string[] StageClearstring = new string[12];
+
+    [SerializeField] private GameObject Difficult;
+    private bool diffonoff;
+    private int nowdif;
+    private bool Movenow;
+    private int nowfloor;
+    [SerializeField] private GameObject TowerUpBtn;
+    [SerializeField] private GameObject TowerDownBtn;
+    private bool StagePanelon;
 
     void Awake()
     {
@@ -117,12 +128,18 @@ public class StageManager : MonoBehaviour
         StageTopText[5] = "6Ãþ ¾îÂ¼°í º¸½º\n (½ºÅä¸® ¼³¸í)";
 
         panelonoff = false;
+        diffonoff = false;
+        Movenow = false;
+        nowfloor = 1;
+        StagePanelon = false;
+
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        reference.Child("users").Child(Userid).Child("Info").GetValueAsync().ContinueWithOnMainThread(task =>
+        reference.Child("users").Child(Userid).GetValueAsync().ContinueWithOnMainThread(task =>
         {
             if (task.IsFaulted)
             {
@@ -141,57 +158,11 @@ public class StageManager : MonoBehaviour
                     }
                     else if (task.IsCompleted)
                     {
-                        Debug.Log("ÄÄÇÃ¸´¶¸À½");
-                        snapshots = task.Result;
-
-                        reference.Child("users").Child(Userid).Child("Unit").GetValueAsync().ContinueWithOnMainThread(task =>
-                        {
-                            if (task.IsFaulted)
-                            {
-                                Debug.LogError("failed reading...");
-                            }
-                            else if (task.IsCompleted)
-                            {
-                                Debug.Log("ÄÄÇÃ¸´¶¸À½");
-                                snapshotss = task.Result;
-
-                                StartCoroutine(UIupdate());
-                            }
-                        });
+                        snapshot = task.Result;
                     }
                 });
             }
         });
-
-        /*reference.Child("users").Child(Userid).Child("Stage").GetValueAsync().ContinueWithOnMainThread(task =>
-        {
-            if (task.IsFaulted)
-            {
-                Debug.LogError("failed reading...");
-            }
-            else if (task.IsCompleted)
-            {
-                Debug.Log("ÄÄÇÃ¸´¶¸À½");
-                snapshot = task.Result;
-
-                StartCoroutine(UIupdate());
-            }
-        });
-
-        reference.Child("users").Child(Userid).Child("Unit").GetValueAsync().ContinueWithOnMainThread(task =>
-        {
-            if (task.IsFaulted)
-            {
-                Debug.LogError("failed reading...");
-            }
-            else if (task.IsCompleted)
-            {
-                Debug.Log("ÄÄÇÃ¸´¶¸À½");
-                snapshots = task.Result;
-
-                
-            }
-        });*/
     }
 
     private IEnumerator UIupdate()
@@ -200,15 +171,16 @@ public class StageManager : MonoBehaviour
 
         Debug.Log("UI¾÷µ¥ÀÌÆ®½ÃÀÛ");
 
-        if(snapshot == null && snapshots == null && snapshotss == null)
+        if(snapshot == null)
         {
             Start();
         }
-        Gold = snapshot.Child("Gold").Value.ToString();
-        TankerPoints = snapshot.Child("Points").Child("TankerPoints").Value.ToString();
-        WarriorPoints = snapshot.Child("Points").Child("WarriorPoints").Value.ToString();
-        ADPoints = snapshot.Child("Points").Child("ADPoints").Value.ToString();
-        MagePoints = snapshot.Child("Points").Child("MagePoints").Value.ToString();
+
+        Gold = snapshot.Child("Info").Child("Gold").Value.ToString();
+        TankerPoints = snapshot.Child("Info").Child("TankerPoints").Value.ToString();
+        WarriorPoints = snapshot.Child("Info").Child("WarriorPoints").Value.ToString();
+        ADPoints = snapshot.Child("Info").Child("ADPoints").Value.ToString();
+        MagePoints = snapshot.Child("Info").Child("MagePoints").Value.ToString();
 
         tGold.text = Gold;
         tTankerPoints.text = TankerPoints;
@@ -216,10 +188,10 @@ public class StageManager : MonoBehaviour
         tADPoints.text = ADPoints;
         tMagePoints.text = MagePoints;
 
-        SkillSetting[0] = snapshots.Child("LastPick").Child("Skill").Child("Skill1").Value.ToString();
-        SkillSetting[1] = snapshots.Child("LastPick").Child("Skill").Child("Skill2").Value.ToString();
-        SkillSetting[2] = snapshots.Child("LastPick").Child("Skill").Child("Skill3").Value.ToString();
-        SkillSetting[3] = snapshots.Child("LastPick").Child("Skill").Child("Skill4").Value.ToString();
+        for(int i = 0; i < StageClear.Length; i++)
+        {
+            //StageClear[i] = 
+        }
 
         for(int i = 0; i < SkillSetting.Length; i++)
         {
@@ -231,11 +203,6 @@ public class StageManager : MonoBehaviour
                 }
             }
         }
-
-        UnitSetting[0] = snapshots.Child("LastPick").Child("Unit").Child("Tanker").Value.ToString();
-        UnitSetting[1] = snapshots.Child("LastPick").Child("Unit").Child("Melee").Value.ToString();
-        UnitSetting[2] = snapshots.Child("LastPick").Child("Unit").Child("AD").Value.ToString();
-        UnitSetting[3] = snapshots.Child("LastPick").Child("Unit").Child("Mage").Value.ToString();
     }
 
     // Update is called once per frame
@@ -246,13 +213,46 @@ public class StageManager : MonoBehaviour
 
     public void StageInfo(int i)
     {
+        if(Movenow == false)
+        {
+            StagePanelon = true;
+            Movenow = true;
 
-        Tower.transform.DOMoveX(350, 1);
+            Tower.transform.DOMoveX(350, 1);
 
-        StageIntroduction.text = StageTopText[i];
+            Invoke("StageInfodelay", 1f);
 
-        nowStage = i;
+            StageIntroduction.text = StageTopText[i];
+
+            nowStage = i;
+        }
+    }
+
+    public void StageInfodelay()
+    {
+        Movenow = false;
+        if (diffonoff == false)
+        {
+            diffonoff = true;
+            Difficult.SetActive(true);
+            StagePanel.SetActive(false);
+        }
+        else
+        {
+            StagePanel.SetActive(false);
+            Difficult.SetActive(true);
+        }
+    }
+
+    public void Stagedifficult(int i)
+    {
+        Difficult.SetActive(false);
+        diffonoff = false;
+
+        nowdif = i;
+
         StagePanel.SetActive(true);
+        StageIntroduction.text = StageTopText[nowStage];
     }
 
     public void BtnEvt_LoadStage(GameObject obj)
@@ -269,6 +269,58 @@ public class StageManager : MonoBehaviour
     public void UnitSelect()
     {
 
+    }
+
+    public void StagePanelClose()
+    {
+        StagePanelon = false;
+        Movenow = true;
+        StagePanel.SetActive(false);
+        Tower.transform.DOMoveX(640, 1);
+        Invoke("StagePanelOff", 1f);
+    }
+
+    public void StagePanelOff()
+    {
+        Movenow = false;
+    }
+
+    public void TowerUpDown(int i)
+    {
+        if (i == 0 && Movenow == false && StagePanelon == false)
+        {
+            //up
+            nowfloor++;
+            if (nowfloor == 4 && Movenow == false)
+            {
+                TowerUpBtn.SetActive(false);
+                TowerDownBtn.SetActive(true);
+            }
+            else
+            {
+                TowerDownBtn.SetActive(true);
+            }
+            Movenow = true;
+            Tower.transform.DOMoveY(Tower.transform.position.y - 720, 1);
+            Invoke("StagePanelOff", 1);
+        }
+        if (i == 1 && Movenow == false && StagePanelon == false)
+        {
+            //down
+            nowfloor--;
+            if (nowfloor == 1 && Movenow == false)
+            {
+                TowerDownBtn.SetActive(false);
+                TowerUpBtn.SetActive(true);
+            }
+            else
+            {
+                TowerUpBtn.SetActive(true);
+            }
+            Movenow = true;
+            Tower.transform.DOMoveY(Tower.transform.position.y + 720, 1);
+            Invoke("StagePanelOff", 1);
+        }
     }
 
     public void SkillSelect(int i)
