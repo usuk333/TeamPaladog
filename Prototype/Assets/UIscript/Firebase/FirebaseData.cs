@@ -118,6 +118,14 @@ public class FirebaseData
     DataSnapshot Skillsnapshot;
     DataSnapshot Stagesnapshot;
 
+    public void SaveData()
+    {
+
+        //강제종료했을때 불러오는 함수
+        //파이어베이스 저장
+
+    }
+
     private void LoadData()
     {
         firebaseApp = FirebaseApp.DefaultInstance;

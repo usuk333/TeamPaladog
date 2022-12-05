@@ -44,7 +44,7 @@ public class StartManager : MonoBehaviour
 
     private void Awake()
     {
-        FirebaseData = new FirebaseData(Usersid);
+        FirebaseData = new FirebaseData(FireBaseId);
         //초기화 auth
         auth = FirebaseAuth.DefaultInstance;
 

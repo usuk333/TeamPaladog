@@ -159,10 +159,6 @@ public class Player : MonoBehaviour
         }
         currentMoveSpeed = moveSpeed - moveSpeed * percentage / 100;
     }
-    private void Invoke_UnInvincibility()
-    {
-        isInvincibility = false;
-    }
     public void PlayerAnimation(int index)
     {
         switch (index)
@@ -299,6 +295,7 @@ public class Player : MonoBehaviour
         {
             Move(Vector3.left);
         }
+        UpdateAttackEffectPosition();
     }
     private void UpdateAttackEffectPosition()
     {
@@ -577,5 +574,10 @@ public class Player : MonoBehaviour
         }
         useSkill = false;
         Debug.Log(thing);
+    }
+    private void OnApplicationQuit()
+    {
+        Application.Quit();
+        //데이터 저장
     }
 }
