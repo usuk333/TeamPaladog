@@ -15,19 +15,11 @@ D:/Study/Git/TeamPaladog/Prototype
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-<<<<<<< HEAD
-8299
-Successfully changed project path to: D:/Study/Git/TeamPaladog/Prototype
-D:/Study/Git/TeamPaladog/Prototype
-Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 135.45 ms, found 8 plugins.
-=======
 11742
 Successfully changed project path to: D:/Study/Git/TeamPaladog/Prototype
 D:/Study/Git/TeamPaladog/Prototype
 Using Asset Import Pipeline V2.
 Refreshing native plugins compatible for Editor in 138.41 ms, found 8 plugins.
->>>>>>> c8df161b6dc9df3164b6db83219c4700c8f78977
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2021.1.20f1 (be552157821d)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2021.1.20f1/Editor/Data/Resources/UnitySubsystems
@@ -43,21 +35,6 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2021.1.20f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2021.1.20f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2021.1.20f1/Editor/Data/MonoBleedingEdge/etc'
-<<<<<<< HEAD
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56892
-Begin MonoManager ReloadAssembly
-Registering precompiled unity dll's ...
-Register platform support module: C:/Program Files/Unity/Hub/Editor/2021.1.20f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.001740 seconds.
-Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 123.12 ms, found 8 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.777 seconds
-Domain Reload Profiling:
-	ReloadAssembly (1777ms)
-		BeginReloadAssembly (53ms)
-=======
 Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56580
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
@@ -71,28 +48,11 @@ Mono: successfully reloaded assembly
 Domain Reload Profiling:
 	ReloadAssembly (1812ms)
 		BeginReloadAssembly (55ms)
->>>>>>> c8df161b6dc9df3164b6db83219c4700c8f78977
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (0ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
 			CreateAndSetChildDomain (1ms)
-<<<<<<< HEAD
-		EndReloadAssembly (451ms)
-			LoadAssemblies (51ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (138ms)
-			ReleaseScriptCaches (0ms)
-			RebuildScriptCaches (25ms)
-			SetupLoadedEditorAssemblies (241ms)
-				LogAssemblyErrors (0ms)
-				InitializePlatformSupportModulesInManaged (5ms)
-				SetLoadedEditorAssemblies (0ms)
-				RefreshPlugins (123ms)
-				BeforeProcessingInitializeOnLoad (1ms)
-				ProcessInitializeOnLoadAttributes (84ms)
-				ProcessInitializeOnLoadMethodAttributes (26ms)
-=======
 		EndReloadAssembly (464ms)
 			LoadAssemblies (53ms)
 			RebuildTransferFunctionScriptingTraits (0ms)
@@ -107,31 +67,17 @@ Domain Reload Profiling:
 				BeforeProcessingInitializeOnLoad (1ms)
 				ProcessInitializeOnLoadAttributes (88ms)
 				ProcessInitializeOnLoadMethodAttributes (29ms)
->>>>>>> c8df161b6dc9df3164b6db83219c4700c8f78977
 				AfterProcessingInitializeOnLoad (0ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
 			AwakeInstancesAfterBackupRestoration (0ms)
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-<<<<<<< HEAD
-Registered in 0.009324 seconds.
-=======
 Registered in 0.008989 seconds.
->>>>>>> c8df161b6dc9df3164b6db83219c4700c8f78977
 Begin MonoManager ReloadAssembly
 Symbol file LoadedFromMemory doesn't match image D:\Study\Git\TeamPaladog\Prototype\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\DotNetZip\Unity.VisualScripting.IonicZip.dll
 Symbol file LoadedFromMemory doesn't match image D:\Study\Git\TeamPaladog\Prototype\Library\PackageCache\com.unity.visualscripting@1.6.1\Editor\VisualScripting.Core\Dependencies\YamlDotNet\Unity.VisualScripting.YamlDotNet.dll
 Native extension for WindowsStandalone target not found
-<<<<<<< HEAD
-Refreshing native plugins compatible for Editor in 132.69 ms, found 8 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Mono: successfully reloaded assembly
-- Completed reload, in  1.246 seconds
-Domain Reload Profiling:
-	ReloadAssembly (1246ms)
-		BeginReloadAssembly (134ms)
-=======
 Refreshing native plugins compatible for Editor in 133.06 ms, found 8 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 GPGSUpgrader start
@@ -161,21 +107,10 @@ Mono: successfully reloaded assembly
 Domain Reload Profiling:
 	ReloadAssembly (1270ms)
 		BeginReloadAssembly (144ms)
->>>>>>> c8df161b6dc9df3164b6db83219c4700c8f78977
 			ExecutionOrderSort (0ms)
 			DisableScriptedObjects (4ms)
 			BackupInstance (0ms)
 			ReleaseScriptingObjects (0ms)
-<<<<<<< HEAD
-			CreateAndSetChildDomain (17ms)
-		EndReloadAssembly (1058ms)
-			LoadAssemblies (91ms)
-			RebuildTransferFunctionScriptingTraits (0ms)
-			SetupTypeCache (339ms)
-			ReleaseScriptCaches (1ms)
-			RebuildScriptCaches (53ms)
-			SetupLoadedEditorAssemblies (428ms)
-=======
 			CreateAndSetChildDomain (19ms)
 		EndReloadAssembly (1072ms)
 			LoadAssemblies (92ms)
@@ -184,20 +119,13 @@ Domain Reload Profiling:
 			ReleaseScriptCaches (1ms)
 			RebuildScriptCaches (55ms)
 			SetupLoadedEditorAssemblies (442ms)
->>>>>>> c8df161b6dc9df3164b6db83219c4700c8f78977
 				LogAssemblyErrors (0ms)
 				InitializePlatformSupportModulesInManaged (3ms)
 				SetLoadedEditorAssemblies (0ms)
 				RefreshPlugins (133ms)
-<<<<<<< HEAD
-				BeforeProcessingInitializeOnLoad (85ms)
-				ProcessInitializeOnLoadAttributes (187ms)
-				ProcessInitializeOnLoadMethodAttributes (15ms)
-=======
 				BeforeProcessingInitializeOnLoad (81ms)
 				ProcessInitializeOnLoadAttributes (204ms)
 				ProcessInitializeOnLoadMethodAttributes (14ms)
->>>>>>> c8df161b6dc9df3164b6db83219c4700c8f78977
 				AfterProcessingInitializeOnLoad (6ms)
 				EditorAssembliesLoaded (0ms)
 			ExecutionOrderSort2 (0ms)
@@ -205,17 +133,6 @@ Domain Reload Profiling:
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
-<<<<<<< HEAD
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.03 seconds
-Refreshing native plugins compatible for Editor in 1.68 ms, found 8 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 4263 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 164.4 MB.
-System memory in use after: 163.3 MB.
-
-Unloading 148 unused Assets to reduce memory usage. Loaded Objects now: 4620.
-Total: 4.366700 ms (FindLiveObjects: 0.526100 ms CreateObjectMapping: 0.115500 ms MarkObjects: 3.116900 ms  DeleteObjects: 0.606900 ms)
-=======
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
 Refreshing native plugins compatible for Editor in 1.86 ms, found 8 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
@@ -225,7 +142,6 @@ System memory in use after: 163.6 MB.
 
 Unloading 148 unused Assets to reduce memory usage. Loaded Objects now: 4619.
 Total: 4.157900 ms (FindLiveObjects: 0.414900 ms CreateObjectMapping: 0.102900 ms MarkObjects: 3.032200 ms  DeleteObjects: 0.606800 ms)
->>>>>>> c8df161b6dc9df3164b6db83219c4700c8f78977
 
 AssetImportParameters requested are different than current active one (requested -> active):
   custom:framework-win-MediaFoundation: 216162199b28c13a410421893ffa2e32 -> 
@@ -239,29 +155,6 @@ AssetImportParameters requested are different than current active one (requested
   custom:audio-encoder-webm-vorbis: bf7c407c2cedff20999df2af8eb42d56 -> 
 ========================================================================
 Received Import Request.
-<<<<<<< HEAD
-  path: Assets/UIscript/Firebase/FirebaseData.cs
-  artifactKey: Guid(a84ece96346d2084fae27142562bcbde) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/UIscript/Firebase/FirebaseData.cs using Guid(a84ece96346d2084fae27142562bcbde) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '50f55ea7d5fbbbfdd5623f9774648406') in 0.155752 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 27.014753 seconds.
-  path: Assets/UIscript/Firebase/FirebaseDataManager.cs
-  artifactKey: Guid(464a5f11c48b3dc40895f69d99fa0ec3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/UIscript/Firebase/FirebaseDataManager.cs using Guid(464a5f11c48b3dc40895f69d99fa0ec3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c5ee7c8a5a1c5a247dfa2ff59833d572') in 0.005054 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 144.438707 seconds.
-  path: Assets/UIscript/Firebase/FirebaseData.cs
-  artifactKey: Guid(a84ece96346d2084fae27142562bcbde) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/UIscript/Firebase/FirebaseData.cs using Guid(a84ece96346d2084fae27142562bcbde) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '8d6c0534dd3ac0eb0a3300209243c134') in 0.001870 seconds 
-========================================================================
-Received Import Request.
-  Time since last request: 4.897922 seconds.
-  path: Assets/UIscript/Firebase/FirebaseData.cs
-  artifactKey: Guid(a84ece96346d2084fae27142562bcbde) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/UIscript/Firebase/FirebaseData.cs using Guid(a84ece96346d2084fae27142562bcbde) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'fb31dad4a1175c909e0a33245e5e12e6') in 0.001968 seconds 
-=======
   path: Assets/Scenes/Stage.unity
   artifactKey: Guid(b86ef1a46d0779544a207d7d998fed57) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
 Start importing Assets/Scenes/Stage.unity using Guid(b86ef1a46d0779544a207d7d998fed57) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7a615639d272c0fb03c6cba8635c05d5') in 0.015664 seconds 
@@ -881,5 +774,4 @@ Received Import Request.
   path: Assets/UIscript/SceneManager/StartManager.cs
   artifactKey: Guid(e42cbbc293df4314b97bf37d58fc1d94) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
 Start importing Assets/UIscript/SceneManager/StartManager.cs using Guid(e42cbbc293df4314b97bf37d58fc1d94) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '9094f2b12170137c4b5af336ba683abb') in 0.001833 seconds 
->>>>>>> c8df161b6dc9df3164b6db83219c4700c8f78977
 AssetImportWorkerClient::OnTransportError - code=2 error=End of file

@@ -53,11 +53,7 @@
     <UnityVersion>2021.1.20f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-<<<<<<< HEAD
-    <Analyzer Include="D:\visual\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
-=======
     <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
->>>>>>> c8df161b6dc9df3164b6db83219c4700c8f78977
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleSprite.cs" />
