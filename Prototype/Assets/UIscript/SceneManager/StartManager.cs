@@ -40,11 +40,12 @@ public class StartManager : MonoBehaviour
     //테스트
     [SerializeField] public string Usersid;
 
-    FirebaseData FirebaseData;
+    public FirebaseData firebaseData;
 
     private void Awake()
     {
-        FirebaseData = new FirebaseData(FireBaseId);
+        firebaseData = new FirebaseData(FireBaseId);
+        StartCoroutine(firebaseData.InitData());
         //초기화 auth
         auth = FirebaseAuth.DefaultInstance;
 
@@ -73,14 +74,20 @@ public class StartManager : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            if (!firebaseData.dataLoadComplete) return;
+
+            firebaseData.SaveData("Info", "Nickname", "백엔드는 어려워");
+        }
     }
 
     //구글 로그인 버튼
