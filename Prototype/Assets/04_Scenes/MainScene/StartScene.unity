@@ -8462,6 +8462,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 347633922}
     m_Modifications:
+    - target: {fileID: 5017467332347598065, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.486
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017467332347598065, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5017467332373750118, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -8469,6 +8477,10 @@ PrefabInstance:
     - target: {fileID: 5017467333559114353, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
       propertyPath: m_Name
       value: SettingPanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 5017467333559114353, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5017467333559114358, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
       propertyPath: m_Pivot.x
@@ -8553,6 +8565,14 @@ PrefabInstance:
     - target: {fileID: 5017467333559114358, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7530859955746438546, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0.486
+      objectReference: {fileID: 0}
+    - target: {fileID: 7530859955746438546, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8650502b29a2e694c83499d10a393bb9, type: 3}
