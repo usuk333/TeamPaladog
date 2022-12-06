@@ -1,0 +1,70 @@
+{
+  "users": {
+    "NaIxowYCsaSqdaYaWtWbIYErkqM2": {
+      "Info": {
+        "ADPoints": 0,
+        "AssassinPoints": 0,
+        "EXP": 0,
+        "Gold": 0,
+        "HP": 100,
+        "Level": 1,
+        "MP": 20,
+        "MagePoints": 0,
+        "Nickname": "백엔드는 어려워",
+        "UID": "NaIxowYCsaSqdaYaWtWbIYErkqM2",
+        "WarriorPoints": 0
+      },
+      "Skill": {
+        "Attack": 1,
+        "Barrior": 1,
+        "Heal": 1,
+        "PowerUp": 1,
+        "SkillPoints": 0
+      },
+      "Stage": {
+        "S1EClear": false,
+        "S1EStar": 0,
+        "S1HClear": false,
+        "S1HStar": 0,
+        "S1NClear": false,
+        "S1NStar": 0,
+        "S2EClear": false,
+        "S2EStar": 0,
+        "S2HClear": false,
+        "S2HStar": 0,
+        "S2NClear": false,
+        "S2NStar": 0,
+        "S3EClear": false,
+        "S3EStar": 0,
+        "S3HClear": false,
+        "S3HStar": 0,
+        "S3NClear": false,
+        "S3NStar": 0,
+        "S4EClear": false,
+        "S4EStar": 0,
+        "S4HClear": false,
+        "S4HStar": 0,
+        "S4NClear": false,
+        "S4NStar": 0
+      },
+      "Unit": {
+        "ArchorATK": 90,
+        "ArchorEXP": 0,
+        "ArchorHP": 100,
+        "ArchorLevel": 1,
+        "AssassinATK": 100,
+        "AssassinEXP": 0,
+        "AssassinHP": 100,
+        "AssassinLevel": 1,
+        "MagicianATK": 100,
+        "MagicianEXP": 0,
+        "MagicianHP": 80,
+        "MagicianLevel": 1,
+        "WarriorATK": 100,
+        "WarriorEXP": 0,
+        "WarriorHP": 110,
+        "WarriorLevel": 1
+      }
+    }
+  }
+}
