@@ -21,159 +21,83 @@ public class StartManager : MonoBehaviour
 {
     public class Info
     {
-        public int ArchorPoints { get; set; }
-        public int AssassinPoints { get; set; }
-        public int EXP { get; set; }
-        public int Gold { get; set; }
-        public int HP { get; set; }
-        public int Level { get; set; }
-        public int MP { get; set; }
-        public int MagicianPoints { get; set; }
-        public string Nickname { get; set; }
-        public string UID { get; set; }
-        public int WarriorPoints { get; set; }
+        public int ArchorPoints;
+        public int AssassinPoints;
+        public int EXP;
+        public int Gold;
+        public int HP = 1000;
+        public int Level = 1;
+        public int MP = 200;
+        public int MagicianPoints;
+        public string Nickname;
+        public string UID;
+        public int WarriorPoints;
 
-        public Info(int ArchorPoints, int AssassinPoints, int EXP, int Gold, int HP, int Level, int MP,
-            int MagicianPoints, string Nickname, string UID, int WarriorPoints)
+        public Info(string uID)
         {
-            this.ArchorPoints = ArchorPoints;
-            this.AssassinPoints = AssassinPoints;
-            this.EXP = EXP;
-            this.Gold = Gold;
-            this.HP = HP;
-            this.Level = Level;
-            this.MP = MP;
-            this.MagicianPoints = MagicianPoints;
-            this.Nickname = Nickname;
-            this.UID = UID;
-            this.WarriorPoints = WarriorPoints;
+            UID = uID;
         }
     }
 
     public class Skill
     {
-        public int Attack { get; set; }
-        public int Barrior { get; set; }
-        public int Heal { get; set; }
-        public int PowerUp { get; set; }
-        public int SkillPoints { get; set; }
+        public int Attack = 1;
+        public int Barrior = 1;
+        public int Heal = 1;
+        public int PowerUp = 1;
+        public int SkillPoints;
 
-        public Skill(int Attack, int Barrior, int Heal, int PowerUp, int SkillPoints)
-        {
-            this.Attack = Attack;
-            this.Barrior = Barrior;
-            this.Heal = Heal;
-            this.PowerUp = PowerUp;
-            this.SkillPoints = SkillPoints;
-        }
     }
 
     public class Stage
     {
-        public bool S1EClear { get; set; }
-        public int S1EStar { get; set; }
-        public bool S1HClear { get; set; }
-        public int S1HStar { get; set; }
-        public bool S1NClear { get; set; }
-        public int S1NStar { get; set; }
+        public bool S1EClear;
+        public int S1EStar;
+        public bool S1HClear;
+        public int S1HStar;
+        public bool S1NClear;
+        public int S1NStar;
 
-        public bool S2EClear { get; set; }
-        public int S2EStar { get; set; }
-        public bool S2HClear { get; set; }
-        public int S2HStar { get; set; }
-        public bool S2NClear { get; set; }
-        public int S2NStar { get; set; }
+        public bool S2EClear;
+        public int S2EStar;
+        public bool S2HClear;
+        public int S2HStar;
+        public bool S2NClear;
+        public int S2NStar;
 
-        public bool S3EClear { get; set; }
-        public int S3EStar { get; set; }
-        public bool S3HClear { get; set; }
-        public int S3HStar { get; set; }
-        public bool S3NClear { get; set; }
-        public int S3NStar { get; set; }
+        public bool S3EClear;
+        public int S3EStar;
+        public bool S3HClear;
+        public int S3HStar;
+        public bool S3NClear;
+        public int S3NStar;
 
-        public bool S4EClear { get; set; }
-        public int S4EStar { get; set; }
-        public bool S4HClear { get; set; }
-        public int S4HStar { get; set; }
-        public bool S4NClear { get; set; }
-        public int S4NStar { get; set; }
-
-        public Stage(bool S1EClear, int S1EStar, bool S1HClear, int S1HStar, bool S1NClear, int S1NStar,
-            bool S2EClear, int S2EStar, bool S2HClear, int S2HStar, bool S2NClear, int S2NStar,
-            bool S3EClear, int S3EStar, bool S3HClear, int S3HStar, bool S3NClear, int S3NStar,
-            bool S4EClear, int S4EStar, bool S4HClear, int S4HStar, bool S4NClear, int S4NStar)
-        {
-            this.S1EClear = S1EClear;
-            this.S1EStar = S1EStar;
-            this.S1HClear = S1HClear;
-            this.S1HStar = S1HStar;
-            this.S1NClear = S1NClear;
-            this.S1NStar = S1NStar;
-
-            this.S2EClear = S2EClear;
-            this.S2EStar = S2EStar;
-            this.S2HClear = S2HClear;
-            this.S2HStar = S2HStar;
-            this.S2NClear = S2NClear;
-            this.S2NStar = S2NStar;
-
-            this.S3EClear = S3EClear;
-            this.S3EStar = S3EStar;
-            this.S3HClear = S3HClear;
-            this.S3HStar = S3HStar;
-            this.S3NClear = S3NClear;
-            this.S3NStar = S3NStar;
-
-            this.S4EClear = S4EClear;
-            this.S4EStar = S4EStar;
-            this.S4HClear = S4HClear;
-            this.S4HStar = S4HStar;
-            this.S4NClear = S4NClear;
-            this.S4NStar = S4NStar;
-        }
+        public bool S4EClear;
+        public int S4EStar;
+        public bool S4HClear;
+        public int S4HStar;
+        public bool S4NClear;
+        public int S4NStar;
     }
 
     public class Unit
     {
-        public int ArchorATK { get; set; }
-        public int ArchorEXP { get; set; }
-        public int ArchorHP { get; set; }
-        public int ArchorLevel { get; set; }
-        public int AssassinATK { get; set; }
-        public int AssassinEXP { get; set; }
-        public int AssassinHP { get; set; }
-        public int AssassinLevel { get; set; }
-        public int MagicianATK { get; set; }
-        public int MagicianEXP { get; set; }
-        public int MagicianHP { get; set; }
-        public int MagicianLevel { get; set; }
-        public int WarriorATK { get; set; }
-        public int WarriorEXP { get; set; }
-        public int WarriorHP { get; set; }
-        public int WarriorLevel { get; set; }
-
-        public Unit(int ArchorATK, int ArchorEXP, int ArchorHP, int ArchorLevel,
-            int AssassinATK, int AssassinEXP, int AssassinHP, int AssassinLevel,
-            int MagicianATK, int MagicianEXP, int MagicianHP, int MagicianLevel,
-            int WarriorATK, int WarriorEXP, int WarriorHP, int WarriorLevel)
-        {
-            this.ArchorATK = ArchorATK;
-            this.ArchorEXP = ArchorEXP;
-            this.ArchorHP = ArchorHP;
-            this.ArchorLevel = ArchorLevel;
-            this.AssassinATK = AssassinATK;
-            this.AssassinEXP = AssassinEXP;
-            this.AssassinHP = AssassinHP;
-            this.AssassinLevel = AssassinLevel;
-            this.MagicianATK = MagicianATK;
-            this.MagicianEXP = MagicianEXP;
-            this.MagicianHP = MagicianHP;
-            this.MagicianLevel = MagicianLevel;
-            this.WarriorATK = WarriorATK;
-            this.WarriorEXP = WarriorEXP;
-            this.WarriorHP = WarriorHP;
-            this.WarriorLevel = WarriorLevel;
-        }
+        public int ArchorATK = 380;
+        public int ArchorEXP;
+        public int ArchorHP = 800;
+        public int ArchorLevel = 1;
+        public int AssassinATK = 400;
+        public int AssassinEXP;
+        public int AssassinHP = 1000;
+        public int AssassinLevel =1;
+        public int MagicianATK= 400;
+        public int MagicianEXP;
+        public int MagicianHP = 800;
+        public int MagicianLevel =1 ;
+        public int WarriorATK = 380;
+        public int WarriorEXP;
+        public int WarriorHP = 1200;
+        public int WarriorLevel = 1;
     }
 
     public class Newuser
@@ -183,13 +107,6 @@ public class StartManager : MonoBehaviour
         public Stage stage;
         public Unit unit;
 
-        public Newuser(Info info, Skill skill, Stage stage, Unit unit)
-        {
-            this.info = info;
-            this.skill = skill;
-            this.stage = stage;
-            this.unit = unit;
-        }
     }
 
     private static StartManager instance;
@@ -233,8 +150,6 @@ public class StartManager : MonoBehaviour
         }
         DontDestroyOnLoad(instance);
 
-        firebaseData = new FirebaseData(FireBaseId);
-        StartCoroutine(firebaseData.InitData());
         //초기화 auth
         auth = FirebaseAuth.DefaultInstance;
 
@@ -370,60 +285,56 @@ public class StartManager : MonoBehaviour
 
 
             Usersid = user.UserId;
-            DataManager.UserID = Usersid;
-            PlayerDataSet(Usersid);
+
+            StartCoroutine(PlayerDataSet(Usersid));
             //UIDRigister(user.UserId, "Google");
             //InitializeFirebase();
         });
     }
 
-    private void PlayerDataSet(string uid)
+    private IEnumerator PlayerDataSet(string uid)
     {
         reference.Child("users").Child(uid).GetValueAsync().ContinueWithOnMainThread(task =>
         {
             if (task.IsCompleted)   //기존 데이터 확인
             {
-                LoadingSceneController.LoadScene("StartScene");
-                /*DataSnapshot snapshot = task.Result;
-                Debug.Log("InitializeFirebase ���ٿϷ�");
-
-                foreach (DataSnapshot data in snapshot.Children)
-                {
-                    Debug.LogFormat("[Database] key : {0}, value :{1}", data.Key, data.Value);
-                }*/
+                
             }
             else                    //기존 데이터가 없고, 기초 데이터 설치
             {
-                //데이터 빌딩 (합작)
-                /*Newuser newuser = new Newuser();
-
-                Info info = new Info(0, 0, 0, 0, 100, 1, 20, 0, "defalut", Usersid, 0);
-                Skill skill = new Skill(1, 1, 1, 1, 0);
-                Stage stage = new Stage(false, 0, false, 0, false, 0, false, 0, false, 0, false, 0,
-                    false, 0, false, 0, false, 0, false, 0, false, 0, false, 0);
-                Unit unit = new Unit(90, 0, 100, 1, 100, 0, 100, 1, 100, 0, 80, 1, 100, 0, 110, 1);
-
-                string json = JsonUtility.ToJson(newuser);
-                reference.Child("users").Child(Usersid).SetRawJsonValueAsync(json);*/
+                CreateNewUserData();
             }
         });
+        firebaseData = new FirebaseData(uid);
+
+        StartCoroutine(firebaseData.InitData());
+
+        yield return new WaitUntil(() => firebaseData.dataLoadComplete);
+
+        NextScene();
     }
 
-    public void test()
+    private void CreateNewUserData()
     {
-        Info info = new Info(0, 0, 0, 0, 100, 1, 20, 0, "defalut", Usersid, 0);
-        Skill skill = new Skill(1, 1, 1, 1, 0);
-        Stage stage = new Stage(false, 0, false, 0, false, 0, false, 0, false, 0, false, 0,
-            false, 0, false, 0, false, 0, false, 0, false, 0, false, 0);
-        Unit unit = new Unit(90, 0, 100, 1, 100, 0, 100, 1, 100, 0, 80, 1, 100, 0, 110, 1);
+        Info info = new Info(Usersid);
+        Skill skill = new Skill();
+        Stage stage = new Stage();
+        Unit unit = new Unit();
 
-        Newuser newuser = new Newuser(info, skill, stage, unit);
-        
+        string json = JsonUtility.ToJson(info);
+        string jsona = JsonUtility.ToJson(skill);
+        string jsonb = JsonUtility.ToJson(stage);
+        string jsonc = JsonUtility.ToJson(unit);
 
-        string json = JsonUtility.ToJson(newuser);
-        reference.Child("users").Child(Usersid).SetRawJsonValueAsync(json);
+        reference.Child("users").Child(Usersid).Child("Info").SetRawJsonValueAsync(json);
+        reference.Child("users").Child(Usersid).Child("Skill").SetRawJsonValueAsync(jsona);
+        reference.Child("users").Child(Usersid).Child("Stage").SetRawJsonValueAsync(jsonb);
+        reference.Child("users").Child(Usersid).Child("Unit").SetRawJsonValueAsync(jsonc);
 
         Debug.Log(json);
+        Debug.Log(jsona);
+        Debug.Log(jsonb);
+        Debug.Log(jsonc);
     }
 
     //계정 로그인에 어떠한 변경점 발생 시 진입
