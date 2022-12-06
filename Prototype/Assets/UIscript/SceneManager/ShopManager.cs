@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class ShopManager : MonoBehaviour
 {
     [SerializeField] private GameObject unitInfoObj;
@@ -11,7 +12,7 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Sprite[] unitIllustArray;
 
     [Header("변경될 UI 요소들")]
-    [SerializeField] private Image iconImage;
+    [SerializeField] private Image profileImage;
     [SerializeField] private Text levelText;
     [SerializeField] private Slider expSlider;
     [SerializeField] private Text expText;
@@ -22,14 +23,25 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Text nameText;
     [SerializeField] private Text skillNameText;
     [SerializeField] private Text skillInfoText;
+    [SerializeField] private Text goldText;
+    [SerializeField] private Text[] unitPointTextArray;
 
     private string[] unitNameArray = { "탱커 - 길버트", "암살자 - 하나", "마법사 - 하람", "궁수 - 로젤리아" };
     private string[] unitSkillNameArray = { "특수 공격 : 흡수의 일격", "특수 공격 : 일렁이는 아지랑이", "특수공격 : 일어나는 업화", "특수공격 : 피어스" };
     private string[] unitPathArray = { "Warrior", "Assassin" , "Magician", "Archor" };
     private string[] statusPathArray = { "ATK", "EXP", "HP", "Level" };
+    private string[] unitPointPathArray = { "WarriorPoints", "AssassinPoints", "MagePoints", "ADPoints" };
 
     private string currentUnit;
 
+    private void Start()
+    {
+        goldText.text = GetInfoDataToString("Gold") + " 골드";
+        for (int i = 0; i < unitPointTextArray.Length; i++)
+        {
+            unitPointTextArray[i].text = GetInfoDataToString(unitPointPathArray[i]);
+        }
+    }
     public void BtnEvt_ActiveUnitInfoObj(int i)
     {
         if (!unitInfoObj.activeSelf)
@@ -44,7 +56,7 @@ public class ShopManager : MonoBehaviour
     private void ChangeUnitInfo(int i)
     {
         currentUnit = unitPathArray[i];
-        iconImage.sprite = unitIconArray[i];
+        profileImage.sprite = unitIconArray[i];
         infoText.text = unitInfoArray[i];
         nameText.text = unitNameArray[i];
         skillNameText.text = unitSkillNameArray[i];
@@ -79,6 +91,20 @@ public class ShopManager : MonoBehaviour
             default:
                 break;
         }
+    }
+    private string GetInfoDataToString(string path)
+    {
+        string str;
+
+        if(path == "Gold")
+        {
+            str = DataEquation.GetUnit(System.Convert.ToInt32(StartManager.Instance.FirebaseData.InfoDictionary[path]));
+        }
+        else
+        {
+            str = StartManager.Instance.FirebaseData.InfoDictionary[path].ToString();
+        }
+        return str;
     }
     //public class UserInfo
     //{
