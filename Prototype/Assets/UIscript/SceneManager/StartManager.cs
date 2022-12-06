@@ -379,6 +379,7 @@ public class StartManager : MonoBehaviour
 
     private void PlayerDataSet(string uid)
     {
+        bool isComplete = false;
         reference.Child("users").Child(uid).GetValueAsync().ContinueWithOnMainThread(task =>
         {
             if (task.IsCompleted)   //기존 데이터 확인
