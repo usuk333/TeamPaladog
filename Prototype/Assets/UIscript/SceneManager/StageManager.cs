@@ -97,6 +97,10 @@ public class StageManager : MonoBehaviour
     [SerializeField] private GameObject TowerDownBtn;
     private bool StagePanelon;
 
+    [SerializeField] private GameObject SettingPanel;
+
+    [SerializeField] private GameObject Background;
+
     void Awake()
     {
         firebaseApp = FirebaseApp.DefaultInstance;
@@ -211,11 +215,36 @@ public class StageManager : MonoBehaviour
         
     }
 
+    public void BackGroundBtn()
+    {
+        if (diffonoff == true && Movenow == false)
+        {
+            Movenow = true;
+            Difficult.SetActive(false);
+            Tower.transform.DOMoveX(640, 1);
+            Invoke("Difficultdelay", 1f);
+        }
+    }
+
+    public void Difficultdelay()
+    {
+        Movenow = false;
+        if (diffonoff == false)
+        {
+            diffonoff = true;
+            StagePanel.SetActive(false);
+        }
+        else
+        {
+            StagePanel.SetActive(false);
+        }
+    }
+
     public void StageInfo(int i)
     {
         if(Movenow == false)
         {
-            StagePanelon = true;
+            StagePanelon = false;
             Movenow = true;
 
             Tower.transform.DOMoveX(350, 1);
@@ -251,6 +280,7 @@ public class StageManager : MonoBehaviour
 
         nowdif = i;
 
+        StagePanelon = true;
         StagePanel.SetActive(true);
         StageIntroduction.text = StageTopText[nowStage];
     }
@@ -266,10 +296,15 @@ public class StageManager : MonoBehaviour
         BossManager.difficulty = (BossManager.Difficulty)index;
     }
 
-    public void UnitSelect()
+    public void SettingPanelOpen()
     {
-
+        SettingPanel.SetActive(true);
     }
+    public void SettingPanelClose()
+    {
+        SettingPanel.SetActive(false);
+    }
+
 
     public void StagePanelClose()
     {
@@ -300,6 +335,13 @@ public class StageManager : MonoBehaviour
             {
                 TowerDownBtn.SetActive(true);
             }
+
+            if(diffonoff == true)
+            {
+                Difficult.SetActive(false);
+                Tower.transform.DOMoveX(640, 1);
+            }
+
             Movenow = true;
             Tower.transform.DOMoveY(Tower.transform.position.y - 720, 1);
             Invoke("StagePanelOff", 1);
@@ -317,6 +359,13 @@ public class StageManager : MonoBehaviour
             {
                 TowerUpBtn.SetActive(true);
             }
+
+            if (diffonoff == true)
+            {
+                Difficult.SetActive(false);
+                Tower.transform.DOMoveX(640, 1);
+            }
+
             Movenow = true;
             Tower.transform.DOMoveY(Tower.transform.position.y + 720, 1);
             Invoke("StagePanelOff", 1);
