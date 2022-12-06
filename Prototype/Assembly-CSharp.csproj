@@ -148,6 +148,7 @@
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleEPOOutline.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Events\IEvent.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleAudio.cs" />
+    <Compile Include="Assets\02_Script\DataEquation.cs" />
     <Compile Include="Assets\02_Script\Play\SkillData.cs" />
     <Compile Include="Assets\02_Script\Play\Unit\Unit.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
