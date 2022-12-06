@@ -10,8 +10,8 @@ using Firebase.Extensions;
 public class FirebaseData
 {
     private DatabaseReference reference;
-    FirebaseDatabase firebaseDatabase;
-    FirebaseApp firebaseApp;
+    private FirebaseDatabase firebaseDatabase;
+    private FirebaseApp firebaseApp;
 
     public enum LoginType
     {
