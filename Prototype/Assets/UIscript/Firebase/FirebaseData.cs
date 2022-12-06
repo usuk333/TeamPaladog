@@ -28,7 +28,7 @@ public class FirebaseData
     /// <summary>
     /// 0 = HP, 1 = MP, 2 = Level, 3 = EXP, 4 = Gold, 5 = WarriorPoint, 6 = AssasinPoint, 7 = MagePoint, 8 = ADPoint, 9 = Nickname
     /// </summary>
-    private string[] infoPathArray = { "HP", "MP", "Level", "EXP", "Gold", "WarriorPoints", "AssassinPoints", "MagePoints", "ADPoints", "Nickname" };
+    private string[] infoPathArray = { "HP", "MP", "Level", "EXP", "Gold", "WarriorPoints", "AssassinPoints", "MagicianPoints", "ArchorPoints", "Nickname" };
     private Dictionary<string, object> infoDictionary = new Dictionary<string, object>();
 
     //스킬 데이터
@@ -130,7 +130,7 @@ public class FirebaseData
                 continue;
             }
             dictionary.Add(path[i], snapshot.Child(path[i]).Value);
-            Debug.Log(dictionary[path[i]]);
+            Debug.Log($"{snapshot.Key}.{path[i]} : {dictionary[path[i]]}");
             if (dictionary[path[i]] == null)
             {
                 Debug.Log("데이터 로딩에 실패하여 데이터를 다시 불러옵니다");

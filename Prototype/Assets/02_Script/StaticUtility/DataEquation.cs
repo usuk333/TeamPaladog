@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 using System.Numerics;
 
 public static class DataEquation
@@ -31,7 +29,7 @@ public static class DataEquation
     public static int UnitMaxAtkEquationToLevel(string unitName)
     {
         int a;
-        int level = System.Convert.ToInt32(StartManager.Instance.FirebaseData.UnitDictionary[$"{unitName}Level"]);
+        int level = Convert.ToInt32(StartManager.Instance.FirebaseData.UnitDictionary[$"{unitName}Level"]) - 1;
         switch (unitName)
         {
             case "Warrior":
@@ -59,7 +57,7 @@ public static class DataEquation
     public static int UnitMaxHpEquationToLevel(string unitName)
     {
         int a;
-        int level = System.Convert.ToInt32(StartManager.Instance.FirebaseData.UnitDictionary[$"{unitName}Level"]);
+        int level = Convert.ToInt32(StartManager.Instance.FirebaseData.UnitDictionary[$"{unitName}Level"]) - 1;
         switch (unitName)
         {
             case "Warrior":
@@ -87,7 +85,7 @@ public static class DataEquation
     public static int UnitSkillConditionToLevel(string unitName)
     {
         int a;
-        int level = System.Convert.ToInt32(StartManager.Instance.FirebaseData.UnitDictionary[$"{unitName}Level"]);
+        int level = Convert.ToInt32(StartManager.Instance.FirebaseData.UnitDictionary[$"{unitName}Level"]);
         int count = level / 10;
         switch (unitName)
         {
