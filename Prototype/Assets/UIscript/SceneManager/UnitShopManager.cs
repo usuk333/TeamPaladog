@@ -3,14 +3,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-using DG.Tweening;
 
 
-public class ShopManager : MonoBehaviour
+public class UnitShopManager : MonoBehaviour
 {
     [SerializeField] private GameObject unitInfoObj;
     [SerializeField] private Sprite[] unitIconArray;
-    [SerializeField] private string[] unitInfoArray;
     [SerializeField] private Sprite[] unitIllustArray;
     [SerializeField] private GameObject settingObj;
     [SerializeField] private GameObject warningMessageObj;
@@ -30,6 +28,11 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private Text goldText;
     [SerializeField] private Text[] unitPointTextArray;
     [SerializeField] private Text warningText;
+
+    private string[] unitInfoArray = { "거대한 도끼가 바람을 갈랐다.\n일격.\n제 몸집만한 도끼를 어깨에 짊어진 청년은,\n양단 된 마물 앞에서 태양을 닮은 눈부신 미소를 짓고 있었다.",
+        "고블린이 소름끼치는 웃음을 흘리며 다가왔다.\n하지만 소녀는 꼬리를 살랑살랑 흔들며 미소지을 뿐.\n소녀를 얕잡아본 고블린은, 나무 몽둥이를 휘둘렀다.\n자신의 머리가 바닥에서 구르고 있는 것도 알지 못한 채.",
+        "찐득한 어둠 속에서 새빨간 불꽃이 일었다.\n마치 유혹하듯 꼬리를 흔드는 불꽃을 보고, 망자는 발을 내딛는다.\n불길이 몸을 집어삼키는 것은 신경도 쓰지 않고,\n한 걸음. 한 걸음.",
+        "오크 로드는 나무 위에서 자고있는 여인이 마음에 들지 않았다.\n자신의 영역 안에서 느껴지는 평화로움에 구역질이 일었다.\n쾅! 오크 로드의 거목같은 다리가 나무에 직격했다\n그 뒤에 남은 것은, 잔잔한 산들바람과 새의 지저귐 뿐이었다." };
 
     private string[] unitNameArray = { "탱커 - 길버트", "암살자 - 하나", "마법사 - 하람", "궁수 - 로젤리아" };
     private string[] unitSkillNameArray = { "특수 공격 : 흡수의 일격", "특수 공격 : 일렁이는 아지랑이", "특수공격 : 일어나는 업화", "특수공격 : 피어스" };
@@ -60,9 +63,9 @@ public class ShopManager : MonoBehaviour
 
         UpgradeUnitStatus(false);
     }
-    public void BtnEvt_GoMain()
+    public void BtnEvt_LoadMainScene()
     {
-        LoadingSceneController.LoadScene("StartScene");
+        LoadingSceneController.LoadScene("Main");
     }
     public void BtnEvt_ActiveSettingObj()
     {
@@ -76,27 +79,28 @@ public class ShopManager : MonoBehaviour
         }
         if (unitInfoObj.activeSelf)
         {
+            if (currentUnit == unitPathArray[i]) return;
             ChangeUnitInfo(i);
         }
     }
 
     private void UpgradeUnitStatus(bool isAtk)
     {
-        int value = isAtk ? Convert.ToInt32(StartManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[0]}"]) + CheckCurrentUnit(isAtk)
-            : Convert.ToInt32(StartManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[2]}"]) + CheckCurrentUnit(isAtk);
+        int value = isAtk ? Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[0]}"]) + CheckCurrentUnit(isAtk)
+            : Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[2]}"]) + CheckCurrentUnit(isAtk);
 
         if (!CheckCanUpgradeAtk(isAtk, value)) return;
 
         if (isAtk)
         {
-            StartManager.Instance.FirebaseData.SaveData("Unit", $"{currentUnit}{statusPathArray[0]}", value);
-            atkText.text = "공격력 : " + StartManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[0]}"]
+            GameManager.Instance.FirebaseData.SaveData("Unit", $"{currentUnit}{statusPathArray[0]}", value);
+            atkText.text = "공격력 : " + GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[0]}"]
                 + " / " + DataEquation.UnitMaxAtkEquationToLevel(currentUnit);
         }
         else
         {
-            StartManager.Instance.FirebaseData.SaveData("Unit", $"{currentUnit}{statusPathArray[2]}", value);
-            hpText.text = "체력 : " + StartManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[2]}"] 
+            GameManager.Instance.FirebaseData.SaveData("Unit", $"{currentUnit}{statusPathArray[2]}", value);
+            hpText.text = "체력 : " + GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[2]}"] 
                 + " / " + DataEquation.UnitMaxHpEquationToLevel(currentUnit);
         }
     }
@@ -109,18 +113,18 @@ public class ShopManager : MonoBehaviour
     }
     private void UpdateUnitExp()
     {
-        int exp = Convert.ToInt32(StartManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[1]}"]) + 100;
+        int exp = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[1]}"]) + 100;
 
         if(exp >= 500)
         {
             exp = 0;
-            int level = Convert.ToInt32(StartManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[3]}"]) + 1;
-            StartManager.Instance.FirebaseData.SaveData("Unit", $"{currentUnit}{statusPathArray[3]}", level);
+            int level = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[3]}"]) + 1;
+            GameManager.Instance.FirebaseData.SaveData("Unit", $"{currentUnit}{statusPathArray[3]}", level);
             int index = Array.IndexOf(unitPathArray, currentUnit);
             ChangeUnitData(index);
         }
         Debug.Log(exp);
-        StartManager.Instance.FirebaseData.SaveData("Unit", $"{currentUnit}{statusPathArray[1]}", exp);
+        GameManager.Instance.FirebaseData.SaveData("Unit", $"{currentUnit}{statusPathArray[1]}", exp);
         expText.text = $"{exp} / 500";
         expSlider.value = exp;
     }
@@ -136,11 +140,11 @@ public class ShopManager : MonoBehaviour
     }
     private void ChangeUnitData(int i)
     {
-        atkText.text = "공격력 : " + StartManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[0]}"] + " / " + DataEquation.UnitMaxAtkEquationToLevel(currentUnit);
-        expText.text = StartManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[1]}"] + " / 500";
-        hpText.text = "체력 : " + StartManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[2]}"] + " / " + DataEquation.UnitMaxHpEquationToLevel(currentUnit);
-        levelText.text = "LV : " + StartManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[3]}"];
-        expSlider.value = Convert.ToInt32(StartManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[1]}"]);
+        atkText.text = "공격력 : " + GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[0]}"] + " / " + DataEquation.UnitMaxAtkEquationToLevel(currentUnit);
+        expText.text = GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[1]}"] + " / 500";
+        hpText.text = "체력 : " + GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[2]}"] + " / " + DataEquation.UnitMaxHpEquationToLevel(currentUnit);
+        levelText.text = "LV : " + GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[3]}"];
+        expSlider.value = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[1]}"]);
         ChangeSkillInfo(i);
     }
     private void ChangeSkillInfo(int i)
@@ -194,7 +198,7 @@ public class ShopManager : MonoBehaviour
     }
     private bool CheckHaveGold()
     {
-        int gold = Convert.ToInt32(StartManager.Instance.FirebaseData.InfoDictionary["Gold"]) - 200;
+        int gold = Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary["Gold"]) - 200;
         if (gold < 0)
         {
             warningText.text = "골드가 부족합니다!";
@@ -203,7 +207,7 @@ public class ShopManager : MonoBehaviour
         }
         else
         {
-            StartManager.Instance.FirebaseData.SaveData("Info", "Gold", gold);
+            GameManager.Instance.FirebaseData.SaveData("Info", "Gold", gold);
             goldText.text = GetInfoDataToString("Gold") + " 골드";
 
             return true;
@@ -211,7 +215,7 @@ public class ShopManager : MonoBehaviour
     }
     private bool CheckHaveUnitPoint()
     {
-        int point = Convert.ToInt32(StartManager.Instance.FirebaseData.InfoDictionary[$"{currentUnit}Points"]);
+        int point = Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary[$"{currentUnit}Points"]);
         if (point <= 0)
         {
             warningText.text = "돌파석이 부족합니다!";
@@ -221,7 +225,7 @@ public class ShopManager : MonoBehaviour
         else
         {
             point--;
-            StartManager.Instance.FirebaseData.SaveData("Info", $"{currentUnit}Points", point);
+            GameManager.Instance.FirebaseData.SaveData("Info", $"{currentUnit}Points", point);
             UpdateUnitPointText();
 
             return true;
@@ -256,11 +260,11 @@ public class ShopManager : MonoBehaviour
 
         if(path == "Gold")
         {
-            str = DataEquation.GetUnit(Convert.ToInt32(StartManager.Instance.FirebaseData.InfoDictionary[path]));
+            str = DataEquation.GetUnit(Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary[path]));
         }
         else
         {
-            str = StartManager.Instance.FirebaseData.InfoDictionary[path].ToString();
+            str = GameManager.Instance.FirebaseData.InfoDictionary[path].ToString();
         }
         return str;
     }

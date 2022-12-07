@@ -6,6 +6,7 @@ using Firebase;
 using Firebase.Database;
 using Firebase.Extensions;
 
+
 [System.Serializable]
 public class FirebaseData
 {
@@ -76,7 +77,7 @@ public class FirebaseData
     public Dictionary<string, object> SkillDictionary { get => skillDictionary; }
     public Dictionary<string, object> StageDictionary { get => stageDictionary; }
     public Dictionary<string, object> UnitDictionary { get => unitDictionary; }
-    public IEnumerator InitData()
+    public IEnumerator Co_InitData()
     {
         yield return new WaitUntil(() => snapshotLoadComplete);
         yield return new WaitUntil(() => Recursive_InitData(Infosnapshot, infoDictionary, infoPathArray));

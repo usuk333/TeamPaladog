@@ -1,24 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using UnityEngine.UI;
-using Firebase;
-using Firebase.Auth;
-using Firebase.Database;
-using Firebase.Extensions;
-
-using Google;
-using GooglePlayGames;
-using GooglePlayGames.BasicApi;
-
-using System.IO;
-using System.Threading.Tasks;
-using TMPro;
 
 
-public class GameCenterManager : MonoBehaviour
+
+public class MainManager : MonoBehaviour
 {
+    [SerializeField] private GameObject playerInfoPopUpObj;
+
+    [Header("변경되는 UI 요소")]
+    [SerializeField] private Text[] nicknameText;
+    [SerializeField] private Slider[] expSlider;
+    [SerializeField] private Text[] levelText;
+
+    private void Start()
+    {
+        for (int i = 0; i < nicknameText.Length; i++)
+        {
+            nicknameText[i].text = GameManager.Instance.FirebaseData.InfoDictionary["Nickname"].ToString();
+            levelText[i].text = GameManager.Instance.FirebaseData.InfoDictionary["Level"].ToString();
+        }
+    }
+    public void BtnEvt_ActivePlayerInfoPopUpObj()
+    {
+        playerInfoPopUpObj.SetActive(!playerInfoPopUpObj.activeSelf);
+    }
+    public void BtnEvt_LoadUnitScene()
+    {
+        LoadingSceneController.LoadScene("UnitShop");
+    }
+    public void BtnEvt_LoadSkillScene()
+    {
+        LoadingSceneController.LoadScene("Skill");
+    }
+    public void BtnEvt_LoadStageSectionScene()
+    {
+        LoadingSceneController.LoadScene("StageSection");
+    }
     ////Auth용 instance
     //FirebaseAuth auth = null;
 
@@ -537,7 +556,7 @@ public class GameCenterManager : MonoBehaviour
     //        playerdata.SkillPoints = 0;
     //        playerdata.UnitPoints = 0;
 
-            
+
 
 
     //        string json = JsonUtility.ToJson(playerdata);
@@ -635,15 +654,6 @@ public class GameCenterManager : MonoBehaviour
     //}
 
     //Shop������ �̵�
-    public void GoShop()
-    {
-        LoadingSceneController.LoadScene("Shop");
-    }
-
-    //public void GoSkill()
-    //{
-    //    LoadingSceneController.LoadScene("Skill");
-    //}
 
     //public void GoSetting()
     //{

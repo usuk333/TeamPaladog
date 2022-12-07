@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text.RegularExpressions;
 
 using UnityEngine.UI;
 using Firebase;
@@ -17,7 +18,7 @@ using System.IO;
 using System.Threading.Tasks;
 using TMPro;
 
-public class StartManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     public class Info
     {
@@ -33,9 +34,10 @@ public class StartManager : MonoBehaviour
         public string UID;
         public int WarriorPoints;
 
-        public Info(string uID)
+        public Info(string uID, string nickname)
         {
             UID = uID;
+            Nickname = nickname;
         }
     }
 
@@ -100,18 +102,9 @@ public class StartManager : MonoBehaviour
         public int WarriorLevel = 1;
     }
 
-    public class Newuser
-    {
-        public Info info;
-        public Skill skill;
-        public Stage stage;
-        public Unit unit;
+    private static GameManager instance;
 
-    }
-
-    private static StartManager instance;
-
-    public static StartManager Instance { get => instance; }
+    public static GameManager Instance { get => instance; }
 
     //Auth용 instance
     FirebaseAuth auth = null;
@@ -126,8 +119,8 @@ public class StartManager : MonoBehaviour
 
     public PlayerData playerdata;
 
-    //데이터
-    DataSnapshot snapshot;
+    [SerializeField] private GameObject[] createAccountPopUpObj;
+
 
     //데이터베이스 reference
     public DatabaseReference reference;
@@ -163,7 +156,7 @@ public class StartManager : MonoBehaviour
 
         //Firebase reference 경로 설정
         FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
-        reference = FirebaseDatabase.DefaultInstance.RootReference;
+        reference = FirebaseDatabase.DefaultInstance.GetReference("users");
 
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
             .RequestServerAuthCode(false /* Don't force refresh */)
@@ -186,12 +179,7 @@ public class StartManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            if (!firebaseData.dataLoadComplete) return;
 
-            firebaseData.SaveData("Info", "Nickname", "백엔드는 어려워");
-        }
     }
 
     //구글 로그인 버튼
@@ -218,7 +206,7 @@ public class StartManager : MonoBehaviour
 
             Usersid = playerdata.UID;
 
-            reference.Child("users").Child(Usersid).GetValueAsync().ContinueWithOnMainThread(task =>
+            reference.Child(Usersid).GetValueAsync().ContinueWithOnMainThread(task =>
             {
                 if (task.IsFaulted)
                 {
@@ -286,56 +274,88 @@ public class StartManager : MonoBehaviour
 
             Usersid = user.UserId;
 
-            StartCoroutine(PlayerDataSet(Usersid));
+            PlayerDataSet(Usersid);
             //UIDRigister(user.UserId, "Google");
             //InitializeFirebase();
         });
     }
 
-    private IEnumerator PlayerDataSet(string uid)
+    private void PlayerDataSet(string uid)
     {
-        bool isComplete = false;
-        reference.Child("users").Child(uid).GetValueAsync().ContinueWithOnMainThread(task =>
+
+        reference.Child(uid).GetValueAsync().ContinueWithOnMainThread(task =>
         {
-            if (task.IsCompleted)   //기존 데이터 확인
+            if(task.Result.Value != null) //기존 데이터 확인
             {
-                
+                if (task.IsCompleted)   
+                {
+                    Debug.Log("이미 DB에 있는 아이디");
+                    firebaseData = new FirebaseData(uid);
+                    StartCoroutine(firebaseData.Co_InitData());
+                    StartCoroutine(Co_InitData());
+                    Debug.Log(task.Result);
+                }
+                else if (task.IsFaulted)                 
+                {
+                    Debug.Log("데이터 로딩 실패");
+                }
+                else if (task.IsCanceled)
+                {
+                    Debug.Log("DB 접근 취소");
+                }
             }
-            else                    //기존 데이터가 없고, 기초 데이터 설치
+            else //기존 데이터가 없고, 기초 데이터 설치
             {
-                CreateNewUserData();
+                if (task.IsCompleted)  
+                {
+                    Debug.Log("새로 생성한 아이디");
+                    createAccountPopUpObj[0].SetActive(true);
+                    SetInputField();
+                }
+                else if (task.IsFaulted)                  
+                {
+                    Debug.Log("데이터 로딩 실패");
+                }
+                else if (task.IsCanceled)
+                {
+                    Debug.Log("DB 접근 취소");
+                    return;
+                }
             }
         });
-        firebaseData = new FirebaseData(uid);
-
-        StartCoroutine(firebaseData.InitData());
-
+        //NextScene();
+    }
+    private IEnumerator Co_InitData()
+    {
         yield return new WaitUntil(() => firebaseData.dataLoadComplete);
 
-        NextScene();
+        Debug.Log("데이터 로딩 완료");
+        LoadingSceneController.LoadScene("Main");
     }
-
-    private void CreateNewUserData()
+    private void CreateNewUserData(string uid, string nickname)
     {
-        Info info = new Info(Usersid);
+        Info info = new Info(uid, nickname);
         Skill skill = new Skill();
         Stage stage = new Stage();
         Unit unit = new Unit();
 
-        string json = JsonUtility.ToJson(info);
-        string jsona = JsonUtility.ToJson(skill);
-        string jsonb = JsonUtility.ToJson(stage);
-        string jsonc = JsonUtility.ToJson(unit);
+        string infoJson = JsonUtility.ToJson(info);
+        string skillJson = JsonUtility.ToJson(skill);
+        string stageJson = JsonUtility.ToJson(stage);
+        string unitJson = JsonUtility.ToJson(unit);
 
-        reference.Child("users").Child(Usersid).Child("Info").SetRawJsonValueAsync(json);
-        reference.Child("users").Child(Usersid).Child("Skill").SetRawJsonValueAsync(jsona);
-        reference.Child("users").Child(Usersid).Child("Stage").SetRawJsonValueAsync(jsonb);
-        reference.Child("users").Child(Usersid).Child("Unit").SetRawJsonValueAsync(jsonc);
+        reference.Child(uid).Child("Info").SetRawJsonValueAsync(infoJson);
+        reference.Child(uid).Child("Skill").SetRawJsonValueAsync(skillJson);
+        reference.Child(uid).Child("Stage").SetRawJsonValueAsync(stageJson);
+        reference.Child(uid).Child("Unit").SetRawJsonValueAsync(unitJson);
 
-        Debug.Log(json);
-        Debug.Log(jsona);
-        Debug.Log(jsonb);
-        Debug.Log(jsonc);
+        reference.Child("AllNicknames").Child(nickname).SetValueAsync(true);
+
+        firebaseData = new FirebaseData(uid);
+
+        StartCoroutine(firebaseData.Co_InitData());
+
+        StartCoroutine(Co_InitData());
     }
 
     //계정 로그인에 어떠한 변경점 발생 시 진입
@@ -359,12 +379,54 @@ public class StartManager : MonoBehaviour
             }
         }
     }
-    public void BtnEvt_LoadStartScene()
+    public void BtnEvt_CreateNewAccount()
     {
-        NextScene();
+        CreateAccount();
     }
-    private void NextScene()
+    private void SetInputField()
     {
-        LoadingSceneController.LoadScene("StartScene");
+        InputField input = createAccountPopUpObj[0].transform.GetComponentInChildren<InputField>();
+        input.onValueChanged.AddListener((word) => input.text = Regex.Replace(word, @"[^가-힣]", ""));
     }
+    private void CreateAccount()
+    {
+        InputField input = createAccountPopUpObj[0].transform.GetComponentInChildren<InputField>();
+        if (input.text.Length < 2)
+        {
+            StartCoroutine(Co_WarningMessage("닉네임은 2글자 이상이어야 합니다!"));
+            return;
+        }
+        reference.Child("AllNicknames").Child(input.text).GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted)
+            {
+                if(task.Result.Value != null)
+                {
+                    Debug.Log(task.Result.Value);
+                    StartCoroutine(Co_WarningMessage("이미 존재하는 닉네임입니다!"));
+                }
+                else
+                {
+                    CreateNewUserData(Usersid, input.text);
+                    createAccountPopUpObj[0].SetActive(false);
+                }
+            }
+            else if (task.IsFaulted)
+            {
+                Debug.Log("DB 연결 실패");
+            }
+        });
+    }
+    private IEnumerator Co_WarningMessage(string message)
+    {
+        createAccountPopUpObj[1].GetComponentInChildren<Text>().text = message;
+        createAccountPopUpObj[1].SetActive(true);
+        yield return new WaitForSeconds(1f);
+        createAccountPopUpObj[1].SetActive(false);
+    }
+    public void BtnEvt_LoginTest()
+    {
+        PlayerDataSet(Usersid);
+    }
+
 }

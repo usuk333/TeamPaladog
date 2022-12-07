@@ -12,7 +12,7 @@ using System.IO;
 
 public class MainSceneManager : MonoBehaviour
 {
-    GameCenterManager gameCenterManager;
+    MainManager gameCenterManager;
 
     private string Lv;
     private string EXP;

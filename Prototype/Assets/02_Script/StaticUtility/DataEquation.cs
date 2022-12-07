@@ -29,7 +29,7 @@ public static class DataEquation
     public static int UnitMaxAtkEquationToLevel(string unitName)
     {
         int a;
-        int level = Convert.ToInt32(StartManager.Instance.FirebaseData.UnitDictionary[$"{unitName}Level"]) - 1;
+        int level = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{unitName}Level"]) - 1;
         switch (unitName)
         {
             case "Warrior":
@@ -57,7 +57,7 @@ public static class DataEquation
     public static int UnitMaxHpEquationToLevel(string unitName)
     {
         int a;
-        int level = Convert.ToInt32(StartManager.Instance.FirebaseData.UnitDictionary[$"{unitName}Level"]) - 1;
+        int level = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{unitName}Level"]) - 1;
         switch (unitName)
         {
             case "Warrior":
@@ -85,7 +85,7 @@ public static class DataEquation
     public static int UnitSkillConditionToLevel(string unitName)
     {
         int a;
-        int level = Convert.ToInt32(StartManager.Instance.FirebaseData.UnitDictionary[$"{unitName}Level"]);
+        int level = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{unitName}Level"]);
         int count = level / 10;
         switch (unitName)
         {
@@ -110,5 +110,41 @@ public static class DataEquation
                 break;
         }
         return a;
+    }
+    public static (int,int,int) PlayerSkillAttackToLevel()
+    {
+        int level = Convert.ToInt32(GameManager.Instance.FirebaseData.SkillDictionary["Attack"]) - 1;
+        int apple = 200 + (20 * level);
+        int rock = 250 + (20 * level); 
+        int bomb = 300 + (20 * level);
+
+        return (apple,rock,bomb);
+    }
+    public static (float, float) PlayerSkillRageToLevel()
+    {
+        int level = Convert.ToInt32(GameManager.Instance.FirebaseData.SkillDictionary["PowerUp"]) - 1;
+        float value = 3 + (0.4f * level);
+        float mana = 6 + (0.8f * level);
+
+        return (value, mana);
+    }
+    public static (int, float, int, int) PlayerSkillBarriorToLevel()
+    {
+        int level = Convert.ToInt32(GameManager.Instance.FirebaseData.SkillDictionary["Barrior"]) - 1;
+        int value = 50 + (10 * level);
+        float duration = 3 + (0.4f * level);
+        int mana = 50 + (4 * level);
+        int cool = 15 - (1 * level);
+
+        return (value, duration, mana, cool);
+    }
+    public static (int, int, int) PlayerSkillHealToLevel()
+    {
+        int level = Convert.ToInt32(GameManager.Instance.FirebaseData.SkillDictionary["Heal"]) - 1;
+        int value = 20 + (4 * level);
+        int mana = 20 + (2 * level);
+        int cool = 10 - (1 * level);
+
+        return (value, mana, cool);
     }
 }
