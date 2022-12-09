@@ -5632,10 +5632,10 @@ MonoBehaviour:
       - m_Target: {fileID: 1151508627}
         m_TargetAssemblyTypeName: StageTest, Assembly-CSharp
         m_MethodName: BtnEvt_LoadStage
-        m_Mode: 2
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 576732474246131476, guid: 5a8b15241b7a70547bf7ed3708bd96e6, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -6003,11 +6003,11 @@ MonoBehaviour:
       - m_Target: {fileID: 1151508627}
         m_TargetAssemblyTypeName: StageTest, Assembly-CSharp
         m_MethodName: BtnEvt_LoadStage
-        m_Mode: 2
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 4252543117211081641, guid: 7d194c0c191fba54b823e2bfb9e070e7, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -6538,6 +6538,16 @@ MonoBehaviour:
   - {fileID: 311924613}
   - {fileID: 722833444}
   - {fileID: 615526648}
+  stageBGMClipArray:
+  - {fileID: 8300000, guid: 1a53ee88cf1d2914b91c8a72d6666d15, type: 3}
+  - {fileID: 8300000, guid: 5ba530e1fcdd3f94cb826b0b3916a38a, type: 3}
+  - {fileID: 8300000, guid: e723fb89340a0914a8e61c66a730ad0b, type: 3}
+  - {fileID: 8300000, guid: 02f31d5a3b27d6c46b4b50ada677462c, type: 3}
+  bossObjArray:
+  - {fileID: 576732474246131476, guid: 5a8b15241b7a70547bf7ed3708bd96e6, type: 3}
+  - {fileID: 4252543117211081641, guid: 7d194c0c191fba54b823e2bfb9e070e7, type: 3}
+  - {fileID: 4083599777777162963, guid: 59018d5042174964c96f2281d7670251, type: 3}
+  - {fileID: 8413565010793346602, guid: cd7c6e9eeb5a03e4aaf5113cbd469f46, type: 3}
 --- !u!4 &1151508628
 Transform:
   m_ObjectHideFlags: 0
@@ -6638,11 +6648,11 @@ MonoBehaviour:
       - m_Target: {fileID: 1151508627}
         m_TargetAssemblyTypeName: StageTest, Assembly-CSharp
         m_MethodName: BtnEvt_LoadStage
-        m_Mode: 2
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 4083599777777162963, guid: 59018d5042174964c96f2281d7670251, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -8339,11 +8349,11 @@ MonoBehaviour:
       - m_Target: {fileID: 1151508627}
         m_TargetAssemblyTypeName: StageTest, Assembly-CSharp
         m_MethodName: BtnEvt_LoadStage
-        m_Mode: 2
+        m_Mode: 3
         m_Arguments:
-          m_ObjectArgument: {fileID: 8413565010793346602, guid: cd7c6e9eeb5a03e4aaf5113cbd469f46, type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0

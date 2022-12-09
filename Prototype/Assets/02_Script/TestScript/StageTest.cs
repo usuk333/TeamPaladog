@@ -252,13 +252,16 @@ public class StageTest : MonoBehaviour
     public Attack Attack;
     public Text[] AttackInfo;
 
+    public AudioClip[] stageBGMClipArray;
+    public GameObject[] bossObjArray;
 
 
 
 
-    public void BtnEvt_LoadStage(GameObject obj)
+    public void BtnEvt_LoadStage(int index)
     {
-        BossManager.BossSection = obj;
+        BossManager.BossSection = bossObjArray[index];
+        BossManager.bgm = stageBGMClipArray[index];
         stageSection.SetActive(true);
         //LoadingSceneController.LoadScene("Stage");
     }

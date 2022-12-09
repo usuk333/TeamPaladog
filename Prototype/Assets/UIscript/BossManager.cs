@@ -23,5 +23,6 @@ public static class BossManager
     public static Heal heal;
     public static PowerUp powerUp;
     public static Attack attack;
+    public static AudioClip bgm;
 
 }
