@@ -2,29 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 
 
 public class MainManager : MonoBehaviour
 {
-    [SerializeField] private GameObject playerInfoPopUpObj;
-
     [Header("변경되는 UI 요소")]
     [SerializeField] private Text[] nicknameText;
     [SerializeField] private Slider[] expSlider;
     [SerializeField] private Text[] levelText;
+    [SerializeField] private Text[] expText;
 
     private void Start()
     {
-        for (int i = 0; i < nicknameText.Length; i++)
-        {
-            nicknameText[i].text = GameManager.Instance.FirebaseData.InfoDictionary["Nickname"].ToString();
-            levelText[i].text = GameManager.Instance.FirebaseData.InfoDictionary["Level"].ToString();
-        }
+        ChangePlayerInfo();
     }
-    public void BtnEvt_ActivePlayerInfoPopUpObj()
+    public void BtnEvt_ActiveObj(GameObject obj)
     {
-        playerInfoPopUpObj.SetActive(!playerInfoPopUpObj.activeSelf);
+        obj.SetActive(!obj.activeSelf);
     }
     public void BtnEvt_LoadUnitScene()
     {
@@ -37,6 +33,17 @@ public class MainManager : MonoBehaviour
     public void BtnEvt_LoadStageSectionScene()
     {
         LoadingSceneController.LoadScene("StageSection");
+    }
+    private void ChangePlayerInfo()
+    {
+        for (int i = 0; i < nicknameText.Length; i++)
+        {
+            nicknameText[i].text = GameManager.Instance.FirebaseData.InfoDictionary["Nickname"].ToString();
+            levelText[i].text = GameManager.Instance.FirebaseData.InfoDictionary["Level"].ToString();
+            expSlider[i].maxValue = DataEquation.PlayerMaxExpToLevel();
+            expSlider[i].value = Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary["EXP"]);
+            expText[i].text = $"{expSlider[i].value} / {expSlider[i].maxValue}";
+        }
     }
     ////Auth용 instance
     //FirebaseAuth auth = null;

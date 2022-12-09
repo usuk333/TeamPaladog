@@ -137,10 +137,12 @@ public class Player : MonoBehaviour
     }
     private IEnumerator Co_Die()
     {
+        useSkill = true;
         skeletonAnimation.AnimationState.SetAnimation(0, "Dead", false);
         yield return new WaitForSeconds(1.333f);
         InGameManager.Instance.SetGameOver();
-        this.enabled = false;
+        gameObject.SetActive(false);
+        //this.enabled = false;
     }
     public void DecreaseMp(float value)
     {

@@ -704,7 +704,7 @@ MonoBehaviour:
   createAccountPopUpObj:
   - {fileID: 1633670015}
   - {fileID: 776200856}
-  Usersid: wnddygksrjtdmsRjRdlwldksgsmsakdma
+  Usersid: fgdafwefwedsxx
 --- !u!4 &1248679770
 Transform:
   m_ObjectHideFlags: 0
@@ -6818,10 +6818,10 @@ RectTransform:
   m_Father: {fileID: 1867075890}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6743004206349024226
 GameObject:
@@ -11750,9 +11750,9 @@ RectTransform:
   m_Father: {fileID: 6743004206349024225}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 640, y: -609.574}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -240}
   m_SizeDelta: {x: 602.1079, y: 111}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6743004207071696752
@@ -11975,7 +11975,7 @@ RectTransform:
   m_GameObject: {fileID: 6743004208027089109}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2123998, y: 1.2123998, z: 1.2123998}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6743004206460150768}
   m_Father: {fileID: 1867075890}

@@ -29,14 +29,14 @@ public class FirebaseData
     /// <summary>
     /// 0 = HP, 1 = MP, 2 = Level, 3 = EXP, 4 = Gold, 5 = WarriorPoint, 6 = AssasinPoint, 7 = MagePoint, 8 = ADPoint, 9 = Nickname
     /// </summary>
-    private string[] infoPathArray = { "HP", "MP", "Level", "EXP", "Gold", "WarriorPoints", "AssassinPoints", "MagicianPoints", "ArchorPoints", "Nickname" };
+    private string[] infoPathArray = { "Level", "EXP", "Gold", "WarriorPoints", "AssassinPoints", "MagicianPoints", "ArchorPoints", "Nickname" };
     private Dictionary<string, object> infoDictionary = new Dictionary<string, object>();
 
     //스킬 데이터
     /// <summary>
     /// 0 = Attack, 1 = Barrior, 2 = Heal, 3 = PowerUp, 4 = SkillPoints
     /// </summary>
-    private string[] skillPathArray = { "Attack", "Barrior", "Heal", "PowerUp", "SkillPoints" };
+    private string[] skillPathArray = { "HP", "MP", "Attack", "Barrior", "Heal", "PowerUp", "SkillPoints" };
     private Dictionary<string, object> skillDictionary = new Dictionary<string, object>();
 
     private string[] stagePathArray = { "S1EClear", "S1NClear", "S1HClear", "S1EStar", "S1NStar", "S1HStar",

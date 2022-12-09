@@ -26,9 +26,7 @@ public class GameManager : MonoBehaviour
         public int AssassinPoints;
         public int EXP;
         public int Gold;
-        public int HP = 1000;
         public int Level = 1;
-        public int MP = 200;
         public int MagicianPoints;
         public string Nickname;
         public string UID;
@@ -43,12 +41,13 @@ public class GameManager : MonoBehaviour
 
     public class Skill
     {
+        public int HP = 1;
+        public int MP = 1;
         public int Attack = 1;
         public int Barrior = 1;
         public int Heal = 1;
         public int PowerUp = 1;
         public int SkillPoints;
-
     }
 
     public class Stage
@@ -143,6 +142,11 @@ public class GameManager : MonoBehaviour
         }
         DontDestroyOnLoad(instance);
 
+        int level = 5;
+        int max = 200 + (10 * level);
+        int regen = 30 + (5 * (level / 5));
+
+        Debug.Log(regen);
         //초기화 auth
         auth = FirebaseAuth.DefaultInstance;
 
@@ -386,7 +390,7 @@ public class GameManager : MonoBehaviour
     private void SetInputField()
     {
         InputField input = createAccountPopUpObj[0].transform.GetComponentInChildren<InputField>();
-        input.onValueChanged.AddListener((word) => input.text = Regex.Replace(word, @"[^가-힣]", ""));
+        input.onValueChanged.AddListener((word) => input.text = Regex.Replace(word, @"[^a-zA-Z가-힣]", ""));
     }
     private void CreateAccount()
     {

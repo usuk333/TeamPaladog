@@ -119,6 +119,7 @@ public class Boss : MonoBehaviour
         {
             skeletonAnimation.AnimationState.SetAnimation(0, "idle", true);
         }
+        //GetComponentInChildren<Canvas>().renderMode = RenderMode.
     }
     private void Start()
     {

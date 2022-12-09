@@ -221,7 +221,7 @@ public class StageManager : MonoBehaviour
         {
             Movenow = true;
             Difficult.SetActive(false);
-            Tower.transform.DOMoveX(640, 1);
+            Tower.transform.DOLocalMoveX(0, 1);
             Invoke("Difficultdelay", 1f);
         }
     }
@@ -247,7 +247,7 @@ public class StageManager : MonoBehaviour
             StagePanelon = false;
             Movenow = true;
 
-            Tower.transform.DOMoveX(350, 1);
+            Tower.transform.DOLocalMoveX(-350, 1);
 
             Invoke("StageInfodelay", 1f);
 
@@ -311,7 +311,7 @@ public class StageManager : MonoBehaviour
         StagePanelon = false;
         Movenow = true;
         StagePanel.SetActive(false);
-        Tower.transform.DOMoveX(640, 1);
+        Tower.transform.DOLocalMoveX(0, 1);
         Invoke("StagePanelOff", 1f);
     }
 
@@ -339,11 +339,11 @@ public class StageManager : MonoBehaviour
             if(diffonoff == true)
             {
                 Difficult.SetActive(false);
-                Tower.transform.DOMoveX(640, 1);
+                Tower.transform.DOLocalMoveX(0, 1);
             }
 
             Movenow = true;
-            Tower.transform.DOMoveY(Tower.transform.position.y - 720, 1);
+            Tower.transform.DOLocalMoveY(Tower.transform.localPosition.y - 720, 1);
             Invoke("StagePanelOff", 1);
         }
         if (i == 1 && Movenow == false && StagePanelon == false)
@@ -363,11 +363,11 @@ public class StageManager : MonoBehaviour
             if (diffonoff == true)
             {
                 Difficult.SetActive(false);
-                Tower.transform.DOMoveX(640, 1);
+                Tower.transform.DOLocalMoveX(0, 1);
             }
 
             Movenow = true;
-            Tower.transform.DOMoveY(Tower.transform.position.y + 720, 1);
+            Tower.transform.DOLocalMoveY(Tower.transform.localPosition.y + 720, 1);
             Invoke("StagePanelOff", 1);
         }
     }

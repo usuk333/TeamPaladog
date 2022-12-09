@@ -18,6 +18,7 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] private GameObject settingObj;
     [SerializeField] private GameObject soundObj;
     [SerializeField] private GameObject accountObj;
+    [SerializeField] private Image sceneMoveImage;
 
     [SerializeField] private Sprite[] settingMenuButtonSpriteArray;
     [SerializeField] private Image[] settingMenuButtonImageArray;
@@ -27,6 +28,13 @@ public class InGameUIManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+    }
+    private IEnumerator Start()
+    {
+        yield return new WaitForSeconds(0.5f);
+        sceneMoveImage.DOFade(0, 2f);
+        yield return new WaitForSeconds(2f);
+        sceneMoveImage.gameObject.SetActive(false);
     }
     public void BtnEvt_UseSkill(int index)
     {
@@ -52,6 +60,10 @@ public class InGameUIManager : MonoBehaviour
         {
             Time.timeScale = 1 ;
         }
+    }
+    public void BtnEvt_GoMainGameClear()
+    {
+        LoadingSceneController.LoadScene("Test_StageSelect");
     }
     public void BtnEvt_GoMain()
     {

@@ -49,6 +49,7 @@ public class FallingObjectPool : MonoBehaviour
     }
     private IEnumerator Co_Falling()
     {
+        yield return new WaitForSeconds(2f);
         while (true)
         {        
             for (int i = 0; i < spawnCount; i++)

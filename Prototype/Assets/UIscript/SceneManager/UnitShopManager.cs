@@ -12,6 +12,7 @@ public class UnitShopManager : MonoBehaviour
     [SerializeField] private Sprite[] unitIllustArray;
     [SerializeField] private GameObject settingObj;
     [SerializeField] private GameObject warningMessageObj;
+    [SerializeField] private Sprite[] unitTypeIconArray;
 
     [Header("변경될 UI 요소들")]
     [SerializeField] private Image profileImage;
@@ -28,13 +29,14 @@ public class UnitShopManager : MonoBehaviour
     [SerializeField] private Text goldText;
     [SerializeField] private Text[] unitPointTextArray;
     [SerializeField] private Text warningText;
+    [SerializeField] private Image unitTypeIconImage;
 
     private string[] unitInfoArray = { "거대한 도끼가 바람을 갈랐다.\n일격.\n제 몸집만한 도끼를 어깨에 짊어진 청년은,\n양단 된 마물 앞에서 태양을 닮은 눈부신 미소를 짓고 있었다.",
         "고블린이 소름끼치는 웃음을 흘리며 다가왔다.\n하지만 소녀는 꼬리를 살랑살랑 흔들며 미소지을 뿐.\n소녀를 얕잡아본 고블린은, 나무 몽둥이를 휘둘렀다.\n자신의 머리가 바닥에서 구르고 있는 것도 알지 못한 채.",
         "찐득한 어둠 속에서 새빨간 불꽃이 일었다.\n마치 유혹하듯 꼬리를 흔드는 불꽃을 보고, 망자는 발을 내딛는다.\n불길이 몸을 집어삼키는 것은 신경도 쓰지 않고,\n한 걸음. 한 걸음.",
         "오크 로드는 나무 위에서 자고있는 여인이 마음에 들지 않았다.\n자신의 영역 안에서 느껴지는 평화로움에 구역질이 일었다.\n쾅! 오크 로드의 거목같은 다리가 나무에 직격했다\n그 뒤에 남은 것은, 잔잔한 산들바람과 새의 지저귐 뿐이었다." };
 
-    private string[] unitNameArray = { "탱커 - 길버트", "암살자 - 하나", "마법사 - 하람", "궁수 - 로젤리아" };
+    private string[] unitNameArray = { "길버트", "하나", "하람", "로젤리아" };
     private string[] unitSkillNameArray = { "특수 공격 : 흡수의 일격", "특수 공격 : 일렁이는 아지랑이", "특수공격 : 일어나는 업화", "특수공격 : 피어스" };
     private string[] unitPathArray = { "Warrior", "Assassin" , "Magician", "Archor" };
     private string[] statusPathArray = { "ATK", "EXP", "HP", "Level" };
@@ -45,6 +47,8 @@ public class UnitShopManager : MonoBehaviour
     {
         goldText.text = GetInfoDataToString("Gold") + " 골드";
         UpdateUnitPointText();
+        ChangeUnitInfo(0);
+        unitInfoObj.SetActive(true);
     }
     public void BtnEvt_UseUnitPoint()
     {
@@ -112,25 +116,31 @@ public class UnitShopManager : MonoBehaviour
         }
     }
     private void UpdateUnitExp()
-    {
-        int exp = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[1]}"]) + 100;
+    {        
+        int exp = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[1]}"]) + 1000;
 
-        if(exp >= 500)
+        if(exp >= DataEquation.UnitMaxEXPToLevel(currentUnit))
         {
-            exp = 0;
+            exp = exp - DataEquation.UnitMaxEXPToLevel(currentUnit);
+            if (exp < 0) exp = exp * -1;
             int level = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[3]}"]) + 1;
             GameManager.Instance.FirebaseData.SaveData("Unit", $"{currentUnit}{statusPathArray[3]}", level);
+            GameManager.Instance.FirebaseData.SaveData("Unit", $"{currentUnit}{statusPathArray[1]}", exp);
             int index = Array.IndexOf(unitPathArray, currentUnit);
             ChangeUnitData(index);
         }
-        Debug.Log(exp);
+        else
+        {
+            expText.text = $"{exp} / {DataEquation.UnitMaxEXPToLevel(currentUnit)}";
+            expSlider.maxValue = DataEquation.UnitMaxEXPToLevel(currentUnit);
+            expSlider.value = exp;
+        }
         GameManager.Instance.FirebaseData.SaveData("Unit", $"{currentUnit}{statusPathArray[1]}", exp);
-        expText.text = $"{exp} / 500";
-        expSlider.value = exp;
     }
     private void ChangeUnitInfo(int i)
     {
         currentUnit = unitPathArray[i];
+        unitTypeIconImage.sprite = unitTypeIconArray[i];
         profileImage.sprite = unitIconArray[i];
         infoText.text = unitInfoArray[i];
         nameText.text = unitNameArray[i];
@@ -141,10 +151,11 @@ public class UnitShopManager : MonoBehaviour
     private void ChangeUnitData(int i)
     {
         atkText.text = "공격력 : " + GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[0]}"] + " / " + DataEquation.UnitMaxAtkEquationToLevel(currentUnit);
-        expText.text = GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[1]}"] + " / 500";
+        expText.text = GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[1]}"] + " / " + DataEquation.UnitMaxEXPToLevel(currentUnit);
         hpText.text = "체력 : " + GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[2]}"] + " / " + DataEquation.UnitMaxHpEquationToLevel(currentUnit);
         levelText.text = "LV : " + GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[3]}"];
         expSlider.value = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[1]}"]);
+        expSlider.maxValue = DataEquation.UnitMaxEXPToLevel(currentUnit);
         ChangeSkillInfo(i);
     }
     private void ChangeSkillInfo(int i)
@@ -218,7 +229,7 @@ public class UnitShopManager : MonoBehaviour
         int point = Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary[$"{currentUnit}Points"]);
         if (point <= 0)
         {
-            warningText.text = "돌파석이 부족합니다!";
+            warningText.text = "유닛 포인트가 부족합니다!";
             StartCoroutine(Co_WarningMessageAnim());
             return false;
         }

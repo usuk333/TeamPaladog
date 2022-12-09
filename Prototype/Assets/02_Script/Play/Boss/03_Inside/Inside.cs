@@ -19,8 +19,8 @@ public class Inside : MonoBehaviour
     private bool isInside;
     private int explosionCount = 0;
     private Boss dummyBoss;
-    private Vector3 insidePlayerPos = new Vector3(-5.6f,-9.17f);
-    private Vector3 originPlayerPos = new Vector3(-5.6f, 0f);
+    private Vector3 insidePlayerPos = new Vector3(-5.6f,-13f);
+    private Vector3 originPlayerPos = new Vector3(-5.6f, -2f);
     private Vector3 insideCameraPos = new Vector3(0, -10.17f, -10f);
     private Vector3 originCameraPos = new Vector3(0, 0, -10f);
     [SerializeField] private Vector3[] insideFallingObjectsPos;
@@ -212,7 +212,7 @@ public class Inside : MonoBehaviour
                     insideMoveObj.gameObject.SetActive(false);
                     insideHpBar.gameObject.SetActive(true);
                     sceneMoveImg.gameObject.SetActive(true);
-                    sceneMoveImg.DOColor(Color.clear, 2f);
+                    sceneMoveImg.DOFade(0, 2f);
                     yield return new WaitForSeconds(2f);
                     sceneMoveImg.gameObject.SetActive(false);
                     sceneMoveImg.color = Color.black;

@@ -147,4 +147,32 @@ public static class DataEquation
 
         return (value, mana, cool);
     }
+    public static (int, int) PlayerSkillHPToLevel()
+    {
+        int level = Convert.ToInt32(GameManager.Instance.FirebaseData.SkillDictionary["HP"]) - 1;
+        int max = 1000 + (100 * level);
+        int regen = 50 + (10 * ((level + 1) / 5));
+
+        return (max, regen);
+    }
+    public static (int, int) PlayerSkillMPToLevel()
+    {
+        int level = Convert.ToInt32(GameManager.Instance.FirebaseData.SkillDictionary["MP"]) - 1;
+        int max = 200 + (10 * level);
+        int regen = 30 + (5 * ((level + 1) / 5));
+
+        return (max, regen);
+    }
+    public static int PlayerMaxExpToLevel()
+    {
+        int level = Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary["Level"]);
+        int max = 800 + (100 * (level / 5));
+        return max;
+    }
+    public static int UnitMaxEXPToLevel(string unitName)
+    {
+        int level = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{unitName}Level"]);
+        int max = 800 + (200 * (level / 5));
+        return max;
+    }
 }
