@@ -320,7 +320,10 @@ public class StageManager : MonoBehaviour
 
         SkillSelectPanel.SetActive(false);
     }
-
+    public void BtnEvt_LoadMainScene()
+    {
+        LoadingSceneController.LoadScene("Main");
+    }
     public void GoBattleScene()
     {
 

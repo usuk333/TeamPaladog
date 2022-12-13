@@ -45,6 +45,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float[] skillCoolTimeArray;
     [SerializeField] private float[] skillManaArray;
     [SerializeField] private float shieldDuration;
+
+    [SerializeField] private AudioClip[] sfxArray;
     public bool CoolTimeLimit { get; set; }
     public float MaxHp
     { 

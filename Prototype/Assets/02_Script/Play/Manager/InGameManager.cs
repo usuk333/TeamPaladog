@@ -153,6 +153,9 @@ public class InGameManager : MonoBehaviour
     private Player player;
     [SerializeField] private Boss boss;
     [SerializeField] private SkillData[] skillDataArray;
+
+    [SerializeField] private AudioSource bgmAudio;
+    [SerializeField] private AudioSource sfxAudio;
     public static InGameManager Instance { get => instance; }
     public List<Unit> Units { get => units; set => units = value; }
     public Player Player { get => player; }
@@ -492,6 +495,8 @@ public class InGameManager : MonoBehaviour
     }
     private void Start()
     {
+        bgmAudio.clip = BossManager.bgm;
+        bgmAudio.Play();
         StartCoroutine(Co_Timer());
     }
     private void InitSkillData()
@@ -523,6 +528,11 @@ public class InGameManager : MonoBehaviour
         FindObjectOfType<BossHpBar>().SetZeroBossHpBar();
         Debug.Log("Game Clear!");
         InGameUIManager.instance.ShowClearPopUp();
+    }
+    public void Test_SFX(AudioClip clip)
+    {
+        sfxAudio.clip = clip;
+        sfxAudio.Play();
     }
    /* private void ClearStage()
     {

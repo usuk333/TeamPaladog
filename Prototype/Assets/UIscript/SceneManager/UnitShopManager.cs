@@ -30,6 +30,8 @@ public class UnitShopManager : MonoBehaviour
     [SerializeField] private Text[] unitPointTextArray;
     [SerializeField] private Text warningText;
     [SerializeField] private Image unitTypeIconImage;
+    [SerializeField] private Text unitAtkGoldText;
+    [SerializeField] private Text unitHpGoldText;
 
     private string[] unitInfoArray = { "거대한 도끼가 바람을 갈랐다.\n일격.\n제 몸집만한 도끼를 어깨에 짊어진 청년은,\n양단 된 마물 앞에서 태양을 닮은 눈부신 미소를 짓고 있었다.",
         "고블린이 소름끼치는 웃음을 흘리며 다가왔다.\n하지만 소녀는 꼬리를 살랑살랑 흔들며 미소지을 뿐.\n소녀를 얕잡아본 고블린은, 나무 몽둥이를 휘둘렀다.\n자신의 머리가 바닥에서 구르고 있는 것도 알지 못한 채.",
@@ -116,14 +118,19 @@ public class UnitShopManager : MonoBehaviour
         }
     }
     private void UpdateUnitExp()
-    {        
+    {
+        int level = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[3]}"]);
         int exp = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[1]}"]) + 1000;
 
         if(exp >= DataEquation.UnitMaxEXPToLevel(currentUnit))
         {
+            if (level % 5 == 0)
+            {
+                if (!CheckUnitStatus()) return;
+            }
             exp = exp - DataEquation.UnitMaxEXPToLevel(currentUnit);
             if (exp < 0) exp = exp * -1;
-            int level = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[3]}"]) + 1;
+            level += 1;
             GameManager.Instance.FirebaseData.SaveData("Unit", $"{currentUnit}{statusPathArray[3]}", level);
             GameManager.Instance.FirebaseData.SaveData("Unit", $"{currentUnit}{statusPathArray[1]}", exp);
             int index = Array.IndexOf(unitPathArray, currentUnit);
@@ -136,6 +143,20 @@ public class UnitShopManager : MonoBehaviour
             expSlider.value = exp;
         }
         GameManager.Instance.FirebaseData.SaveData("Unit", $"{currentUnit}{statusPathArray[1]}", exp);
+    }
+    private bool CheckUnitStatus()
+    {
+        int atk = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[0]}"]);
+        int hp = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[2]}"]);
+        int maxAtk = DataEquation.UnitMaxAtkEquationToLevel(currentUnit);
+        int maxHp = DataEquation.UnitMaxHpEquationToLevel(currentUnit);
+        if (atk < maxAtk || hp < maxHp)
+        {
+            warningText.text = "골드 강화를 완료해야 합니다!";
+            StartCoroutine(Co_WarningMessageAnim());
+            return false;
+        }
+        return true;
     }
     private void ChangeUnitInfo(int i)
     {
@@ -156,6 +177,8 @@ public class UnitShopManager : MonoBehaviour
         levelText.text = "LV : " + GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[3]}"];
         expSlider.value = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{currentUnit}{statusPathArray[1]}"]);
         expSlider.maxValue = DataEquation.UnitMaxEXPToLevel(currentUnit);
+        unitAtkGoldText.text = $"공격력 강화\n{DataEquation.UnitUpgradeGoldToLeve(currentUnit)}골드";
+        unitHpGoldText.text = $"체력 강화\n{DataEquation.UnitUpgradeGoldToLeve(currentUnit)}골드";
         ChangeSkillInfo(i);
     }
     private void ChangeSkillInfo(int i)
@@ -209,7 +232,7 @@ public class UnitShopManager : MonoBehaviour
     }
     private bool CheckHaveGold()
     {
-        int gold = Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary["Gold"]) - 200;
+        int gold = Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary["Gold"]) - DataEquation.UnitUpgradeGoldToLeve(currentUnit);
         if (gold < 0)
         {
             warningText.text = "골드가 부족합니다!";

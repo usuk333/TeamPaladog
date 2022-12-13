@@ -129,15 +129,15 @@ public class SkillManager : MonoBehaviour
                 break;
             case 3:
                 var (bValue, bDuration, bMana, bCool) = DataEquation.PlayerSkillBarriorToLevel();
-                skillInfoText.text = $"보호막을 생성하는 물약을 사용해 아군을 보호합니다.\n({bDuration}) 초 간 유지되는 아군 최대 체력 ({bValue}) 만큼의 보호막을 제공한다.\n마나 소모량 = ({bMana})\n쿨타임 = ({bCool}) 초";
+                skillInfoText.text = $"보호막을 생성하는 물약을 사용해 아군을 보호합니다.\n({bDuration}) 초 간 유지되는 아군 최대 체력 ({bValue}%) 만큼의 보호막을 제공한다.\n마나 소모량 = ({bMana})\n쿨타임 = ({bCool}) 초";
                 break;
             case 4:
                 var (hValue, hMana, hCool) = DataEquation.PlayerSkillHealToLevel();
-                skillInfoText.text = $"회복 물약을 사용해 아군을 치유합니다.\n아군 최대 체력의 ({hValue}) 만큼 회복 시킨다.\n마나 소모량 = ({hMana})\n쿨타임 = ({hCool}) 초";
+                skillInfoText.text = $"회복 물약을 사용해 아군을 치유합니다.\n아군 최대 체력의 ({hValue}%) 만큼 회복 시킨다.\n마나 소모량 = ({hMana})\n쿨타임 = ({hCool}) 초";
                 break;
             case 5:
                 var (rValue, rMana) = DataEquation.PlayerSkillRageToLevel();
-                skillInfoText.text = $"사기를 북돋아 아군을 강하게 만듭니다.\n아군 공격력을 ({rValue}) 만큼 증가시킵니다.\n마나 소모량 = 초당 ({rMana})\n쿨타임 = (1)초";
+                skillInfoText.text = $"사기를 북돋아 아군을 강하게 만듭니다.\n아군 공격력을 ({rValue}%) 만큼 증가시킵니다.\n마나 소모량 = 초당 ({rMana})\n쿨타임 = (1)초";
                 break;
             default:
                 break;

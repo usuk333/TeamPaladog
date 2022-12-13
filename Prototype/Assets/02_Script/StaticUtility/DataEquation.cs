@@ -6,6 +6,7 @@ public static class DataEquation
     private static int unitSize = 10000;
     private static string[] units = { null, "만", "억", "조", "경", "해", "자", "양", "구", "간", "정", "재", "극" };
 
+    private static int unitExpIncreaseValueArray = 200;
     private static (int value, int idx, int point) GetSize(BigInteger value) // 빅인티저로 받아온 값을 계산해 만 단위마다 단위 표기를 바꿔줌
     {
         var currentValue = value;
@@ -151,7 +152,7 @@ public static class DataEquation
     {
         int level = Convert.ToInt32(GameManager.Instance.FirebaseData.SkillDictionary["HP"]) - 1;
         int max = 1000 + (100 * level);
-        int regen = 50 + (10 * ((level + 1) / 5));
+        int regen = 50 + (10 * (level / 5));
 
         return (max, regen);
     }
@@ -159,7 +160,7 @@ public static class DataEquation
     {
         int level = Convert.ToInt32(GameManager.Instance.FirebaseData.SkillDictionary["MP"]) - 1;
         int max = 200 + (10 * level);
-        int regen = 30 + (5 * ((level + 1) / 5));
+        int regen = 30 + (5 * (level / 5));
 
         return (max, regen);
     }
@@ -172,7 +173,21 @@ public static class DataEquation
     public static int UnitMaxEXPToLevel(string unitName)
     {
         int level = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{unitName}Level"]);
-        int max = 800 + (200 * (level / 5));
+        int max = 800;
+        for (int i = 1; i <= level / 5; i++)
+        {
+            max += 200 * i;
+        }
         return max;
+    }
+    public static int UnitUpgradeGoldToLeve(string unitName)
+    {
+        int level = Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{unitName}Level"]) - 1;
+        int gold = 50;
+        for (int i = 1; i <= level / 5; i++)
+        {
+            gold += 50 * i;
+        }
+        return gold;
     }
 }
