@@ -3,14 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using UnityEngine.UI;
-using Firebase;
-using Firebase.Auth;
-using Firebase.Database;
-using Firebase.Extensions;
-
-using Google;
-using GooglePlayGames;
-using GooglePlayGames.BasicApi;
 
 using UnityEngine.SceneManagement;
 using System.IO;
@@ -22,13 +14,6 @@ using UnityEngine.EventSystems;
 
 public class StageManager : MonoBehaviour
 {
-    //파이어베이스
-    FirebaseDatabase firebaseDatabase;
-    FirebaseApp firebaseApp;
-    private DatabaseReference reference;
-
-    DataSnapshot snapshot;
-
     [SerializeField] private string Userid;
 
     private bool panelonoff;
@@ -103,9 +88,6 @@ public class StageManager : MonoBehaviour
 
     void Awake()
     {
-        firebaseApp = FirebaseApp.DefaultInstance;
-        firebaseDatabase = FirebaseDatabase.GetInstance(firebaseApp, "https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
-        reference = FirebaseDatabase.DefaultInstance.RootReference;
 
         panelsonoff[0] = false;
         panelsonoff[1] = false;
@@ -136,78 +118,14 @@ public class StageManager : MonoBehaviour
         Movenow = false;
         nowfloor = 1;
         StagePanelon = false;
-
-        
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        reference.Child("users").Child(Userid).GetValueAsync().ContinueWithOnMainThread(task =>
-        {
-            if (task.IsFaulted)
-            {
-                Debug.LogError("failed reading...");
-            }
-            else if (task.IsCompleted)
-            {
-                snapshot = task.Result;
-                Debug.Log("데이터 접속");
 
-                reference.Child("users").Child(Userid).Child("Stage").GetValueAsync().ContinueWithOnMainThread(task =>
-                {
-                    if (task.IsFaulted)
-                    {
-                        Debug.LogError("failed reading...");
-                    }
-                    else if (task.IsCompleted)
-                    {
-                        snapshot = task.Result;
-                    }
-                });
-            }
-        });
     }
 
-    private IEnumerator UIupdate()
-    {
-        yield return null;
-
-        Debug.Log("UI업데이트시작");
-
-        if(snapshot == null)
-        {
-            Start();
-        }
-
-        Gold = snapshot.Child("Info").Child("Gold").Value.ToString();
-        TankerPoints = snapshot.Child("Info").Child("TankerPoints").Value.ToString();
-        WarriorPoints = snapshot.Child("Info").Child("WarriorPoints").Value.ToString();
-        ADPoints = snapshot.Child("Info").Child("ADPoints").Value.ToString();
-        MagePoints = snapshot.Child("Info").Child("MagePoints").Value.ToString();
-
-        tGold.text = Gold;
-        tTankerPoints.text = TankerPoints;
-        tWarriorPoints.text = WarriorPoints;
-        tADPoints.text = ADPoints;
-        tMagePoints.text = MagePoints;
-
-        for(int i = 0; i < StageClear.Length; i++)
-        {
-            //StageClear[i] = 
-        }
-
-        for(int i = 0; i < SkillSetting.Length; i++)
-        {
-            for(int p = 0; p < tSkilllist.Length; p++)
-            {
-                if(SkillSetting[i] == tSkilllist[p])
-                {
-                    SkillSettingIcon[i].GetComponent<Image>().sprite = SkillIcon[p];
-                }
-            }
-        }
-    }
 
     // Update is called once per frame
     void Update()
@@ -215,8 +133,10 @@ public class StageManager : MonoBehaviour
         
     }
 
+    //백그라운드 버튼
     public void BackGroundBtn()
     {
+        //난이도 켜져있을때
         if (diffonoff == true && Movenow == false)
         {
             Movenow = true;
@@ -226,6 +146,7 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    //난이도 선택 후 1초 후에 실행되는 함수
     public void Difficultdelay()
     {
         Movenow = false;
@@ -240,6 +161,7 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    //스테이지 누르는 버튼
     public void StageInfo(int i)
     {
         if(Movenow == false)
@@ -257,6 +179,7 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    //스테이지 선택 후 1초 후에 실행되는 함수
     public void StageInfodelay()
     {
         Movenow = false;
@@ -273,6 +196,7 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    //스테이지 선택 버튼
     public void Stagedifficult(int i)
     {
         Difficult.SetActive(false);
@@ -296,6 +220,7 @@ public class StageManager : MonoBehaviour
         BossManager.difficulty = (BossManager.Difficulty)index;
     }
 
+    //세팅 버튼
     public void SettingPanelOpen()
     {
         SettingPanel.SetActive(true);
@@ -305,14 +230,15 @@ public class StageManager : MonoBehaviour
         SettingPanel.SetActive(false);
     }
 
-
+    //스테이지 X 버튼
     public void StagePanelClose()
     {
         StagePanelon = false;
         Movenow = true;
+        diffonoff = true;
         StagePanel.SetActive(false);
-        Tower.transform.DOLocalMoveX(0, 1);
-        Invoke("StagePanelOff", 1f);
+        Difficult.SetActive(true);
+        Invoke("StagePanelOff", 0.1f);
     }
 
     public void StagePanelOff()
@@ -320,54 +246,52 @@ public class StageManager : MonoBehaviour
         Movenow = false;
     }
 
+    public void DifficultClose()
+    {
+        Difficult.SetActive(false);
+        diffonoff = false;
+        Tower.transform.DOLocalMoveX(0, 1);
+        Movenow = true;
+        Invoke("StagePanelOff", 1f);
+    }
+
     public void TowerUpDown(int i)
     {
-        if (i == 0 && Movenow == false && StagePanelon == false)
+        if(diffonoff == false)
         {
-            //up
-            nowfloor++;
-            if (nowfloor == 4 && Movenow == false)
+            if (i == 0 && Movenow == false && StagePanelon == false)
             {
-                TowerUpBtn.SetActive(false);
-                TowerDownBtn.SetActive(true);
-            }
-            else
-            {
-                TowerDownBtn.SetActive(true);
-            }
+                //up
+                nowfloor++;
+                if (nowfloor == 4 && Movenow == false)
+                {
+                    TowerUpBtn.SetActive(false);
+                    TowerDownBtn.SetActive(true);
+                }
+                else
+                {
+                    TowerDownBtn.SetActive(true);
+                }
 
-            if(diffonoff == true)
-            {
-                Difficult.SetActive(false);
-                Tower.transform.DOLocalMoveX(0, 1);
+                Tower.transform.DOLocalMoveY(Tower.transform.localPosition.y - 720, 1);
             }
+            if (i == 1 && Movenow == false && StagePanelon == false)
+            {
+                //down
+                nowfloor--;
+                if (nowfloor == 1 && Movenow == false)
+                {
+                    TowerDownBtn.SetActive(false);
+                    TowerUpBtn.SetActive(true);
+                }
+                else
+                {
+                    TowerUpBtn.SetActive(true);
+                }
 
+                Tower.transform.DOLocalMoveY(Tower.transform.localPosition.y + 720, 1);
+            }
             Movenow = true;
-            Tower.transform.DOLocalMoveY(Tower.transform.localPosition.y - 720, 1);
-            Invoke("StagePanelOff", 1);
-        }
-        if (i == 1 && Movenow == false && StagePanelon == false)
-        {
-            //down
-            nowfloor--;
-            if (nowfloor == 1 && Movenow == false)
-            {
-                TowerDownBtn.SetActive(false);
-                TowerUpBtn.SetActive(true);
-            }
-            else
-            {
-                TowerUpBtn.SetActive(true);
-            }
-
-            if (diffonoff == true)
-            {
-                Difficult.SetActive(false);
-                Tower.transform.DOLocalMoveX(0, 1);
-            }
-
-            Movenow = true;
-            Tower.transform.DOLocalMoveY(Tower.transform.localPosition.y + 720, 1);
             Invoke("StagePanelOff", 1);
         }
     }
