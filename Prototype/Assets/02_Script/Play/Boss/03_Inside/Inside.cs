@@ -37,6 +37,7 @@ public class Inside : MonoBehaviour
     [SerializeField] private Image sceneMoveImg;
     [SerializeField] private Image explosionImg;
 
+    
     private Color originColor;
     private SkeletonAnimation skeletonAnimation;
     public bool difficulty { get; set; }
@@ -130,7 +131,10 @@ public class Inside : MonoBehaviour
                 if (InGameManager.Instance.Boss.CollisionsArray[0].Contains(item.gameObject))
                 {
                     item.CommonStatus.DecreaseHp(insideStatus.firstPatternDamage);
-                    explosionCount++;
+                    if (item.CommonStatus.CurrentHp <= 0)
+                    {
+                        explosionCount++;
+                    }
                 }
             }
         }
@@ -158,6 +162,28 @@ public class Inside : MonoBehaviour
         }
         InGameManager.Instance.Player.DecreaseHp(InGameManager.Instance.Player.MaxHp);
     }
+    private void ReadyToInside()
+    {
+        isInsideReady = true;
+        InGameManager.Instance.Boss.IsPattern = true;
+        InGameManager.Instance.StopAllUnitCoroutines();
+        originHpBar.gameObject.SetActive(false);
+        insidePortal.gameObject.SetActive(true);
+        insideMoveObj.gameObject.SetActive(true);
+        insideInstance.gameObject.SetActive(true);
+        InGameManager.Instance.Boss.CommonStatus.IsInvincibility = true;
+    }
+    private void SettingInside()
+    {
+        InGameManager.Instance.Boss = dummyBoss.GetComponent<Boss>();
+        InGameManager.Instance.Boss.CommonStatus.MaxHp = insideStatus.secondPatternDummyHp;
+        InGameManager.Instance.Boss.CommonStatus.CurrentHp = insideStatus.secondPatternDummyHp;
+        InGameManager.Instance.Player.CoolTimeLimit = true;
+        insideMoveObj.gameObject.SetActive(false);
+        insideHpBar.gameObject.SetActive(true);
+        sceneMoveImg.gameObject.SetActive(true);
+        sceneMoveImg.DOFade(0, 2f);
+    }
     private IEnumerator Co_InsidePattern()
     {
         Text moveInsideTimertext = insideMoveObj.GetChild(1).GetComponent<Text>();
@@ -171,6 +197,7 @@ public class Inside : MonoBehaviour
         {
             if(patternCount > insideStatus.secondPatternPercentage.Length - 1)
             {
+                isInsideReady = false;
                 yield break;
             }
             yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.MaxHp * insideStatus.secondPatternPercentage[patternCount] / 100);
@@ -189,15 +216,7 @@ public class Inside : MonoBehaviour
             warningText.DOFade(0, 1f);
             yield return new WaitForSeconds(1f);
             warningImage.gameObject.SetActive(false);
-            isInsideReady = true;
-            InGameManager.Instance.Boss.IsPattern = true;
-            InGameManager.Instance.StopAllUnitCoroutines();
-            originHpBar.gameObject.SetActive(false);
-            insidePortal.gameObject.SetActive(true);
-            insideMoveObj.gameObject.SetActive(true);
-            insideInstance.gameObject.SetActive(true);
-            InGameManager.Instance.Boss.CommonStatus.IsInvincibility = true;
-            //InGameManager.Instance.Boss = null;
+            ReadyToInside();
             while (moveInsideTimer > 0)
             {
                 moveInsideTimer -= Time.deltaTime;
@@ -205,14 +224,7 @@ public class Inside : MonoBehaviour
                 if (isInside)
                 {
                     moveInsideTimer = insideStatus.secondPatternPortalDuration;
-                    InGameManager.Instance.Boss = dummyBoss.GetComponent<Boss>();
-                    InGameManager.Instance.Boss.CommonStatus.MaxHp = insideStatus.secondPatternDummyHp;
-                    InGameManager.Instance.Boss.CommonStatus.CurrentHp = insideStatus.secondPatternDummyHp;
-                    InGameManager.Instance.Player.CoolTimeLimit = true;
-                    insideMoveObj.gameObject.SetActive(false);
-                    insideHpBar.gameObject.SetActive(true);
-                    sceneMoveImg.gameObject.SetActive(true);
-                    sceneMoveImg.DOFade(0, 2f);
+                    SettingInside();
                     yield return new WaitForSeconds(2f);
                     sceneMoveImg.gameObject.SetActive(false);
                     sceneMoveImg.color = Color.black;
@@ -231,6 +243,7 @@ public class Inside : MonoBehaviour
             InGameManager.Instance.Player.MpRegenerative = mpRegenerative + insideStatus.secondPatternManaRegen;
             fallingObjectDummysParent.gameObject.SetActive(true);
             insideLimitTimerObj.gameObject.SetActive(true);
+
             while(insideLimitTimer > 0)
             {
                 insideLimitTimer -= Time.deltaTime;
@@ -244,7 +257,8 @@ public class Inside : MonoBehaviour
                 InGameManager.Instance.Player.DecreaseHp(InGameManager.Instance.Player.MaxHp);
                 Debug.Log("플레이어 사망");
                 yield break;
-            }        
+            }
+            
             insideLimitTimer = insideStatus.secondPatternPortalDuration;
             yield return new WaitForSeconds(1f);
             Debug.Log("현실로 돌아갑니다");
@@ -257,6 +271,7 @@ public class Inside : MonoBehaviour
             sceneMoveImg.DOColor(Color.clear, 2f);
             MoveToOrigin();
             insidePortal.gameObject.SetActive(false);
+            insideHpBar.gameObject.SetActive(false);
             skeletonAnimation.Skeleton.SetColor(originColor); 
             InGameManager.Instance.StartAllUnitCoroutines();
             originHpBar.gameObject.SetActive(true);
@@ -270,6 +285,7 @@ public class Inside : MonoBehaviour
             InGameManager.Instance.Boss.IsPattern = false;
             InGameManager.Instance.Boss.CommonStatus.SetAttackDamage(InGameManager.Instance.Boss.CommonStatus.AttackDamage * 1.5f);
             SetFallingObjects(true);
+            StartCoroutine(Co_DotDamageWhileZeoliteActive());
             StartCoroutine(Co_CheckCastedFallingObj());
             isInsideReady = false;
             yield return new WaitUntil(() => castedFallingObjList.Count >= 4);
@@ -301,6 +317,18 @@ public class Inside : MonoBehaviour
             }          
         }      
     }
+    private IEnumerator Co_DotDamageWhileZeoliteActive()
+    {
+        while (InGameManager.Instance.Boss.CommonStatus.IsInvincibility)
+        {
+            InGameManager.Instance.Player.DecreaseHp(InGameManager.Instance.Player.MaxHp * 1 / 100);
+            foreach (var item in InGameManager.Instance.Units)
+            {
+                item.CommonStatus.DecreaseHp(item.CommonStatus.MaxHp * 1 / 100);
+            }
+            yield return new WaitForSeconds(2f);
+        }
+    }
     private IEnumerator Co_CheckCastedFallingObj()
     {
         while (castedFallingObjList.Count < 4)
@@ -327,6 +355,9 @@ public class Inside : MonoBehaviour
             item.GetComponent<BoxCollider2D>().isTrigger = false;
             item.CastFinish = false;
             item.transform.gameObject.layer = 8;
+            item.GetComponent<SpriteRenderer>().color = Color.white;
+            item.gameObject.SetActive(true);
+            StartCoroutine(item.GetComponent<InsideFallingObj>().Co_FadeAnim());
         }
     }
     private IEnumerator Co_DifficultyPattern()

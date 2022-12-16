@@ -21,6 +21,10 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
         vec = Vector2.ClampMagnitude(vec, m_fRadius);
         m_rectJoystick.localPosition = vec;
 
+        if (InGameManager.Instance.Player.Die || InGameManager.Instance.Player.useSkill)
+        {
+            return;
+        }
         // 터치위치 정규화
         Vector2 vecNormal = vec.normalized;
         if(vecNormal.x > 0)
@@ -39,6 +43,7 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     public void OnDrag(PointerEventData eventData)
     {
+
         OnTouch(eventData.position);
     }
 
@@ -51,6 +56,10 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
     {
         // 원래 위치로 되돌립니다.
         m_rectJoystick.localPosition = Vector2.zero;
+        if (InGameManager.Instance.Player.Die || InGameManager.Instance.Player.useSkill)
+        {
+            return;
+        }
         InGameManager.Instance.Player.IsLeft = false;
         InGameManager.Instance.Player.IsRight = false;
         InGameManager.Instance.Player.move = false;

@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     public GameObject attackButton;
     private bool isCasting; //플레이어가 캐스팅 중인지를 판단. 캐스팅 중일 땐 다른 행동 불가능
     public bool castingButtonDown { get; set; }
-
+    
     public bool move;
     public bool useSkill;
     private bool isInvincibility;
@@ -40,41 +40,30 @@ public class Player : MonoBehaviour
     [SerializeField] private ParticleSystem attackEffect;
     [SerializeField] private Vector3 attackEffectOffset;
 
-    private bool die;
-    [SerializeField] private float[] skillValueArray;
-    [SerializeField] private float[] skillCoolTimeArray;
-    [SerializeField] private float[] skillManaArray;
-    [SerializeField] private float shieldDuration;
+    private int[] attackSkillValueArray;
 
-    [SerializeField] private AudioClip[] sfxArray;
+    private float rageValue;
+    private float rageMana;
+
+    private int barriorValue;
+    private float barriorDuration;
+    private int barriorMana;
+    private int barriorCool;
+
+    private int healValue;
+    private int healMana;
+    private int healCool;
+
+    private bool die;
+
+
+    private bool bCantUseSkill;
     public bool CoolTimeLimit { get; set; }
-    public float MaxHp
-    { 
-        get
-        {
-            return maxHp;
-        }
-        set
-        {
-            maxHp = value;
-            currentHp = maxHp; //최대 체력 설정 시 현재 체력 최대 체력으로 초기화
-        }
-    }
+    public float MaxHp { get => maxHp; }
+
     public float CurrentHp { get => currentHp; }
-    public float MaxMp
-    {
-        get
-        {
-            return maxMp;
-        }
-        set
-        {
-            maxMp = value;
-            currentMp = maxMp;//최대 마나 설정 시 현재 마나 최대 마나로 초기화
-        }
-    }
+    public float MaxMp { get => maxMp; }
     public float CurrentMp { get => currentMp; }
-    public float MpRegenerative { get => mpRegenerative; set => mpRegenerative = value; }
     public bool IsRight { get => isRight; set => isRight = value; }
     public bool IsLeft { get => isLeft; set => isLeft = value; }
     public float Shield
@@ -91,12 +80,32 @@ public class Player : MonoBehaviour
     }
     public float CurrentShield { get => currentShield; }
     public bool[] SkillCoolTime { get => skillCoolTime; set => skillCoolTime = value; }
-    public float[] SkillValueArray { get => skillValueArray; set => skillValueArray = value; }
-    public float[] SkillCoolTimeArray { get => skillCoolTimeArray; set => skillCoolTimeArray = value; }
-    public float[] SkillManaArray { get => skillManaArray; set => skillManaArray = value; }
+    public float MpRegenerative { get => mpRegenerative; set => mpRegenerative = value; }
     public float HpRegenerative { get => hpRegenerative; set => hpRegenerative = value; }
-    public float ShieldDuration { get => shieldDuration; set => shieldDuration = value; }
+    public bool Die { get => die; }
 
+    public void InitStatusData(float hMax, float mMax, float hRegen, float mRegen)
+    {
+        maxHp = hMax;
+        currentHp = maxHp;
+        maxMp = mMax;
+        currentMp = maxMp;
+        hpRegenerative = hRegen;
+        mpRegenerative = mRegen;
+    }
+    public void InitSkillData(int[] attackArray, float rValue, float rMana, int bValue, float bDuration, int bMana, int bCool, int hValue, int hMana, int hCool)
+    {
+        attackSkillValueArray = attackArray;
+        rageValue = rValue;
+        rageMana = rMana;
+        barriorValue = bValue;
+        barriorDuration = bDuration;
+        barriorMana = bMana;
+        barriorCool = bCool;
+        healValue = hValue;
+        healMana = hMana;
+        healCool = hCool;
+    }
     public void KnockBack(Vector3 pos)
     {
         isInpacable = true;
@@ -109,10 +118,18 @@ public class Player : MonoBehaviour
     }
     public void Move(Vector3 direction) // 이동 함수 (매개변수로 이동할 방향 벡터를 받음)
     {
-        if (isCasting || useSkill) return;
+        if (isCasting) return;
         if (!move) PlayerAnimation(0);
         move = true;
         transform.position += direction * currentMoveSpeed * Time.deltaTime;
+        if(transform.position.x > 3)
+        {
+            bCantUseSkill = true;
+        }
+        else
+        {
+            bCantUseSkill = false;
+        }
     }
     public void DecreaseHp(float damage) // 체력 감소 함수 (공격하는 쪽에서 호출)
     {
@@ -361,7 +378,8 @@ public class Player : MonoBehaviour
     }
     public void UseSkill(int index)
     {
-        if (isCasting) return;
+        if (isCasting || bCantUseSkill) return;
+        Flip(false);
         SkillTransition(index);
     }
     private void SkillTransition(int index)
@@ -384,41 +402,43 @@ public class Player : MonoBehaviour
         {
             return;
         }
-        useSkill = true;
         switch (index)
         {
             case 0:
-                if(currentMp < 5)
+                if(currentMp < barriorMana)
                 {
                     Debug.Log("마나가 부족합니다!");
                     break;
                 }
-                DecreaseMp(skillManaArray[0]);
+                useSkill = true;
+                DecreaseMp(barriorMana);
                 StartCoroutine(Co_Skill_Barrier());
-                StartCoroutine(Co_SkillCoolTime(0, skillCoolTimeArray[0]));
+                StartCoroutine(Co_SkillCoolTime(0, barriorCool));
                 break;
             case 1:
-                if (currentMp < 2)
+                if (currentMp < healMana)
                 {
                     Debug.Log("마나가 부족합니다!");
                     break;
                 }
-                DecreaseMp(skillManaArray[1]);
-                StartCoroutine(Co_Skill_Heal(skillValueArray[1]));
-                StartCoroutine(Co_SkillCoolTime(1, skillCoolTimeArray[1]));
+                useSkill = true;
+                DecreaseMp(healMana);
+                StartCoroutine(Co_Skill_Heal(healValue));
+                StartCoroutine(Co_SkillCoolTime(1, healCool));
                 break;
             case 2:
                 rageArray.SetActive(!rageArray.activeSelf);
                 if (rageArray.activeSelf)
                 {
-                    if (currentMp < skillManaArray[2])
+                    if (currentMp < rageMana)
                     {
                         Debug.Log("마나가 부족합니다!");
                         rageArray.SetActive(false);
                         rageEffect.Stop();
                         break;
                     }
-                    DecreaseMp(skillManaArray[2]);
+                    useSkill = true;
+                    DecreaseMp(rageMana);
                     StartCoroutine(Co_Skill_Rage());
                 }
                 else
@@ -426,7 +446,7 @@ public class Player : MonoBehaviour
                     rageEffect.Stop();
                     useSkill = false;
                 }
-                StartCoroutine(Co_SkillCoolTime(2, skillCoolTimeArray[2]));
+                StartCoroutine(Co_SkillCoolTime(2, 1));
                 break;
             case 3:
                 if (currentMp < 5)
@@ -434,13 +454,14 @@ public class Player : MonoBehaviour
                     Debug.Log("마나가 부족합니다!");
                     break;
                 }
-                DecreaseMp(skillManaArray[3]);
+                useSkill = true;
+                DecreaseMp(5);
                 StartCoroutine(Co_Skill_Attack());
                 if (CoolTimeLimit)
                 {
                     break;
                 }
-                StartCoroutine(Co_SkillCoolTime(3, skillCoolTimeArray[3]));
+                StartCoroutine(Co_SkillCoolTime(3, 3));
                 break;
             default:
                 break;
@@ -461,16 +482,16 @@ public class Player : MonoBehaviour
         useSkill = false;
         foreach (var item in InGameManager.Instance.Units)
         {
-            item.CommonStatus.Shield = item.CommonStatus.MaxHp * skillValueArray[0] / 100;
+            item.CommonStatus.Shield = item.CommonStatus.MaxHp * barriorValue / 100;
             item.ShieldEffect.Play();
         }
         if (currentHp <= 0)
         {
             yield break;
         }
-        Shield = maxHp * skillValueArray[0] / 100;
+        Shield = maxHp * barriorValue / 100;
         shieldEffect.Play();
-        yield return new WaitForSeconds(shieldDuration);
+        yield return new WaitForSeconds(barriorDuration);
         foreach (var item in InGameManager.Instance.Units)
         {
             item.CommonStatus.Shield = 0;
@@ -513,7 +534,7 @@ public class Player : MonoBehaviour
             {
                 break;
             }
-            DecreaseMp(skillManaArray[2]);
+            DecreaseMp(rageMana);
             if(currentMp <= 0)
             {
                 Debug.Log("마나가 부족하여 스킬이 비활성화 됩니다.");
@@ -526,7 +547,7 @@ public class Player : MonoBehaviour
     {
         if (isIn)
         {
-            unit.CommonStatus.CurrentAttackDamage += unit.CommonStatus.AttackDamage * skillValueArray[2] / 100;
+            unit.CommonStatus.CurrentAttackDamage += unit.CommonStatus.AttackDamage * rageValue / 100;
             if (unit.RageEffect.isPlaying)
             {
                 return;
@@ -550,7 +571,7 @@ public class Player : MonoBehaviour
             skeletonAnimation.AnimationState.SetAnimation(0, "Attack-apple", false);
             skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 1.167f);
             yield return new WaitForSeconds(1.167f);
-            InGameManager.Instance.Boss.CommonStatus.DecreaseHp(skillValueArray[3]);
+            InGameManager.Instance.Boss.CommonStatus.DecreaseHp(attackSkillValueArray[0]);
             thing = "30% 확률로 사과를 뽑았다";
         }
         else if(rand > 30 && rand <= 70)
@@ -559,7 +580,7 @@ public class Player : MonoBehaviour
             skeletonAnimation.AnimationState.SetAnimation(0, "Attack-stone", false);
             skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 1.167f);
             yield return new WaitForSeconds(1.167f);
-            InGameManager.Instance.Boss.CommonStatus.DecreaseHp(skillValueArray[4]);
+            InGameManager.Instance.Boss.CommonStatus.DecreaseHp(attackSkillValueArray[1]);
             thing = "40% 확률로 돌맹이를 뽑았다.";
         }
         else if(rand > 70)
@@ -569,7 +590,7 @@ public class Player : MonoBehaviour
             skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, 1.167f);
             yield return new WaitForSeconds(1.167f);
             attackEffect.Play();
-            InGameManager.Instance.Boss.CommonStatus.DecreaseHp(skillValueArray[5]);
+            InGameManager.Instance.Boss.CommonStatus.DecreaseHp(attackSkillValueArray[2]);
             thing = "30% 확률로 폭탄을 뽑았다.";
         }
         else
@@ -578,10 +599,5 @@ public class Player : MonoBehaviour
         }
         useSkill = false;
         Debug.Log(thing);
-    }
-    private void OnApplicationQuit()
-    {
-        Application.Quit();
-        //데이터 저장
     }
 }

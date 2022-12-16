@@ -30,8 +30,8 @@ public class CountUnit : MonoBehaviour
     }
     private void Skill_Tanker()
     {
-        InGameManager.Instance.Boss.CommonStatus.DecreaseHp(unit.CommonStatus.AttackDamage * 1.5f);
-        unit.CommonStatus.CurrentHp += unit.CommonStatus.AttackDamage * 2;
+        InGameManager.Instance.Boss.CommonStatus.DecreaseHp(unit.CommonStatus.CurrentAttackDamage * 1.5f);
+        unit.CommonStatus.CurrentHp += unit.CommonStatus.CurrentAttackDamage * 2;
         if (unit.CommonStatus.CurrentHp > unit.CommonStatus.MaxHp)
         {
             unit.CommonStatus.CurrentHp = unit.CommonStatus.MaxHp;
@@ -39,7 +39,7 @@ public class CountUnit : MonoBehaviour
     }
     private void Skill_Mage()
     {
-        InGameManager.Instance.Boss.CommonStatus.DecreaseHp(unit.CommonStatus.AttackDamage * 4);
+        InGameManager.Instance.Boss.CommonStatus.DecreaseHp(unit.CommonStatus.CurrentAttackDamage * 4);
     }
     private void Awake()
     {

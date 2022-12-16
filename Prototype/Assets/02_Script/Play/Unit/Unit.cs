@@ -52,7 +52,7 @@ public class Unit : MonoBehaviour
     [SerializeField] private ParticleSystem shieldEffect;
     [SerializeField] private ParticleSystem rageEffect;
 
-    public float skillCondition;
+    public int skillCondition;
 
     private SkeletonAnimation skeletonAnimation;
     public EUnitType UnitType { get => eUnitType; }

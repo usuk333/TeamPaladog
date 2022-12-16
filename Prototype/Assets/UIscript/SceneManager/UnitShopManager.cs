@@ -165,8 +165,8 @@ public class UnitShopManager : MonoBehaviour
         profileImage.sprite = unitIconArray[i];
         infoText.text = unitInfoArray[i];
         nameText.text = unitNameArray[i];
-        skillNameText.text = unitSkillNameArray[i];
-        //illustImage.sprite = unitIllustArray[i];
+        skillNameText.text = unitSkillNameArray[i];     
+        illustImage.sprite = unitIllustArray[i];
         ChangeUnitData(i);
     }
     private void ChangeUnitData(int i)
@@ -252,7 +252,7 @@ public class UnitShopManager : MonoBehaviour
         int point = Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary[$"{currentUnit}Points"]);
         if (point <= 0)
         {
-            warningText.text = "유닛 포인트가 부족합니다!";
+            warningText.text = "계열 포인트가 부족합니다!";
             StartCoroutine(Co_WarningMessageAnim());
             return false;
         }
@@ -294,7 +294,7 @@ public class UnitShopManager : MonoBehaviour
 
         if(path == "Gold")
         {
-            str = DataEquation.GetUnit(Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary[path]));
+            str = Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary[path]) < 10000? GameManager.Instance.FirebaseData.InfoDictionary[path].ToString() : DataEquation.GetUnit(Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary[path]));
         }
         else
         {

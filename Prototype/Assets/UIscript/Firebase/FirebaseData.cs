@@ -157,4 +157,42 @@ public class FirebaseData
         allDictionarys[dictionaryKey][dataPath] = value;
         reference.Child(dictionaryKey).Child(dataPath).SetValueAsync(value);
     }
+    public void SetReward(Reward reward)
+    {
+        int gold = System.Convert.ToInt32(infoDictionary["Gold"]) + reward.gold;
+        int exp = System.Convert.ToInt32(infoDictionary["EXP"]) + reward.exp;
+        int warriorP = System.Convert.ToInt32(infoDictionary["WarriorPoints"]) + reward.warriorPoint;
+        int assasinP = System.Convert.ToInt32(infoDictionary["AssassinPoints"]) + reward.assassinPoint;
+        int magicianP = System.Convert.ToInt32(infoDictionary["MagicianPoints"]) + reward.magicianPoint;
+        int archerP = System.Convert.ToInt32(infoDictionary["ArchorPoints"]) + reward.archorPoint;
+        string[] pathArray = { "Gold", "EXP", "WarriorPoints", "AssassinPoints", "MagicianPoints", "ArchorPoints"};
+
+        if (exp >= DataEquation.PlayerMaxExpToLevel())
+        {
+            int levelUp = GetLevelUpCount(exp);
+            for (int i = 0; i < levelUp; i++)
+            {
+                exp -= DataEquation.PlayerMaxExpToLevel();
+            }
+            SaveData("Info", "Level", System.Convert.ToInt32(infoDictionary["Level"]) + levelUp);
+            SaveData("Skill", "SkillPoints", System.Convert.ToInt32(skillDictionary["SkillPoints"]) + levelUp);
+        }
+        int[] valueArray = { gold, exp, warriorP, assasinP, magicianP, archerP };
+        for (int i = 0; i < valueArray.Length; i++)
+        {
+            SaveData("Info", pathArray[i], valueArray[i]);
+        }
+        
+    }
+    public int GetLevelUpCount(int exp)
+    {
+        int up = 0;
+        int value = exp;
+        while (value >= DataEquation.PlayerMaxExpToLevel())
+        {
+            value -= DataEquation.PlayerMaxExpToLevel();
+            up++;
+        }
+        return up;
+    }
 }

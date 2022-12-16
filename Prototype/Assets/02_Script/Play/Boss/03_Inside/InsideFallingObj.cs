@@ -32,7 +32,7 @@ public class InsideFallingObj : MonoBehaviour
             transform.gameObject.layer = 0;
         }
     }
-    private IEnumerator Co_FadeAnim()
+    public IEnumerator Co_FadeAnim()
     {
         yield return new WaitUntil(() => castingObject.CastFinish);
         sprite.DOFade(0, 1f);

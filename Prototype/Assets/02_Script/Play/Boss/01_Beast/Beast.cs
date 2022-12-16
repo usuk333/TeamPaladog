@@ -52,14 +52,20 @@ public class Beast : MonoBehaviour
     }
     private void SecondPattern()
     {
-        foreach (var item in InGameManager.Instance.Units)
+        int count = InGameManager.Instance.Units.Count;
+        if(count > 1)
         {
-            if (InGameManager.Instance.Boss.CollisionsArray[1].Contains(item.gameObject))
+            for (int i = 0; i < 2; i++)
             {
-                item.CommonStatus.DecreaseHp(beastStatus.secondPatternDamage);
+                InGameManager.Instance.Units[i].CommonStatus.DecreaseHp(beastStatus.secondPatternDamage);           
             }
         }
-        if (InGameManager.Instance.Boss.CollisionsArray[1].Contains(InGameManager.Instance.Player.gameObject))
+        else if(count == 1)
+        {
+            InGameManager.Instance.Units[0].CommonStatus.DecreaseHp(beastStatus.secondPatternDamage);
+            InGameManager.Instance.Player.DecreaseHp(beastStatus.secondPatternDamage);
+        }
+        else if(count == 0)
         {
             InGameManager.Instance.Player.DecreaseHp(beastStatus.secondPatternDamage);
         }
@@ -111,12 +117,8 @@ public class Beast : MonoBehaviour
                 InGameManager.Instance.Boss.skeletonAnimation.AnimationState.AddAnimation(0, "Idle", false, 4);
                 InGameManager.Instance.Boss.IsPattern = true;
                 frontEffect.Play();
-                yield return new WaitForSeconds(2f);
-                crushs[1].SetActive(true);
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(3f);
                 SecondPattern();
-                crushs[1].SetActive(false);
-                InGameManager.Instance.Boss.CollisionsArray[1].Clear();
                 yield return new WaitForSeconds(1f);
                 isCrush = false;
                 InGameManager.Instance.Boss.IsPattern = false;

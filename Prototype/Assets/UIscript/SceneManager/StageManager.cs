@@ -82,9 +82,14 @@ public class StageManager : MonoBehaviour
     [SerializeField] private GameObject TowerDownBtn;
     private bool StagePanelon;
 
+    [SerializeField] private DifficultyButton difficultyButton;
+
     [SerializeField] private GameObject SettingPanel;
 
     [SerializeField] private GameObject Background;
+
+    public int NowStage { get => nowStage; }
+    public int Nowdif { get => nowdif; }
 
     void Awake()
     {
@@ -103,7 +108,6 @@ public class StageManager : MonoBehaviour
         tSkilllist[4] = "Skill5";
         tSkilllist[5] = "Skill6";
         tSkilllist[6] = "Skill7";
-
 
 
         StageTopText[0] = "잊혀진 사자들의 왕\n 인간의 욕심에 긴 잠을 방해 받은 짐승이 포효한다.\n그리고 알린다.\n 맹수의 왕이, 이곳에 군림했노라고. ";
@@ -166,6 +170,7 @@ public class StageManager : MonoBehaviour
     {
         if(Movenow == false)
         {
+           
             StagePanelon = false;
             Movenow = true;
 
@@ -176,6 +181,7 @@ public class StageManager : MonoBehaviour
             StageIntroduction.text = StageTopText[i];
 
             nowStage = i;
+            difficultyButton.UpdateDifficultyButton(i + 1);
         }
     }
 
@@ -203,15 +209,16 @@ public class StageManager : MonoBehaviour
         diffonoff = false;
 
         nowdif = i;
+        BossManager.difficulty = (BossManager.Difficulty)i;
 
         StagePanelon = true;
         StagePanel.SetActive(true);
         StageIntroduction.text = StageTopText[nowStage];
     }
 
-    public void BtnEvt_LoadStage(GameObject obj)
+    public void BtnEvt_LoadStage(int index)
     {
-        BossManager.BossSection = obj;
+        BossManager.bossIndex = index;
         //LoadingSceneController.LoadScene("Stage");
     }
 
@@ -323,11 +330,14 @@ public class StageManager : MonoBehaviour
     public void BtnEvt_LoadMainScene()
     {
         LoadingSceneController.LoadScene("Main");
+        SoundManager.Instance.SetBGM(1);
     }
     public void GoBattleScene()
     {
-
+        BossManager.bossIndex = nowStage;
+        BossManager.difficulty = (BossManager.Difficulty)nowdif;
         LoadingSceneController.LoadScene("Stage");
+        SoundManager.Instance.SetBGM(nowStage + 3);
     }
 
     public void Return()

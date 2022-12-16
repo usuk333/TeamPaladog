@@ -501,6 +501,85 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 780495303}
   m_CullTransparentMesh: 0
+--- !u!1 &979320463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 979320464}
+  - component: {fileID: 979320466}
+  - component: {fileID: 979320465}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &979320464
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 979320463}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6743004206349024225}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 2.869, y: -270}
+  m_SizeDelta: {x: 596.37, y: 111.82}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &979320465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 979320463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: a1fd2895f4912c142aad67abed73e2fa, type: 3}
+    m_FontSize: 40
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 4
+    m_MaxSize: 50
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: "\uD130\uCE58\uD574\uC11C \uAC8C\uC784 \uC2DC\uC791"
+--- !u!222 &979320466
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 979320463}
+  m_CullTransparentMesh: 1
 --- !u!1 &1093687076
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,8 +590,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1093687078}
   - component: {fileID: 1093687077}
+  - component: {fileID: 1093687079}
   m_Layer: 0
-  m_Name: SoundTest
+  m_Name: SoundManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -530,9 +610,9 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 9677222ecda734549a8752320e4a49af, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.069
+  m_Volume: 0.135
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -628,6 +708,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1093687079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1093687076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b472caa701f30479d5c180845e3690, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgmAudio: {fileID: 1093687077}
+  bgmClipArray:
+  - {fileID: 8300000, guid: 9677222ecda734549a8752320e4a49af, type: 3}
+  - {fileID: 8300000, guid: d68b744c88ba0294b8d578ddc572a8b8, type: 3}
+  - {fileID: 8300000, guid: 52a7aff2d16a6f0448d42be61f0da2ca, type: 3}
+  - {fileID: 8300000, guid: 1a53ee88cf1d2914b91c8a72d6666d15, type: 3}
+  - {fileID: 8300000, guid: 5ba530e1fcdd3f94cb826b0b3916a38a, type: 3}
+  - {fileID: 8300000, guid: e723fb89340a0914a8e61c66a730ad0b, type: 3}
+  - {fileID: 8300000, guid: 02f31d5a3b27d6c46b4b50ada677462c, type: 3}
 --- !u!1 &1151521052
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,7 +932,7 @@ MonoBehaviour:
   createAccountPopUpObj:
   - {fileID: 1633670015}
   - {fileID: 776200856}
-  Usersid: gfkdhgfmklbcvx
+  Usersid: fdslvcmxjkgdsfaikrqio
 --- !u!4 &1248679770
 Transform:
   m_ObjectHideFlags: 0
@@ -2063,8 +2164,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1248679769}
-        m_TargetAssemblyTypeName: StartManager, Assembly-CSharp
-        m_MethodName: BtnEvt_LoginTest
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: GoogleLoginBtn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6942,6 +7043,7 @@ RectTransform:
   m_Children:
   - {fileID: 6743004207071696719}
   - {fileID: 1428758954}
+  - {fileID: 979320464}
   m_Father: {fileID: 1867075890}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

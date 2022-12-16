@@ -26,7 +26,7 @@ public class SkillManager : MonoBehaviour
 
     private void Start()
     {
-        goldText.text = DataEquation.GetUnit(Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary["Gold"])) + " 골드";
+        goldText.text = Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary["Gold"]) < 10000 ? GameManager.Instance.FirebaseData.InfoDictionary["Gold"].ToString() + " 골드" : DataEquation.GetUnit(Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary["Gold"])) + " 골드";
         skillPointText.text = GameManager.Instance.FirebaseData.SkillDictionary["SkillPoints"].ToString();
     }
     public void BtnEvt_UpgradeSkill()
@@ -125,7 +125,7 @@ public class SkillManager : MonoBehaviour
                 break;
             case 2:
                 var (apple, rock, bomb) = DataEquation.PlayerSkillAttackToLevel();
-                skillInfoText.text = $"손에 잡히는 걸 적에게 던집니다.\n사과, 돌맹이, 폭탄은 각각 ({apple}), ({rock}), ({bomb}) 만큼의 데미지를 가집니다.\n 마나 소모량 = (5)\n쿨타임 = (3) 초";
+                skillInfoText.text = $"손에 잡히는 물건을 적에게 던집니다.\n사과, 돌맹이, 폭탄은 각각 ({apple}), ({rock}), ({bomb}) 만큼의 데미지를 가집니다.\n마나 소모량 = (5)\n쿨타임 = (3) 초";
                 break;
             case 3:
                 var (bValue, bDuration, bMana, bCool) = DataEquation.PlayerSkillBarriorToLevel();

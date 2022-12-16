@@ -260,8 +260,8 @@ public class StageTest : MonoBehaviour
 
     public void BtnEvt_LoadStage(int index)
     {
-        BossManager.BossSection = bossObjArray[index];
-        BossManager.bgm = stageBGMClipArray[index];
+       // BossManager.BossSection = bossObjArray[index];
+      //  BossManager.bgm = stageBGMClipArray[index];
         stageSection.SetActive(true);
         //LoadingSceneController.LoadScene("Stage");
     }
@@ -277,29 +277,29 @@ public class StageTest : MonoBehaviour
     {
         skillSection.SetActive(!skillSection.activeSelf);
     }
-    public void BtnEvt_ChooseDifficulty(int index)
-    {
-        BossManager.difficulty = (BossManager.Difficulty)index;
-        UpdateUnitData();
-        UpdateSkillData();
-        LoadingSceneController.LoadScene("Stage");
-    }
-    private void UpdateUnitData()
-    {
-        BossManager.tanker = tanker;
-        BossManager.warrior = warrior;
-        BossManager.mage = mage;
-        BossManager.archer = archer;
-    }
-    private void UpdateSkillData()
-    {
-        BossManager.hp = HP;
-        BossManager.mp = MP;
-        BossManager.barrior = Barrior;
-        BossManager.heal = Heal;
-        BossManager.powerUp = PowerUp;
-        BossManager.attack = Attack;
-    }
+    //public void BtnEvt_ChooseDifficulty(int index)
+    //{
+    //    BossManager.difficulty = (BossManager.Difficulty)index;
+    //    UpdateUnitData();
+    //    UpdateSkillData();
+    //    LoadingSceneController.LoadScene("Stage");
+    //}
+    //private void UpdateUnitData()
+    //{
+    //    BossManager.tanker = tanker;
+    //    BossManager.warrior = warrior;
+    //    BossManager.mage = mage;
+    //    BossManager.archer = archer;
+    //}
+    //private void UpdateSkillData()
+    //{
+    //    BossManager.hp = HP;
+    //    BossManager.mp = MP;
+    //    BossManager.barrior = Barrior;
+    //    BossManager.heal = Heal;
+    //    BossManager.powerUp = PowerUp;
+    //    BossManager.attack = Attack;
+    //}
     public void BtnEvt_ReinforceDamage(int index)
     {
         ReinforceUnitStatus(index, false);

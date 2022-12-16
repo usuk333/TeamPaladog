@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Text.RegularExpressions;
 
+using UnityEngine.SceneManagement;
+
 using UnityEngine.UI;
 using Firebase;
 using Firebase.Auth;
@@ -12,6 +14,7 @@ using Firebase.Extensions;
 using Google;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
+
 
 using System;
 using System.IO;
@@ -101,6 +104,8 @@ public class GameManager : MonoBehaviour
         public int WarriorLevel = 1;
     }
 
+    private string version;
+
     private static GameManager instance;
 
     public static GameManager Instance { get => instance; }
@@ -115,6 +120,11 @@ public class GameManager : MonoBehaviour
     private bool signedIn = false;
 
     public string FireBaseId = string.Empty;
+
+    private char[] notFullKoreanArray = { 'ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ' };
+    private string[] swearWordArray = { "간나", "갈보", "년", "놈", "느개비", "느금마", "니미", "니기미", "닥쳐", "등신", "또라이", "똘추", "미친", "창녀", "창놈", 
+        "병신", "보지", "불알", "부랄", "빨통", "새끼", "씨발", "씹", "새끼", "엠창", "육변기", "자지", "젠장", "좆", "지랄" };
+
 
     public PlayerData playerdata;
 
@@ -132,6 +142,7 @@ public class GameManager : MonoBehaviour
     public FirebaseData FirebaseData { get => firebaseData; }
     private void Awake()
     {
+        Application.targetFrameRate = 60;
         if (instance == null)
         {
             instance = this;
@@ -142,11 +153,8 @@ public class GameManager : MonoBehaviour
         }
         DontDestroyOnLoad(instance);
 
-        int level = 5;
-        int max = 200 + (10 * level);
-        int regen = 30 + (5 * (level / 5));
+        version = Application.version;
 
-        Debug.Log(regen);
         //초기화 auth
         auth = FirebaseAuth.DefaultInstance;
 
@@ -161,6 +169,8 @@ public class GameManager : MonoBehaviour
         //Firebase reference 경로 설정
         FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
         reference = FirebaseDatabase.DefaultInstance.GetReference("users");
+
+        //Debug.Log(reference.Child("Version").GetValueAsync().Result.Value);
 
         PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
             .RequestServerAuthCode(false /* Don't force refresh */)
@@ -183,7 +193,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     //구글 로그인 버튼
@@ -196,58 +206,14 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            CheckUID();
-        }
-    }
-
-    //파일저장소 확인 후, 로그인 기록 살펴서 로그인할지말지
-    private void CheckUID()
-    {
-        if (File.Exists(Application.persistentDataPath + "/Userdata.json"))
-        {
-            string json = File.ReadAllText(Application.persistentDataPath + "/Userdata.json");
-            playerdata = JsonUtility.FromJson<PlayerData>(json);
-
-            Usersid = playerdata.UID;
-
-            reference.Child(Usersid).GetValueAsync().ContinueWithOnMainThread(task =>
-            {
-                if (task.IsFaulted)
-                {
-                    Debug.LogError("failed reading...");
-                }
-                else if (task.IsCompleted)
-                {
-                    DataSnapshot snapshot = task.Result;
-
-                    Debug.Log("CheckUID 파이어베이스 접근 완료");
-                }
-            });
-        }
-        else
-        {
-            //LoginPanel.SetActive(true);
             GoogleLogin();
         }
     }
 
+
     private void GoogleLogin()
     {
-        if (!Social.localUser.authenticated)
-        {
-            Social.localUser.Authenticate(success => 
-            {
-                if (success)
-                {
-                    Debug.Log("TryFirebaseLogin �Լ� ����");
-                    StartCoroutine(TryFirebaseLogin());
-                }
-                else
-                {
-                    Debug.Log("����!");
-                }
-            });
-        }
+        StartCoroutine(TryFirebaseLogin());
     }
 
     public IEnumerator TryFirebaseLogin()
@@ -335,6 +301,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("데이터 로딩 완료");
         LoadingSceneController.LoadScene("Main");
+        SoundManager.Instance.SetBGM(1);
     }
     private void CreateNewUserData(string uid, string nickname)
     {
@@ -390,7 +357,7 @@ public class GameManager : MonoBehaviour
     private void SetInputField()
     {
         InputField input = createAccountPopUpObj[0].transform.GetComponentInChildren<InputField>();
-        input.onValueChanged.AddListener((word) => input.text = Regex.Replace(word, @"[^a-zA-Z가-힣]", ""));
+        input.onValueChanged.AddListener((word) => input.text = Regex.Replace(word, @"[^ㄱ-ㅎ가-힣]", ""));
     }
     private void CreateAccount()
     {
@@ -399,6 +366,23 @@ public class GameManager : MonoBehaviour
         {
             StartCoroutine(Co_WarningMessage("닉네임은 2글자 이상이어야 합니다!"));
             return;
+        }
+
+        foreach (var item in notFullKoreanArray)
+        {
+            if (input.text.Contains(item.ToString()))
+            {
+                StartCoroutine(Co_WarningMessage("잘못된 닉네임입니다!"));
+                return;
+            }
+        }
+        foreach (var item in swearWordArray)
+        {
+            if (input.text.Contains(item))
+            {
+                StartCoroutine(Co_WarningMessage("잘못된 닉네임입니다!"));
+                return;
+            }
         }
         reference.Child("AllNicknames").Child(input.text).GetValueAsync().ContinueWithOnMainThread(task =>
         {

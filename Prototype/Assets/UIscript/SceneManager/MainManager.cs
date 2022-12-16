@@ -13,10 +13,22 @@ public class MainManager : MonoBehaviour
     [SerializeField] private Slider[] expSlider;
     [SerializeField] private Text[] levelText;
     [SerializeField] private Text[] expText;
+    [SerializeField] private GameObject exitPopUpObj;
 
     private void Start()
     {
         ChangePlayerInfo();
+    }
+    public void BtnEvt_ExitGame()
+    {
+        exitPopUpObj.SetActive(!exitPopUpObj.activeSelf);
+    }
+    public void BtnEvt_Exit()
+    {
+        Application.Quit();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
     }
     public void BtnEvt_ActiveObj(GameObject obj)
     {
@@ -33,6 +45,7 @@ public class MainManager : MonoBehaviour
     public void BtnEvt_LoadStageSectionScene()
     {
         LoadingSceneController.LoadScene("StageSection");
+        SoundManager.Instance.SetBGM(2);
     }
     private void ChangePlayerInfo()
     {

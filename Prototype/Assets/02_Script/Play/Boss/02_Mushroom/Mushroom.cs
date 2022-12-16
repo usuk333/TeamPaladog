@@ -85,6 +85,7 @@ public class Mushroom : MonoBehaviour
         float time;
         while (true)
         {
+            isCounting = false;
             time = sporeTimerMaxValue;
             progress = sporeTimerMaxValue;
             isActiveBuff = false;
@@ -109,7 +110,6 @@ public class Mushroom : MonoBehaviour
                 sporeTimerText.text = string.Format("슬라임 제거 남은 시간 : {0:0}초", System.Math.Ceiling(time));
                 yield return null;
             }
-            isCounting = false;
             sporeTimerText.transform.parent.gameObject.SetActive(false);
             altar.GetComponent<SpriteRenderer>().DOFade(0, 1f);
             yield return new WaitForSeconds(1f);
