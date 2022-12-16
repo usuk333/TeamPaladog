@@ -203,7 +203,7 @@ public class GameManager : MonoBehaviour
     //파일저장소 확인 후, 로그인 기록 살펴서 로그인할지말지
     private void CheckUID()
     {
-        if (File.Exists(Application.persistentDataPath + "/Userdata.json"))
+        /*if (File.Exists(Application.persistentDataPath + "/Userdata.json"))
         {
             string json = File.ReadAllText(Application.persistentDataPath + "/Userdata.json");
             playerdata = JsonUtility.FromJson<PlayerData>(json);
@@ -228,7 +228,8 @@ public class GameManager : MonoBehaviour
         {
             //LoginPanel.SetActive(true);
             GoogleLogin();
-        }
+        }*/
+        GoogleLogin();
     }
 
     private void GoogleLogin()
