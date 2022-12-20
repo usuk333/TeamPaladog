@@ -76,8 +76,8 @@ public class StageManager : MonoBehaviour
     [SerializeField] private GameObject Difficult;
     private bool diffonoff;
     private int nowdif;
-    private bool Movenow;
-    private int nowfloor;
+   [SerializeField] private bool Movenow;
+    [SerializeField] private int nowfloor;
     [SerializeField] private GameObject TowerUpBtn;
     [SerializeField] private GameObject TowerDownBtn;
     private bool StagePanelon;
@@ -90,6 +90,9 @@ public class StageManager : MonoBehaviour
 
     public int NowStage { get => nowStage; }
     public int Nowdif { get => nowdif; }
+
+    [SerializeField] private GameObject[] UpDownBtn = new GameObject[2];
+    [SerializeField] private int BtnCount = 1;
 
     void Awake()
     {
@@ -248,10 +251,6 @@ public class StageManager : MonoBehaviour
         Invoke("StagePanelOff", 0.1f);
     }
 
-    public void StagePanelOff()
-    {
-        Movenow = false;
-    }
 
     public void DifficultClose()
     {
@@ -264,42 +263,49 @@ public class StageManager : MonoBehaviour
 
     public void TowerUpDown(int i)
     {
-        if(diffonoff == false)
+        int k = i;
+        StartCoroutine(UpDownBtnManager(k));
+    }
+
+    IEnumerator UpDownBtnManager(int k)
+    {
+        if (diffonoff == false && k == 0 && Movenow == false && StagePanelon == false)
         {
-            if (i == 0 && Movenow == false && StagePanelon == false)
+            //up
+            nowfloor++;
+            if (nowfloor == 4)
             {
-                //up
-                nowfloor++;
-                if (nowfloor == 4 && Movenow == false)
-                {
-                    TowerUpBtn.SetActive(false);
-                    TowerDownBtn.SetActive(true);
-                }
-                else
-                {
-                    TowerDownBtn.SetActive(true);
-                }
-
-                Tower.transform.DOLocalMoveY(Tower.transform.localPosition.y - 720, 1);
+                TowerUpBtn.SetActive(false);
+                TowerDownBtn.SetActive(true);
             }
-            if (i == 1 && Movenow == false && StagePanelon == false)
+            else
             {
-                //down
-                nowfloor--;
-                if (nowfloor == 1 && Movenow == false)
-                {
-                    TowerDownBtn.SetActive(false);
-                    TowerUpBtn.SetActive(true);
-                }
-                else
-                {
-                    TowerUpBtn.SetActive(true);
-                }
-
-                Tower.transform.DOLocalMoveY(Tower.transform.localPosition.y + 720, 1);
+                TowerDownBtn.SetActive(true);
             }
             Movenow = true;
-            Invoke("StagePanelOff", 1);
+            Tower.transform.DOLocalMoveY(Tower.transform.localPosition.y - 720, 1);
+            yield return new WaitForSeconds(1f);
+
+            Movenow = false;
+        }
+        if (diffonoff == false && k == 1 && Movenow == false && StagePanelon == false)
+        {
+            //down
+            nowfloor--;
+            if (nowfloor == 1)
+            {
+                TowerDownBtn.SetActive(false);
+                TowerUpBtn.SetActive(true);
+            }
+            else
+            {
+                TowerUpBtn.SetActive(true);
+            }
+            Movenow = true;
+            Tower.transform.DOLocalMoveY(Tower.transform.localPosition.y + 720, 1);
+            yield return new WaitForSeconds(1f);
+
+            Movenow = false;
         }
     }
 
