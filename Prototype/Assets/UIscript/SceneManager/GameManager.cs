@@ -181,8 +181,6 @@ public class GameManager : MonoBehaviour
         reference = FirebaseDatabase.DefaultInstance.GetReference("users");
 
         //Debug.Log(reference.Child("Version").GetValueAsync().Result.Value);
-
-       
     }
 
     // Start is called before the first frame update
