@@ -159,8 +159,18 @@ public class GameManager : MonoBehaviour
         auth = FirebaseAuth.DefaultInstance;
 
         //유저의 로그인 정보에 변경점을 체크하면 이벤트를 걸어줌
-        auth.StateChanged += AuthStateChanged;
+        //auth.StateChanged += AuthStateChanged;
         //AuthStateChanged(this, null);
+        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
+        .RequestServerAuthCode(false /* Don't force refresh */)
+        .RequestIdToken()
+        .RequestEmail()
+        .Build();
+
+        PlayGamesPlatform.InitializeInstance(config);
+        PlayGamesPlatform.DebugLogEnabled = true;
+        PlayGamesPlatform.Activate();
+        StartCoroutine(Co_WarningMessage(Social.localUser.authenticated.ToString()));
 
         //첫 시작시 Off
         //LoginPanel.SetActive(false);
@@ -172,16 +182,7 @@ public class GameManager : MonoBehaviour
 
         //Debug.Log(reference.Child("Version").GetValueAsync().Result.Value);
 
-        PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
-            .RequestServerAuthCode(false /* Don't force refresh */)
-            .RequestIdToken()
-            .RequestEmail()
-            .EnableSavedGames()
-            .Build();
-
-        PlayGamesPlatform.InitializeInstance(config);
-        PlayGamesPlatform.DebugLogEnabled = true;
-        PlayGamesPlatform.Activate();
+       
     }
 
     // Start is called before the first frame update
@@ -199,10 +200,12 @@ public class GameManager : MonoBehaviour
     //구글 로그인 버튼
     public void GoogleLoginBtn()
     {
+        GoogleLogin();
+        return;
         //연동 상태가 아니라면
         if (!signedIn)
         {
-            //LoginPanel.SetActive(true);
+            StartCoroutine(Co_WarningMessage("구글 계정이 연동되어 있지 않습니다!"));
         }
         else
         {
@@ -213,7 +216,11 @@ public class GameManager : MonoBehaviour
 
     private void GoogleLogin()
     {
-        StartCoroutine(TryFirebaseLogin());
+        Social.localUser.Authenticate((bool success) =>
+        {
+            if (success) StartCoroutine(TryFirebaseLogin());
+            else StartCoroutine(Co_WarningMessage("구글 연동 실패!"));
+        });
     }
 
     public IEnumerator TryFirebaseLogin()
