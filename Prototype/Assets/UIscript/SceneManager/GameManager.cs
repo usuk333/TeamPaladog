@@ -1,25 +1,17 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 using System.Text.RegularExpressions;
-
-using UnityEngine.SceneManagement;
-
 using UnityEngine.UI;
-using Firebase;
+
 using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
 
-using Google;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 
-
-using System;
-using System.IO;
-using System.Threading.Tasks;
-using TMPro;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -111,47 +103,46 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get => instance; }
 
     //Auth용 instance
-    FirebaseAuth auth = null;
+    private FirebaseAuth auth = null;
 
     //사용자 계정
-    FirebaseUser user = null;
+    private FirebaseUser  user = null;
 
     //기기연동이 되어있는 상태인지 체크하는 변수
     private bool signedIn = false;
-
-    public string FireBaseId = string.Empty;
 
     private char[] notFullKoreanArray = { 'ㄱ', 'ㄴ', 'ㄷ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅅ', 'ㅇ', 'ㅈ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ' };
     private string[] swearWordArray = { "간나", "갈보", "년", "놈", "느개비", "느금마", "니미", "니기미", "닥쳐", "등신", "또라이", "똘추", "미친", "창녀", "창놈", 
         "병신", "보지", "불알", "부랄", "빨통", "새끼", "씨발", "씹", "새끼", "엠창", "육변기", "자지", "젠장", "좆", "지랄" };
 
 
-    public PlayerData playerdata;
-
+    private bool logInComplete;
     [SerializeField] private GameObject[] createAccountPopUpObj;
-
+    [SerializeField] private GameObject loginPanelObj;
+    [SerializeField] private Text loginText;
 
     //데이터베이스 reference
-    public DatabaseReference reference;
+    private DatabaseReference reference;
 
     //테스트
-    [SerializeField] private string Usersid;
+    private string Usersid;
 
     private FirebaseData firebaseData;
 
     public FirebaseData FirebaseData { get => firebaseData; }
     private void Awake()
     {
-        Application.targetFrameRate = 60;
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(instance);
         }
-        else
+        else if(instance != this)
         {
             Destroy(this);
+            return;
         }
-        DontDestroyOnLoad(instance);
+        Application.targetFrameRate = 60;
 
         version = Application.version;
 
@@ -170,7 +161,6 @@ public class GameManager : MonoBehaviour
         PlayGamesPlatform.InitializeInstance(config);
         PlayGamesPlatform.DebugLogEnabled = true;
         PlayGamesPlatform.Activate();
-        StartCoroutine(Co_WarningMessage(Social.localUser.authenticated.ToString()));
 
         //첫 시작시 Off
         //LoginPanel.SetActive(false);
@@ -180,38 +170,40 @@ public class GameManager : MonoBehaviour
         FirebaseDatabase.GetInstance("https://acrobatgames-f9ba6-default-rtdb.firebaseio.com/");
         reference = FirebaseDatabase.DefaultInstance.GetReference("users");
 
-        //Debug.Log(reference.Child("Version").GetValueAsync().Result.Value);
+        reference.Child("Version").GetValueAsync().ContinueWithOnMainThread(task =>
+          {
+              if (task.IsCompleted)
+              {
+                  if (task.Result.Value != null)
+                  {
+                      version = task.Result.Value.ToString();
+                  }
+              }
+              else
+              {
+                  StartCoroutine(Co_WarningMessage("게임 버전을 읽어오는 데 실패했습니다."));
+              }
+          }
+        );
+        Debug.Log(version);
+        if(version != Application.version)
+        {
+            StartCoroutine(Co_WarningMessage("최신 버전으로 업데이트 해야합니다!"));
+            Application.Quit();
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+        }
+        GoogleLogin();
     }
-
-    // Start is called before the first frame update
     private void Start()
     {
 
     }
-
-    // Update is called once per frame
     void Update()
     {
         
     }
-
-    //구글 로그인 버튼
-    public void GoogleLoginBtn()
-    {
-        GoogleLogin();
-        return;
-        //연동 상태가 아니라면
-        if (!signedIn)
-        {
-            StartCoroutine(Co_WarningMessage("구글 계정이 연동되어 있지 않습니다!"));
-        }
-        else
-        {
-            GoogleLogin();
-        }
-    }
-
-
     private void GoogleLogin()
     {
         Social.localUser.Authenticate((bool success) =>
@@ -234,11 +226,13 @@ public class GameManager : MonoBehaviour
             if (task.IsCanceled)        //취소
             {
                 Debug.LogError("SignInWithCredentialAsync was canceled.");
+                StartCoroutine(Co_WarningMessage("구글 계정을 읽어오는 데 실패했습니다."));
                 return;
             }
             if (task.IsFaulted)
             {
                 Debug.LogError("SignInWithCredentialAsync encountered an error: " + task.Exception);
+                StartCoroutine(Co_WarningMessage("구글 계정을 읽어오는 데 실패했습니다."));
                 return;
             }
 
@@ -249,12 +243,24 @@ public class GameManager : MonoBehaviour
 
             Usersid = user.UserId;
 
-            PlayerDataSet(Usersid);
+            StartCoroutine(Co_LoginAnim());
+
+            //PlayerDataSet(Usersid);
             //UIDRigister(user.UserId, "Google");
             //InitializeFirebase();
         });
     }
-
+    private IEnumerator Co_LoginAnim()
+    {
+        loginPanelObj.SetActive(true);
+        while (!logInComplete)
+        {
+            loginText.DOFade(1, 1f);
+            yield return new WaitForSeconds(1.2f);
+            loginText.DOFade(0, 1f);
+            yield return new WaitForSeconds(1.2f);
+        }
+    }
     private void PlayerDataSet(string uid)
     {
 
@@ -304,6 +310,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitUntil(() => firebaseData.dataLoadComplete);
 
+        logInComplete = true;
         Debug.Log("데이터 로딩 완료");
         LoadingSceneController.LoadScene("Main");
         SoundManager.Instance.SetBGM(1);
@@ -417,7 +424,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         createAccountPopUpObj[1].SetActive(false);
     }
-    public void BtnEvt_LoginTest()
+    public void BtnEvt_Login()
     {
         PlayerDataSet(Usersid);
     }
