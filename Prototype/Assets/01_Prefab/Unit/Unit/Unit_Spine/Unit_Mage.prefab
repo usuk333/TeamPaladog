@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3754646622348541257}
   - component: {fileID: 3754646622348541258}
   - component: {fileID: 3754646622348541259}
-  - component: {fileID: 3754646622348541252}
+  - component: {fileID: 1691123640}
   m_Layer: 7
   m_Name: Unit_Mage
   m_TagString: UNIT
@@ -142,7 +142,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.2809999, y: 6.690988}
+  m_Offset: {x: -0.2809999, y: 6.4809165}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -153,7 +153,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 7.7946076, y: 13.52986}
+  m_Size: {x: 7.7946076, y: 13.109715}
   m_EdgeRadius: 0
 --- !u!50 &3754646622348541258
 Rigidbody2D:
@@ -197,13 +197,12 @@ MonoBehaviour:
   eUnitValue: 1
   eUnitState: 0
   eUnitType: 2
-  eUnitKind: 3
   commonStatus:
-    maxHp: 20
+    maxHp: 10000
     currentHp: 0
     attackDamage: 1
     currentAttackDamage: 1
-    attackSpeed: 4
+    attackSpeed: 2
     moveSpeed: 2
     currentMoveSpeed: 0
     isInvincibility: 0
@@ -216,8 +215,9 @@ MonoBehaviour:
   skillEffectDelay: 0.7
   healEffect: {fileID: 5343061714442307855}
   shieldEffect: {fileID: 2507284538562128582}
-  rageEffect: {fileID: 0}
---- !u!114 &3754646622348541252
+  rageEffect: {fileID: 7115980485582397718}
+  skillCondition: 0
+--- !u!114 &1691123640
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -226,12 +226,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 3754646622348541253}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a11dafe3aac9a24a80bc59b2b627ce2, type: 3}
+  m_Script: {fileID: 11500000, guid: 23e8bc42b5b0e37408a879de49c00530, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillValue: 3
-  skillPercentage: 50
-  eUnitKind: 2
+  eUnitKind: 1
 --- !u!1001 &609600116
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -604,5 +602,10 @@ PrefabInstance:
 --- !u!4 &7115980485582397717 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7744495644594246625, guid: 3482fafbebe71894e93c65fb99ac32bb, type: 3}
+  m_PrefabInstance: {fileID: 700577254553006836}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &7115980485582397718 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7744495644594246626, guid: 3482fafbebe71894e93c65fb99ac32bb, type: 3}
   m_PrefabInstance: {fileID: 700577254553006836}
   m_PrefabAsset: {fileID: 0}

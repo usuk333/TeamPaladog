@@ -269,8 +269,8 @@ public class InGameManager : MonoBehaviour
     }
     private void InitBossStatus()
     {
-        Instantiate(bossPrefabArray[BossManager.bossIndex]);
-        difficulty = (int)BossManager.difficulty;
+        Instantiate(bossPrefabArray[StageInfo.bossIndex]);
+        difficulty = (int)StageInfo.difficulty;
         boss = FindObjectOfType<Boss>();
         if (boss.GetComponent<Beast>())
         {
@@ -459,8 +459,8 @@ public class InGameManager : MonoBehaviour
     }
     private void UpdateStageClearInfo()
     {
-        int stageNumber = BossManager.bossIndex + 1;
-        int stageDifficulty = (int)BossManager.difficulty;
+        int stageNumber = StageInfo.bossIndex + 1;
+        int stageDifficulty = (int)StageInfo.difficulty;
         string[] pathArray = { "E", "N", "H" };
         GameManager.Instance.FirebaseData.SaveData("Stage", $"S{stageNumber}{pathArray[stageDifficulty]}Clear", true);
     }

@@ -41,7 +41,7 @@ public class InGameUIManager : MonoBehaviour
     }
     private IEnumerator Start()
     {
-        stageInfoText.text = $"{BossManager.bossIndex + 1} - {BossManager.difficulty}";
+        stageInfoText.text = $"{StageInfo.bossIndex + 1} - {StageInfo.difficulty}";
         stageTitleText.text = InGameManager.Instance.Title;
         CheckReward();
         SetExpData();

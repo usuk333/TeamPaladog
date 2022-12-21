@@ -196,13 +196,12 @@ MonoBehaviour:
   eUnitValue: 1
   eUnitState: 0
   eUnitType: 1
-  eUnitKind: 0
   commonStatus:
-    maxHp: 30
+    maxHp: 10000
     currentHp: 0
     attackDamage: 0.1
     currentAttackDamage: 0
-    attackSpeed: 2
+    attackSpeed: 1.8
     moveSpeed: 2
     currentMoveSpeed: 0
     isInvincibility: 0
@@ -215,6 +214,8 @@ MonoBehaviour:
   skillEffectDelay: 0.7
   healEffect: {fileID: 5343061715163585557}
   shieldEffect: {fileID: 2507284536772447223}
+  rageEffect: {fileID: 4929833220981577245}
+  skillCondition: 0
 --- !u!114 &8777589626676590887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,8 +228,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a11dafe3aac9a24a80bc59b2b627ce2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillValue: 2
-  skillPercentage: 20
   eUnitKind: 0
 --- !u!1001 &228007963
 PrefabInstance:
@@ -503,5 +502,10 @@ PrefabInstance:
 --- !u!4 &4929833220981577246 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7744495644594246625, guid: 3482fafbebe71894e93c65fb99ac32bb, type: 3}
+  m_PrefabInstance: {fileID: 3392249490355209727}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4929833220981577245 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7744495644594246626, guid: 3482fafbebe71894e93c65fb99ac32bb, type: 3}
   m_PrefabInstance: {fileID: 3392249490355209727}
   m_PrefabAsset: {fileID: 0}
