@@ -273,7 +273,7 @@ public class StageManager : MonoBehaviour
                 TowerDownBtn.SetActive(true);
             }
             Movenow = true;
-            Tower.transform.DOLocalMoveY(Tower.transform.localPosition.y - 720, 1);
+            Tower.transform.DOLocalMoveY(Tower.transform.localPosition.y - 798, 1);
             yield return new WaitForSeconds(1f);
 
             Movenow = false;
@@ -292,7 +292,7 @@ public class StageManager : MonoBehaviour
                 TowerUpBtn.SetActive(true);
             }
             Movenow = true;
-            Tower.transform.DOLocalMoveY(Tower.transform.localPosition.y + 720, 1);
+            Tower.transform.DOLocalMoveY(Tower.transform.localPosition.y + 798, 1);
             yield return new WaitForSeconds(1f);
 
             Movenow = false;
