@@ -9,6 +9,15 @@ public class LoadingSceneController : MonoBehaviour
     static string nextScene;
 
     [SerializeField] Image progressBar;
+    [SerializeField] Text Percentage;
+    [SerializeField] Text GameTip;
+
+    [SerializeField] private string[] LoadingTip;
+
+    void Start()
+    {
+        StartCoroutine(LoadSceneProcess());
+    }
 
     public static void LoadScene(string sceneName)
     {
@@ -16,38 +25,97 @@ public class LoadingSceneController : MonoBehaviour
         SceneManager.LoadScene("Loading");
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        StartCoroutine(LoadSceneProcess());
-    }
-
     IEnumerator LoadSceneProcess()
     {
+        GameTip.text = LoadingTip[Random.Range(0, 2)];
         AsyncOperation op = SceneManager.LoadSceneAsync(nextScene);
         op.allowSceneActivation = false;
 
+
         float timer = 0f;
-        while(!op.isDone)
+        float timers = 0f;
+        float timert = 0f;
+
+        int Countone = 0;
+        int Counttwo = 0;
+        while (!op.isDone)
         {
             yield return null;
 
-            if(op.progress < 0.9f)
+            if (progressBar.fillAmount < 0.33f)
             {
-                progressBar.fillAmount = op.progress;
+                timer += Time.unscaledDeltaTime;
+                progressBar.fillAmount = Mathf.Lerp(0f, 0.33f, timer / 2f);
+                Percentage.text = (progressBar.fillAmount * 100f).ToString("F0") + " %";
+            }
+            else if (progressBar.fillAmount >= 0.33f && progressBar.fillAmount < 0.8f)
+            {
+                if(Countone == 0)
+                {
+                    Countone++;
+                    yield return new WaitForSeconds(1f);
+                }
+                timers += Time.unscaledDeltaTime;
+                progressBar.fillAmount = Mathf.Lerp(0.33f, 0.8f, timers / 2f);
+                Percentage.text = (progressBar.fillAmount * 100f).ToString("F0") + " %";
             }
             else
             {
-                timer += Time.unscaledTime;
-
-                progressBar.fillAmount = Mathf.Lerp(0.9f, 1f, timer);
-
-                if(progressBar.fillAmount >= 1f)
+                if (Counttwo == 0)
+                {
+                    Counttwo++;
+                    yield return new WaitForSeconds(1f);
+                }
+                timert += Time.unscaledDeltaTime;
+                progressBar.fillAmount = Mathf.Lerp(0.8f, 1f, timert / 2f);
+                Percentage.text = (progressBar.fillAmount * 100f).ToString("F0") + " %";
+                if (progressBar.fillAmount >= 1f)
                 {
                     op.allowSceneActivation = true;
                     yield break;
                 }
             }
-        }    
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /*float timer = 0f;
+        while(!op.isDone)
+        {
+            yield return null;
+
+            if (op.progress < 0.1f)
+            {
+                progressBar.fillAmount = op.progress;
+                Percentage.text = op.progress * 100f + " %";
+            }
+            else
+            {
+                timer += Time.unscaledDeltaTime;
+
+                progressBar.fillAmount = Mathf.Lerp(0.1f, 1f, timer / 2f);
+                Percentage.text = (progressBar.fillAmount * 100f).ToString("F0") + " %";
+                if (progressBar.fillAmount >= 1f)
+                {
+                    op.allowSceneActivation = true;
+                    yield break;
+                }
+            }
+        }   */
     }
 }

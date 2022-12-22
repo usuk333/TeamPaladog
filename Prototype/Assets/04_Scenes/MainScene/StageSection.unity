@@ -2022,7 +2022,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e86310a7ad8fdd48ac2a3614b026b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Userid: NaIxowYCsaSqdaYaWtWbIYErkqM2
   StagePanel: {fileID: 1365640847}
   StageTopText:
   - 
@@ -2032,74 +2031,13 @@ MonoBehaviour:
   - 
   - 
   Tower: {fileID: 1900605927}
-  UnitSetting:
-  - 
-  - 
-  - 
-  - 
-  SkillSettingIcon:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  SkillSetting:
-  - 
-  - 
-  - 
-  - 
-  TankerIcon: {fileID: 21300000, guid: dfdee20355ff6824a857980d94edea34, type: 3}
-  MeleeIcon: {fileID: 21300000, guid: c308f0bdcf748c245ba6489fd366fb4e, type: 3}
-  ADIcon: {fileID: 21300000, guid: f36fe4418d492214f9efbb84255dd9c1, type: 3}
-  MageIcon: {fileID: 21300000, guid: 9e20f7709a65104488bfbb3ee33beb8e, type: 3}
-  tGold: {fileID: 0}
-  tTankerPoints: {fileID: 0}
-  tWarriorPoints: {fileID: 0}
-  tADPoints: {fileID: 0}
-  tMagePoints: {fileID: 0}
-  SkillIcon:
-  - {fileID: 21300000, guid: bde8e0938ee3d324687ccfe8544a5131, type: 3}
-  - {fileID: 21300000, guid: 0bef43eedfe90b742a174ab2044eb3a0, type: 3}
-  - {fileID: 21300000, guid: f6fa3ba1ac3e76140ad2dd8e4a2049ca, type: 3}
-  - {fileID: 21300000, guid: 51509999fa24d694681487e0332dc0df, type: 3}
   StageIntroduction: {fileID: 98484051}
   StageCompensation: {fileID: 0}
-  SkillSelectPanel: {fileID: 0}
-  UnitSelectPanel: {fileID: 0}
-  Skilllist:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  tSkilllist:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
   BossSection:
   - {fileID: 9018319128210387875, guid: 3498c73ff6929f245b29004478c180ed, type: 3}
   - {fileID: 5408945210595284068, guid: f81648afbb9e6ca4cb4a7ef2d2b95d00, type: 3}
   - {fileID: 8945384422237043403, guid: 4378b051fe654ab408672eac4848ab15, type: 3}
   - {fileID: 3682956632212527510, guid: 0b8d8cdea3d111e46b21546dad3877c0, type: 3}
-  StageClear: 000000000000000000000000
-  StageClearstring:
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
   Difficult: {fileID: 2054669272}
   Movenow: 0
   nowfloor: 0
@@ -2108,10 +2046,6 @@ MonoBehaviour:
   difficultyButton: {fileID: 2054669274}
   SettingPanel: {fileID: 1121182228}
   Background: {fileID: 0}
-  UpDownBtn:
-  - {fileID: 880009834}
-  - {fileID: 1127034370}
-  BtnCount: 1
 --- !u!1 &967079920
 GameObject:
   m_ObjectHideFlags: 0
@@ -5109,7 +5043,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2054669273
 RectTransform:
   m_ObjectHideFlags: 0
