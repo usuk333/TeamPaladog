@@ -16,12 +16,8 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] private Text mainText;
     [SerializeField] private GameObject pauseObj;
     [SerializeField] private GameObject settingObj;
-    [SerializeField] private GameObject soundObj;
-    [SerializeField] private GameObject accountObj;
     [SerializeField] private Image sceneMoveImage;
 
-    [SerializeField] private Sprite[] settingMenuButtonSpriteArray;
-    [SerializeField] private Image[] settingMenuButtonImageArray;
     private bool goMain;
 
     private Text stageInfoText;
@@ -119,23 +115,6 @@ public class InGameUIManager : MonoBehaviour
     public void BtnEvt_Quit()
     {
         Application.Quit();
-    }
-    public void BtnEvt_SettingMenu(int index)
-    {
-        if(index == 0)
-        {
-            accountObj.SetActive(false);
-            soundObj.SetActive(true);
-            settingMenuButtonImageArray[0].sprite = settingMenuButtonSpriteArray[1];
-            settingMenuButtonImageArray[1].sprite = settingMenuButtonSpriteArray[0];
-        }
-        else
-        {
-            soundObj.SetActive(false);
-            accountObj.SetActive(true);
-            settingMenuButtonImageArray[0].sprite = settingMenuButtonSpriteArray[0];
-            settingMenuButtonImageArray[1].sprite = settingMenuButtonSpriteArray[1];
-        }
     }
     public void ShowClearPopUp()
     {

@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: TextureAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: fe60bdb46b38c364d8884a0df0f625b4, type: 3}
+    - {fileID: 102900000, guid: 6e411ca729e10474f9a56b3396ba1ded, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 7413b221883fb95419884d7dd076a393, type: 3}
+  - {fileID: 21300000, guid: 0c117292cc0b58d4e881f00e08826c49, type: 3}
+  - {fileID: 21300000, guid: d6e229d2be197cf44a7b3541d78ce0d0, type: 3}
+  - {fileID: 21300000, guid: 4ed1ceb3cc14f364191682efcc2ba930, type: 3}
+  - {fileID: -9106425014621270491, guid: cfac41e34e01a974d893ae5a57f23a49, type: 3}
+  - {fileID: 6559714772545534352, guid: cfac41e34e01a974d893ae5a57f23a49, type: 3}
+  - {fileID: -2276317857278532607, guid: cfac41e34e01a974d893ae5a57f23a49, type: 3}
+  - {fileID: 949840024658423181, guid: cfac41e34e01a974d893ae5a57f23a49, type: 3}
+  - {fileID: 21300000, guid: db55e3740e523524b8969fc4f9181e17, type: 3}
+  - {fileID: 21300000, guid: 3c0402b4eee2da24fb050cf2285e8ca1, type: 3}
+  - {fileID: 21300000, guid: 38982cb4d3c310e4ca0124fbaa1f5ee2, type: 3}
+  - {fileID: 21300000, guid: 0c75e5254ec65b04598237b6891c0125, type: 3}
+  - {fileID: 21300000, guid: 6e5858b5050ea1141952b62ac187b528, type: 3}
+  - {fileID: 21300000, guid: ab4f39669c2f4094bad75510994645db, type: 3}
+  - {fileID: 21300000, guid: c782ae66f7e976046aa9f0eb4cd29ca3, type: 3}
+  - {fileID: 21300000, guid: 9be5b6a6691b23545825dfbc6338604a, type: 3}
+  - {fileID: 21300000, guid: b534d418f9f5c364c98b6e9a39191369, type: 3}
+  - {fileID: 21300000, guid: 69facb884c05f5a4291fde4054f45e7f, type: 3}
+  - {fileID: 21300000, guid: a4c918b8234f3f44c97e68e541dbcdd5, type: 3}
+  - {fileID: 21300000, guid: 94bdbfc8898d70241b8c62db1125d7a7, type: 3}
+  - {fileID: 21300000, guid: bb468bc96559b8b4d80bc6188ba527fa, type: 3}
+  - {fileID: 21300000, guid: f9bc509a4dc54064d9a490b5bfb69e4a, type: 3}
+  - {fileID: 21300000, guid: b9996f4b7ff120e47a2f36914407ba4e, type: 3}
+  - {fileID: 21300000, guid: 9b2f42bb5e9e6fb4fb41fc8bcccfdff4, type: 3}
+  - {fileID: 21300000, guid: 1841210c43468b64eb90056414f54bc8, type: 3}
+  - {fileID: 21300000, guid: fafd8f1c180c14044ac96b4e09c0eb61, type: 3}
+  - {fileID: 21300000, guid: 9663187c54273d5418c32ee91311cfd2, type: 3}
+  - {fileID: 21300000, guid: 1c5e54ec2ac8c6a4289a90abbd57677c, type: 3}
+  - {fileID: 21300000, guid: faf1565dab5a33b46a4b3efe800a1c90, type: 3}
+  - {fileID: 21300000, guid: b514e05ec9b6c0e44bfd19578ccb7053, type: 3}
+  - {fileID: 21300000, guid: 0028ae6e19095b54e87e4f6b8177df93, type: 3}
+  - {fileID: 21300000, guid: 7cdfa92fa4d5eef4cb2bb920877baa23, type: 3}
+  - {fileID: 21300000, guid: 32fed63f94aceae498323786e9e38c04, type: 3}
+  - {fileID: 21300000, guid: a0a693ff6819ced40941b90858762873, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - SimpleGlow
+  - Laser02
+  - lightning
+  - Floor
+  - "\uBE44\uC11D_\uC0C9\uC0C1 (1)_2"
+  - "\uBE44\uC11D_\uC0C9\uC0C1 (1)_3"
+  - "\uBE44\uC11D_\uC0C9\uC0C1 (1)_0"
+  - "\uBE44\uC11D_\uC0C9\uC0C1 (1)_1"
+  - Portal
+  - Cross
+  - Mushroom_Altar
+  - cross02
+  - wizard_skill
+  - Poison
+  - "\uB098\uD0DC_skill"
+  - Gargoyle_Stone01
+  - Energy
+  - Beast_FallingObj01
+  - Shild02
+  - "\uB098\uD0DC_attack"
+  - DustStorm
+  - aa
+  - Tornado
+  - billow
+  - Attack_00000
+  - Attack_02
+  - wizard_attack
+  - Ninja_skill
+  - Beast_FallingObj02
+  - Flash
+  - Effect_Boss_Gargoyle_Shield01
+  - Gargoyle_Stone02
+  - Ring02
+  - Effect_Boss_Gargoyle_Shield02
+  m_RenderDataMap: {}
+  m_Tag: TextureAtlas
+  m_IsVariant: 0

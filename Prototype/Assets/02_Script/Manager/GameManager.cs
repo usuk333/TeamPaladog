@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
     private DatabaseReference reference;
 
     //테스트
-    private string Usersid;
+    [SerializeField] private string Usersid;
 
     private FirebaseData firebaseData;
 
@@ -193,8 +193,10 @@ public class GameManager : MonoBehaviour
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #endif
+            return;
         }
-        GoogleLogin();
+        //GoogleLogin();
+        StartCoroutine(Co_LoginAnim());
     }
     private void Start()
     {

@@ -321,6 +321,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1012895710}
+  - component: {fileID: 7370543211875527121}
+  - component: {fileID: 4506197342143650145}
   m_Layer: 5
   m_Name: ExitPopUp
   m_TagString: Untagged
@@ -342,14 +344,52 @@ RectTransform:
   - {fileID: 1903708294}
   - {fileID: 1909798399}
   - {fileID: 1989030814}
-  m_Father: {fileID: 4388765897570728804}
-  m_RootOrder: 5
+  m_Father: {fileID: 5487466191652885898}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.44000238, y: -0.04998779}
-  m_SizeDelta: {x: 812.23, y: 309.16}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &7370543211875527121
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012895709}
+  m_CullTransparentMesh: 1
+--- !u!114 &4506197342143650145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1012895709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &1586110908
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,10 +577,10 @@ RectTransform:
   m_Father: {fileID: 1012895710}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -3.600006}
-  m_SizeDelta: {x: -36, y: -34}
+  m_SizeDelta: {x: 776, y: 276}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1903708296
 CanvasRenderer:
@@ -701,8 +741,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
+      - m_Target: {fileID: -3555398375391645955}
+        m_TargetAssemblyTypeName: SettingObject, Assembly-CSharp
         m_MethodName: BtnEvt_Exit
         m_Mode: 1
         m_Arguments:
@@ -834,13 +874,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
-        m_MethodName: BtnEvt_ExitGame
-        m_Mode: 1
+      - m_Target: {fileID: -3555398375391645955}
+        m_TargetAssemblyTypeName: SettingObject, Assembly-CSharp
+        m_MethodName: BtnEvt_ActiveObj
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1012895709}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -967,13 +1007,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainManager, Assembly-CSharp
-        m_MethodName: BtnEvt_ExitGame
-        m_Mode: 1
+      - m_Target: {fileID: -3555398375391645955}
+        m_TargetAssemblyTypeName: SettingObject, Assembly-CSharp
+        m_MethodName: BtnEvt_ActiveObj
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1012895709}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1296,7 +1336,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -3555398375391645955}
+        m_TargetAssemblyTypeName: SettingObject, Assembly-CSharp
+        m_MethodName: ToggleEvt_SetVolume
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 2407159371596937672}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Toggle, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &376382683302649233
 GameObject:
@@ -1461,12 +1513,24 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4233677673831570983}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 10
+  m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 5
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -3555398375391645955}
+        m_TargetAssemblyTypeName: SettingObject, Assembly-CSharp
+        m_MethodName: SliderEvt_SetVolume
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1 &593829056207664839
 GameObject:
   m_ObjectHideFlags: 0
@@ -1692,7 +1756,6 @@ RectTransform:
   - {fileID: 1541598989041335386}
   - {fileID: 6319585839606009949}
   - {fileID: 2956563822437548912}
-  - {fileID: 1012895710}
   m_Father: {fileID: 5487466191652885898}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2091,6 +2154,7 @@ GameObject:
   - component: {fileID: 5487466191652885898}
   - component: {fileID: 4941570873663188168}
   - component: {fileID: 8196169272259892633}
+  - component: {fileID: -3555398375391645955}
   m_Layer: 5
   m_Name: Setting
   m_TagString: Untagged
@@ -2110,6 +2174,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4388765897570728804}
+  - {fileID: 1012895710}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2156,6 +2221,28 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-3555398375391645955
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2828721202621019699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce23671344581654598724931dd7921e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonSpriteArray:
+  - {fileID: 21300000, guid: 19a745caa897a41759d4b8b5d0b482f2, type: 3}
+  - {fileID: 21300000, guid: 2dd4604925f264cb1990818641361190, type: 3}
+  bgmSlider: {fileID: 924259639628318695}
+  sfxSlider: {fileID: 5338605342771897112}
+  bgmToggle: {fileID: 2407159371596937672}
+  sfxToggle: {fileID: 4913977584087950779}
+  soundButtonImage: {fileID: 5105802865839189727}
+  accountButtonImage: {fileID: 6217390900000770604}
+  currentFrameObj: {fileID: 8867120021751910583}
 --- !u!1 &2855154941148012405
 GameObject:
   m_ObjectHideFlags: 0
@@ -3047,14 +3134,26 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: InGameUIManager, Assembly-CSharp
-        m_MethodName: BtnEvt_SettingMenu
-        m_Mode: 3
+      - m_Target: {fileID: -3555398375391645955}
+        m_TargetAssemblyTypeName: SettingObject, Assembly-CSharp
+        m_MethodName: BtnEvt_ActiveFrame
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 3911962074095899032}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: -3555398375391645955}
+        m_TargetAssemblyTypeName: SettingObject, Assembly-CSharp
+        m_MethodName: BtnEvt_ChangeButtonSprite
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 6217390900000770604}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -3258,13 +3357,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: InGameUIManager, Assembly-CSharp
-        m_MethodName: BtnEvt_ActiveSetting
-        m_Mode: 1
+      - m_Target: {fileID: -3555398375391645955}
+        m_TargetAssemblyTypeName: SettingObject, Assembly-CSharp
+        m_MethodName: BtnEvt_ActiveObj
+        m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 2828721202621019699}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3466,13 +3565,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: InGameUIManager, Assembly-CSharp
-        m_MethodName: BtnEvt_Quit
-        m_Mode: 1
+      - m_Target: {fileID: -3555398375391645955}
+        m_TargetAssemblyTypeName: SettingObject, Assembly-CSharp
+        m_MethodName: BtnEvt_ActiveObj
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1012895709}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3832,13 +3931,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: InGameUIManager, Assembly-CSharp
-        m_MethodName: BtnEvt_SettingMenu
-        m_Mode: 3
+      - m_Target: {fileID: -3555398375391645955}
+        m_TargetAssemblyTypeName: SettingObject, Assembly-CSharp
+        m_MethodName: BtnEvt_ActiveFrame
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 8867120021751910583}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3932,12 +4031,24 @@ MonoBehaviour:
   m_HandleRect: {fileID: 4725915488008267540}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 10
+  m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 5
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -3555398375391645955}
+        m_TargetAssemblyTypeName: SettingObject, Assembly-CSharp
+        m_MethodName: SliderEvt_SetVolume
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8833076805862021844
 GameObject:
   m_ObjectHideFlags: 0
@@ -4022,7 +4133,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: -3555398375391645955}
+        m_TargetAssemblyTypeName: SettingObject, Assembly-CSharp
+        m_MethodName: ToggleEvt_SetVolume
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 4913977584087950779}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Toggle, UnityEngine.UI
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
 --- !u!1 &8867120021751910583
 GameObject:
