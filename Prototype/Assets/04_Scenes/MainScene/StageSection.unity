@@ -829,9 +829,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966145252}
-        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
-        m_MethodName: StageInfo
+      - m_Target: {fileID: 966145253}
+        m_TargetAssemblyTypeName: StageSectionBtnManager, Assembly-CSharp
+        m_MethodName: BtnEvt_StageInfo
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1037,9 +1037,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966145252}
-        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
-        m_MethodName: StagePanelClose
+      - m_Target: {fileID: 966145253}
+        m_TargetAssemblyTypeName: StageSectionBtnManager, Assembly-CSharp
+        m_MethodName: BtnEvt_StagePanelClose
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1475,7 +1475,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1999609607940036517, guid: 0f467bb3b33233e46a5a2e2939e27cf6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1999609607940036517, guid: 0f467bb3b33233e46a5a2e2939e27cf6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
@@ -1484,7 +1484,7 @@ PrefabInstance:
     - target: {fileID: 1999609607940036517, guid: 0f467bb3b33233e46a5a2e2939e27cf6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 966145252}
+      objectReference: {fileID: 966145253}
     - target: {fileID: 1999609607940036517, guid: 0f467bb3b33233e46a5a2e2939e27cf6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
@@ -1495,15 +1495,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1999609607940036517, guid: 0f467bb3b33233e46a5a2e2939e27cf6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SettingPanelClose
+      value: BtnEvt_SettingPanelClose
       objectReference: {fileID: 0}
     - target: {fileID: 1999609607940036517, guid: 0f467bb3b33233e46a5a2e2939e27cf6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: StageManager, Assembly-CSharp
+      value: StageSectionBtnManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1999609607940036517, guid: 0f467bb3b33233e46a5a2e2939e27cf6, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 1121182228}
+    - target: {fileID: 1999609607940036517, guid: 0f467bb3b33233e46a5a2e2939e27cf6, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
+      value: UnityEngine.GameObject, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2828721202621019699, guid: 0f467bb3b33233e46a5a2e2939e27cf6, type: 3}
       propertyPath: m_Name
@@ -1563,7 +1567,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5487466191652885898, guid: 0f467bb3b33233e46a5a2e2939e27cf6, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 5487466191652885898, guid: 0f467bb3b33233e46a5a2e2939e27cf6, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1796,9 +1800,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966145252}
-        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
-        m_MethodName: TowerUpDown
+      - m_Target: {fileID: 966145253}
+        m_TargetAssemblyTypeName: StageSectionBtnManager, Assembly-CSharp
+        m_MethodName: BtnEvt_TowerUpDown
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1929,9 +1933,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966145252}
-        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
-        m_MethodName: Stagedifficult
+      - m_Target: {fileID: 966145253}
+        m_TargetAssemblyTypeName: StageSectionBtnManager, Assembly-CSharp
+        m_MethodName: BtnEvt_Stagedifficult
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1989,6 +1993,7 @@ GameObject:
   m_Component:
   - component: {fileID: 966145251}
   - component: {fileID: 966145252}
+  - component: {fileID: 966145253}
   m_Layer: 0
   m_Name: StageManager
   m_TagString: Untagged
@@ -2022,7 +2027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e86310a7ad8fdd48ac2a3614b026b8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stagePanel: {fileID: 0}
+  stagePanel: {fileID: 1365640847}
   StageTopText:
   - 
   - 
@@ -2030,22 +2035,31 @@ MonoBehaviour:
   - 
   - 
   - 
-  Tower: {fileID: 1900605927}
-  StageIntroduction: {fileID: 98484051}
-  StageCompensation: {fileID: 0}
-  BossSection:
-  - {fileID: 9018319128210387875, guid: 3498c73ff6929f245b29004478c180ed, type: 3}
-  - {fileID: 5408945210595284068, guid: f81648afbb9e6ca4cb4a7ef2d2b95d00, type: 3}
-  - {fileID: 8945384422237043403, guid: 4378b051fe654ab408672eac4848ab15, type: 3}
-  - {fileID: 3682956632212527510, guid: 0b8d8cdea3d111e46b21546dad3877c0, type: 3}
+  tower: {fileID: 1900605927}
+  stageIntroduction: {fileID: 98484051}
+  bossSection:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   Difficult: {fileID: 2054669272}
-  Movenow: 0
-  nowfloor: 0
-  TowerUpBtn: {fileID: 880009834}
-  TowerDownBtn: {fileID: 1127034370}
+  MoveNow: 0
+  NowFloor: 0
+  towerUpBtn: {fileID: 880009834}
+  towerDownBtn: {fileID: 1127034370}
   difficultyButton: {fileID: 2054669274}
-  SettingPanel: {fileID: 1121182228}
-  Background: {fileID: 0}
+--- !u!114 &966145253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966145250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fa06d548fcc0ac4ebe27d6908efe287, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &967079920
 GameObject:
   m_ObjectHideFlags: 0
@@ -2205,9 +2219,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966145252}
-        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
-        m_MethodName: Stagedifficult
+      - m_Target: {fileID: 966145253}
+        m_TargetAssemblyTypeName: StageSectionBtnManager, Assembly-CSharp
+        m_MethodName: BtnEvt_Stagedifficult
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2498,9 +2512,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966145252}
-        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
-        m_MethodName: StageInfo
+      - m_Target: {fileID: 966145253}
+        m_TargetAssemblyTypeName: StageSectionBtnManager, Assembly-CSharp
+        m_MethodName: BtnEvt_StageInfo
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2630,9 +2644,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966145252}
-        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
-        m_MethodName: TowerUpDown
+      - m_Target: {fileID: 966145253}
+        m_TargetAssemblyTypeName: StageSectionBtnManager, Assembly-CSharp
+        m_MethodName: BtnEvt_TowerUpDown
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3197,7 +3211,6 @@ RectTransform:
   - {fileID: 1127034371}
   - {fileID: 1937055475}
   - {fileID: 1121182229}
-  - {fileID: 2131884957}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3289,9 +3302,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966145252}
-        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
-        m_MethodName: StageInfo
+      - m_Target: {fileID: 966145253}
+        m_TargetAssemblyTypeName: StageSectionBtnManager, Assembly-CSharp
+        m_MethodName: BtnEvt_StageInfo
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3580,9 +3593,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966145252}
-        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
-        m_MethodName: StageInfo
+      - m_Target: {fileID: 966145253}
+        m_TargetAssemblyTypeName: StageSectionBtnManager, Assembly-CSharp
+        m_MethodName: BtnEvt_StageInfo
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3866,13 +3879,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966145252}
-        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
-        m_MethodName: SettingPanelOpen
-        m_Mode: 1
+      - m_Target: {fileID: 966145253}
+        m_TargetAssemblyTypeName: StageSectionBtnManager, Assembly-CSharp
+        m_MethodName: BtnEvt_SettingPanelOpen
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 1121182228}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4278,9 +4291,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966145252}
-        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
-        m_MethodName: DifficultClose
+      - m_Target: {fileID: 966145253}
+        m_TargetAssemblyTypeName: StageSectionBtnManager, Assembly-CSharp
+        m_MethodName: BtnEvt_DifficultClose
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4492,8 +4505,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966145252}
-        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
+      - m_Target: {fileID: 966145253}
+        m_TargetAssemblyTypeName: StageSectionBtnManager, Assembly-CSharp
         m_MethodName: BtnEvt_LoadMainScene
         m_Mode: 1
         m_Arguments:
@@ -4625,9 +4638,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966145252}
-        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
-        m_MethodName: Stagedifficult
+      - m_Target: {fileID: 966145253}
+        m_TargetAssemblyTypeName: StageSectionBtnManager, Assembly-CSharp
+        m_MethodName: BtnEvt_Stagedifficult
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5016,9 +5029,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966145252}
-        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
-        m_MethodName: BackGroundBtn
+      - m_Target: {fileID: 966145253}
+        m_TargetAssemblyTypeName: StageSectionBtnManager, Assembly-CSharp
+        m_MethodName: BtnEvt_BackGround
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5083,112 +5096,6 @@ MonoBehaviour:
   buttonSprite:
   - {fileID: 21300000, guid: 68b35d2059b8c46e0a98e53628e9b3af, type: 3}
   - {fileID: 21300000, guid: bf59ce9145cd842ffb1a897977f5200f, type: 3}
---- !u!1001 &2131884956
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 1490838328}
-    m_Modifications:
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_Pivot.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_Pivot.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105242, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_Name
-      value: SceneLoader
-      objectReference: {fileID: 0}
-    - target: {fileID: 1317325498319105242, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
---- !u!224 &2131884957 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 1317325498319105241, guid: effaa1bcfa2238d4084fe09832329aa1, type: 3}
-  m_PrefabInstance: {fileID: 2131884956}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2138153003
 GameObject:
   m_ObjectHideFlags: 0
@@ -5444,8 +5351,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 966145252}
-        m_TargetAssemblyTypeName: StageManager, Assembly-CSharp
+      - m_Target: {fileID: 966145253}
+        m_TargetAssemblyTypeName: StageSectionBtnManager, Assembly-CSharp
         m_MethodName: GoBattleScene
         m_Mode: 1
         m_Arguments:
