@@ -1,16 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 using UnityEngine.UI;
 
 using DG.Tweening;
-using TMPro;
 
 public class StageManager : MonoBehaviour
 {
     //스테이지 패널 관련
-    [SerializeField] private GameObject StagePanel;
+    [SerializeField] private GameObject stagePanel;
     [SerializeField] private string[] StageTopText = new string[4];
 
     //타워 오브젝트
@@ -54,11 +51,10 @@ public class StageManager : MonoBehaviour
         nowfloor = 1;
         StagePanelon = false;
     }
-
     // Start is called before the first frame update
     void Start()
     {
-
+        SoundManager.Instance.SetBGM(2);
     }
 
 
@@ -67,7 +63,7 @@ public class StageManager : MonoBehaviour
     {
         
     }
-
+    //BtnEvt_함수이름(되도록이면 동사로 시작)
     //백그라운드 버튼
     public void BackGroundBtn()
     {
@@ -77,7 +73,6 @@ public class StageManager : MonoBehaviour
             StartCoroutine(Difficultdelay());
         }
     }
-
     IEnumerator Difficultdelay()
     {
         Movenow = true;
@@ -90,12 +85,12 @@ public class StageManager : MonoBehaviour
         if (diffonoff == false)
         {
             diffonoff = true;
-            StagePanel.SetActive(false);
+            stagePanel.SetActive(false);
 
         }
         else
         {
-            StagePanel.SetActive(false);
+            stagePanel.SetActive(false);
         }
     }
 
@@ -122,7 +117,7 @@ public class StageManager : MonoBehaviour
             nowStage = k;
             difficultyButton.UpdateDifficultyButton(k + 1);
 
-            yield return new WaitForSeconds(1f);
+           // yield return new WaitForSeconds(1f);
 
             Movenow = false;
 
@@ -130,11 +125,11 @@ public class StageManager : MonoBehaviour
             {
                 diffonoff = true;
                 Difficult.SetActive(true);
-                StagePanel.SetActive(false);
+                stagePanel.SetActive(false);
             }
             else
             {
-                StagePanel.SetActive(false);
+                stagePanel.SetActive(false);
                 Difficult.SetActive(true);
             }
         }
@@ -150,7 +145,7 @@ public class StageManager : MonoBehaviour
         global::StageInfo.difficulty = (StageInfo.Difficulty)i;
 
         StagePanelon = true;
-        StagePanel.SetActive(true);
+        stagePanel.SetActive(true);
         StageIntroduction.text = StageTopText[nowStage];
     }
 
@@ -186,7 +181,7 @@ public class StageManager : MonoBehaviour
         StagePanelon = false;
         Movenow = true;
         diffonoff = true;
-        StagePanel.SetActive(false);
+        stagePanel.SetActive(false);
         Difficult.SetActive(true);
 
         yield return new WaitForSeconds(1f);
@@ -261,14 +256,13 @@ public class StageManager : MonoBehaviour
 
     public void BtnEvt_LoadMainScene()
     {
-        LoadingSceneController.LoadScene("Main");
-        SoundManager.Instance.SetBGM(1);
+        GameManager.Instance.LoadScene(0);
     }
     public void GoBattleScene()
     {
         global::StageInfo.bossIndex = nowStage;
         global::StageInfo.difficulty = (StageInfo.Difficulty)nowdif;
         LoadingSceneController.LoadScene("Stage");
-        SoundManager.Instance.SetBGM(nowStage + 3);
+        SoundManager.Instance.SetSFX(0);
     }
 }

@@ -32,8 +32,7 @@ public class SkillManager : MonoBehaviour
     public void BtnEvt_UpgradeSkill()
     {
         if (!CheckHaveSkillPoint()) return;
-        UpgradeSkill();
-        
+        UpgradeSkill();       
     }
     public void BtnEvt_NextSkillInfo()
     {
@@ -88,7 +87,7 @@ public class SkillManager : MonoBehaviour
     }
     public void BtnEvt_LoadMainScene()
     {
-        LoadingSceneController.LoadScene("Main");
+        GameManager.Instance.LoadScene(0);
     }
     public void BtnEvt_ActiveSkillInfoObj(int i)
     {

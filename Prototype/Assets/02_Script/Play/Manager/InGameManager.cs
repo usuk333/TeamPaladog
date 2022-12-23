@@ -430,6 +430,7 @@ public class InGameManager : MonoBehaviour
     }
     private void Start()
     {
+        SoundManager.Instance.SetBGM(StageInfo.GetBossBGM());
         StartCoroutine(Co_Timer());
     }
     public void SetGameOver()

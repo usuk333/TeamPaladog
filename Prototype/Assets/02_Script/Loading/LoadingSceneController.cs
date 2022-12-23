@@ -18,7 +18,6 @@ public class LoadingSceneController : MonoBehaviour
     {
         StartCoroutine(LoadSceneProcess());
     }
-
     public static void LoadScene(string sceneName)
     {
         nextScene = sceneName;
@@ -45,7 +44,7 @@ public class LoadingSceneController : MonoBehaviour
             if (progressBar.fillAmount < 0.33f)
             {
                 timer += Time.unscaledDeltaTime;
-                progressBar.fillAmount = Mathf.Lerp(0f, 0.33f, timer / 2f);
+                progressBar.fillAmount = Mathf.Lerp(0f, 0.33f, timer / 0.7f);
                 Percentage.text = (progressBar.fillAmount * 100f).ToString("F0") + " %";
             }
             else if (progressBar.fillAmount >= 0.33f && progressBar.fillAmount < 0.8f)
@@ -53,10 +52,10 @@ public class LoadingSceneController : MonoBehaviour
                 if(Countone == 0)
                 {
                     Countone++;
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(0.5f);
                 }
                 timers += Time.unscaledDeltaTime;
-                progressBar.fillAmount = Mathf.Lerp(0.33f, 0.8f, timers / 2f);
+                progressBar.fillAmount = Mathf.Lerp(0.33f, 0.8f, timers / 0.7f);
                 Percentage.text = (progressBar.fillAmount * 100f).ToString("F0") + " %";
             }
             else
@@ -64,10 +63,10 @@ public class LoadingSceneController : MonoBehaviour
                 if (Counttwo == 0)
                 {
                     Counttwo++;
-                    yield return new WaitForSeconds(1f);
+                    yield return new WaitForSeconds(0.7f);
                 }
                 timert += Time.unscaledDeltaTime;
-                progressBar.fillAmount = Mathf.Lerp(0.8f, 1f, timert / 2f);
+                progressBar.fillAmount = Mathf.Lerp(0.8f, 1f, timert / 0.5f);
                 Percentage.text = (progressBar.fillAmount * 100f).ToString("F0") + " %";
                 if (progressBar.fillAmount >= 1f)
                 {

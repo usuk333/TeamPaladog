@@ -112,7 +112,6 @@ public class FirebaseData
                 snapshotLoadComplete = true;
             }
         });
- 
     }
     /// <summary>
     /// 매개변수로 받은 dictionary에 snapshot의 값들을 넣어줌

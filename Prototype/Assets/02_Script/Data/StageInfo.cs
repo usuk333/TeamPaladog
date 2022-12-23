@@ -13,5 +13,8 @@ public static class StageInfo
     public static int bossIndex;
     public static Difficulty difficulty;
 
-
+    public static int GetBossBGM()
+    {
+        return bossIndex + 3;
+    }
 }

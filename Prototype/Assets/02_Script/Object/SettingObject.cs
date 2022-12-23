@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class SettingObject : MonoBehaviour
@@ -15,13 +12,12 @@ public class SettingObject : MonoBehaviour
     [SerializeField] private Image accountButtonImage;
 
     [SerializeField] private GameObject currentFrameObj;
-    private void Start()
+    private void Awake()
     {
         bgmSlider.value = SoundManager.Instance.BgmAudio.volume;
         sfxSlider.value = SoundManager.Instance.SfxAudio.volume;
         bgmToggle.isOn = !SoundManager.Instance.BgmAudio.mute;
         sfxToggle.isOn = !SoundManager.Instance.SfxAudio.mute;
-        gameObject.SetActive(false);
     }
     public void BtnEvt_ActiveObj(GameObject obj)
     {
