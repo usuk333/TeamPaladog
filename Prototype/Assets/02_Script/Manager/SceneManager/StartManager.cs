@@ -145,7 +145,7 @@ namespace StartScene
                     {
                         GameManager.Instance.FirebaseData = new FirebaseData(userId);
                         StartCoroutine(GameManager.Instance.FirebaseData.Co_InitData());
-                        StartCoroutine(Co_InitData());
+                        StartCoroutine(Co_WaitUntillInitData());
                     }
                     else if (task.IsFaulted)
                     {
@@ -224,11 +224,12 @@ namespace StartScene
 
             StartCoroutine(GameManager.Instance.FirebaseData.Co_InitData());
 
-            StartCoroutine(Co_InitData());
+            StartCoroutine(Co_WaitUntillInitData());
         }
-        private IEnumerator Co_InitData()
+        private IEnumerator Co_WaitUntillInitData()
         {
             yield return new WaitUntil(() => GameManager.Instance.FirebaseData.dataLoadComplete);
+            GameManager.Instance.StageInfo = new StageInfo();
             GameManager.Instance.LoadSceneThroughLoadingScene(0);
         }
         private IEnumerator TryGoogleLogin()

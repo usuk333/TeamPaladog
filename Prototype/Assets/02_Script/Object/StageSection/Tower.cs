@@ -4,6 +4,8 @@ using UnityEngine.UI;
 
 using DG.Tweening;
 
+using Data;
+
 namespace StageSection
 {
     public class Tower : MonoBehaviour
@@ -17,7 +19,6 @@ namespace StageSection
 
         [SerializeField] private GameObject towerUpBtn;
         [SerializeField] private GameObject towerDownBtn;
-        [SerializeField] private GameObject Difficult;
         [SerializeField] private DifficultyButton difficultyButton;
 
         [SerializeField] private bool MoveNow;
@@ -109,13 +110,13 @@ namespace StageSection
                 if (DifficultOnOff == false)
                 {
                     DifficultOnOff = true;
-                    Difficult.SetActive(true);
+                    difficultyButton.gameObject.SetActive(true);
                     stagePanel.SetActive(false);
                 }
                 else
                 {
                     stagePanel.SetActive(false);
-                    Difficult.SetActive(true);
+                    difficultyButton.gameObject.SetActive(true);
                 }
             }
         }
@@ -125,7 +126,7 @@ namespace StageSection
             if (DifficultOnOff == true && MoveNow == false)
             {
                 MoveNow = true;
-                Difficult.SetActive(false);
+                difficultyButton.gameObject.SetActive(false);
                 tower.transform.DOLocalMoveX(0, 1);
 
                 yield return new WaitForSeconds(1f);
@@ -147,11 +148,11 @@ namespace StageSection
         {
             yield return null;
 
-            Difficult.SetActive(false);
+            difficultyButton.gameObject.SetActive(false);
             DifficultOnOff = false;
 
             nowDifficult = i;
-            global::StageInfo.difficulty = (StageInfo.Difficulty)i;
+            GameManager.Instance.StageInfo.Difficulty = (StageInfo.eDifficulty)i;
 
             StagePanelOn = true;
             stagePanel.SetActive(true);
@@ -164,7 +165,7 @@ namespace StageSection
             MoveNow = true;
             DifficultOnOff = true;
             stagePanel.SetActive(false);
-            Difficult.SetActive(true);
+            difficultyButton.gameObject.SetActive(true);
 
             yield return new WaitForSeconds(1f);
 
@@ -174,7 +175,7 @@ namespace StageSection
 
         public IEnumerator Co_DifficultCloseClick()
         {
-            Difficult.SetActive(false);
+            difficultyButton.gameObject.SetActive(false);
             DifficultOnOff = false;
             tower.transform.DOLocalMoveX(0, 1);
             MoveNow = true;

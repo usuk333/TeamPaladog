@@ -1,20 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public static class StageInfo
+namespace Data
 {
-    public enum Difficulty
+    public class StageInfo
     {
-        Easy,
-        Normal,
-        Hard
-    }
-    public static int bossIndex;
-    public static Difficulty difficulty;
+        public enum eDifficulty
+        {
+            Easy,
+            Normal,
+            Hard
+        }
+        private int bossIndex;
+        private eDifficulty difficulty;
 
-    public static int GetBossBGM()
-    {
-        return bossIndex + 3;
+        public int BossIndex { get => bossIndex; set => bossIndex = value; }
+        public eDifficulty Difficulty { get => difficulty; set => difficulty = value; }
+
+        public int GetBossBGM()
+        {
+            return bossIndex + 3;
+        }
     }
 }

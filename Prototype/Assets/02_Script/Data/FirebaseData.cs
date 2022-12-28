@@ -97,8 +97,6 @@ namespace Data
         private void InitSkillArray()
         {
             byte i = 0;
-            int a;
-            float j;
             skillArray[i] = new SkillMaxHp(Convert.ToInt32(skillDictionary[skillPathArray[i++]]));
             skillArray[i] = new SkillMaxMp(Convert.ToInt32(skillDictionary[skillPathArray[i++]]));
             skillArray[i] = new SkillAttack(Convert.ToInt32(skillDictionary[skillPathArray[i++]]));

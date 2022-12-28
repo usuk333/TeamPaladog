@@ -1,4 +1,5 @@
 using UnityEngine;
+using Data;
 
 namespace StageSection
 {
@@ -38,14 +39,14 @@ namespace StageSection
 
         public void BtnEvt_LoadStage(int index)
         {
-            global::StageInfo.bossIndex = index;
+            GameManager.Instance.StageInfo.BossIndex = index;
             LoadingSceneController.LoadScene("Stage");
         }
 
         //난이도 고르기
         public void BtnEvt_ChooseDifficulty(int index)
         {
-            global::StageInfo.difficulty = (StageInfo.Difficulty)index;
+            GameManager.Instance.StageInfo.Difficulty = (StageInfo.eDifficulty)index;
         }
 
         //세팅 버튼
@@ -63,13 +64,6 @@ namespace StageSection
         {
             int k = i;
             UpDownBtnManager(k);
-        }
-
-        //메인으로 버튼
-        public void BtnEvt_LoadMainScene()
-        {
-            LoadingSceneController.LoadScene("Main");
-            SoundManager.Instance.SetBGM(1);
         }
 
         //스타트 버튼

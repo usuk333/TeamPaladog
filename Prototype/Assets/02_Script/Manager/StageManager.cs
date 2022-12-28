@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-using UnityEngine.UI;
+using Data;
 
 namespace StageSection
 {
@@ -69,14 +69,12 @@ namespace StageSection
         {
             StartCoroutine(t.Co_UpDownBtnManager(k));
         }
-
-
         public IEnumerator Co_GoBattleScene()
         {
             yield return null;
 
-            global::StageInfo.bossIndex = t.NowStage;
-            global::StageInfo.difficulty = (StageInfo.Difficulty)t.NowDifficult;
+            GameManager.Instance.StageInfo.BossIndex = t.NowStage;
+            GameManager.Instance.StageInfo.Difficulty = (StageInfo.eDifficulty)t.NowDifficult;
             LoadingSceneController.LoadScene("Stage");
             SoundManager.Instance.SetBGM(t.NowStage + 3);
         }

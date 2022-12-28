@@ -13,10 +13,6 @@ public class DifficultyButton : MonoBehaviour
             buttonArray[i] = transform.GetChild(i);
         }
     }
-    private void Start()
-    {
-        gameObject.SetActive(false);
-    }
     public void UpdateDifficultyButton(int nowStage)
     {
         int index = nowStage <= 1 ? 1 : nowStage - 1;

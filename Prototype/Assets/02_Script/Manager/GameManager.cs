@@ -7,11 +7,14 @@ public class GameManager : MonoBehaviour
 
     private static GameManager instance;
 
-    public static GameManager Instance { get => instance; }
-
     private FirebaseData firebaseData;
-    public FirebaseData FirebaseData { get => firebaseData; set => firebaseData = value; }
+
+    private StageInfo stageInfo;
+
     public string Version { get => version; }
+    public static GameManager Instance { get => instance; }
+    public FirebaseData FirebaseData { get => firebaseData; set => firebaseData = value; }
+    public StageInfo StageInfo { get => stageInfo; set => stageInfo = value; }
 
     private void Awake()
     {
