@@ -71,7 +71,7 @@ public class UnitShopManager : MonoBehaviour
     }
     public void BtnEvt_LoadMainScene()
     {
-        LoadingSceneController.LoadScene("Main");
+        GameManager.Instance.LoadScene(0);
     }
     public void BtnEvt_ActiveSettingObj()
     {

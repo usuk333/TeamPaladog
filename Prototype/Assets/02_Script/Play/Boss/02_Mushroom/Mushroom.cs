@@ -30,6 +30,8 @@ public class Mushroom : MonoBehaviour
     [SerializeField] private Image warningImage;
     [SerializeField] private Text warningText;
 
+    private bool breakSummon;
+
     public MushroomStatus mushroomStatus;
     //for test
     private IEnumerator Co_SetSlimeVincible()
@@ -85,7 +87,6 @@ public class Mushroom : MonoBehaviour
         float time;
         while (true)
         {
-            isCounting = false;
             time = sporeTimerMaxValue;
             progress = sporeTimerMaxValue;
             isActiveBuff = false;
@@ -103,6 +104,7 @@ public class Mushroom : MonoBehaviour
             warningImage.gameObject.SetActive(false);
             isCounting = true;
             sporeTimerText.transform.parent.gameObject.SetActive(true);
+            breakSummon = true;
             while (time > 0f)
             {
                 time -= Time.deltaTime;
@@ -119,6 +121,7 @@ public class Mushroom : MonoBehaviour
                 continue;
             }
             slimeList.Clear();
+            isCounting = false;
             dReturnAllSlime();
             sporeEffect.Play();
             InGameManager.Instance.Player.DecreaseHp(mushroomStatus.forthPatternDamage);
@@ -131,6 +134,7 @@ public class Mushroom : MonoBehaviour
                 Spore();
                 yield return new WaitForSeconds(sporeInterval);
             }
+            breakSummon = false;
             yield return null;
         }
     }
@@ -191,6 +195,10 @@ public class Mushroom : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(count);
+            if (breakSummon)
+            {
+                continue;
+            }
             SummonSlime(summonPos);
         }
     }

@@ -16,7 +16,6 @@ public class InGameUIManager : MonoBehaviour
     [SerializeField] private Text mainText;
     [SerializeField] private GameObject pauseObj;
     [SerializeField] private GameObject settingObj;
-    [SerializeField] private Image sceneMoveImage;
 
     private bool goMain;
 
@@ -41,10 +40,7 @@ public class InGameUIManager : MonoBehaviour
         stageTitleText.text = InGameManager.Instance.Title;
         CheckReward();
         SetExpData();
-        yield return new WaitForSeconds(0.5f);
-        sceneMoveImage.DOFade(0, 2f);
         yield return new WaitForSeconds(2f);
-        sceneMoveImage.gameObject.SetActive(false);
     }
     private void CheckReward()
     {
@@ -93,8 +89,7 @@ public class InGameUIManager : MonoBehaviour
     }
     public void BtnEvt_GoMainGameClear()
     {
-        LoadingSceneController.LoadScene("StageSection");
-        SoundManager.Instance.SetBGM(2);
+        GameManager.Instance.LoadScene(3);
     }
     public void BtnEvt_GoMain()
     {
@@ -105,8 +100,7 @@ public class InGameUIManager : MonoBehaviour
     public void BtnEvt_GoMainGameOver()
     {
         if (!goMain) return;
-        LoadingSceneController.LoadScene("StageSection");
-        SoundManager.Instance.SetBGM(2);
+        GameManager.Instance.LoadScene(3);
     }
     public void BtnEvt_ActiveSetting()
     {

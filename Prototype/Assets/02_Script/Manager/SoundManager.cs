@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundManager : MonoBehaviour
@@ -9,6 +7,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource sfxAudio;
 
     [SerializeField] private AudioClip[] bgmClipArray;
+    [SerializeField] private AudioClip[] sfxClipArray;
     public static SoundManager Instance { get => instance; }
     public AudioSource BgmAudio { get => bgmAudio; }
     public AudioSource SfxAudio { get => sfxAudio; }
@@ -35,6 +34,15 @@ public class SoundManager : MonoBehaviour
         bgmAudio.Pause();
         bgmAudio.clip = bgmClipArray[index];
         bgmAudio.Play();
+    }
+    /// <summary>
+    /// 0 = 던전 입장 효과음
+    /// </summary>
+    /// <param name="index"></param>
+    public void SetSFX(int index)
+    {
+        sfxAudio.clip = sfxClipArray[index];
+        sfxAudio.Play();
     }
     public void SetVolume(bool isBGM, float value)
     {

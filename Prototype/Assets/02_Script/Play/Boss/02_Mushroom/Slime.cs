@@ -118,16 +118,13 @@ public class Slime : MonoBehaviour
             {
                 case 0:
                     direction = Vector3.left;
-                    Debug.Log("øﬁ¬  ¿Ãµø");
                     Flip(false);
                     break;
                 case 1:
                     direction = Vector3.zero;
-                    Debug.Log("∏ÿ√„");
                     break;
                 case 2:
                     direction = Vector3.right;
-                    Debug.Log("ø¿∏•¬  ¿Ãµø");
                     Flip(true);
                     break;
                 case 3:
