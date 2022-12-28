@@ -242,29 +242,14 @@ public class InGameManager : MonoBehaviour
         {
             units[i].CommonStatus.AttackDamage = System.Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{path[i]}ATK"]);
             units[i].CommonStatus.MaxHp = System.Convert.ToInt32(GameManager.Instance.FirebaseData.UnitDictionary[$"{path[i]}HP"]);
-            units[i].skillCondition = DataEquation.UnitSkillConditionToLevel(path[i]);
+            units[i].skillCondition = GameManager.Instance.FirebaseData.GetUnitSkillConditionByLevel(path[i]);
         }
-    }
-    private void InitPlayerStatus()
-    {
-        player = FindObjectOfType<Player>();
-        var (hMax, hRegen) = DataEquation.PlayerSkillHPToLevel();
-        var (mMax, mRegen) = DataEquation.PlayerSkillMPToLevel();
-        player.InitStatusData(hMax, mMax, hRegen, mRegen);
-
-        var (apple, rock, bomb) = DataEquation.PlayerSkillAttackToLevel();
-        int[] attack = { apple, rock, bomb };
-        var (rValue, rMana) = DataEquation.PlayerSkillRageToLevel();
-        var (bValue, bDuration, bMana, bCool) = DataEquation.PlayerSkillBarriorToLevel();
-        var (hValue, hMana, hCool) = DataEquation.PlayerSkillHealToLevel();
-        player.InitSkillData(attack, rValue, rMana, bValue, bDuration, bMana, bCool, hValue, hMana, hCool);
     }
     private void Awake()
     {
         instance = this;
         InitBossStatus();
         InitUnitStatus();
-        InitPlayerStatus();
         StartCoroutine(Co_InitializeInGameData());
     }
     private void InitBossStatus()

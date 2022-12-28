@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 using System.Text.RegularExpressions;
 
+using ETC;
+
 namespace StartScene
 {
     public class CreateAccountPopup : MonoBehaviour

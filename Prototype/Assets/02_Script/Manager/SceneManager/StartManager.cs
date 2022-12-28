@@ -9,6 +9,8 @@ using Firebase.Extensions;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 
+using Data;
+using ETC;
 
 namespace StartScene
 {

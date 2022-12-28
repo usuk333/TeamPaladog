@@ -18,7 +18,7 @@ public class PlayerInfo : MonoBehaviour
         {
             nicknameText[i].text = GameManager.Instance.FirebaseData.InfoDictionary["Nickname"].ToString();
             levelText[i].text = GameManager.Instance.FirebaseData.InfoDictionary["Level"].ToString();
-            expSlider[i].maxValue = DataEquation.PlayerMaxExpToLevel();
+            expSlider[i].maxValue = GameManager.Instance.FirebaseData.GetPlayerMaxExpByLevel();
             expSlider[i].value = Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary["EXP"]);
             expText[i].text = $"{expSlider[i].value} / {expSlider[i].maxValue}";
         }

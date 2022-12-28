@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using Data;
 public class GameManager : MonoBehaviour
 {
     private string version;
@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
             return;
         }
         Application.targetFrameRate = 60;
+        Screen.SetResolution(1280, 720, true);
         version = Application.version;
     }
     /// <summary>

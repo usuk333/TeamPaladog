@@ -40,19 +40,19 @@ public class Player : MonoBehaviour
     [SerializeField] private ParticleSystem attackEffect;
     [SerializeField] private Vector3 attackEffectOffset;
 
-    private int[] attackSkillValueArray;
+    private float[] attackSkillValueArray;
 
     private float rageValue;
     private float rageMana;
 
-    private int barriorValue;
+    private float barriorValue;
     private float barriorDuration;
-    private int barriorMana;
-    private int barriorCool;
+    private float barriorMana;
+    private float barriorCool;
 
-    private int healValue;
-    private int healMana;
-    private int healCool;
+    private float healValue;
+    private float healMana;
+    private float healCool;
 
     private bool die;
 
@@ -84,27 +84,41 @@ public class Player : MonoBehaviour
     public float HpRegenerative { get => hpRegenerative; set => hpRegenerative = value; }
     public bool Die { get => die; }
 
-    public void InitStatusData(float hMax, float mMax, float hRegen, float mRegen)
+    private void InitStatusData()
     {
-        maxHp = hMax;
+        List<float[]> skillValueArrayList = new List<float[]>();
+        for (int i = 0; i < 2; i++)
+        {
+            skillValueArrayList.Add(GameManager.Instance.FirebaseData.SkillArray[i].GetSkillValueArray());
+        }
+        maxHp = skillValueArrayList[0][0];
+        hpRegenerative = skillValueArrayList[0][1];
         currentHp = maxHp;
-        maxMp = mMax;
+
+        maxMp = skillValueArrayList[1][0];
+        mpRegenerative = skillValueArrayList[1][1];
         currentMp = maxMp;
-        hpRegenerative = hRegen;
-        mpRegenerative = mRegen;
     }
-    public void InitSkillData(int[] attackArray, float rValue, float rMana, int bValue, float bDuration, int bMana, int bCool, int hValue, int hMana, int hCool)
+    private void InitSkillData()
     {
-        attackSkillValueArray = attackArray;
-        rageValue = rValue;
-        rageMana = rMana;
-        barriorValue = bValue;
-        barriorDuration = bDuration;
-        barriorMana = bMana;
-        barriorCool = bCool;
-        healValue = hValue;
-        healMana = hMana;
-        healCool = hCool;
+        List<float[]> skillValueArrayList = new List<float[]>();
+        for (int i = 2; i < 6; i++)
+        {
+            skillValueArrayList.Add(GameManager.Instance.FirebaseData.SkillArray[i].GetSkillValueArray());
+        }
+        attackSkillValueArray = skillValueArrayList[0];
+
+        barriorValue = skillValueArrayList[1][0];
+        barriorDuration = skillValueArrayList[1][1];
+        barriorMana = skillValueArrayList[1][2];
+        barriorCool = skillValueArrayList[1][3];
+
+        healValue = skillValueArrayList[2][0];
+        healMana = skillValueArrayList[2][1];
+        healCool = skillValueArrayList[2][2];
+
+        rageValue = skillValueArrayList[3][0];
+        rageMana = skillValueArrayList[3][1];
     }
     public void KnockBack(Vector3 pos)
     {
@@ -295,6 +309,8 @@ public class Player : MonoBehaviour
         skeletonAnimation = GetComponent<SkeletonAnimation>();
         flip = transform.localScale;
         skeletonAnimation.AnimationState.SetAnimation(0, "Idle", true);
+        InitSkillData();
+        InitStatusData();
     }
     private void Start()
     {

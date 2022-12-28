@@ -58,7 +58,7 @@ public class InGameUIManager : MonoBehaviour
     }
     private void SetExpData()
     {
-        expSlider.maxValue = DataEquation.PlayerMaxExpToLevel();
+        expSlider.maxValue = GameManager.Instance.FirebaseData.GetPlayerMaxExpByLevel();
         expSlider.value = System.Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary["EXP"]);
         expText.text = $"{expSlider.value} / {expSlider.maxValue}";
     }
@@ -139,7 +139,7 @@ public class InGameUIManager : MonoBehaviour
                 expSlider.DOValue(expSlider.maxValue, 1f);
                 yield return new WaitForSeconds(1.2f);
                 expSlider.value = 0;
-                expSlider.maxValue = DataEquation.PlayerMaxExpToLevel();
+                expSlider.maxValue = GameManager.Instance.FirebaseData.GetPlayerMaxExpByLevel(); ;
             }
         }
         expSlider.DOValue(System.Convert.ToInt32(GameManager.Instance.FirebaseData.InfoDictionary["EXP"]), 1f);
