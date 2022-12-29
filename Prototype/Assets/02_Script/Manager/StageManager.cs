@@ -38,37 +38,66 @@ namespace StageSection
             DontDestroyOnLoad(gameObject);*/
         }
 
-        protected void Difficultdelay()
+        public void BtnEvt_Difficultdelay()
         {
             StartCoroutine(t.Co_Difficultdelay());
         }
 
-        protected void StageInfoClick(int k)
+        public void BtnEvt_StageInfoClick(int k)
         {
             StartCoroutine(t.Co_StageInfoClick(k));
         }
 
-        protected void Stagedifficult(int k)
+        public void BtnEvt_Stagedifficult(int k)
         {
-            StartCoroutine(t.Co_Stagedifficult(k));
+            t.Co_Stagedifficult(k);
         }
 
 
-        protected void StagePanelCloseClick()
+        public void BtnEvt_StagePanelCloseClick()
         {
             StartCoroutine(t.Co_StagePanelCloseClick());
         }
 
 
-        protected void DifficultCloseClick()
+        public void BtnEvt_DifficultCloseClick()
         {
             StartCoroutine(t.Co_DifficultCloseClick());
         }
 
-        protected void UpDownBtnManager(int k)
+        public void BtnEvt_UpDownBtnManager(int k)
         {
             StartCoroutine(t.Co_UpDownBtnManager(k));
         }
+
+        //난이도 고르기
+        public void BtnEvt_ChooseDifficulty(int index)
+        {
+            GameManager.Instance.StageInfo.Difficulty = (StageInfo.eDifficulty)index;
+        }
+
+        //세팅 버튼
+        public void BtnEvt_SettingPanelOpen(GameObject obj)
+        {
+            obj.SetActive(true);
+        }
+        public void BtnEvt_SettingPanelClose(GameObject obj)
+        {
+            obj.SetActive(false);
+        }
+
+        //스타트 버튼
+        public void GoBattleScene()
+        {
+            StartCoroutine(Co_GoBattleScene());
+        }
+
+        public void BtnEvt_LoadStage(int index)
+        {
+            GameManager.Instance.StageInfo.BossIndex = index;
+            LoadingSceneController.LoadScene("Stage");
+        }
+
         public IEnumerator Co_GoBattleScene()
         {
             yield return null;

@@ -122,7 +122,9 @@ namespace StartScene
         }
         private IEnumerator Start()
         {
+            Debug.Log("hi");
             yield return new WaitUntil(() => version != null);
+            Debug.Log("hello");
             versionText.text = GameManager.Instance.Version;
             if (version != GameManager.Instance.Version)
             {
@@ -131,6 +133,7 @@ namespace StartScene
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
 #endif
+
                 yield break;
             }
             loginObject.ActiveLoginObj();
