@@ -10,6 +10,7 @@ namespace StageSection
 {
     public class Tower : MonoBehaviour
     {
+        [SerializeField] StagePanel stagepanel;
         [SerializeField] private GameObject stagePanel;
 
         [SerializeField] private GameObject tower;
@@ -21,7 +22,7 @@ namespace StageSection
         [SerializeField] private GameObject towerDownBtn;
         [SerializeField] private DifficultyButton difficultyButton;
 
-        [SerializeField] private bool MoveNow;
+        [SerializeField] public bool MoveNow = false;
         [SerializeField] private int NowFloor = 1;
 
         private bool DifficultOnOff;
@@ -30,8 +31,8 @@ namespace StageSection
         private int nowDifficult;
         private int nowStage;
 
-        public int NowStage { get => nowStage; }
-        public int NowDifficult { get => nowDifficult; }
+        [SerializeField] public int NowStage { get => nowStage; }
+        [SerializeField] public int NowDifficult { get => nowDifficult; }
 
         private void Awake()
         {
@@ -39,23 +40,23 @@ namespace StageSection
             StageTopText[1] = "스테이지 2. 끈적끈적 보랏빛 재앙\n\n보랏빛으로 변색되어 악취를 풍기는 시체의 산.\n\n겉모습에 속지 마라.\n\n당신 또한 그리 될테니. ";
             StageTopText[2] = "스테이지 3. 깨달음을 저버린 자\n\n선과 악.\n\n음과 양.\n\n균형과 조화.\n\n그 무엇도 유지되고 있지 않구나.안타까운 일이로세.";
             StageTopText[3] = "스테이지 4. 깨어난 고대의 감시자\n\n진귀한 보옥이 있다기에 찾아갔다.\n하지만 금빛으로 빛나는 바위산에서\n내가 마주한 것은.\n\n깊게 가라앉은 용의 눈동자였다.\n\n- 초대 용사의 자서전에서 발췌 - ";
+            MoveNow = false;
+            DifficultOnOff = false;
+
         }
 
         public IEnumerator Co_UpDownBtnManager(int k)
         {
             if (DifficultOnOff == false && k == 1 && MoveNow == false && StagePanelOn == false)
             {
+                MoveNow = true;
                 //up
                 NowFloor++;
                 if (NowFloor == 4)
                 {
                     towerUpBtn.SetActive(false);
-                    towerDownBtn.SetActive(true);
                 }
-                else
-                {
-                    towerDownBtn.SetActive(true);
-                }
+                towerDownBtn.SetActive(true);
                 TowerUpDown(k);
                 yield return new WaitForSeconds(1f);
 
@@ -63,6 +64,7 @@ namespace StageSection
             }
             if (DifficultOnOff == false && k == -1 && MoveNow == false && StagePanelOn == false)
             {
+                MoveNow = true;
                 //down
                 NowFloor--;
                 if (NowFloor == 1)
@@ -84,7 +86,7 @@ namespace StageSection
         private void TowerUpDown(int k)
         {
             MoveNow = true;
-            tower.transform.DOLocalMoveY(tower.transform.localPosition.y + 798 * k, 1);
+            tower.transform.DOLocalMoveY(tower.transform.localPosition.y + 798 * -k, 1);
         }
 
         public IEnumerator Co_StageInfoClick(int k)
@@ -96,12 +98,9 @@ namespace StageSection
 
                 tower.transform.DOLocalMoveX(-350, 1);
 
-                yield return new WaitForSeconds(1f);
-
-                stageIntroduction.text = StageTopText[k];
-
                 nowStage = k;
                 difficultyButton.UpdateDifficultyButton(k + 1);
+                stageIntroduction.text = StageTopText[k];
 
                 yield return new WaitForSeconds(1f);
 
@@ -144,14 +143,14 @@ namespace StageSection
             }
         }
 
-        public IEnumerator Co_Stagedifficult(int i)
+        public void Co_Stagedifficult(int i)
         {
-            yield return null;
+            nowDifficult = i;
+            stagepanel.SetReward(nowStage, nowDifficult);
 
             difficultyButton.gameObject.SetActive(false);
             DifficultOnOff = false;
 
-            nowDifficult = i;
             GameManager.Instance.StageInfo.Difficulty = (StageInfo.eDifficulty)i;
 
             StagePanelOn = true;

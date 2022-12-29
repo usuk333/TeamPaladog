@@ -4,8 +4,19 @@ using UnityEngine.UI;
 public class DifficultyButton : MonoBehaviour
 {
     [SerializeField] private Sprite[] buttonSprite;
-    [SerializeField] private Transform[] buttonArray = new Transform[3];
+    private Transform[] buttonArray = new Transform[3];
     private string[] difArray = { "E", "N", "H" };
+    private void Awake()
+    {
+        for (int i = 0; i < buttonArray.Length; i++)
+        {
+            buttonArray[i] = transform.GetChild(i);
+        }
+    }
+    private void Start()
+    {
+        this.gameObject.SetActive(false);
+    }
     public void UpdateDifficultyButton(int nowStage)
     {
         int index = nowStage <= 1 ? 1 : nowStage - 1;
