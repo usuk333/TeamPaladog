@@ -89,7 +89,7 @@ namespace SkillScene
         }
         private bool CheckSkillLevel(int level)
         {
-            if (currentSkill < 2) return true;
+            if (currentSkill < 3) return true;
             if (level >= 5)
             {
                 warningMessage.SetWarningText("이미 최대치 입니다!");

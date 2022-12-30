@@ -540,6 +540,10 @@ MonoBehaviour:
   warningImage: {fileID: 6026998969664874587}
   warningText: {fileID: 1464312933840483277}
   audioSource: {fileID: 3865582419284906018}
+  audioClipArray:
+  - {fileID: 8300000, guid: 8055cc64dc1c1464692f50495a786d8c, type: 3}
+  - {fileID: 8300000, guid: 6c4f70f8421e3bb4db409b613fa6f37b, type: 3}
+  - {fileID: 8300000, guid: 60c91947ec3cf2b468fa144704abfda5, type: 3}
 --- !u!114 &576732474246131467
 MonoBehaviour:
   m_ObjectHideFlags: 0

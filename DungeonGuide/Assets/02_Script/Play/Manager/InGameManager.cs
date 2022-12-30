@@ -124,8 +124,9 @@ public struct GargoyleStatus
     public float forthPatternShield;
     public float[] forthPatternPercentage;
     public float forthPatternDuration;
+    public float shieldExplosionDamage;
 
-    public GargoyleStatus(float firstPatternDamage, float firstPatternSlowDown, float firstPatternMinTime, float firstPatternMaxTime, float secondPatternDamage, float secondPatternMinTime, float secondPatternMaxTime, float thirdPatternDamage, float thirdPatternMinTime, float thirdPatternMaxTime, float forthPatternShield, float[] forthPatternPercentage, float forthPatternDuration)
+    public GargoyleStatus(float firstPatternDamage, float firstPatternSlowDown, float firstPatternMinTime, float firstPatternMaxTime, float secondPatternDamage, float secondPatternMinTime, float secondPatternMaxTime, float thirdPatternDamage, float thirdPatternMinTime, float thirdPatternMaxTime, float forthPatternShield, float[] forthPatternPercentage, float forthPatternDuration, float shieldExplosionDamage)
     {
         this.firstPatternDamage = firstPatternDamage;
         this.firstPatternSlowDown = firstPatternSlowDown;
@@ -140,6 +141,7 @@ public struct GargoyleStatus
         this.forthPatternShield = forthPatternShield;
         this.forthPatternPercentage = forthPatternPercentage;
         this.forthPatternDuration = forthPatternDuration;
+        this.shieldExplosionDamage = shieldExplosionDamage;
     }
 }
 
@@ -329,21 +331,21 @@ public class InGameManager : MonoBehaviour
         {
             case 0:
                 bossStatus = new BossStatus(140, 120000, 2);
-                gargoyleStatus = new GargoyleStatus(40, 80, 30, 40, 300, 12, 16, 800, 20, 25, 6000, new float[] { 80, 40 }, 10);
+                gargoyleStatus = new GargoyleStatus(40, 80, 30, 40, 300, 12, 16, 800, 20, 25, 6000, new float[] { 80, 40 }, 10, 500);
                 stageReward = new Reward(350, Random.Range(260, 280), 1, 0, 0, 1);
                 InitBossUsualStatus(bossStatus);
                 gargoyle.gargoyleStatus = gargoyleStatus;
                 break;
             case 1:
                 bossStatus = new BossStatus(180, 140000, 2);
-                gargoyleStatus = new GargoyleStatus(70, 85, 30, 40, 600, 11, 14, 1000000, 18, 25, 10000, new float[] { 70, 50, 20 }, 10);
+                gargoyleStatus = new GargoyleStatus(70, 85, 30, 40, 600, 11, 14, 1600, 18, 25, 10000, new float[] { 70, 50, 20 }, 10, 1200);
                 stageReward = new Reward(700, Random.Range(520, 700), 2, 0, 0, 2);
                 InitBossUsualStatus(bossStatus);
                 gargoyle.gargoyleStatus = gargoyleStatus;
                 break;
             case 2:
                 bossStatus = new BossStatus(240, 200000, 2);
-                gargoyleStatus = new GargoyleStatus(120, 90, 25, 40, 1000, 8, 13, 1000000, 15, 20, 200000 * 10 / 100, new float[] { 75, 40, 5 }, 10);
+                gargoyleStatus = new GargoyleStatus(120, 90, 25, 40, 1000, 8, 13, 2700, 15, 20, 200000 * 10 / 100, new float[] { 75, 40, 5 }, 10, 2000);
                 stageReward = new Reward(1200, Random.Range(900, 1100), 3, 1, 1, 3);
                 InitBossUsualStatus(bossStatus);
                 gargoyle.gargoyleStatus = gargoyleStatus;
@@ -393,21 +395,21 @@ public class InGameManager : MonoBehaviour
         {
             case 0:
                 bossStatus = new BossStatus(120, 105000, 2);
-                insideStatus = new InsideStatus(50, 30, 500, 10, 20, new float[] { 80, 40 }, 1000, 5, 15);
+                insideStatus = new InsideStatus(50, 30, 500, 8, 14, new float[] { 80, 40 }, 1000, 5, 15);
                 stageReward = new Reward(300, Random.Range(250, 270), 0, 1, 1, 0);
                 InitBossUsualStatus(bossStatus);
                 inside.insideStatus = insideStatus;
                 break;
             case 1:
                 bossStatus = new BossStatus(160, 130000, 2);
-                insideStatus = new InsideStatus(70, 40, 800, 10, 20, new float[] { 75, 35 }, 1500, 5, 15);
+                insideStatus = new InsideStatus(70, 40, 800, 8, 13, new float[] { 75, 35 }, 1500, 5, 15);
                 stageReward = new Reward(600, Random.Range(485, 620), 0, 2, 2, 0);
                 InitBossUsualStatus(bossStatus);
                 inside.insideStatus = insideStatus;
                 break;
             case 2:
                 bossStatus = new BossStatus(220, 170000, 2);
-                insideStatus = new InsideStatus(100, 50, 1500, 10, 20, new float[] { 80, 50, 20 }, 2000, 5, 10);
+                insideStatus = new InsideStatus(100, 50, 1500, 8, 12, new float[] { 80, 50, 20 }, 2000, 5, 10);
                 stageReward = new Reward(1000, Random.Range(800, 950), 1, 3, 3, 1);
                 InitBossUsualStatus(bossStatus);
                 inside.insideStatus = insideStatus;

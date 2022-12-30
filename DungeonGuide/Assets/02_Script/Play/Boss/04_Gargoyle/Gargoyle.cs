@@ -33,6 +33,7 @@ public class Gargoyle : MonoBehaviour
     private bool isTracking = false;
     Vector3 trackingOffset = new Vector3(0, 2.5f, 0);
 
+    [SerializeField] private Image explosionImage;
     public GargoyleStatus gargoyleStatus;
 
     [SerializeField] private AudioSource audioSource;
@@ -143,6 +144,7 @@ public class Gargoyle : MonoBehaviour
                 InGameManager.Instance.Boss.IsPattern = true;
                 earthquakeEffect.Play();
                 yield return new WaitForSeconds(2.5f);
+                PlayAudio(2);
                 bossUtility.KnockBack();
                 yield return new WaitForSeconds(1.5f);
                 InGameManager.Instance.Boss.IsPattern = false;
@@ -234,11 +236,14 @@ public class Gargoyle : MonoBehaviour
             }
             if (InGameManager.Instance.Boss.CommonStatus.Shield > 0)
             {
+                explosionImage.DOColor(Color.white, 0.8f);
+                yield return new WaitForSeconds(0.8f);
+                explosionImage.color = Color.clear;
                 foreach (var item in InGameManager.Instance.Units)
                 {
-                    item.CommonStatus.DecreaseHp(item.CommonStatus.MaxHp);
+                    item.CommonStatus.DecreaseHp(gargoyleStatus.shieldExplosionDamage);
                 }
-                InGameManager.Instance.Player.DecreaseHp(InGameManager.Instance.Player.MaxHp);
+                InGameManager.Instance.Player.DecreaseHp(gargoyleStatus.shieldExplosionDamage);
             }
             timer = gargoyleStatus.forthPatternDuration;
         }    

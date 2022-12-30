@@ -54,6 +54,8 @@ public class Unit : MonoBehaviour
 
     public int skillCondition;
 
+    [SerializeField] private AudioSource audioSource;
+
     private SkeletonAnimation skeletonAnimation;
     public EUnitType UnitType { get => eUnitType; }
     public CommonStatus CommonStatus { get => commonStatus; set => commonStatus = value; }
@@ -229,6 +231,8 @@ public class Unit : MonoBehaviour
                         skeletonAnimation.AnimationState.AddAnimation(0, "Idle", true, skillAnimDelay);
                     }
                     yield return new WaitForSeconds(skillEffectDelay);
+                    audioSource.volume = SoundManager.Instance.SfxAudio.volume;
+                    audioSource.Play();
                     AttackSkill();
                     yield return null;
                     //스킬 애니메이션 재생 시간만큼 코루틴에 지연시간 주기

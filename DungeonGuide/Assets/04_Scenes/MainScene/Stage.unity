@@ -578,7 +578,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &175132769
 RectTransform:
   m_ObjectHideFlags: 0
@@ -869,8 +869,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 866045871}
     - target: {fileID: 3957529552335643752, guid: aacd8e8f93fb6ee4d8ee78151933194d, type: 3}
-      propertyPath: looping
-      value: 1
+      propertyPath: lengthInSec
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 3957529552335643752, guid: aacd8e8f93fb6ee4d8ee78151933194d, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 99
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aacd8e8f93fb6ee4d8ee78151933194d, type: 3}
@@ -1659,7 +1663,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &473389896
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2335,7 +2339,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &745695794
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3333,9 +3337,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 996440412, guid: 68edea79751c10e4b8ff4af08460d8be, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 15b6b3f39d0383d4c9f4df339e7ee19a, type: 3}
     - target: {fileID: 7290897120291041449, guid: 68edea79751c10e4b8ff4af08460d8be, type: 3}
-      propertyPath: looping
-      value: 1
+      propertyPath: lengthInSec
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 7290897120291041449, guid: 68edea79751c10e4b8ff4af08460d8be, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 8346062890006444994, guid: 68edea79751c10e4b8ff4af08460d8be, type: 3}
       propertyPath: m_RootOrder
@@ -3389,6 +3401,10 @@ PrefabInstance:
       propertyPath: knockBackPoint
       value: 
       objectReference: {fileID: 866045871}
+    - target: {fileID: 8346062890006444998, guid: 68edea79751c10e4b8ff4af08460d8be, type: 3}
+      propertyPath: skillEffectDelay
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8346062890006445005, guid: 68edea79751c10e4b8ff4af08460d8be, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -4893,7 +4909,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1404655894
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5271,8 +5287,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4929833220981577245, guid: 6f24e68192e82964ab6fc0fe1ea61b99, type: 3}
-      propertyPath: looping
-      value: 1
+      propertyPath: lengthInSec
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 4929833220981577245, guid: 6f24e68192e82964ab6fc0fe1ea61b99, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 8777589626676590880, guid: 6f24e68192e82964ab6fc0fe1ea61b99, type: 3}
       propertyPath: pitch
@@ -5757,6 +5777,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2507284537705030137, guid: 490a504ccfdb325458856d0a8b916073, type: 3}
+      propertyPath: lengthInSec
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2507284537705030137, guid: 490a504ccfdb325458856d0a8b916073, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2507284538562128582, guid: 490a504ccfdb325458856d0a8b916073, type: 3}
+      propertyPath: lengthInSec
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2507284538562128582, guid: 490a504ccfdb325458856d0a8b916073, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3027269016994160560, guid: 490a504ccfdb325458856d0a8b916073, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 3754646622348541253, guid: 490a504ccfdb325458856d0a8b916073, type: 3}
       propertyPath: m_Name
       value: Unit_Mage (1)
@@ -5820,6 +5860,22 @@ PrefabInstance:
     - target: {fileID: 7115980485582397718, guid: 490a504ccfdb325458856d0a8b916073, type: 3}
       propertyPath: looping
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7115980485582397718, guid: 490a504ccfdb325458856d0a8b916073, type: 3}
+      propertyPath: lengthInSec
+      value: 99
+      objectReference: {fileID: 0}
+    - target: {fileID: 7115980485582397718, guid: 490a504ccfdb325458856d0a8b916073, type: 3}
+      propertyPath: startDelay.scalar
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7115980485582397718, guid: 490a504ccfdb325458856d0a8b916073, type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7115980485582397718, guid: 490a504ccfdb325458856d0a8b916073, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 99
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 490a504ccfdb325458856d0a8b916073, type: 3}

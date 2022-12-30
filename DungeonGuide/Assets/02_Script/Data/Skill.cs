@@ -72,7 +72,6 @@ namespace Data
         public override void SetSkillValueArray()
         {
             base.SetSkillValueArray();
-            if (level > 5) level = 5;
             for (int i = 0; i < 3; i++)
             {
                 skillValueList.Add(value[i] + (20 * (level - 1)));
@@ -88,10 +87,10 @@ namespace Data
         {
             base.SetSkillValueArray();
             if (level > 5) level = 5;
-            skillValueList.Add(50 + (10 * (level - 1)));
-            skillValueList.Add(3 + (0.4f * (level - 1)));
-            skillValueList.Add(50 + (4 * (level - 1)));
-            skillValueList.Add(15 - (1 * (level - 1)));
+            skillValueList.Add(50 + (12.5f * (level - 1)));
+            skillValueList.Add(3 + (0.5f * (level - 1)));
+            skillValueList.Add(50 + (5 * (level - 1)));
+            skillValueList.Add(15 - (1.25f * (level - 1)));
         }
     }
     public class SkillHeal : Skill
@@ -103,9 +102,9 @@ namespace Data
         {
             base.SetSkillValueArray();
             if (level > 5) level = 5;
-            skillValueList.Add(20 + (4 * (level - 1)));
-            skillValueList.Add(20 + (2 * (level - 1)));
-            skillValueList.Add(10 - (1 * (level - 1)));
+            skillValueList.Add(20 + (5 * (level - 1)));
+            skillValueList.Add(20 + (2.5f * (level - 1)));
+            skillValueList.Add(10 - (1.25f * (level - 1)));
         }
     }
     public class SkillPowerUp : Skill
@@ -117,8 +116,8 @@ namespace Data
         {
             base.SetSkillValueArray();
             if (level > 5) level = 5;
-            skillValueList.Add(3 + (0.4f * (level - 1)));
-            skillValueList.Add(6 + (0.8f * (level - 1)));
+            skillValueList.Add(3 + (0.5f * (level - 1)));
+            skillValueList.Add(6 + (1 * (level - 1)));
         }
     }
 }

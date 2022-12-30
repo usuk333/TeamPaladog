@@ -19,7 +19,7 @@ public class Beast : MonoBehaviour
     public BeastStatus beastStatus;
 
     [SerializeField] private AudioSource audioSource;
-
+    [SerializeField] private AudioClip[] audioClipArray;
     private void Start()
     {
         StartCoroutine(Co_FirstPattern());
@@ -96,6 +96,7 @@ public class Beast : MonoBehaviour
                 FirstPattern();
                 crushs[0].SetActive(false);
                 InGameManager.Instance.Boss.CollisionsArray[0].Clear();
+                PlayAudio(2);
                 yield return new WaitForSeconds(1f);
                 isShout = false;
                 InGameManager.Instance.Boss.IsPattern = false;
@@ -121,6 +122,7 @@ public class Beast : MonoBehaviour
                 frontEffect.Play();
                 yield return new WaitForSeconds(3f);
                 SecondPattern();
+                PlayAudio(1);
                 yield return new WaitForSeconds(1f);
                 isCrush = false;
                 InGameManager.Instance.Boss.IsPattern = false;
@@ -134,8 +136,7 @@ public class Beast : MonoBehaviour
     {
         float rand = Random.Range(beastStatus.forthPatternPercentage - 5, beastStatus.forthPatternPercentage + 5);
         yield return new WaitUntil(() => InGameManager.Instance.Boss.CommonStatus.CurrentHp <= InGameManager.Instance.Boss.CommonStatus.MaxHp * rand / 100);
-        audioSource.volume = SoundManager.Instance.SfxAudio.volume;
-        audioSource.Play();
+        PlayAudio(0);
         warningImage.gameObject.SetActive(true);
         warningImage.DOFade(1, 2f);
         warningText.DOFade(1, 2f);
@@ -147,5 +148,12 @@ public class Beast : MonoBehaviour
         warningImage.gameObject.SetActive(false);
         InGameManager.Instance.Boss.CommonStatus.CurrentAttackDamage = InGameManager.Instance.Boss.CommonStatus.CurrentAttackDamage * beastStatus.forthPatternAtkValue;
         InGameManager.Instance.Boss.CommonStatus.AttackSpeed = InGameManager.Instance.Boss.CommonStatus.AttackSpeed / beastStatus.forthPatternAtksValue;
+    }
+    private void PlayAudio(int index)
+    {
+        audioSource.volume = SoundManager.Instance.SfxAudio.volume;
+        audioSource.Stop();
+        audioSource.clip = audioClipArray[index];
+        audioSource.Play();
     }
 }

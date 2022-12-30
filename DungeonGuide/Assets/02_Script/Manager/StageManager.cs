@@ -37,6 +37,10 @@ namespace StageSection
             }
             DontDestroyOnLoad(gameObject);*/
         }
+        private void Start()
+        {
+            SoundManager.Instance.SetBGM(2);
+        }
 
         public void BtnEvt_Difficultdelay()
         {
@@ -104,8 +108,8 @@ namespace StageSection
 
             GameManager.Instance.StageInfo.BossIndex = t.NowStage;
             GameManager.Instance.StageInfo.Difficulty = (StageInfo.eDifficulty)t.NowDifficult;
-            LoadingSceneController.LoadScene("Stage");
-            SoundManager.Instance.SetBGM(t.NowStage + 3);
+            GameManager.Instance.LoadSceneThroughLoadingScene(1);
+            SoundManager.Instance.SetSFX(0);
         }
     }
 }

@@ -503,6 +503,7 @@ public class Player : MonoBehaviour
         foreach (var item in InGameManager.Instance.Units)
         {
             item.CommonStatus.Shield = item.CommonStatus.MaxHp * barriorValue / 100;
+            item.ShieldEffect.startLifetime = barriorDuration;
             item.ShieldEffect.Play();
         }
         if (currentHp <= 0)
@@ -510,6 +511,7 @@ public class Player : MonoBehaviour
             yield break;
         }
         Shield = maxHp * barriorValue / 100;
+        shieldEffect.startLifetime = barriorDuration;
         shieldEffect.Play();
         yield return new WaitForSeconds(barriorDuration);
         foreach (var item in InGameManager.Instance.Units)
