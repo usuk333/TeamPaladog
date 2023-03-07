@@ -55,7 +55,6 @@ public class Boss_TimeJudge : MonoBehaviour
         }
         player.DecreaseHp(Mathf.Pow(timeBombDamage, timeBombStack));
         timeBombStack++;
-        player.SetInvincibility(timeBombInvincibleSec);
     }
     private void AttackLaser(int rand)
     {

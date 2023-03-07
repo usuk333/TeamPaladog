@@ -44,10 +44,10 @@ namespace SkillScene
                     skillInfoText.text = $"지식을 쌓아 마나를 효율적으로 사용할 수 있게 됩니다.\n마나 최대량 = ({skillValue[0]})\n마나 회복량 = ({skillValue[1]})";
                     break;
                 case 2:
-                    skillInfoText.text = $"손에 잡히는 물건을 적에게 던집니다.\n사과, 돌맹이, 폭탄은 각각 ({skillValue[0]}), ({skillValue[1]}), ({skillValue[2]}) 만큼의 데미지를 가집니다.\n마나 소모량 = (5)\n쿨타임 = (3) 초";
+                    skillInfoText.text = $"손에 잡히는 물건을 적에게 던집니다.\n사과, 돌맹이, 폭탄은 각각 ({skillValue[0]}), ({skillValue[0] + 50}), ({skillValue[0] + 100}) 만큼의 데미지를 가집니다.\n마나 소모량 = (5)\n쿨타임 = (3) 초";
                     break;
                 case 3:
-                    skillInfoText.text = $"보호막을 생성하는 물약을 사용해 아군을 보호합니다.\n({skillValue[1]}) 초 간 유지되는 아군 최대 체력 ({skillValue[0]}%) 만큼의 보호막을 제공합니다.\n마나 소모량 = ({skillValue[2]})\n쿨타임 = ({skillValue[3]}) 초";
+                    skillInfoText.text = $"보호막을 생성하는 물약을 사용해 아군을 보호합니다.\n({skillValue[3]}) 초 간 유지되는 아군 최대 체력 ({skillValue[0]}%) 만큼의 보호막을 제공합니다.\n마나 소모량 = ({skillValue[1]})\n쿨타임 = ({skillValue[2]}) 초";
                     break;
                 case 4:
                     skillInfoText.text = $"회복 물약을 사용해 아군을 치유합니다.\n아군 최대 체력의 ({skillValue[0]}%) 만큼 회복시킵니다.\n마나 소모량 = ({skillValue[1]})\n쿨타임 = ({skillValue[2]}) 초";
@@ -75,17 +75,17 @@ namespace SkillScene
         public void UpgradeSkill()
         {
             int level = GameManager.Instance.FirebaseData.SkillArray[currentSkill].GetLevel();
-            if (CheckSkillLevel(level))
-            {
-                int point = Convert.ToInt32(GameManager.Instance.FirebaseData.SkillDictionary["SkillPoints"]);
-                point--;
-                GameManager.Instance.FirebaseData.SaveData("Skill", "SkillPoints", point);
-                skillBar.UpdateValueText();
-                level += 1;
-                GameManager.Instance.FirebaseData.SaveData("Skill", skillPathArray[currentSkill], level);
-                GameManager.Instance.FirebaseData.SkillArray[currentSkill].LevelUp();            
-                ChangeSkillUI(currentSkill);
-            }
+            if (!CheckSkillLevel(level)) return;
+
+            int point = Convert.ToInt32(GameManager.Instance.FirebaseData.SkillDictionary["SkillPoints"]);
+            point--;
+            GameManager.Instance.FirebaseData.SaveData("Skill", "SkillPoints", point);
+            skillBar.UpdateValueText();
+            level += 1;
+            GameManager.Instance.FirebaseData.SaveData("Skill", skillPathArray[currentSkill], level);
+            GameManager.Instance.FirebaseData.SkillArray[currentSkill].LevelUp();
+            ChangeSkillUI(currentSkill);
+            SoundManager.Instance.SetSFX(5);
         }
         private bool CheckSkillLevel(int level)
         {

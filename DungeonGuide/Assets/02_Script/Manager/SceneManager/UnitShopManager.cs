@@ -18,13 +18,11 @@ namespace UnitShopScene
         public void BtnEvt_UpgradeAtk()
         {
             if (!unitInfo.CheckHaveGold()) return;
-
             unitInfo.UpgradeUnitStatus(true);
         }
         public void BtnEvt_UpgradeHp()
         {
             if (!unitInfo.CheckHaveGold()) return;
-
             unitInfo.UpgradeUnitStatus(false);
         }
         public void BtnEvt_ActiveObj(GameObject obj)

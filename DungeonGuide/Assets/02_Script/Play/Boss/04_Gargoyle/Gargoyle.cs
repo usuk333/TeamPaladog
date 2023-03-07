@@ -117,6 +117,7 @@ public class Gargoyle : MonoBehaviour
                 obj.transform.DOScaleY(7.2598f, 2f);
                 obj.transform.DOLocalMoveY(-6.03f, 2f);
                 yield return new WaitForSeconds(2f);
+                PlayAudio(3);
                 obj.enabled = false;
                 obj.transform.DOScaleY(0.2f, 0f);
                 obj.transform.DOLocalMoveY(-2.5f, 0f);

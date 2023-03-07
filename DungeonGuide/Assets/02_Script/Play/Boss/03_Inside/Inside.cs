@@ -417,6 +417,7 @@ public class Inside : MonoBehaviour
                 }
                 manaExplosion.position = new Vector3(InGameManager.Instance.Units[index].transform.position.x,manaExplosion.position.y);
                 PatternTweening();
+                PlayAudio(2);
                 yield return new WaitForSeconds(manaExplosionDuration);
                 sprite.enabled = false;
                 manaExplosionEffect.Play();

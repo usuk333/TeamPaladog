@@ -268,6 +268,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  skillCantImageArray: []
 --- !u!114 &6574087279226134136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,6 +281,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b792d00a40d0c24a8f25bfa6b302cdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerParticleArray:
+  - {fileID: 8786649919028384775}
+  - {fileID: 1233291264359750379}
+  - {fileID: 649898327231457978}
+  - {fileID: 1429885724441922047}
+  playerSkillList: []
   castingTarget: {fileID: 0}
   castingButton: {fileID: 0}
   attackButton: {fileID: 0}

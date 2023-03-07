@@ -59,7 +59,7 @@ namespace Data
         private Dictionary<string, Dictionary<string, object>> allDictionarys = new Dictionary<string, Dictionary<string, object>>();
 
 
-        private Skill[] skillArray = new Skill[6];
+        private SkillData[] skillArray = new SkillData[6];
         /// <summary>
         /// 생성자 호출 동시에 DB내부 UID의 데이터 로딩 / 객체의 스냅샷에 데이터 읽어온 후 딕셔너리에 저장
         /// </summary>
@@ -81,7 +81,7 @@ namespace Data
         public Dictionary<string, object> SkillDictionary { get => skillDictionary; }
         public Dictionary<string, object> StageDictionary { get => stageDictionary; }
         public Dictionary<string, object> UnitDictionary { get => unitDictionary; }
-        public Skill[] SkillArray { get => skillArray; set => skillArray = value; }
+        public SkillData[] SkillArray { get => skillArray; set => skillArray = value; }
         #region --데이터 이니셜라이징--
         public IEnumerator Co_InitData()
         {

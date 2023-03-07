@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using Spine.Unity;
-using System.Linq;
 
 public class Unit : MonoBehaviour
 {

@@ -63,8 +63,7 @@ namespace ETC
         }
         public void ToggleEvt_SetVolume(Toggle toggle)
         {
-            Debug.Log("토글 이벤트 호출");
-            if (toggle.transform.parent.name.Contains("BGM"))
+            if (toggle.name.Contains("BGM"))
             {
                 SoundManager.Instance.SetMute(true, !toggle.isOn);
                 bgmSlider.value = toggle.isOn? 1 : 0;

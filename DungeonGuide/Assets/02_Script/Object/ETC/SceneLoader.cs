@@ -7,6 +7,7 @@ namespace ETC
 {
     public class SceneLoader : MonoBehaviour
     {
+        [SerializeField] private float delay;
         private Image image;
         private void Awake()
         {
@@ -14,8 +15,8 @@ namespace ETC
         }
         private IEnumerator Start()
         {
-            image.DOFade(0, 2f);
-            yield return new WaitForSeconds(1f);
+            image.DOFade(0, delay);
+            yield return new WaitForSeconds(delay - 1f);
             image.raycastTarget = false;
             yield return new WaitForSeconds(1f);
             image.gameObject.SetActive(false);

@@ -16,6 +16,7 @@ namespace StartScene
 {
     public class StartManager : MonoBehaviour
     {
+        #region --계정 생성 시 DB 테이블--
         public class Info
         {
             public int ArchorPoints;
@@ -96,7 +97,7 @@ namespace StartScene
             public int WarriorHP = 1200;
             public int WarriorLevel = 1;
         }
-
+        #endregion
         private bool initComplete;
 
         private string version;
@@ -105,7 +106,7 @@ namespace StartScene
         [SerializeField] private WarningMessage warningMessage;
         [SerializeField] private CreateAccountPopup createAccountPopup;
         [SerializeField] private LoginObject loginObject;
-
+        [SerializeField] private GameObject exitObj;
         //데이터베이스 reference
         private DatabaseReference reference;
         private FirebaseAuth auth = null;
@@ -122,21 +123,19 @@ namespace StartScene
         }
         private IEnumerator Start()
         {
-            Debug.Log("hi");
             yield return new WaitUntil(() => version != null);
-            Debug.Log("hello");
             versionText.text = GameManager.Instance.Version;
             if (version != GameManager.Instance.Version)
             {
                 warningMessage.SetWarningText("최신 버전으로 업데이트 해야합니다!");
-                Application.Quit();
-#if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-#endif
-
                 yield break;
             }
+#if UNITY_EDITOR
+            userId = "TestUID";
             loginObject.ActiveLoginObj();
+            yield break;
+#endif
+            StartCoroutine(TryGoogleLogin());
         }
         public void SetPlayerData()
         {
@@ -300,6 +299,7 @@ namespace StartScene
                     if (task.Result.Value != null)
                     {
                         version = task.Result.Value.ToString();
+                        initComplete = true;
                     }
                 }
                 else
@@ -308,6 +308,24 @@ namespace StartScene
                 }
             }
             );
+        }
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                BtnEvt_ActiveExit();
+            }
+        }
+        public void BtnEvt_ActiveExit()
+        {
+            exitObj.SetActive(!exitObj.activeSelf);
+        }
+        public void BtnEvt_Exit()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#endif
+            Application.Quit();
         }
         //void AuthStateChanged(object sender, System.EventArgs eventArgs)
         //{
