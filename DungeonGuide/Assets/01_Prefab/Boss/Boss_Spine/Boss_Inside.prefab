@@ -1540,6 +1540,7 @@ MonoBehaviour:
   audioClipArray:
   - {fileID: 8300000, guid: a37daee923c295143a54897ed1042b7a, type: 3}
   - {fileID: 8300000, guid: eb87a0afd50c9dd41a6be66d1810e5fb, type: 3}
+  - {fileID: 8300000, guid: 6d5f487c532f07848a3657de9106a77d, type: 3}
   manaExplosionEffect: {fileID: 2578314273558935820}
 --- !u!82 &8643392785100620906
 AudioSource:

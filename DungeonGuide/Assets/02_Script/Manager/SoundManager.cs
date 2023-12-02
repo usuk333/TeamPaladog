@@ -5,6 +5,7 @@ public class SoundManager : MonoBehaviour
     private static SoundManager instance;
     [SerializeField] private AudioSource bgmAudio;
     [SerializeField] private AudioSource sfxAudio;
+    [SerializeField] private AudioSource uiAudio;
 
     [SerializeField] private AudioClip[] bgmClipArray;
     [SerializeField] private AudioClip[] sfxClipArray;
@@ -24,6 +25,17 @@ public class SoundManager : MonoBehaviour
         {
             Destroy(this);
         }
+    }
+    private void FixedUpdate()
+    {
+        //if(Input.touchCount > 0)
+        //{
+        //    uiAudio.Play();
+        //}
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    uiAudio.Play();
+        //}
     }
     /// <summary>
     /// 0 = ½ºÅ¸Æ®¾À, 1 = ¸ÞÀÎ¾À, 2 = ½ºÅ×ÀÌÁö¼½¼Ç¾À, 3 = ¼öÀÎ, 4 = ¹ö¼¸, 5 = ½º´Ô, 6 = °¡°íÀÏ
@@ -53,6 +65,7 @@ public class SoundManager : MonoBehaviour
         else
         {
             sfxAudio.volume = value;
+            uiAudio.volume = value;
         }
         SaveAudioData(isBGM);
     }
@@ -65,6 +78,7 @@ public class SoundManager : MonoBehaviour
         else
         {
             sfxAudio.mute = isOn;
+            uiAudio.mute = isOn;
         }
         SaveMuteData(isBGM);
     }
@@ -96,5 +110,7 @@ public class SoundManager : MonoBehaviour
         bgmAudio.mute = System.Convert.ToBoolean(PlayerPrefs.GetString("BGM_Mute", "false"));
         sfxAudio.volume = PlayerPrefs.GetFloat("SFX", 0.5f);
         sfxAudio.mute = System.Convert.ToBoolean(PlayerPrefs.GetString("SFX_Mute", "false"));
+        uiAudio.volume = PlayerPrefs.GetFloat("SFX", 0.5f);
+        uiAudio.mute = System.Convert.ToBoolean(PlayerPrefs.GetString("SFX_Mute", "false"));
     }
 }

@@ -92,11 +92,11 @@ public class Beast : MonoBehaviour
                 Shouting();
                 InGameManager.Instance.Boss.IsPattern = true;
                 crushs[0].SetActive(true);
-                yield return new WaitForSeconds(5.6f);
+                yield return new WaitForSeconds(5.1f);
+                PlayAudio(2);
                 FirstPattern();
                 crushs[0].SetActive(false);
                 InGameManager.Instance.Boss.CollisionsArray[0].Clear();
-                PlayAudio(2);
                 yield return new WaitForSeconds(1f);
                 isShout = false;
                 InGameManager.Instance.Boss.IsPattern = false;
@@ -120,9 +120,9 @@ public class Beast : MonoBehaviour
                 InGameManager.Instance.Boss.skeletonAnimation.AnimationState.AddAnimation(0, "Idle", false, 4);
                 InGameManager.Instance.Boss.IsPattern = true;
                 frontEffect.Play();
-                yield return new WaitForSeconds(3f);
-                SecondPattern();
+                yield return new WaitForSeconds(2.5f);
                 PlayAudio(1);
+                SecondPattern();
                 yield return new WaitForSeconds(1f);
                 isCrush = false;
                 InGameManager.Instance.Boss.IsPattern = false;

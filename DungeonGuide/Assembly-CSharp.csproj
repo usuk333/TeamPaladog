@@ -58,24 +58,25 @@
   <ItemGroup>
     <Compile Include="Assets\02_Script\Object\ETC\MainButton.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleSprite.cs" />
+    <Compile Include="Assets\02_Script\Play\Player\Skill\PlayerSkill.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Events\Event.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SavedGame\ISavedGameMetadata.cs" />
     <Compile Include="Assets\02_Script\Object\ETC\WarningMessage.cs" />
+    <Compile Include="Assets\02_Script\Play\Player\Skill\Attack.cs" />
     <Compile Include="Assets\02_Script\SerializableDictionary.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesAchievement.cs" />
     <Compile Include="Assets\02_Script\Play\UpdateLater\UnitMark.cs" />
     <Compile Include="Assets\02_Script\Play\UpdateLater\Boss_TimeJudge.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\INearbyConnectionClient.cs" />
     <Compile Include="Assets\02_Script\Object\StageSection\DifficultyButton.cs" />
-    <Compile Include="Assets\GooglePlayGames\BasicApi\CommonStatusCodes.cs" />
     <Compile Include="Assets\02_Script\Object\ETC\GoldBar.cs" />
-    <Compile Include="Assets\02_Script\Data\Skill.cs" />
+    <Compile Include="Assets\GooglePlayGames\BasicApi\CommonStatusCodes.cs" />
+    <Compile Include="Assets\02_Script\Data\SkillData.cs" />
     <Compile Include="Assets\02_Script\Play\Boss\BossHpBar.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SignInStatus.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Achievement.cs" />
     <Compile Include="Assets\02_Script\Play\Boss\Boss.cs" />
     <Compile Include="Assets\02_Script\Manager\SceneManager\SkillManager.cs" />
-    <Compile Include="Assets\GUI PRO Kit - Fantasy RPG\Scripts\PanelFantasyRPG.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidNearbyConnectionClient.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Video\IVideoClient.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesScore.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Assets\02_Script\Play\Manager\InGameUIManager.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\PlayGamesClientConfiguration.cs" />
     <Compile Include="Assets\02_Script\Object\StageSection\StagePanel.cs" />
+    <Compile Include="Assets\02_Script\Play\Player\NewBehaviourScript.cs" />
     <Compile Include="Assets\GooglePlayGames\OurUtils\Logger.cs" />
     <Compile Include="Assets\02_Script\Object\Skill\SkillInfo.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Nearby\AdvertisingResult.cs" />
@@ -93,17 +95,20 @@
     <Compile Include="Assets\GooglePlayGames\BasicApi\SignInInteractivity.cs" />
     <Compile Include="Assets\GooglePlayGames\OurUtils\Misc.cs" />
     <Compile Include="Assets\02_Script\Play\Boss\03_Inside\InsideFallingObj.cs" />
+    <Compile Include="Assets\02_Script\Play\Player\Skill\Barrior.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SavedGame\SavedGameMetadataUpdate.cs" />
     <Compile Include="Assets\02_Script\Play\Boss\04_Gargoyle\TrackingObject.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidHelperFragment.cs" />
     <Compile Include="Assets\02_Script\Object\ETC\SceneLoader.cs" />
     <Compile Include="Assets\02_Script\Manager\SceneManager\UnitShopManager.cs" />
+    <Compile Include="Assets\02_Script\Play\Player\Skill\Heal.cs" />
     <Compile Include="Assets\02_Script\Object\Main\PlayerInfo.cs" />
     <Compile Include="Assets\02_Script\Play\Manager\InGameManager.cs" />
     <Compile Include="Assets\02_Script\Play\Player\Player.cs" />
     <Compile Include="Assets\02_Script\Data\FirebaseData.cs" />
     <Compile Include="Assets\02_Script\Play\Boss\02_Mushroom\Mushroom.cs" />
     <Compile Include="Assets\02_Script\Object\StageSection\Tower.cs" />
+    <Compile Include="Assets\02_Script\Play\ETC\SpineAnimator.cs" />
     <Compile Include="Assets\02_Script\Object\Start\LoginObject.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\SavedGame\ISavedGameClient.cs" />
     <Compile Include="Assets\GooglePlayGames\ISocialPlatform\PlayGamesLeaderboard.cs" />
@@ -112,9 +117,8 @@
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleUtils.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModuleUI.cs" />
     <Compile Include="Assets\02_Script\Play\Boss\01_Beast\FallingObjectPool.cs" />
-    <Compile Include="Assets\02_Script\Play\Player\SkillRange.cs" />
+    <Compile Include="Assets\02_Script\Play\Player\Skill\SkillRange.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\NearbyConnectionClientFactory.cs" />
-    <Compile Include="Assets\GUI PRO Kit - Fantasy RPG\Extensions\UIParticle\UIParticleSystem.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidClient.cs" />
     <Compile Include="Assets\02_Script\Manager\StageManager.cs" />
     <Compile Include="Assets\DOTween\Modules\DOTweenModulePhysics2D.cs" />
@@ -126,7 +130,6 @@
     <Compile Include="Assets\02_Script\Manager\SoundManager.cs" />
     <Compile Include="Assets\GooglePlayGames\OurUtils\PlatformUtils.cs" />
     <Compile Include="Assets\02_Script\Play\Boss\02_Mushroom\CollisionObject.cs" />
-    <Compile Include="Assets\GUI PRO Kit - Fantasy RPG\Scripts\PanelControlFantasyRPG.cs" />
     <Compile Include="Assets\GooglePlayGames\OurUtils\NearbyHelperObject.cs" />
     <Compile Include="Assets\02_Script\LetterSpacing.cs" />
     <Compile Include="Assets\02_Script\Manager\GameManager.cs" />
@@ -150,6 +153,7 @@
     <Compile Include="Assets\GooglePlayGames\BasicApi\IPlayGamesClient.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\Video\CaptureOverlayStateListener.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\CommonTypes.cs" />
+    <Compile Include="Assets\02_Script\Play\Player\Skill\Rage.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidSnapshotMetadata.cs" />
     <Compile Include="Assets\GooglePlayGames\BasicApi\ScorePageToken.cs" />
     <Compile Include="Assets\GooglePlayGames\Platforms\Android\AndroidVideoClient.cs" />
@@ -197,7 +201,6 @@
     <None Include="Assets\03_Resauce\Spine\Boss\monk\젠야타\젠야타_완성.atlas.txt" />
     <None Include="Assets\Firebase\Plugins\x86_64\FirebaseCppAuth.dll" />
     <None Include="Assets\03_Resauce\Spine\CharacterSpine\ae8b4bb56bd68f53\캐릭터 통합 스파인 파일\전사\WARRIOR.atlas.txt" />
-    <None Include="Assets\GUI PRO Kit - Fantasy RPG\Extensions\UIParticle\hidden particle.shader" />
     <None Include="Assets\Firebase\Plugins\Firebase.TaskExtension.dll" />
     <None Include="Assets\03_Resauce\Spine\Boss\basilisk\바실리스크3.atlas.txt" />
     <None Include="Assets\Firebase\m2repository\com\google\firebase\firebase-app-unity\maven-metadata.xml" />
@@ -221,7 +224,6 @@
     <None Include="Assets\Firebase\Plugins\Google.MiniJson.dll" />
     <None Include="Assets\03_Resauce\Spine\Boss\lion\사자_완성.atlas.txt" />
     <None Include="Assets\Firebase\Plugins\iOS\Firebase.App.dll" />
-    <None Include="Assets\GUI PRO Kit - Fantasy RPG\Extensions\UIParticle\UIAdditive.shader" />
     <None Include="Assets\03_Resauce\Spine\CharacterSpine\ae8b4bb56bd68f53\캐릭터 통합 스파인 파일\플레이어\bc8428d220f5fca0\새 폴더\주인공_SD_최종.atlas.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -950,17 +952,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="spine-unity-examples-editor.csproj">
-      <Project>{9D053C37-DB68-3A8C-0606-63A0CB8EA376}</Project>
-      <Name>spine-unity-examples-editor</Name>
-    </ProjectReference>
     <ProjectReference Include="spine-unity.csproj">
       <Project>{FE402CE7-135B-660B-671C-5B68C2FC3CB6}</Project>
       <Name>spine-unity</Name>
-    </ProjectReference>
-    <ProjectReference Include="spine-unity-examples.csproj">
-      <Project>{9CC2207F-869F-4DBE-1BF0-E4F3B974B21E}</Project>
-      <Name>spine-unity-examples</Name>
     </ProjectReference>
     <ProjectReference Include="spine-unity-editor.csproj">
       <Project>{508933FE-8839-2C57-6955-4AA7BBDC002B}</Project>
